@@ -1,0 +1,19 @@
+# Tabla 34 · PostgreSQL 18, único almacén: datos de negocio, cola de trabajos y
+# mecanismo de publicación y suscripción sobre la misma base de datos (D-08).
+# Tabla 41 · el valor propio de cada instalación se provee por DATABASE_URL (RNF-19).
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  url: <%= ENV.fetch("DATABASE_URL", "postgres://plataforma:plataforma@db:5432/plataforma_desarrollo") %>
+
+test:
+  <<: *default
+  url: postgres://plataforma:plataforma@db:5432/plataforma_prueba
+
+production:
+  <<: *default
+  url: <%= ENV.fetch("DATABASE_URL") %>

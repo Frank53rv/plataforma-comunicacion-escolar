@@ -166,6 +166,72 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
   - `estado_conversacion`: `activa`, `solo_lectura` — misma fuente, y la Tabla 21, «estado de
     solo lectura al cerrar el año lectivo».
 
+## D-08 · Las tablas de la cola de trabajos y del canal de tiempo real en el esquema
+- **Dónde apareció:** Tabla 34 y Tabla 45 · `api/db/schema.rb` · compuerta `esquema`
+- **Qué dice el documento:** la Tabla 34 asigna la cola de trabajos a «Solid Queue …
+  **sobre la misma base de datos**» y el canal de tiempo real a «ActionCable con adaptador
+  Solid Cable … respaldada por la misma base de datos, **sin almacén en memoria adicional**».
+  La Tabla 45 llama a PostgreSQL «**único almacén**: datos de negocio, cola de trabajos en
+  segundo plano y mecanismo de publicación y suscripción». La Tabla 38, por su parte,
+  declara **19 entidades** y su nota dice que «el esquema no agrega ni suprime ninguna».
+- **Qué no dice:** si las tablas de infraestructura que esos dos adaptadores necesitan
+  —`solid_queue_*` y `solid_cable_*`, creadas por el framework, no por el dominio— cuentan
+  como entidades a los efectos de la Tabla 38.
+- **Alternativas:**
+  - **A.** Una sola base de datos, como la Tabla 34 dice literalmente, y la compuerta
+    `esquema` distingue las tablas de infraestructura del framework de las 19 entidades del
+    dominio.
+  - **B.** Bases lógicas separadas para la cola y el canal sobre el mismo motor, que es lo
+    que el framework genera por omisión: `db/schema.rb` queda con las 19 entidades y ninguna
+    herramienta se toca.
+- **Consecuencia de cada una:** A conserva la letra de la Tabla 34 —«la misma base de
+  datos»— y exige una excepción explícita y nominada en la compuerta. B conserva la
+  compuerta intacta al costo de que «la misma base de datos» pase a leerse como «el mismo
+  motor», y de introducir cadenas de conexión que la Tabla 41 no enumera, contra RNF-19.
+- **Estado: RESUELTA · se adopta A.**
+- **Fundamento:** la Tabla 38 gobierna el **modelo de datos del dominio**, que es lo que el
+  Boundary 3 protege: «agregar, suprimir o renombrar entidades, atributos o restricciones
+  del diccionario de la Tabla 21». Las tablas de Solid Queue y Solid Cable no son entidades
+  del diccionario sino la realización física de dos componentes que la Tabla 34 sí consigna;
+  tratarlas como entidades del dominio confundiría el modelo con su infraestructura. La
+  excepción de la compuerta es nominada —sólo los prefijos `solid_queue_` y `solid_cable_`—
+  de modo que cualquier otra tabla fuera del diccionario sigue dejando la rama en rojo. Se
+  descarta además `solid_cache`: la nota de la Tabla 34 declara que «la caché de aplicación
+  no figura en esta tabla porque el producto mínimo viable no compromete ninguna», y el
+  Boundary 7 prohíbe incorporar dependencias que la tabla no consigne.
+
+## D-09 · Restricciones de la Tabla 38 que no admiten expresión declarativa literal
+- **Dónde apareció:** Tabla 38 · primera migración
+- **Qué dice el documento:** la nota de la Tabla 38 ya reconoce el problema y fija el
+  criterio: «tres restricciones no admiten expresión declarativa razonable y se resuelven en
+  la capa de negocio conforme a RNF-21» —RN-29, RN-30 y RN-13—, cada una con su caso de
+  prueba. Esta entrada aplica el mismo criterio a otras dos que la tabla enuncia y que el
+  motor tampoco puede expresar tal como están escritas.
+- **Qué no dice:** cómo se realizan, dado que su enunciado no es traducible a una
+  restricción declarativa.
+- **Los dos casos:**
+  - **`codigo_activacion`** · «UNIQUE parcial (usuario_id) donde `usado_en` es nulo **y
+    `vence_en` es futuro**». PostgreSQL no admite un predicado de índice no inmutable: la
+    hora actual no puede figurar en él. Se crea la mitad expresable —único código no usado
+    por usuario— y la vigencia se verifica en la capa de negocio. **Queda abierta** la
+    pregunta de cómo RF-07 «invalida el previo» al regenerar: si marcando `usado_en`, si
+    adelantando `vence_en`, o si con otro criterio. Se resuelve al construir RF-07 y no
+    antes, porque el documento no lo enuncia.
+  - **`entrega_anuncio`** · «CHECK de monotonía entre las cuatro marcas». Una comparación
+    encadenada `enviada_en <= entregada_en <= vista_en <= leida_en` contradiría el flujo
+    alternativo B de CU-10, que admite expresamente que «el evento de lectura llegue antes
+    que el de entrega» y ordena registrar la marca «sin degradar el estado actual». La
+    monotonía que RN-32 compromete es la del **estado**, no la del orden de las marcas entre
+    sí: «los estados de una entrega no retroceden». Se realiza como que ninguna marca puede
+    ser anterior al envío —`entregada_en`, `vista_en` y `leida_en` son nulas o posteriores o
+    iguales a `enviada_en`— y la no regresión del estado se resuelve en la capa de negocio,
+    con CP-RF-34 y CP-RF-36 como verificación.
+- **Estado: RESUELTA en cuanto al esquema · ABIERTA en cuanto a la invalidación de RF-07.**
+- **Fundamento:** el criterio no es nuevo: lo fija la propia nota de la Tabla 38 para las
+  tres restricciones que ya reconoce inexpresables. Ninguna de las dos se omite: ambas se
+  verifican, y la diferencia está en dónde. Ninguna entidad, atributo ni restricción del
+  diccionario se agrega, suprime ni renombra, de modo que el Boundary 3 queda intacto.
+
 ---
 
 ## Pendiente de decisión del autor

@@ -61,7 +61,9 @@ if not naive and RB:
     R.bien('ninguna lectura de hora sin zona')
 
 # 4 · la franja de disponibilidad tiene que contemplar el cruce de medianoche
-franja = [p for p in RB if re.search(r'hora_inicio', leer_texto(p))]
+# El esquema declara la columna hora_inicio pero no evalúa la franja: la evaluación
+# reside en la capa de negocio conforme a RNF-21, y es allí donde se verifica.
+franja = [p for p in RB if '/db/' not in p and re.search(r'hora_inicio', leer_texto(p))]
 if franja:
     cubre = False
     for p in franja:
