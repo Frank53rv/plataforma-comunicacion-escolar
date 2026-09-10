@@ -7,6 +7,11 @@ gem "pg", "~> 1.1"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
+# La serie 3 de json cambió la firma de JSON.parse a un solo argumento y ActiveSupport
+# 8.1.3 la invoca con dos, de modo que toda petición con cuerpo JSON respondería 500.
+# Se fija la serie que Ruby 4.0 provee como gema por defecto.
+gem "json", "~> 2.18"
+
 # Tabla 34 · JSON Web Token (RFC 7519) y derivación no reversible con bcrypt
 gem "bcrypt", "~> 3.1.7"
 gem "jwt", "~> 3.1"

@@ -2,4 +2,5 @@
 # control de acceso y la lógica de notificación residen acá y nunca en el cliente.
 class ApplicationController < ActionController::API
   include ManejadorDeErrores
+  include Autenticacion
 end

@@ -9,12 +9,12 @@ SimpleCov.start "rails" do
 
   # Los módulos de la Figura 18 se reportan por separado, de modo que la evidencia de
   # cobertura se lea contra la columna «Módulo / componente» de la Tabla 22.
-  add_group "A · Identidad y acceso",     "app/identidad_acceso"
-  add_group "B · Estructura académica",   "app/estructura_academica"
-  add_group "C · Anuncios",               "app/anuncios"
-  add_group "D · Mensajería",             "app/mensajeria"
-  add_group "E · Notificaciones",         "app/notificaciones"
-  add_group "G · Transversal",            "app/compartido"
+  group "A · Identidad y acceso",     "app/identidad_acceso"
+  group "B · Estructura académica",   "app/estructura_academica"
+  group "C · Anuncios",               "app/anuncios"
+  group "D · Mensajería",             "app/mensajeria"
+  group "E · Notificaciones",         "app/notificaciones"
+  group "G · Transversal",            "app/compartido"
 end
 
 RSpec.configure do |config|
