@@ -5,4 +5,7 @@ module CabeceraDeSesion
   end
 end
 
-RSpec.configure { |config| config.include CabeceraDeSesion, type: :request }
+RSpec.configure do |config|
+  config.include CabeceraDeSesion, type: :request
+  config.include CabeceraDeSesion, type: :controller
+end

@@ -11,6 +11,11 @@ require "rails_helper"
 
 RSpec.describe ApplicationController, type: :controller do
   controller do
+    # La autorización deniega por omisión: acá se declara para que lo que se ejercite
+    # sea la traducción del error y no el control de acceso, que verifica CP-RF-02.
+    autoriza :no_habilitado, :conflicto, :registro_ausente, :parametro_faltante,
+             :falla_no_prevista, roles: Autorizacion::SIN_AUTENTICAR
+
     def no_habilitado    = raise(ErrorDeDominio::NoHabilitado)
     def conflicto        = raise(ErrorDeDominio::ConflictoDeRegla.new(regla: "RN-31", detalle: "Ya existe un año lectivo vigente."))
     def registro_ausente = raise(ActiveRecord::RecordNotFound)
