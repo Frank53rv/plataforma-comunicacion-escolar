@@ -4,6 +4,10 @@ import json, os, re, subprocess, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SPECS = os.path.join(RAIZ, 'specs')
+# D-06 · el árbol es el de la Figura 18: la interfaz vive en api/ y el cliente en
+# cliente/. Las compuertas exploran esas rutas y no la raíz; de lo contrario no
+# encontrarían nada y aprobarían por ceguera.
+API = os.path.join(RAIZ, 'api')
 
 def cargar(nombre):
     with open(os.path.join(SPECS, nombre), encoding='utf-8') as f:

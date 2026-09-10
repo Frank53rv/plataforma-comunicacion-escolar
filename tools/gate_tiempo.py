@@ -20,7 +20,7 @@ if not os.path.exists(SPEC):
 if ZONA not in leer_texto(SPEC):
     R.falla('specs/25-semantica-temporal.md no declara la zona %s' % ZONA)
 
-RB = tuple(archivos(('.rb',), 'app', 'lib', 'config', 'db'))
+RB = tuple(archivos(('.rb',), 'api/app', 'api/lib', 'api/config', 'api/db'))
 
 # 1 · ninguna otra zona horaria en el código
 otras = {}
@@ -41,9 +41,9 @@ for z, ps in sorted(otras.items()):
 if any(ZONA in leer_texto(p) for p in RB):
     R.bien('la zona %s está declarada en la configuración' % ZONA)
 elif RB:
-    R.falla('la zona %s no aparece en config/ ni en app/ · el punto 4.2 la exige' % ZONA)
+    R.falla('la zona %s no aparece en api/config/ ni en api/app/ · el punto 4.2 la exige' % ZONA)
 else:
-    R.aviso('todavía no existe la aplicación · la zona %s se verifica con config/application.rb' % ZONA)
+    R.aviso('todavía no existe la aplicación · la zona %s se verifica con api/config/application.rb' % ZONA)
 
 # 3 · lectura de la hora sin zona
 naive = {}

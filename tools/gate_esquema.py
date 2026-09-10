@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Compuerta ESQUEMA · Tabla 38 · Boundary 3
 Ni una entidad ni una columna de más o de menos respecto del esquema físico.
-Entrada: db/schema.rb (lo genera la primera migración).
+Entrada: api/db/schema.rb (lo genera la primera migración).
 """
 import os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -19,9 +19,9 @@ def sing(n):
             if c in esperado: return c
     return n
 
-ruta = os.path.join(RAIZ, 'db', 'schema.rb')
+ruta = os.path.join(API, 'db', 'schema.rb')
 if not os.path.exists(ruta):
-    R.aviso('todavía no existe db/schema.rb · la compuerta se activa con la primera migración')
+    R.aviso('todavía no existe api/db/schema.rb · la compuerta se activa con la primera migración')
     R.cerrar()
 
 txt = leer_texto(ruta)

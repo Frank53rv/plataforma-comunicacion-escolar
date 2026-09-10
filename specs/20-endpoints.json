@@ -13,6 +13,7 @@
       "requisitos": [
         "RF-01"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -29,6 +30,7 @@
       "requisitos": [
         "RF-01"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -42,6 +44,7 @@
       "requisitos": [
         "RF-06"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -53,6 +56,9 @@
       ],
       "caso_uso": "CU-02",
       "requisitos": [
+        "RF-08"
+      ],
+      "requisitos_should": [
         "RF-08"
       ],
       "should": true
@@ -71,6 +77,7 @@
       "requisitos": [
         "RF-43"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -84,6 +91,7 @@
       "requisitos": [
         "RF-11"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -97,6 +105,7 @@
       "requisitos": [
         "RF-11"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -108,6 +117,9 @@
       ],
       "caso_uso": "CU-03",
       "requisitos": [
+        "RF-16"
+      ],
+      "requisitos_should": [
         "RF-16"
       ],
       "should": true
@@ -123,6 +135,7 @@
       "requisitos": [
         "RF-12"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -137,6 +150,7 @@
       "requisitos": [
         "RF-12"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -150,6 +164,7 @@
       "requisitos": [
         "RF-12"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -164,6 +179,7 @@
         "RF-03",
         "RF-05"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -177,6 +193,7 @@
       "requisitos": [
         "RF-15"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -190,6 +207,7 @@
       "requisitos": [
         "RF-44"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -203,6 +221,7 @@
       "requisitos": [
         "RF-44"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -218,6 +237,7 @@
       "requisitos": [
         "RF-07"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -233,6 +253,7 @@
         "RF-05",
         "RF-13"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -248,6 +269,7 @@
         "RF-05",
         "RF-14"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -262,6 +284,7 @@
       "requisitos": [
         "RF-09"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -277,6 +300,7 @@
         "RF-09",
         "RF-10"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -293,7 +317,10 @@
         "RF-21",
         "RF-31"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-18"
+      ],
+      "should": false
     },
     {
       "metodo": "PATCH",
@@ -307,7 +334,10 @@
         "RF-19",
         "RF-21"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-19"
+      ],
+      "should": false
     },
     {
       "metodo": "DELETE",
@@ -320,6 +350,7 @@
       "requisitos": [
         "RF-20"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -337,6 +368,7 @@
         "RF-22",
         "RF-39"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -353,6 +385,7 @@
       "requisitos": [
         "RF-22"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -367,7 +400,10 @@
         "RF-23",
         "RF-38"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-38"
+      ],
+      "should": false
     },
     {
       "metodo": "GET",
@@ -383,6 +419,7 @@
       "requisitos": [
         "RF-40"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -396,6 +433,7 @@
       "requisitos": [
         "RF-45"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -410,6 +448,7 @@
       "requisitos": [
         "RF-34"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -426,6 +465,7 @@
         "RF-35",
         "RF-36"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -441,6 +481,7 @@
         "RF-34",
         "RF-36"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -459,7 +500,12 @@
         "RF-26",
         "RF-27"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-24",
+        "RF-26",
+        "RF-27"
+      ],
+      "should": false
     },
     {
       "metodo": "GET",
@@ -475,7 +521,10 @@
         "RF-25",
         "RF-47"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-47"
+      ],
+      "should": false
     },
     {
       "metodo": "GET",
@@ -489,6 +538,7 @@
         "RF-28",
         "RF-29"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -504,6 +554,7 @@
         "RF-29",
         "RF-32"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -515,6 +566,9 @@
       ],
       "caso_uso": "CU-12",
       "requisitos": [
+        "RF-30"
+      ],
+      "requisitos_should": [
         "RF-30"
       ],
       "should": true
@@ -530,6 +584,9 @@
       "requisitos": [
         "RF-47"
       ],
+      "requisitos_should": [
+        "RF-47"
+      ],
       "should": true
     },
     {
@@ -541,6 +598,9 @@
       ],
       "caso_uso": "CU-15",
       "requisitos": [
+        "RF-46"
+      ],
+      "requisitos_should": [
         "RF-46"
       ],
       "should": true
@@ -559,6 +619,7 @@
       "requisitos": [
         "RF-33"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -575,6 +636,7 @@
       "requisitos": [
         "RF-33"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -591,6 +653,7 @@
       "requisitos": [
         "RF-37"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -607,6 +670,7 @@
       "requisitos": [
         "RF-37"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
@@ -624,6 +688,7 @@
         "RF-29",
         "RF-32"
       ],
+      "requisitos_should": [],
       "should": false
     }
   ]

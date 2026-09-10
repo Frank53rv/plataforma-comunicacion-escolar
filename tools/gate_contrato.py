@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Compuerta CONTRATO · RNF-17 · CP-RNF-17
 Diferencia nula entre el enrutador y las 43 operaciones de la Tabla 27.
-Entrada: tmp/rutas.txt, producido por `bin/rails routes > tmp/rutas.txt`.
+Entrada: api/tmp/rutas.txt, producido por `bin/rails routes > tmp/rutas.txt`.
 """
 import os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -13,10 +13,10 @@ esperadas = {(e['metodo'], normalizar_ruta(e['ruta'])) for e in doc if e['metodo
 comprometidas = {(e['metodo'], normalizar_ruta(e['ruta'])) for e in doc
                  if e['metodo'] != 'WSS' and not e['should']}
 
-fuente = os.path.join(RAIZ, 'tmp', 'rutas.txt')
+fuente = os.path.join(API, 'tmp', 'rutas.txt')
 if not os.path.exists(fuente):
-    if os.path.exists(os.path.join(RAIZ, 'config', 'routes.rb')):
-        R.falla('falta tmp/rutas.txt · generalo con:  bin/rails routes > tmp/rutas.txt')
+    if os.path.exists(os.path.join(API, 'config', 'routes.rb')):
+        R.falla('falta api/tmp/rutas.txt · generalo con:  bin/rails routes > tmp/rutas.txt')
     else:
         R.aviso('todavía no existe el enrutador · la compuerta se activa con la aplicación')
     R.cerrar()

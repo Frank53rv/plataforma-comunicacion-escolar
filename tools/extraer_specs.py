@@ -195,10 +195,17 @@ for r in rows[1:]:
     if not m:
         print('  ! fila no parseada:', r[0]); continue
     roles = [x.strip() for x in re.split(r',| y ', r[2]) if x.strip()]
+    # D-05 · la Tabla 27 marca «(Should)» por requisito y no por operación:
+    # «RF-17, RF-18 (Should), RF-21, RF-31». Una operación es Should have sólo si
+    # TODOS sus requisitos lo son; de lo contrario realiza al menos un Must have y
+    # se construye. CP-RNF-01 lo confirma: 42 operaciones HTTP menos las 5
+    # puramente Should dan las 37 que la Tabla 43 cuenta.
+    marcados = re.findall(r'(RF-\d\d)(\s*\(Should\))?', r[4])
     eps.append({'metodo':m.group(1),'ruta':m.group(2),'operacion':r[1],
                 'roles':roles,'caso_uso':r[3],
-                'requisitos':[x for x in re.findall(r'RF-\d\d', r[4])],
-                'should': 'Should' in r[4]})
+                'requisitos':[c for c, _ in marcados],
+                'requisitos_should':[c for c, s in marcados if s],
+                'should': bool(marcados) and all(s for _, s in marcados)})
 print('endpoints:', len(eps))
 wj('specs/20-endpoints.json', {'fuente': f'Tabla 27 · TFG v{VER}','total':len(eps),'endpoints':eps})
 
