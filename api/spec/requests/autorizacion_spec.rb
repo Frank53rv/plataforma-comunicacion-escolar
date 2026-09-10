@@ -121,7 +121,7 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
     it "coincide operación por operación" do
       divergencias = Inventario.construidas.filter_map do |e|
         controlador = "#{e['controlador'].camelize}Controller".constantize
-        declarados = controlador.roles_por_accion[e["accion"]]
+        declarados = controlador.roles_declarados_para(e["accion"])
         declarados = :sin_autenticar if declarados == Autorizacion::SIN_AUTENTICAR
         esperados = Inventario.roles_de(e)
 
