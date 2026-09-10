@@ -1,0 +1,204 @@
+{
+  "fuente": "Tabla 19",
+  "total": 33,
+  "reglas": [
+    {
+      "codigo": "RN-01",
+      "titulo": "Alta administrada",
+      "descripcion": "Nadie se auto-registra. El alta la realiza siempre otra persona con rol habilitado.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-02",
+      "titulo": "Atribuciones del directivo",
+      "descripcion": "El directivo crea el año lectivo y los cursos, da de alta a los docentes y les asigna cursos.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-03",
+      "titulo": "Atribuciones del docente",
+      "descripcion": "El docente da de alta a los alumnos y tutores de sus cursos.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-04",
+      "titulo": "Rol único por persona",
+      "descripcion": "Una persona tiene exactamente un rol. Quien cumple dos funciones en la institución opera con dos cuentas separadas.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-05",
+      "titulo": "Código de activación",
+      "descripcion": "El alta genera un código de un solo uso con vencimiento de siete días, entregado por el canal que la institución ya utiliza.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-06",
+      "titulo": "Canje del código",
+      "descripcion": "La persona activa su cuenta con el código y define su propia contraseña; el código se invalida al usarse.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-07",
+      "titulo": "Cadena de regeneración",
+      "descripcion": "El docente regenera los códigos de los alumnos y tutores de sus cursos; el directivo, los de los docentes.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-08",
+      "titulo": "Recuperación de la cuenta directiva",
+      "descripcion": "El sistema no dispone de recuperación autónoma de la cuenta directiva. Se resuelve reponiendo la credencial provisional por variable de entorno.",
+      "prioridad": "Media"
+    },
+    {
+      "codigo": "RN-09",
+      "titulo": "Cambio de credencial provisional",
+      "descripcion": "Toda credencial provisional debe cambiarse en el primer acceso; hasta entonces ninguna otra operación se habilita.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-10",
+      "titulo": "Potestad de baja",
+      "descripcion": "La baja de un alumno o un tutor la ejecuta el directivo o el docente titular del curso. Los demás docentes no tienen esa atribución.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-11",
+      "titulo": "Baja lógica",
+      "descripcion": "Toda baja es lógica: revoca el acceso y conserva la totalidad del historial asociado.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-12",
+      "titulo": "Restricción de baja de tutor",
+      "descripcion": "No se puede dar de baja a un tutor que mantenga al menos un alumno activo en cualquier curso.",
+      "prioridad": "Media"
+    },
+    {
+      "codigo": "RN-13",
+      "titulo": "Desvinculación de docente",
+      "descripcion": "El directivo desvincula y da de baja a los docentes. Si el docente era titular, la desvinculación exige designar otro titular en el mismo acto.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-14",
+      "titulo": "Conservación de la autoría",
+      "descripcion": "Los anuncios y mensajes de una persona dada de baja se conservan con su autoría histórica, junto con sus constancias asociadas.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-15",
+      "titulo": "Acceso mediado",
+      "descripcion": "El acceso a datos académicos exige autenticación y rol autorizado, sobre los cuatro roles definidos.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-16",
+      "titulo": "Emisor de los anuncios",
+      "descripcion": "Los anuncios los publica el docente, dirigidos a los tutores y alumnos de sus cursos.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-17",
+      "titulo": "Momento de envío",
+      "descripcion": "Los anuncios se envían al publicarse, o en la hora programada por el docente.",
+      "prioridad": "Media"
+    },
+    {
+      "codigo": "RN-18",
+      "titulo": "Carácter no configurable del anuncio",
+      "descripcion": "Los anuncios ignoran el horario de disponibilidad y las preferencias del destinatario: son comunicación institucional. La interfaz debe declararlo de forma visible.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-19",
+      "titulo": "Momento de resolución de destinatarios",
+      "descripcion": "Los destinatarios se resuelven en cada publicación efectiva, no en la redacción. Quien ingresa al curso después no recibe publicaciones anteriores.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-20",
+      "titulo": "Borrado lógico del anuncio",
+      "descripcion": "El borrado de un anuncio es lógico, con registro de autor y fecha, y conserva las filas de entrega.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-21",
+      "titulo": "Visibilidad de las constancias",
+      "descripcion": "El docente ve, por anuncio, cuántos leyeron sobre el total y la nómina de quiénes no. Tutores y alumnos no ven la constancia de nadie más.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-22",
+      "titulo": "Supervisión directiva de anuncios",
+      "descripcion": "El directivo accede a los anuncios de todos los cursos del año lectivo vigente y a su estado agregado de entrega y lectura.",
+      "prioridad": "Media"
+    },
+    {
+      "codigo": "RN-23",
+      "titulo": "Restricción de participación",
+      "descripcion": "Un usuario solo participa en conversaciones de cursos a los que está vinculado.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-24",
+      "titulo": "Diferimiento, no descarte",
+      "descripcion": "Los mensajes de conversación respetan el horario de disponibilidad y las preferencias del destinatario; fuera de la franja se difieren, no se descartan. Nada se silencia.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-25",
+      "titulo": "Declaración de la supervisión",
+      "descripcion": "La supervisión directiva de conversaciones, cuando se habilite, debe declararse de forma visible y permanente a todos los participantes.",
+      "prioridad": "Media"
+    },
+    {
+      "codigo": "RN-26",
+      "titulo": "Cierre del año lectivo",
+      "descripcion": "Al cerrar el año lectivo, los cursos y sus conversaciones quedan archivados en solo lectura; el alumno conserva su cuenta y cambia de vinculación.",
+      "prioridad": "Media"
+    },
+    {
+      "codigo": "RN-27",
+      "titulo": "Retención",
+      "descripcion": "Anuncios, mensajes y sus filas de entrega se conservan el año lectivo en curso más uno. La bitácora técnica de fallos de envío, doce meses.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-28",
+      "titulo": "Fuente de verdad única",
+      "descripcion": "La base de datos es la única fuente de verdad. El cliente no persiste historial en el navegador.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-29",
+      "titulo": "Límite de tutores por alumno",
+      "descripcion": "Un alumno admite hasta dos tutores vinculados de manera simultánea. La vinculación de un tercero se rechaza mientras los dos anteriores permanezcan vigentes.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-30",
+      "titulo": "Pertenencia única a curso",
+      "descripcion": "Un alumno pertenece a un solo curso vigente dentro de un mismo año lectivo.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-31",
+      "titulo": "Año lectivo único vigente",
+      "descripcion": "Existe un solo año lectivo en estado vigente. La apertura del siguiente exige el cierre del anterior.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-32",
+      "titulo": "Registro monótono, idempotente e inmutable de la constancia",
+      "descripcion": "Los estados de una entrega no retroceden; la reemisión de un evento ya registrado no altera su marca de tiempo original; y la constancia, una vez registrada, no se modifica con posterioridad.",
+      "prioridad": "Alta"
+    },
+    {
+      "codigo": "RN-33",
+      "titulo": "Formato y tamaño del archivo adjunto",
+      "descripcion": "El intercambio de archivos se limita al formato PDF, con un tamaño máximo de 5 MB por archivo y hasta tres archivos por anuncio o mensaje. Todo otro formato, todo archivo que supere ese tamaño y toda publicación que exceda esa cantidad se rechazan.",
+      "prioridad": "Media"
+    }
+  ]
+}

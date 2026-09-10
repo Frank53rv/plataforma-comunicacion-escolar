@@ -1,0 +1,696 @@
+{
+  "fuente": "Tabla 22",
+  "total": 69,
+  "filas": [
+    {
+      "requisito": "RF-01",
+      "titulo": "Autenticación de usuarios",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-15",
+      "diseno": "CU-01, Fig. 11",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-01"
+    },
+    {
+      "requisito": "RF-02",
+      "titulo": "Control de acceso basado en roles",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-04, RN-15",
+      "diseno": "CU-01, Fig. 14",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-02"
+    },
+    {
+      "requisito": "RF-03",
+      "titulo": "Alta de docentes y asignación",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-01, RN-02",
+      "diseno": "CU-04, Fig. 11",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-03"
+    },
+    {
+      "requisito": "RF-04",
+      "titulo": "Alta de alumnos y tutores",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-01, RN-03",
+      "diseno": "CU-05, Fig. 6",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-04"
+    },
+    {
+      "requisito": "RF-05",
+      "titulo": "Generación de código de activación",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-05",
+      "diseno": "CU-02, CU-05, Fig. 6",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-05"
+    },
+    {
+      "requisito": "RF-06",
+      "titulo": "Activación de cuenta",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-06",
+      "diseno": "CU-02, Fig. 6",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-06"
+    },
+    {
+      "requisito": "RF-07",
+      "titulo": "Regeneración de código",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-07",
+      "diseno": "CU-04, CU-05",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-07"
+    },
+    {
+      "requisito": "RF-08",
+      "titulo": "Recuperación de contraseña",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-07",
+      "diseno": "CU-02",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-08"
+    },
+    {
+      "requisito": "RF-09",
+      "titulo": "Baja lógica de alumnos y tutores",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-10, RN-11",
+      "diseno": "CU-05, Fig. 11",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-09"
+    },
+    {
+      "requisito": "RF-10",
+      "titulo": "Restricción de baja de tutor",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-12",
+      "diseno": "CU-05",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-10"
+    },
+    {
+      "requisito": "RF-43",
+      "titulo": "Cambio obligatorio de credencial",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-08, RN-09",
+      "diseno": "CU-02, Fig. 6",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-43"
+    },
+    {
+      "requisito": "RF-44",
+      "titulo": "Desvinculación y baja de docente",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-13, RN-14",
+      "diseno": "CU-04, Fig. 11",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RF-44"
+    },
+    {
+      "requisito": "RF-11",
+      "titulo": "Creación del año lectivo",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-02, RN-31",
+      "diseno": "CU-03, Fig. 11",
+      "modulo": "B · Estructura académica",
+      "caso_prueba": "CP-RF-11"
+    },
+    {
+      "requisito": "RF-12",
+      "titulo": "Administración de cursos",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-02",
+      "diseno": "CU-03, Fig. 11",
+      "modulo": "B · Estructura académica",
+      "caso_prueba": "CP-RF-12"
+    },
+    {
+      "requisito": "RF-13",
+      "titulo": "Vinculación de alumnos a cursos",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-01, RN-30",
+      "diseno": "CU-05, Fig. 11",
+      "modulo": "B · Estructura académica",
+      "caso_prueba": "CP-RF-13"
+    },
+    {
+      "requisito": "RF-14",
+      "titulo": "Vinculación de tutores a alumnos",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-04, RN-29",
+      "diseno": "CU-05, Fig. 11",
+      "modulo": "B · Estructura académica",
+      "caso_prueba": "CP-RF-14"
+    },
+    {
+      "requisito": "RF-15",
+      "titulo": "Vinculación de docentes a cursos",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-02, RN-13",
+      "diseno": "CU-04, Fig. 11",
+      "modulo": "B · Estructura académica",
+      "caso_prueba": "CP-RF-15"
+    },
+    {
+      "requisito": "RF-16",
+      "titulo": "Cierre del año lectivo",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-26",
+      "diseno": "CU-03, Fig. 10",
+      "modulo": "B · Estructura académica",
+      "caso_prueba": "CP-RF-16"
+    },
+    {
+      "requisito": "RF-17",
+      "titulo": "Publicación de anuncios",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-16, RN-17",
+      "diseno": "CU-06, Fig. 5, Fig. 7",
+      "modulo": "C · Anuncios",
+      "caso_prueba": "CP-RF-17"
+    },
+    {
+      "requisito": "RF-18",
+      "titulo": "Programación de la hora de envío",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-17",
+      "diseno": "CU-06, Fig. 5, Fig. 10",
+      "modulo": "C · Anuncios",
+      "caso_prueba": "CP-RF-18"
+    },
+    {
+      "requisito": "RF-19",
+      "titulo": "Edición con versionado",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-19",
+      "diseno": "CU-07, Fig. 10",
+      "modulo": "C · Anuncios",
+      "caso_prueba": "CP-RF-19"
+    },
+    {
+      "requisito": "RF-20",
+      "titulo": "Borrado lógico de anuncios",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-20",
+      "diseno": "CU-08, Fig. 10",
+      "modulo": "C · Anuncios",
+      "caso_prueba": "CP-RF-20"
+    },
+    {
+      "requisito": "RF-21",
+      "titulo": "Resolución de destinatarios",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-19",
+      "diseno": "CU-06, CU-07, Fig. 4, Fig. 7",
+      "modulo": "C · Anuncios",
+      "caso_prueba": "CP-RF-21"
+    },
+    {
+      "requisito": "RF-22",
+      "titulo": "Consulta del historial de anuncios",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-27, RN-28",
+      "diseno": "CU-09",
+      "modulo": "C · Anuncios",
+      "caso_prueba": "CP-RF-22"
+    },
+    {
+      "requisito": "RF-23",
+      "titulo": "Panel de constancias del docente",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-21",
+      "diseno": "CU-11",
+      "modulo": "C · Anuncios",
+      "caso_prueba": "CP-RF-23"
+    },
+    {
+      "requisito": "RF-45",
+      "titulo": "Consulta directiva del estado",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-22",
+      "diseno": "CU-09, CU-15",
+      "modulo": "C · Anuncios",
+      "caso_prueba": "CP-RF-45"
+    },
+    {
+      "requisito": "RF-25",
+      "titulo": "Canal grupal del curso",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-23",
+      "diseno": "CU-12, Fig. 8",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RF-25"
+    },
+    {
+      "requisito": "RF-28",
+      "titulo": "Persistencia e historial de mensajes",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-27, RN-28",
+      "diseno": "CU-12, Fig. 12",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RF-28"
+    },
+    {
+      "requisito": "RF-29",
+      "titulo": "Restricción de participación",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-23",
+      "diseno": "CU-12, Fig. 8",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RF-29"
+    },
+    {
+      "requisito": "RF-24",
+      "titulo": "Canal grupal de alumnos",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-23",
+      "diseno": "CU-12",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RF-24"
+    },
+    {
+      "requisito": "RF-26",
+      "titulo": "Conversación privada alumno-docente",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-23",
+      "diseno": "CU-12",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RF-26"
+    },
+    {
+      "requisito": "RF-27",
+      "titulo": "Conversación privada tutor-docente",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-23",
+      "diseno": "CU-12",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RF-27"
+    },
+    {
+      "requisito": "RF-30",
+      "titulo": "Adjuntos en formato PDF",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-33",
+      "diseno": "CU-12, Fig. 12",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RF-30"
+    },
+    {
+      "requisito": "RF-46",
+      "titulo": "Supervisión directiva de conversaciones",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-25",
+      "diseno": "CU-15",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RF-46"
+    },
+    {
+      "requisito": "RF-47",
+      "titulo": "Indicador de mensajes no leídos",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "—",
+      "diseno": "CU-12, Fig. 12",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RF-47"
+    },
+    {
+      "requisito": "RF-31",
+      "titulo": "Notificación de anuncios",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-18",
+      "diseno": "CU-06, CU-14, Fig. 4",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RF-31"
+    },
+    {
+      "requisito": "RF-32",
+      "titulo": "Notificación de mensajes",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-24",
+      "diseno": "CU-12, CU-14, Fig. 8",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RF-32"
+    },
+    {
+      "requisito": "RF-33",
+      "titulo": "Configuración de preferencias",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-18, RN-24",
+      "diseno": "CU-13, Fig. 11",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RF-33"
+    },
+    {
+      "requisito": "RF-34",
+      "titulo": "Registro de estados de notificación",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-32",
+      "diseno": "CU-06, CU-10, CU-14, Fig. 9",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RF-34"
+    },
+    {
+      "requisito": "RF-35",
+      "titulo": "Emisión de eventos de vista en lote",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "CU-10, Fig. 7",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RF-35"
+    },
+    {
+      "requisito": "RF-36",
+      "titulo": "Idempotencia del registro",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-32",
+      "diseno": "CU-10, Fig. 9",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RF-36"
+    },
+    {
+      "requisito": "RF-37",
+      "titulo": "Degradación ante fallo de entrega",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "CU-14, Fig. 9",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RF-37"
+    },
+    {
+      "requisito": "RF-38",
+      "titulo": "Indicador de familia alcanzada",
+      "tipo": "Funcional",
+      "prioridad": "S",
+      "reglas": "RN-21",
+      "diseno": "CU-11",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RF-38"
+    },
+    {
+      "requisito": "RF-39",
+      "titulo": "Bandeja como vista de entrada",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "CU-09",
+      "modulo": "F · Cliente web",
+      "caso_prueba": "CP-RF-39"
+    },
+    {
+      "requisito": "RF-40",
+      "titulo": "Paneles diferenciados por rol",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "RN-04, RN-15",
+      "diseno": "CU-09, Fig. 13",
+      "modulo": "F · Cliente web",
+      "caso_prueba": "CP-RF-40"
+    },
+    {
+      "requisito": "RF-41",
+      "titulo": "Interfaz responsiva",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 13",
+      "modulo": "F · Cliente web",
+      "caso_prueba": "CP-RF-41"
+    },
+    {
+      "requisito": "RF-42",
+      "titulo": "Cobertura de flujos en interfaz",
+      "tipo": "Funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 13",
+      "modulo": "F · Cliente web",
+      "caso_prueba": "CP-RF-42"
+    },
+    {
+      "requisito": "RNF-01",
+      "titulo": "Control de acceso verificable",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "RN-15",
+      "diseno": "Fig. 14",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RNF-01"
+    },
+    {
+      "requisito": "RNF-02",
+      "titulo": "Autenticidad de la sesión",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "RN-15",
+      "diseno": "CU-01",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RNF-02"
+    },
+    {
+      "requisito": "RNF-03",
+      "titulo": "Resguardo de credenciales",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 11",
+      "modulo": "A · Identidad y acceso",
+      "caso_prueba": "CP-RNF-03"
+    },
+    {
+      "requisito": "RNF-04",
+      "titulo": "Trazabilidad de las acciones",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "RN-14, RN-20",
+      "diseno": "Fig. 10, Fig. 12",
+      "modulo": "C · Anuncios",
+      "caso_prueba": "CP-RNF-04"
+    },
+    {
+      "requisito": "RNF-05",
+      "titulo": "No repudio de la constancia",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "RN-32",
+      "diseno": "Fig. 9, Fig. 12",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RNF-05"
+    },
+    {
+      "requisito": "RNF-06",
+      "titulo": "Transporte cifrado",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 16",
+      "modulo": "G · Transversal",
+      "caso_prueba": "CP-RNF-06"
+    },
+    {
+      "requisito": "RNF-07",
+      "titulo": "Retención y minimización",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "RN-27, RN-28",
+      "diseno": "Fig. 12, Tabla 21",
+      "modulo": "G · Transversal",
+      "caso_prueba": "CP-RNF-07"
+    },
+    {
+      "requisito": "RNF-08",
+      "titulo": "Latencia de entrega de mensajes",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 8, Fig. 16",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RNF-08"
+    },
+    {
+      "requisito": "RNF-09",
+      "titulo": "Tiempo de respuesta de consultas",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 14",
+      "modulo": "G · Transversal",
+      "caso_prueba": "CP-RNF-09"
+    },
+    {
+      "requisito": "RNF-10",
+      "titulo": "Capacidad de conexiones simultáneas",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 16",
+      "modulo": "D · Mensajería",
+      "caso_prueba": "CP-RNF-10"
+    },
+    {
+      "requisito": "RNF-11",
+      "titulo": "Tolerancia a indisponibilidad del push",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "CU-14, Fig. 9",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RNF-11"
+    },
+    {
+      "requisito": "RNF-12",
+      "titulo": "Recuperación del envío diferido",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "CU-14, Fig. 9",
+      "modulo": "E · Notificaciones",
+      "caso_prueba": "CP-RNF-12"
+    },
+    {
+      "requisito": "RNF-13",
+      "titulo": "Operabilidad por rol",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "CU-09, Tabla 25",
+      "modulo": "F · Cliente web",
+      "caso_prueba": "CP-RNF-13"
+    },
+    {
+      "requisito": "RNF-14",
+      "titulo": "Protección frente a errores",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "RN-11",
+      "diseno": "Tabla 25",
+      "modulo": "F · Cliente web",
+      "caso_prueba": "CP-RNF-14"
+    },
+    {
+      "requisito": "RNF-15",
+      "titulo": "Facilidad de aprendizaje",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Tabla 25",
+      "modulo": "F · Cliente web",
+      "caso_prueba": "CP-RNF-15"
+    },
+    {
+      "requisito": "RNF-16",
+      "titulo": "Localización de información",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "CU-09, Tabla 25",
+      "modulo": "F · Cliente web",
+      "caso_prueba": "CP-RNF-16"
+    },
+    {
+      "requisito": "RNF-17",
+      "titulo": "Documentación formal de la interfaz",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 14",
+      "modulo": "G · Transversal",
+      "caso_prueba": "CP-RNF-17"
+    },
+    {
+      "requisito": "RNF-18",
+      "titulo": "Adaptación a dispositivos",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 13",
+      "modulo": "F · Cliente web",
+      "caso_prueba": "CP-RNF-18"
+    },
+    {
+      "requisito": "RNF-19",
+      "titulo": "Reproducibilidad del despliegue",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "RN-08",
+      "diseno": "Fig. 16",
+      "modulo": "G · Transversal",
+      "caso_prueba": "CP-RNF-19"
+    },
+    {
+      "requisito": "RNF-20",
+      "titulo": "Cobertura de pruebas automatizadas",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 14",
+      "modulo": "G · Transversal",
+      "caso_prueba": "CP-RNF-20"
+    },
+    {
+      "requisito": "RNF-21",
+      "titulo": "Separación de responsabilidades",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Fig. 13, Fig. 14",
+      "modulo": "G · Transversal",
+      "caso_prueba": "CP-RNF-21"
+    },
+    {
+      "requisito": "RNF-22",
+      "titulo": "Completitud funcional del MVP",
+      "tipo": "No funcional",
+      "prioridad": "M",
+      "reglas": "—",
+      "diseno": "Tabla 22",
+      "modulo": "G · Transversal",
+      "caso_prueba": "CP-RNF-22"
+    }
+  ]
+}

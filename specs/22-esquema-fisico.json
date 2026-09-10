@@ -1,0 +1,267 @@
+{
+  "fuente": "Tabla 38",
+  "total": 19,
+  "entidades": [
+    {
+      "entidad": "usuario",
+      "columnas": [
+        "id",
+        "nombre",
+        "apellido",
+        "correo",
+        "contrasena_hash",
+        "rol",
+        "estado",
+        "credencial_provisional",
+        "creado_en"
+      ],
+      "columnas_texto": "id uuid · nombre varchar(80) · apellido varchar(80) · correo citext · contrasena_hash varchar(60) · rol rol_enum · estado estado_usuario_enum · credencial_provisional boolean · creado_en timestamptz",
+      "restricciones": "PK id · UNIQUE (correo) · CHECK rol en los cuatro valores · índice sobre (rol, estado)",
+      "reglas": "RN-04 · RN-15 · RNF-03"
+    },
+    {
+      "entidad": "codigo_activacion",
+      "columnas": [
+        "id",
+        "usuario_id",
+        "codigo_hash",
+        "vence_en",
+        "usado_en",
+        "generado_por"
+      ],
+      "columnas_texto": "id uuid · usuario_id uuid · codigo_hash varchar(60) · vence_en timestamptz · usado_en timestamptz nulo · generado_por uuid",
+      "restricciones": "PK id · FK usuario_id y generado_por a usuario, con restricción de eliminación · UNIQUE parcial (usuario_id) donde usado_en es nulo y vence_en es futuro",
+      "reglas": "RN-05 · RN-06 · RN-07"
+    },
+    {
+      "entidad": "preferencia",
+      "columnas": [
+        "id",
+        "usuario_id",
+        "hora_inicio",
+        "hora_fin",
+        "recibir_mensajes"
+      ],
+      "columnas_texto": "id uuid · usuario_id uuid · hora_inicio time · hora_fin time · recibir_mensajes boolean",
+      "restricciones": "PK id · FK usuario_id · UNIQUE (usuario_id)",
+      "reglas": "RF-33 · RN-24"
+    },
+    {
+      "entidad": "anio_lectivo",
+      "columnas": [
+        "id",
+        "anio",
+        "estado",
+        "abierto_en",
+        "cerrado_en"
+      ],
+      "columnas_texto": "id uuid · anio smallint · estado estado_anio_enum · abierto_en timestamptz · cerrado_en timestamptz nulo",
+      "restricciones": "PK id · UNIQUE (anio) · UNIQUE parcial sobre estado donde estado es vigente",
+      "reglas": "RN-31"
+    },
+    {
+      "entidad": "curso",
+      "columnas": [
+        "id",
+        "anio_lectivo_id",
+        "nombre",
+        "turno",
+        "estado"
+      ],
+      "columnas_texto": "id uuid · anio_lectivo_id uuid · nombre varchar(60) · turno turno_enum · estado estado_curso_enum",
+      "restricciones": "PK id · FK anio_lectivo_id · UNIQUE (anio_lectivo_id, nombre)",
+      "reglas": "RN-26"
+    },
+    {
+      "entidad": "docente_curso",
+      "columnas": [
+        "id",
+        "usuario_id",
+        "curso_id",
+        "es_titular",
+        "vigente_desde",
+        "vigente_hasta"
+      ],
+      "columnas_texto": "id uuid · usuario_id uuid · curso_id uuid · es_titular boolean · vigente_desde date · vigente_hasta date nulo",
+      "restricciones": "PK id · FK usuario_id y curso_id · UNIQUE parcial (curso_id) donde es_titular y vigente_hasta es nulo · UNIQUE parcial (usuario_id, curso_id) donde vigente_hasta es nulo",
+      "reglas": "RN-13 · RF-15"
+    },
+    {
+      "entidad": "alumno_curso",
+      "columnas": [
+        "id",
+        "usuario_id",
+        "curso_id",
+        "vigente_desde",
+        "vigente_hasta"
+      ],
+      "columnas_texto": "id uuid · usuario_id uuid · curso_id uuid · vigente_desde date · vigente_hasta date nulo",
+      "restricciones": "PK id · FK usuario_id y curso_id · UNIQUE parcial (usuario_id, anio_lectivo derivado) donde vigente_hasta es nulo",
+      "reglas": "RN-30"
+    },
+    {
+      "entidad": "tutor_alumno",
+      "columnas": [
+        "id",
+        "tutor_id",
+        "alumno_id",
+        "vigente_desde",
+        "vigente_hasta"
+      ],
+      "columnas_texto": "id uuid · tutor_id uuid · alumno_id uuid · vigente_desde date · vigente_hasta date nulo",
+      "restricciones": "PK id · FK tutor_id y alumno_id a usuario · UNIQUE parcial (tutor_id, alumno_id) donde vigente_hasta es nulo · límite de dos vigentes por alumno, verificado en la capa de negocio",
+      "reglas": "RN-29 · RN-12"
+    },
+    {
+      "entidad": "anuncio",
+      "columnas": [
+        "id",
+        "autor_id",
+        "estado",
+        "programado_para",
+        "creado_en",
+        "eliminado_en",
+        "eliminado_por"
+      ],
+      "columnas_texto": "id uuid · autor_id uuid · estado estado_anuncio_enum · programado_para timestamptz nulo · creado_en timestamptz · eliminado_en timestamptz nulo · eliminado_por uuid nulo",
+      "restricciones": "PK id · FK autor_id y eliminado_por a usuario · índice sobre (autor_id, estado) · índice parcial sobre programado_para donde estado es programado",
+      "reglas": "RN-16 · RN-20 · RF-18"
+    },
+    {
+      "entidad": "anuncio_curso",
+      "columnas": [
+        "id",
+        "anuncio_id",
+        "curso_id"
+      ],
+      "columnas_texto": "id uuid · anuncio_id uuid · curso_id uuid",
+      "restricciones": "PK id · FK anuncio_id y curso_id · UNIQUE (anuncio_id, curso_id)",
+      "reglas": "RN-19"
+    },
+    {
+      "entidad": "anuncio_version",
+      "columnas": [
+        "id",
+        "anuncio_id",
+        "numero_version",
+        "titulo",
+        "cuerpo",
+        "publicado_en"
+      ],
+      "columnas_texto": "id uuid · anuncio_id uuid · numero_version smallint · titulo varchar(160) · cuerpo text · publicado_en timestamptz",
+      "restricciones": "PK id · FK anuncio_id con eliminación en cascada · UNIQUE (anuncio_id, numero_version) · índice sobre publicado_en",
+      "reglas": "RF-19 · RNF-04"
+    },
+    {
+      "entidad": "adjunto",
+      "columnas": [
+        "id",
+        "anuncio_version_id",
+        "mensaje_id",
+        "nombre",
+        "tipo_mime",
+        "tamano",
+        "ruta"
+      ],
+      "columnas_texto": "id uuid · anuncio_version_id uuid nulo · mensaje_id uuid nulo · nombre varchar(160) · tipo_mime varchar(80) · tamano integer · ruta varchar(255)",
+      "restricciones": "PK id · FK a anuncio_version y a mensaje · CHECK exactamente uno de los dos no nulo · CHECK tipo_mime igual a PDF · CHECK tamano hasta 5 MB",
+      "reglas": "RN-33 · RF-30"
+    },
+    {
+      "entidad": "entrega_anuncio",
+      "columnas": [
+        "id",
+        "anuncio_version_id",
+        "destinatario_id",
+        "canal",
+        "enviada_en",
+        "entregada_en",
+        "vista_en",
+        "leida_en",
+        "causa_fallo"
+      ],
+      "columnas_texto": "id uuid · anuncio_version_id uuid · destinatario_id uuid · canal canal_enum · enviada_en timestamptz · entregada_en timestamptz nulo · vista_en timestamptz nulo · leida_en timestamptz nulo · causa_fallo causa_enum nulo",
+      "restricciones": "PK id · FK anuncio_version_id y destinatario_id · UNIQUE (anuncio_version_id, destinatario_id) · índice sobre (destinatario_id, leida_en) · CHECK de monotonía entre las cuatro marcas",
+      "reglas": "RN-32 · RF-34 · RF-36"
+    },
+    {
+      "entidad": "conversacion",
+      "columnas": [
+        "id",
+        "curso_id",
+        "tipo",
+        "estado"
+      ],
+      "columnas_texto": "id uuid · curso_id uuid · tipo tipo_conversacion_enum · estado estado_conversacion_enum",
+      "restricciones": "PK id · FK curso_id · UNIQUE parcial (curso_id, tipo) para los tipos grupales",
+      "reglas": "RF-25 · RN-26"
+    },
+    {
+      "entidad": "participante",
+      "columnas": [
+        "id",
+        "conversacion_id",
+        "usuario_id",
+        "incorporado_en"
+      ],
+      "columnas_texto": "id uuid · conversacion_id uuid · usuario_id uuid · incorporado_en timestamptz",
+      "restricciones": "PK id · FK conversacion_id y usuario_id · UNIQUE (conversacion_id, usuario_id)",
+      "reglas": "RN-23 · RF-29"
+    },
+    {
+      "entidad": "mensaje",
+      "columnas": [
+        "id",
+        "conversacion_id",
+        "autor_id",
+        "cuerpo",
+        "enviado_en"
+      ],
+      "columnas_texto": "id uuid · conversacion_id uuid · autor_id uuid · cuerpo text · enviado_en timestamptz",
+      "restricciones": "PK id · FK conversacion_id y autor_id · índice sobre (conversacion_id, enviado_en descendente)",
+      "reglas": "RF-28 · RN-23"
+    },
+    {
+      "entidad": "puntero_lectura",
+      "columnas": [
+        "id",
+        "conversacion_id",
+        "usuario_id",
+        "ultimo_mensaje_id",
+        "actualizado_en"
+      ],
+      "columnas_texto": "id uuid · conversacion_id uuid · usuario_id uuid · ultimo_mensaje_id uuid nulo · actualizado_en timestamptz",
+      "restricciones": "PK id · FK a conversacion, usuario y mensaje · UNIQUE (conversacion_id, usuario_id)",
+      "reglas": "RF-47"
+    },
+    {
+      "entidad": "suscripcion_push",
+      "columnas": [
+        "id",
+        "usuario_id",
+        "token",
+        "navegador",
+        "estado",
+        "creada_en",
+        "invalidada_en"
+      ],
+      "columnas_texto": "id uuid · usuario_id uuid · token varchar(255) · navegador varchar(80) · estado estado_suscripcion_enum · creada_en timestamptz · invalidada_en timestamptz nulo",
+      "restricciones": "PK id · FK usuario_id · UNIQUE (token) · índice parcial sobre usuario_id donde estado es vigente",
+      "reglas": "RF-37 · RNF-11"
+    },
+    {
+      "entidad": "bitacora_envio",
+      "columnas": [
+        "id",
+        "entrega_anuncio_id",
+        "suscripcion_id",
+        "causa",
+        "codigo_proveedor",
+        "ocurrido_en"
+      ],
+      "columnas_texto": "id uuid · entrega_anuncio_id uuid nulo · suscripcion_id uuid nulo · causa causa_enum · codigo_proveedor varchar(80) · ocurrido_en timestamptz",
+      "restricciones": "PK id · FK a entrega_anuncio y a suscripcion_push · índice sobre ocurrido_en, para la purga a los doce meses",
+      "reglas": "RNF-07 · RN-27 · RF-37"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Ninguna rama se envía al repositorio remoto con una compuerta en rojo (Quality Spec, Tabla 37).
+exec "$(git rev-parse --show-toplevel)/bin/verificar"

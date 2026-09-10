@@ -1,0 +1,50 @@
+{
+  "fuente": "Tabla 35 · catálogo cerrado",
+  "estados": [
+    {
+      "estado": 401,
+      "cuando": "Credencial inválida, cuenta dada de baja, token ausente, expirado o alterado",
+      "flujos": "CU-01 E1 y E2 · RNF-02"
+    },
+    {
+      "estado": 403,
+      "cuando": "Autenticado pero no habilitado: credencial provisional sin cambiar, rol sin la atribución, docente no vinculado al curso, anuncio del que no es autor, participación en conversación ajena, supervisión que no habilita emitir",
+      "flujos": "CU-01 A · CU-02 A · CU-06 E1 · CU-07 E1 · CU-08 E1 · CU-11 E1 · CU-12 E1 · CU-15 E1"
+    },
+    {
+      "estado": 404,
+      "cuando": "Recurso ajeno a las vinculaciones de quien consulta",
+      "flujos": "CU-09 E1"
+    },
+    {
+      "estado": 409,
+      "cuando": "Conflicto con una regla de negocio del dominio, con el código de la regla consignado",
+      "flujos": "CU-03 E1 y E2 · CU-04 E1 · CU-05 E1, E2 y E3"
+    },
+    {
+      "estado": 410,
+      "cuando": "Código de activación vencido, ya utilizado o inexistente",
+      "flujos": "CU-02 E1"
+    },
+    {
+      "estado": 413,
+      "cuando": "Archivo adjunto que supera los 5 MB",
+      "flujos": "RN-33"
+    },
+    {
+      "estado": 415,
+      "cuando": "Archivo adjunto en un formato distinto de PDF",
+      "flujos": "RN-33"
+    },
+    {
+      "estado": 422,
+      "cuando": "Petición bien formada con datos inaceptables, incluida la publicación con más de tres adjuntos",
+      "flujos": "RN-33 y validaciones de forma"
+    },
+    {
+      "estado": 500,
+      "cuando": "Fallo no previsto, registrado en la bitácora sin exponer detalle interno",
+      "flujos": "—"
+    }
+  ]
+}

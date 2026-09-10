@@ -1,0 +1,489 @@
+{
+  "fuente": "Tabla 43",
+  "total": 69,
+  "casos": [
+    {
+      "codigo": "CP-RF-01",
+      "requisito": "RF-01",
+      "descripcion": "Autenticación con credencial válida y con credencial inválida",
+      "entrada": "Correo y contraseña de una cuenta activa; luego la misma con contraseña errónea",
+      "esperado": "Token firmado con identidad, rol y vencimiento. El segundo intento responde 401 sin distinguir cuál de los dos datos falló"
+    },
+    {
+      "codigo": "CP-RF-02",
+      "requisito": "RF-02",
+      "descripcion": "Acceso a una operación de datos académicos con cada uno de los cuatro roles",
+      "entrada": "Token de directivo, docente, tutor y alumno sobre la misma operación",
+      "esperado": "Solo el rol habilitado obtiene respuesta; los tres restantes, 403"
+    },
+    {
+      "codigo": "CP-RF-03",
+      "requisito": "RF-03",
+      "descripcion": "Alta de docente y asignación a curso con titularidad",
+      "entrada": "Datos del docente, curso y atributo de titular",
+      "esperado": "Docente creado, vinculado como titular y con código de activación generado"
+    },
+    {
+      "codigo": "CP-RF-04",
+      "requisito": "RF-04",
+      "descripcion": "Alta de alumno con hasta dos tutores",
+      "entrada": "Datos del alumno, su curso y dos tutores",
+      "esperado": "Alumno y tutores creados y vinculados, con un código por persona"
+    },
+    {
+      "codigo": "CP-RF-05",
+      "requisito": "RF-05",
+      "descripcion": "Generación del código al registrar a una persona",
+      "entrada": "Alta de un tutor",
+      "esperado": "Código de un solo uso, con vencimiento a siete días, asociado a esa persona"
+    },
+    {
+      "codigo": "CP-RF-06",
+      "requisito": "RF-06",
+      "descripcion": "Activación con código vigente y reintento del mismo código",
+      "entrada": "Código vigente y contraseña propia; luego el mismo código",
+      "esperado": "Cuenta activa y código invalidado. El segundo canje responde 410"
+    },
+    {
+      "codigo": "CP-RF-07",
+      "requisito": "RF-07",
+      "descripcion": "Regeneración de código por el rol habilitado y por uno que no lo es",
+      "entrada": "Docente del curso; luego docente ajeno al curso",
+      "esperado": "Código anterior invalidado y nuevo vigente. El docente ajeno obtiene 403"
+    },
+    {
+      "codigo": "CP-RF-08",
+      "requisito": "RF-08",
+      "descripcion": "Restablecimiento de acceso mediante código regenerado",
+      "entrada": "Persona sin contraseña y código nuevo",
+      "esperado": "Acceso restablecido sin intervención de servicio de correo saliente"
+    },
+    {
+      "codigo": "CP-RF-09",
+      "requisito": "RF-09",
+      "descripcion": "Baja lógica de alumno y de tutor",
+      "entrada": "Identificador de una persona activa",
+      "esperado": "Acceso revocado, historial y autoría conservados"
+    },
+    {
+      "codigo": "CP-RF-10",
+      "requisito": "RF-10",
+      "descripcion": "Baja de tutor que mantiene un alumno activo",
+      "entrada": "Tutor vinculado a un alumno activo",
+      "esperado": "Rechazo 409 con la regla RN-12 consignada"
+    },
+    {
+      "codigo": "CP-RF-11",
+      "requisito": "RF-11",
+      "descripcion": "Creación del año lectivo y de un segundo con el anterior vigente",
+      "entrada": "Dos altas sucesivas de año lectivo",
+      "esperado": "La primera se crea; la segunda se rechaza con 409 y RN-31"
+    },
+    {
+      "codigo": "CP-RF-12",
+      "requisito": "RF-12",
+      "descripcion": "Creación y edición de curso, con nombre repetido en el mismo año",
+      "entrada": "Dos cursos de igual nombre en el año lectivo vigente",
+      "esperado": "El segundo se rechaza con 409"
+    },
+    {
+      "codigo": "CP-RF-13",
+      "requisito": "RF-13",
+      "descripcion": "Vinculación de un alumno a un segundo curso vigente",
+      "entrada": "Alumno ya vinculado y otro curso del mismo año",
+      "esperado": "Rechazo 409 con RN-30"
+    },
+    {
+      "codigo": "CP-RF-14",
+      "requisito": "RF-14",
+      "descripcion": "Vinculación de un tercer tutor",
+      "entrada": "Alumno con dos tutores vigentes",
+      "esperado": "Rechazo 409 con RN-29"
+    },
+    {
+      "codigo": "CP-RF-15",
+      "requisito": "RF-15",
+      "descripcion": "Vinculación de varios docentes a un curso con un único titular",
+      "entrada": "Dos docentes, uno marcado como titular",
+      "esperado": "Ambos vinculados y un solo titular vigente"
+    },
+    {
+      "codigo": "CP-RF-16",
+      "requisito": "RF-16",
+      "descripcion": "Cierre del año lectivo",
+      "entrada": "Año lectivo vigente con cursos y conversaciones",
+      "esperado": "Cursos y conversaciones en solo lectura, creación del período siguiente habilitada y cuentas conservadas"
+    },
+    {
+      "codigo": "CP-RF-17",
+      "requisito": "RF-17",
+      "descripcion": "Publicación sobre un curso asignado y sobre uno ajeno",
+      "entrada": "Anuncio sobre curso propio; luego sobre curso ajeno",
+      "esperado": "El primero se publica; el segundo se rechaza con 403 y sin efectos parciales"
+    },
+    {
+      "codigo": "CP-RF-18",
+      "requisito": "RF-18",
+      "descripcion": "Programación de la hora de envío",
+      "entrada": "Anuncio con fecha y hora futuras",
+      "esperado": "Estado programado; destinatarios resueltos y envío encolado en la hora fijada"
+    },
+    {
+      "codigo": "CP-RF-19",
+      "requisito": "RF-19",
+      "descripcion": "Edición con versionado",
+      "entrada": "Anuncio publicado y contenido corregido",
+      "esperado": "Versión nueva, destinatarios resueltos otra vez y acuses anteriores fuera del contador vigente"
+    },
+    {
+      "codigo": "CP-RF-20",
+      "requisito": "RF-20",
+      "descripcion": "Borrado lógico de anuncio propio y de anuncio ajeno",
+      "entrada": "Anuncio propio; luego de otro docente",
+      "esperado": "El propio se elimina con autor y fecha, conservando las filas de entrega; el ajeno responde 403"
+    },
+    {
+      "codigo": "CP-RF-21",
+      "requisito": "RF-21",
+      "descripcion": "Resolución de destinatarios en la publicación efectiva",
+      "entrada": "Alumno incorporado al curso con posterioridad a la publicación",
+      "esperado": "El alumno incorporado después no recibe la publicación anterior"
+    },
+    {
+      "codigo": "CP-RF-22",
+      "requisito": "RF-22",
+      "descripcion": "Historial filtrado por fecha, curso y remitente",
+      "entrada": "Consulta con los tres filtros combinados",
+      "esperado": "Solo los anuncios que corresponden a las vinculaciones del usuario; el ajeno responde 404"
+    },
+    {
+      "codigo": "CP-RF-23",
+      "requisito": "RF-23",
+      "descripcion": "Constancias del anuncio propio y del ajeno",
+      "entrada": "Anuncio con destinatarios que leyeron y que no leyeron",
+      "esperado": "Recuento sobre el total y nómina de quienes no leyeron; el ajeno responde 403"
+    },
+    {
+      "codigo": "CP-RF-24",
+      "requisito": "RF-24",
+      "descripcion": "Canal grupal de alumnos separado del de tutores",
+      "entrada": "Curso con alumnos y tutores vinculados",
+      "esperado": "Dos canales distintos, cada uno con sus participantes"
+    },
+    {
+      "codigo": "CP-RF-25",
+      "requisito": "RF-25",
+      "descripcion": "Canal grupal existente desde la creación del curso",
+      "entrada": "Curso recién creado",
+      "esperado": "Canal disponible, integrado por sus docentes y los tutores de sus alumnos"
+    },
+    {
+      "codigo": "CP-RF-26",
+      "requisito": "RF-26",
+      "descripcion": "Conversación privada entre alumno y docente",
+      "entrada": "Docente del curso del alumno; luego docente de otro curso",
+      "esperado": "La primera se admite; la segunda se rechaza con 403"
+    },
+    {
+      "codigo": "CP-RF-27",
+      "requisito": "RF-27",
+      "descripcion": "Conversación privada entre tutor y docente",
+      "entrada": "Docente del curso del hijo; luego docente ajeno",
+      "esperado": "La primera se admite; la segunda se rechaza con 403"
+    },
+    {
+      "codigo": "CP-RF-28",
+      "requisito": "RF-28",
+      "descripcion": "Persistencia y recuperación por fecha y participante",
+      "entrada": "Conversación con mensajes de varias jornadas",
+      "esperado": "La totalidad de los mensajes se recupera, paginada"
+    },
+    {
+      "codigo": "CP-RF-29",
+      "requisito": "RF-29",
+      "descripcion": "Participación de un usuario no vinculado al curso",
+      "entrada": "Token de un usuario ajeno a la conversación",
+      "esperado": "Suscripción rechazada con 403"
+    },
+    {
+      "codigo": "CP-RF-30",
+      "requisito": "RF-30",
+      "descripcion": "Adjunto válido, formato inválido, exceso de tamaño y exceso de cantidad",
+      "entrada": "PDF de 2 MB; una imagen; PDF de 8 MB; un cuarto archivo",
+      "esperado": "Aceptado; 415; 413; 422 respectivamente"
+    },
+    {
+      "codigo": "CP-RF-31",
+      "requisito": "RF-31",
+      "descripcion": "Notificación de anuncio con independencia del horario",
+      "entrada": "Destinatario fuera de su franja de disponibilidad",
+      "esperado": "La notificación se emite igualmente, conforme a RN-18"
+    },
+    {
+      "codigo": "CP-RF-32",
+      "requisito": "RF-32",
+      "descripcion": "Notificación de mensaje dentro y fuera de la franja",
+      "entrada": "Mensaje a un destinatario dentro y fuera de su horario",
+      "esperado": "Dentro se emite; fuera se difiere y no se descarta"
+    },
+    {
+      "codigo": "CP-RF-33",
+      "requisito": "RF-33",
+      "descripcion": "Configuración de horario de disponibilidad y preferencias",
+      "entrada": "Franja horaria y preferencias nuevas",
+      "esperado": "Quedan registradas y se aplican al siguiente mensaje; los anuncios no resultan alcanzados"
+    },
+    {
+      "codigo": "CP-RF-34",
+      "requisito": "RF-34",
+      "descripcion": "Registro monótono de los cuatro estados",
+      "entrada": "Eventos en orden y en desorden",
+      "esperado": "Los cuatro estados quedan con marca de tiempo y el estado actual no degrada"
+    },
+    {
+      "codigo": "CP-RF-35",
+      "requisito": "RF-35",
+      "descripcion": "Emisión agrupada de los eventos de vista",
+      "entrada": "Cinco anuncios que ingresan al área visible",
+      "esperado": "Una sola petición con los cinco identificadores"
+    },
+    {
+      "codigo": "CP-RF-36",
+      "requisito": "RF-36",
+      "descripcion": "Idempotencia del registro de eventos",
+      "entrada": "Reemisión de un evento ya registrado",
+      "esperado": "Respuesta correcta sin alterar la marca de tiempo original"
+    },
+    {
+      "codigo": "CP-RF-37",
+      "requisito": "RF-37",
+      "descripcion": "Degradación ante credencial inválida del proveedor",
+      "entrada": "Respuesta de credencial inválida del servicio push",
+      "esperado": "Identificador de destino invalidado, aviso en la aplicación, causa registrada y sin reintento"
+    },
+    {
+      "codigo": "CP-RF-38",
+      "requisito": "RF-38",
+      "descripcion": "Indicador de familia alcanzada",
+      "entrada": "Alumno con dos tutores, uno de los cuales registró lectura",
+      "esperado": "El indicador resulta verdadero"
+    },
+    {
+      "codigo": "CP-RF-39",
+      "requisito": "RF-39",
+      "descripcion": "Bandeja de anuncios como vista de entrada",
+      "entrada": "Autenticación con cada uno de los cuatro roles",
+      "esperado": "La bandeja es la primera vista en los cuatro casos"
+    },
+    {
+      "codigo": "CP-RF-40",
+      "requisito": "RF-40",
+      "descripcion": "Paneles sin opciones ajenas al rol",
+      "entrada": "Sesión de tutor y sesión de alumno",
+      "esperado": "Ninguna opción de administración académica resulta visible ni alcanzable"
+    },
+    {
+      "codigo": "CP-RF-41",
+      "requisito": "RF-41",
+      "descripcion": "Operabilidad en los tres anchos de referencia",
+      "entrada": "Las veinticuatro tareas críticas de la Tabla 26 en 360, 768 y 1280 píxeles",
+      "esperado": "Completadas sin pérdida de función y sin desplazamiento horizontal a partir de 320 píxeles"
+    },
+    {
+      "codigo": "CP-RF-42",
+      "requisito": "RF-42",
+      "descripcion": "Cobertura de flujos desde la interfaz",
+      "entrada": "Las veinticuatro tareas críticas de la Tabla 26",
+      "esperado": "Todas ejecutables sin recurrir a herramientas de composición de peticiones"
+    },
+    {
+      "codigo": "CP-RF-43",
+      "requisito": "RF-43",
+      "descripcion": "Bloqueo hasta el cambio de la credencial provisional",
+      "entrada": "Primer acceso con credencial provisional",
+      "esperado": "Token emitido; toda otra operación responde 403 hasta completar el cambio"
+    },
+    {
+      "codigo": "CP-RF-44",
+      "requisito": "RF-44",
+      "descripcion": "Desvinculación de docente titular sin designar reemplazo",
+      "entrada": "Docente titular a desvincular, sin y con titular designado",
+      "esperado": "Sin designación, 409; con designación, desvinculación exitosa y autoría conservada"
+    },
+    {
+      "codigo": "CP-RF-45",
+      "requisito": "RF-45",
+      "descripcion": "Consulta directiva del estado agregado",
+      "entrada": "Sesión de directivo sobre el año lectivo vigente",
+      "esperado": "Anuncios de la totalidad de los cursos y estado agregado de entrega y lectura por curso"
+    },
+    {
+      "codigo": "CP-RF-46",
+      "requisito": "RF-46",
+      "descripcion": "Supervisión directiva de conversaciones",
+      "entrada": "Sesión de directivo sobre una conversación del año vigente",
+      "esperado": "Acceso de lectura con la supervisión declarada; el intento de emitir responde 403"
+    },
+    {
+      "codigo": "CP-RF-47",
+      "requisito": "RF-47",
+      "descripcion": "Indicador de mensajes no leídos",
+      "entrada": "Conversación con mensajes posteriores al puntero de lectura",
+      "esperado": "Cantidad correcta, que se reduce al actualizarse el puntero"
+    },
+    {
+      "codigo": "CP-RNF-01",
+      "requisito": "RNF-01",
+      "descripcion": "Autorización por cada combinación de operación y rol",
+      "entrada": "Las 37 operaciones Must have por los cuatro roles: 148 casos",
+      "esperado": "Sin token, 401 en el 100 %; con rol no autorizado, 403 en el 100 %"
+    },
+    {
+      "codigo": "CP-RNF-02",
+      "requisito": "RNF-02",
+      "descripcion": "Autenticidad y vencimiento del token",
+      "entrada": "Token válido, token expirado y token alterado",
+      "esperado": "El válido se acepta; los otros dos se rechazan con 401. El vencimiento no supera las 24 horas"
+    },
+    {
+      "codigo": "CP-RNF-03",
+      "requisito": "RNF-03",
+      "descripcion": "Resguardo no reversible de credenciales",
+      "entrada": "Consulta directa sobre la tabla de usuarios",
+      "esperado": "Ninguna consulta devuelve una contraseña recuperable"
+    },
+    {
+      "codigo": "CP-RNF-04",
+      "requisito": "RNF-04",
+      "descripcion": "Trazabilidad de las acciones sobre anuncios",
+      "entrada": "Publicación, edición y eliminación",
+      "esperado": "Las tres registran autor y marca de tiempo; el 100 % de los anuncios resulta atribuible"
+    },
+    {
+      "codigo": "CP-RNF-05",
+      "requisito": "RNF-05",
+      "descripcion": "No repudio de la constancia",
+      "entrada": "Intento de modificación de un acuse ya registrado",
+      "esperado": "El registro no admite modificación posterior"
+    },
+    {
+      "codigo": "CP-RNF-06",
+      "requisito": "RNF-06",
+      "descripcion": "Transporte cifrado",
+      "entrada": "Petición sobre HTTPS y petición en texto plano",
+      "esperado": "La primera se atiende con certificado válido; la segunda no es aceptada"
+    },
+    {
+      "codigo": "CP-RNF-07",
+      "requisito": "RNF-07",
+      "descripcion": "Retención y minimización de datos",
+      "entrada": "Registros de negocio y de bitácora con antigüedad superior al plazo",
+      "esperado": "Los de negocio se conservan el año en curso más uno; la bitácora, doce meses. El cliente no persiste historial en el navegador"
+    },
+    {
+      "codigo": "CP-RNF-08",
+      "requisito": "RNF-08",
+      "descripcion": "Latencia de entrega de mensajes",
+      "entrada": "Mensaje a un destinatario conectado, en condiciones controladas",
+      "esperado": "Entrega en menos de dos segundos"
+    },
+    {
+      "codigo": "CP-RNF-09",
+      "requisito": "RNF-09",
+      "descripcion": "Tiempo de respuesta de las consultas",
+      "entrada": "100 peticiones consecutivas sobre el conjunto de prueba declarado en la Tabla 18",
+      "esperado": "Percentil 95 inferior a 1,5 segundos"
+    },
+    {
+      "codigo": "CP-RNF-10",
+      "requisito": "RNF-10",
+      "descripcion": "Capacidad de conexiones simultáneas",
+      "entrada": "40 conexiones concurrentes mediante script de prueba",
+      "esperado": "Sostenidas sin degradar la latencia comprometida en RNF-08"
+    },
+    {
+      "codigo": "CP-RNF-11",
+      "requisito": "RNF-11",
+      "descripcion": "Tolerancia a la indisponibilidad del servicio push",
+      "entrada": "Servicio externo inaccesible",
+      "esperado": "Publicar, consultar y conversar siguen disponibles; el aviso se entrega en la aplicación y la causa queda registrada"
+    },
+    {
+      "codigo": "CP-RNF-12",
+      "requisito": "RNF-12",
+      "descripcion": "Recuperación del envío diferido",
+      "entrada": "Fallo transitorio y fallo por credencial inválida",
+      "esperado": "El transitorio se reintenta desde la cola; el de credencial se cierra con causa y no se reintenta"
+    },
+    {
+      "codigo": "CP-RNF-13",
+      "requisito": "RNF-13",
+      "descripcion": "Operabilidad por rol",
+      "entrada": "Sesión de validación con entre tres y cinco personas sobre las tareas de la Tabla 26",
+      "esperado": "Al menos el 90 % del total de ejecuciones completado sin intervención de otra persona"
+    },
+    {
+      "codigo": "CP-RNF-14",
+      "requisito": "RNF-14",
+      "descripcion": "Protección frente a errores del usuario",
+      "entrada": "Ejecución de las tareas críticas, incluidas las destructivas",
+      "esperado": "Promedio de hasta una acción errónea por tarea; toda acción destructiva exige confirmación explícita"
+    },
+    {
+      "codigo": "CP-RNF-15",
+      "requisito": "RNF-15",
+      "descripcion": "Facilidad de aprendizaje",
+      "entrada": "Tiempo por tarea contrastado contra el de referencia medido por el autor",
+      "esperado": "Ninguna tarea supera el doble del tiempo de referencia"
+    },
+    {
+      "codigo": "CP-RNF-16",
+      "requisito": "RNF-16",
+      "descripcion": "Localización de información publicada",
+      "entrada": "Búsqueda de un anuncio publicado con anterioridad",
+      "esperado": "Resuelta en un máximo de tres pasos desde la vista de entrada"
+    },
+    {
+      "codigo": "CP-RNF-17",
+      "requisito": "RNF-17",
+      "descripcion": "Documentación formal de la interfaz",
+      "entrada": "Rutas del enrutador, archivo OpenAPI e inventario de la Tabla 27",
+      "esperado": "Diferencia nula en los tres sentidos y colección de validación ejecutable"
+    },
+    {
+      "codigo": "CP-RNF-18",
+      "requisito": "RNF-18",
+      "descripcion": "Adaptación a distintos dispositivos",
+      "entrada": "Las veinticuatro tareas críticas en 360, 768 y 1280 píxeles",
+      "esperado": "Operables sin pérdida de función y sin desplazamiento horizontal desde 320 píxeles"
+    },
+    {
+      "codigo": "CP-RNF-19",
+      "requisito": "RNF-19",
+      "descripcion": "Reproducibilidad del despliegue",
+      "entrada": "Repositorio recién clonado y archivo de variables de entorno",
+      "esperado": "El entorno completo se levanta por contenedores sin edición manual de archivos"
+    },
+    {
+      "codigo": "CP-RNF-20",
+      "requisito": "RNF-20",
+      "descripcion": "Cobertura de pruebas automatizadas",
+      "entrada": "Ejecución completa de la suite con la herramienta de medición configurada",
+      "esperado": "Cobertura de líneas igual o superior al 70 %; por debajo, la ejecución falla"
+    },
+    {
+      "codigo": "CP-RNF-21",
+      "requisito": "RNF-21",
+      "descripcion": "Separación de responsabilidades",
+      "entrada": "Casos de autorización ejecutados contra la interfaz sin intervención del cliente",
+      "esperado": "Todas las reglas se satisfacen en la interfaz; ninguna se satisface únicamente desde el cliente"
+    },
+    {
+      "codigo": "CP-RNF-22",
+      "requisito": "RNF-22",
+      "descripcion": "Completitud funcional del producto mínimo viable",
+      "entrada": "Matriz de trazabilidad contrastada contra la ejecución de la suite",
+      "esperado": "El 100 % de los Must have cuenta con caso asociado y ejecución aprobada"
+    }
+  ]
+}
