@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Compuerta ESQUEMA · Tabla 38 · Boundary 3
 Ni una entidad ni una columna de más o de menos respecto del esquema físico.
-Entrada: db/schema.rb (lo genera la primera migración).
+Entrada: api/db/schema.rb (lo genera la primera migración).
 """
 import os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -19,15 +19,25 @@ def sing(n):
             if c in esperado: return c
     return n
 
-ruta = os.path.join(RAIZ, 'db', 'schema.rb')
+ruta = os.path.join(API, 'db', 'schema.rb')
 if not os.path.exists(ruta):
-    R.aviso('todavía no existe db/schema.rb · la compuerta se activa con la primera migración')
+    R.aviso('todavía no existe api/db/schema.rb · la compuerta se activa con la primera migración')
     R.cerrar()
+
+# D-08 · Solid Queue y Solid Cable son componentes que la Tabla 34 consigna, y sus
+# tablas son infraestructura del framework y no entidades del diccionario de la Tabla
+# 21. La excepción es nominada: cualquier otra tabla ajena al diccionario sigue
+# dejando la rama en rojo.
+INFRAESTRUCTURA = ('solid_queue_', 'solid_cable_', 'ar_internal_metadata', 'schema_migrations')
 
 txt = leer_texto(ruta)
 real = {}
 for m in re.finditer(r'create_table\s+"([^"]+)"(.*?)\n  end', txt, re.S):
     tabla, cuerpo = m.group(1), m.group(2)
+    if tabla.startswith(INFRAESTRUCTURA): continue
+    # t.check_constraint y t.index declaran restricciones e índices de la Tabla 38,
+    # no columnas del diccionario de la Tabla 21: no se cuentan como tales.
+    cuerpo = re.sub(r'^\s*t\.(check_constraint|index)\b.*$', '', cuerpo, flags=re.M)
     cols = set(re.findall(r't\.\w+\s+"([^"]+)"', cuerpo))
     cols |= {c + '_id' for c in re.findall(r't\.references\s+"([^"]+)"', cuerpo)}
     cols.add('id')
