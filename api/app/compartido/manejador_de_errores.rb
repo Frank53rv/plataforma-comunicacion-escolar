@@ -52,6 +52,7 @@ module ManejadorDeErrores
   # 500 · Fallo no previsto, registrado en la bitácora sin exponer detalle interno
   def responder_error_interno(error)
     Rails.logger.error("#{error.class}: #{error.message}")
+    Rails.logger.error("causa: #{error.cause.class}: #{error.cause.message}") if error.cause
     Rails.logger.error(error.backtrace&.first(20)&.join("\n"))
     responder(estado: 500, codigo: "error_interno",
               detalle: "No fue posible completar la operación.")
