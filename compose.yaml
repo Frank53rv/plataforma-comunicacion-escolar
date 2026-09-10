@@ -34,6 +34,10 @@ services:
       # un volumen sobre BUNDLE_PATH enmascararía la instalación de la imagen y haría
       # que el entorno dependiera de su historia y no del repositorio (RNF-19).
       - ./api:/api
+      # El paquete normativo, de sólo lectura: la suite contrasta la matriz de
+      # autorización contra la columna de roles de la Tabla 27 (RNF-01) y no contra
+      # una lista escrita a mano.
+      - ./specs:/specs:ro
     depends_on:
       db:
         condition: service_healthy

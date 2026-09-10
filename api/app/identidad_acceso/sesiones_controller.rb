@@ -4,7 +4,10 @@
 # Tabla 27 · POST /api/v1/sesiones (sin autenticar) · DELETE /api/v1/sesiones
 # (directivo, docente, tutor, alumno).
 class SesionesController < ApplicationController
-  before_action :exigir_autenticacion, only: :destruir
+  # Tabla 27 · POST /sesiones: «Sin autenticar». DELETE /sesiones: «Directivo, docente,
+  # tutor, alumno».
+  autoriza :crear,    roles: Autorizacion::SIN_AUTENTICAR
+  autoriza :destruir, roles: %w[directivo docente tutor alumno]
 
   # Flujo principal de CU-01, pasos 1 a 3.
   def crear
