@@ -23,24 +23,37 @@ module Autorizacion
     # Los roles son literalmente los de la columna «Roles autorizados» de la Tabla 27.
     # Alterarlos es una modificación del contrato y no una decisión del código
     # (Boundary 4).
-    def autoriza(*acciones, roles:)
-      declaradas = acciones.index_with { roles }
+    #
+    # RN-09 · «Toda credencial provisional debe cambiarse en el primer acceso; hasta
+    # entonces ninguna otra operación se habilita.» Sólo la operación que sustituye la
+    # credencial declara con_credencial_provisional.
+    def autoriza(*acciones, roles:, con_credencial_provisional: false)
+      declaradas = acciones.index_with do
+        { roles: roles, con_credencial_provisional: con_credencial_provisional }
+      end
       self.roles_por_accion = roles_por_accion.merge(declaradas.stringify_keys).freeze
+    end
+
+    def roles_declarados_para(accion)
+      roles_por_accion[accion.to_s]&.fetch(:roles)
     end
   end
 
   private
 
   def exigir_rol_autorizado
-    declarados = self.class.roles_por_accion[action_name]
+    declaracion = self.class.roles_por_accion[action_name]
 
     # Sin declaración no hay acceso. No se asume nada.
-    raise ErrorDeDominio::NoHabilitado if declarados.nil?
+    raise ErrorDeDominio::NoHabilitado if declaracion.nil?
+
+    declarados = declaracion[:roles]
     return if declarados == SIN_AUTENTICAR
 
     # El orden importa y lo fija la Tabla 35: 401 cuando el token falta o no vale;
     # 403 cuando está autenticado pero no habilitado.
     exigir_autenticacion
+    exigir_credencial_definitiva unless declaracion[:con_credencial_provisional]
 
     return if Array(declarados).map(&:to_s).include?(usuario_actual.rol)
 
@@ -49,6 +62,19 @@ module Autorizacion
     raise ErrorDeDominio::NoHabilitado.new(
       codigo: "rol_no_autorizado",
       detalle: "El rol de la sesión no tiene la atribución para esta operación."
+    )
+  end
+
+  # RF-43 · «no debe habilitar ninguna otra operación hasta que el cambio se complete».
+  # La lectura es literal: la única operación habilitada es la que sustituye la propia
+  # credencial. El estado es el que la Tabla 35 asigna a «credencial provisional sin
+  # cambiar» en la fila del 403.
+  def exigir_credencial_definitiva
+    return unless usuario_actual.credencial_provisional?
+
+    raise ErrorDeDominio::NoHabilitado.new(
+      codigo: "credencial_provisional_sin_cambiar",
+      detalle: "Debe sustituir la credencial provisional antes de operar."
     )
   end
 end

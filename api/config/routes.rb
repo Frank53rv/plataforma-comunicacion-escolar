@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     # CU-01 · Autenticarse · RF-01
     post   "sesiones", to: "sesiones#crear"
     delete "sesiones", to: "sesiones#destruir"
+
+    # CU-02 · Activar cuenta con código · RF-43
+    patch "usuarios/me/contrasena", to: "usuarios#cambiar_contrasena"
   end
 
   # Comprobación de salud del contenedor (Tabla 45). No pertenece a la interfaz
