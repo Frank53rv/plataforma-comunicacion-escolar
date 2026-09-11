@@ -1416,7 +1416,8 @@ components:
         - type: object
           description: >-
             El código se devuelve en claro una sola vez, en la respuesta de la operación
-            que lo genera o regenera, y no vuelve a ser recuperable (nota de la Tabla 40).
+            que lo genera o regenera, y no vuelve a ser recuperable (nota de la Tabla 40 ·
+            D-10). Forma LLLLLLLL-SSSSSSSS (D-11).
           properties:
             codigo: { type: string }
 
@@ -1424,21 +1425,21 @@ components:
       type: object
       properties:
         usuario: { $ref: '#/components/schemas/Usuario' }
-        codigo_activacion: { $ref: '#/components/schemas/CodigoActivacion' }
+        codigo_activacion: { $ref: '#/components/schemas/CodigoActivacionEnClaro' }
 
     AltaDeAlumno:
       type: object
       properties:
         usuario: { $ref: '#/components/schemas/Usuario' }
         alumno_curso: { $ref: '#/components/schemas/AlumnoCurso' }
-        codigo_activacion: { $ref: '#/components/schemas/CodigoActivacion' }
+        codigo_activacion: { $ref: '#/components/schemas/CodigoActivacionEnClaro' }
 
     AltaDeTutor:
       type: object
       properties:
         usuario: { $ref: '#/components/schemas/Usuario' }
         tutor_alumno: { $ref: '#/components/schemas/TutorAlumno' }
-        codigo_activacion: { $ref: '#/components/schemas/CodigoActivacion' }
+        codigo_activacion: { $ref: '#/components/schemas/CodigoActivacionEnClaro' }
 
     AnioLectivo:
       type: object

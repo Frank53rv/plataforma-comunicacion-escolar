@@ -9,7 +9,7 @@ Formato de las entradas: ver `../CLAUDE.md`, punto 6.
 La marca `adoptado: RF-nn` en una entrada habilita a la compuerta `alcance` a aceptar ese
 requisito Should have; sin ella, construirlo deja la rama en rojo.
 
-**Actualizado el 10 de septiembre de 2026**, contra el documento en su versión 5.2.
+**Actualizado el 11 de septiembre de 2026**, contra el documento en su versión 5.2.
 
 ---
 
@@ -226,7 +226,10 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
     ser anterior al envío —`entregada_en`, `vista_en` y `leida_en` son nulas o posteriores o
     iguales a `enviada_en`— y la no regresión del estado se resuelve en la capa de negocio,
     con CP-RF-34 y CP-RF-36 como verificación.
-- **Estado: RESUELTA en cuanto al esquema · ABIERTA en cuanto a la invalidación de RF-07.**
+- **Estado: RESUELTA.** La invalidación de RF-07 la decidió el autor el 11 de septiembre
+  de 2026: al regenerar, el código anterior recibe `usado_en` con la hora del reemplazo.
+  Conserva la fila y su `generado_por` como rastro, y satisface el índice parcial. El
+  atributo `usado_en` pasa a leerse como «dejó de ser canjeable, por uso o por reemplazo».
 - **Fundamento:** el criterio no es nuevo: lo fija la propia nota de la Tabla 38 para las
   tres restricciones que ya reconoce inexpresables. Ninguna de las dos se omite: ambas se
   verifican, y la diferencia está en dónde. Ninguna entidad, atributo ni restricción del
@@ -264,9 +267,14 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
 - **Consecuencia de cada una:** A hace ejecutable CU-02 tal como está escrito y exige
   corregir una fila. B exige corregir la nota, un caso de uso y el flujo de cuatro tareas
   críticas (TC-03, TC-08, TC-09, TC-15, TC-21).
-- **Estado: ABIERTA.** Bloquea RF-05 y, a través de él, RF-03, RF-04 y RF-06. No se
-  resuelve en el código: el Boundary 2 prohíbe resolver por cuenta propia un conflicto
-  entre dos enunciados del documento.
+- **Estado: RESUELTA · se adopta A** — decisión del autor, 11 de septiembre de 2026.
+- **Fundamento:** la nota de la Tabla 40 y el paso 1 de CU-02 concuerdan entre sí y con el
+  flujo de las tareas críticas; la fila de `POST /docentes` es la que queda aislada. Las tres
+  operaciones de alta y la de regeneración devuelven el código en claro una sola vez, en el
+  miembro `codigo` de `codigo_activacion`. La prosa introductoria de la Tabla 40 se lee como
+  referida a la derivación almacenada, que en efecto no se devuelve nunca.
+  **Pendiente de reposición documental:** corregir en el `.docx` la fila `POST /docentes`
+  de la Tabla 40 —«sin el código en claro»— conforme a la nota de la misma tabla.
 
 ## D-11 · Formato del código de activación y cómo se lo localiza al canjearlo
 - **Dónde apareció:** RF-05 · RF-06 · CU-02 · Tabla 38 · Tabla 40
@@ -299,7 +307,17 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
 - **Consecuencia de cada una:** A es literal y lenta, y la lentitud crece con la
   cantidad de altas pendientes. B es literal en la derivación y rápida, al costo de un
   código más largo de dictar. C es rápida y corta, y se aparta de la nota.
-- **Estado: ABIERTA.** Bloquea RF-05 y RF-06.
+- **Estado: RESUELTA · se adopta B** — decisión del autor, 11 de septiembre de 2026.
+- **Realización:** el código tiene la forma `LLLLLLLL-SSSSSSSS`. El localizador son los
+  ocho primeros caracteres hexadecimales del `id` de la fila de `codigo_activacion`, que
+  genera el motor de manera aleatoria. El secreto son ocho caracteres del alfabeto de
+  Crockford —dígitos y mayúsculas sin I, L, O ni U, pensado para transcribirse a mano—, y
+  se deriva con bcrypt en `codigo_hash`, del mismo modo que la contraseña. Al canjear se
+  normaliza la entrada —mayúsculas, sin espacios ni guion, O por 0 e I o L por 1— porque el
+  código se entrega «por el canal que la institución ya utiliza» y se transcribe a mano.
+  El localizador no es secreto: la resistencia a la adivinación la dan los cuarenta bits
+  del secreto, que con el costo de bcrypt y el vencimiento de siete días hacen inviable la
+  búsqueda exhaustiva sin necesidad de limitar intentos.
 
 ---
 
