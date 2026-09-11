@@ -22,12 +22,12 @@ class CadenaDeRegeneracion
 
     # «de sus cursos»: las vinculaciones vigentes del docente, del alumno y del tutor.
     def de_sus_cursos?(docente, persona)
-      cursos = DocenteCurso.vigentes.where(usuario_id: docente.id).select(:curso_id)
-      alumnos = AlumnoCurso.vigentes.where(curso_id: cursos).select(:usuario_id)
+      alumnos = docente.alumnos_de_sus_cursos
 
       case persona.rol
-      when "alumno" then alumnos.where(usuario_id: persona.id).exists?
-      when "tutor"  then TutorAlumno.vigentes.where(tutor_id: persona.id, alumno_id: alumnos).exists?
+      when "alumno" then alumnos.exists?(usuario_id: persona.id)
+      when "tutor"
+        TutorAlumno.vigentes.where(tutor_id: persona.id, alumno_id: alumnos.select(:usuario_id)).exists?
       end
     end
   end

@@ -16,6 +16,10 @@ Rails.application.routes.draw do
     post "docentes",              to: "docentes#crear"
     post "cursos/:id/docentes",   to: "vinculaciones_docentes#crear"
 
+    # CU-05 · Administrar alumnos y tutores · RF-04, RF-05
+    post "alumnos",             to: "alumnos#crear"
+    post "alumnos/:id/tutores", to: "tutores_de_alumno#crear"
+
     # CU-04, CU-05 · Regeneración del código de activación · RF-07
     post "usuarios/:id/codigos-activacion", to: "codigos_activacion#crear"
   end

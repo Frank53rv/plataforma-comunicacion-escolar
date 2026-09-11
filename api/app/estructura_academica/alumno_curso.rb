@@ -1,5 +1,5 @@
-# RF-07 Regeneración de código de activación · CU-05 · RN-07
-# Prueba: CP-RF-07
+# RF-04 Alta de alumnos y tutores · RF-07 Regeneración · CU-05 · RN-03, RN-07
+# Prueba: CP-RF-04 · CP-RF-07
 #
 # Tabla 21 · «Vinculación entre un alumno y un curso.» Un alumno pertenece a un solo
 # curso vigente por año lectivo (RN-30), verificado en la capa de negocio conforme a la
@@ -12,4 +12,8 @@ class AlumnoCurso < ApplicationRecord
   belongs_to :curso, class_name: "Curso"
 
   scope :vigentes, -> { where(vigente_hasta: nil) }
+
+  def recurso
+    slice(:id, :usuario_id, :curso_id, :vigente_desde, :vigente_hasta)
+  end
 end
