@@ -8,7 +8,8 @@ Rails.application.routes.draw do
     post   "sesiones", to: "sesiones#crear"
     delete "sesiones", to: "sesiones#destruir"
 
-    # CU-02 · Activar cuenta con código · RF-43
+    # CU-02 · Activar cuenta con código · RF-06, RF-43
+    post  "activaciones",           to: "activaciones#crear"
     patch "usuarios/me/contrasena", to: "usuarios#cambiar_contrasena"
   end
 
