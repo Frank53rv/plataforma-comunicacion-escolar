@@ -40,6 +40,20 @@ class Usuario < ApplicationRecord
     slice(:id, :nombre, :apellido, :correo, :rol, :estado, :credencial_provisional, :creado_en)
   end
 
+  # RN-03 · RN-07 · «sus cursos»: los cursos en que el docente tiene una vinculación
+  # vigente, y los alumnos vinculados a ellos.
+  def cursos_vigentes_como_docente
+    DocenteCurso.vigentes.where(usuario_id: id).select(:curso_id)
+  end
+
+  def dicta_curso?(curso_id)
+    DocenteCurso.vigentes.exists?(usuario_id: id, curso_id: curso_id)
+  end
+
+  def alumnos_de_sus_cursos
+    AlumnoCurso.vigentes.where(curso_id: cursos_vigentes_como_docente)
+  end
+
   # CU-01 precondición · «la cuenta existe y está activada».
   # CU-01 E2 · la cuenta dada de baja tiene el acceso revocado.
   def puede_autenticarse?
