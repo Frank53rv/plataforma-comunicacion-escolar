@@ -31,6 +31,10 @@ module ManejadorDeErrores
     rescue_from ErrorDeDominio,                    with: :responder_error_de_dominio
     rescue_from ActiveRecord::RecordNotFound,      with: :responder_no_encontrado
     rescue_from ActiveRecord::RecordInvalid,       with: :responder_datos_inaceptables
+    # La unicidad que el diccionario declara —el correo, por ejemplo— la valida el
+    # modelo; si dos peticiones simultáneas la violan, el motor la rechaza y el dato es
+    # el mismo dato inaceptable, no un fallo interno.
+    rescue_from ActiveRecord::RecordNotUnique,     with: :responder_datos_inaceptables
     rescue_from ActionController::ParameterMissing, with: :responder_datos_inaceptables
   end
 

@@ -34,6 +34,12 @@ class Usuario < ApplicationRecord
     BCrypt::Password.new(contrasena_hash) == valor
   end
 
+  # Tabla 40 · «recurso» es «la totalidad de los atributos de esa entidad en el
+  # diccionario, excluidos los que el resguardo impide exponer —la contraseña derivada».
+  def recurso
+    slice(:id, :nombre, :apellido, :correo, :rol, :estado, :credencial_provisional, :creado_en)
+  end
+
   # CU-01 precondición · «la cuenta existe y está activada».
   # CU-01 E2 · la cuenta dada de baja tiene el acceso revocado.
   def puede_autenticarse?
