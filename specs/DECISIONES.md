@@ -355,6 +355,31 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
   adopte por decisión registrada; la cuenta directiva conserva su recuperación por
   variable de entorno (RN-08).
 
+## D-13 · Las vinculaciones vigentes del docente al darlo de baja
+- **Dónde apareció:** RF-44 · CU-04 · `DELETE /api/v1/docentes/{id}`
+- **Qué dice el documento:** RF-44: «El directivo debe poder desvincular a un docente de un
+  curso y darlo de baja lógica. […] Si el docente era titular, la desvinculación exige
+  designar otro titular en el mismo acto.» RN-13: «El directivo desvincula y da de baja a
+  los docentes.» CU-04, postcondición: «con la titularidad del curso **siempre definida**».
+  Tabla 40: `DELETE /docentes/{id}` va **sin cuerpo**; el reemplazo se designa sólo en
+  `DELETE /cursos/{id}/docentes/{usuarioId}`.
+- **Qué no dice:** qué ocurre con las vinculaciones vigentes del docente cuando se lo da de
+  baja, en particular si es titular de algún curso. La baja sin cuerpo no puede designar
+  reemplazo; si no hace nada con la titularidad, el curso queda con un titular sin acceso.
+- **Alternativas:**
+  - **A.** La baja exige que el docente ya no tenga vinculaciones vigentes: se lo desvincula
+    antes de cada curso —designando reemplazo donde era titular— y recién entonces se lo
+    da de baja. Con vinculaciones vigentes, 409 con RN-13.
+  - **B.** La baja cierra sus vinculaciones no titulares en el mismo acto y se rechaza con
+    409 y RN-13 sólo si es titular de algún curso.
+  - **C.** La baja cambia únicamente el estado, como la del alumno (RF-09), sin tocar las
+    vinculaciones: el curso puede quedar con un titular dado de baja.
+- **Consecuencia de cada una:** A sigue el orden de RF-44 y RN-13 —desvincular, después dar
+  de baja— y cada operación hace una sola cosa. B ahorra pasos pero cierra vinculaciones
+  sin que ninguna operación lo declare. C contradice la postcondición de CU-04.
+- **Estado: ABIERTA.** Bloquea `DELETE /docentes/{id}`. La desvinculación
+  (`CP-RF-44`) está especificada y no depende de esta entrada.
+
 ---
 
 ## Pendiente de decisión del autor
