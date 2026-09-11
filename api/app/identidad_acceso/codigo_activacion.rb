@@ -1,5 +1,6 @@
-# RF-05 Generación de código de activación · CU-02, CU-05 · RN-05
-# Prueba: CP-RF-05
+# RF-05 Generación de código de activación · RF-07 Regeneración · CU-02, CU-04, CU-05 ·
+# RN-05, RN-07
+# Prueba: CP-RF-05 · CP-RF-07
 #
 # Tabla 21 · «Código de un solo uso para la activación de una cuenta o la recuperación
 # de acceso.» Único por usuario entre los vigentes. Vencimiento de siete días. Se
@@ -42,6 +43,16 @@ class CodigoActivacion < ApplicationRecord
       )
 
       [ registro, "#{registro.localizador}-#{secreto}" ]
+    end
+
+    # RF-07 · «regenerar el código … cuando el anterior venció o se perdió, invalidando
+    # el previo». D-09 · el código anterior recibe usado_en con la hora del reemplazo:
+    # conserva la fila y su generado_por como rastro, y deja libre el índice parcial.
+    def regenerar(usuario:, generado_por:)
+      transaction do
+        where(usuario: usuario).sin_usar.update_all(usado_en: Time.current)
+        generar(usuario: usuario, generado_por: generado_por)
+      end
     end
 
     # D-11 · localización del código presentado. Devuelve la fila sin usar cuyo secreto

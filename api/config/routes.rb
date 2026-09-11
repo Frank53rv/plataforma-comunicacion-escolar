@@ -15,6 +15,9 @@ Rails.application.routes.draw do
     # CU-04 · Administrar docentes y asignaciones · RF-03, RF-05, RF-15
     post "docentes",              to: "docentes#crear"
     post "cursos/:id/docentes",   to: "vinculaciones_docentes#crear"
+
+    # CU-04, CU-05 · Regeneración del código de activación · RF-07
+    post "usuarios/:id/codigos-activacion", to: "codigos_activacion#crear"
   end
 
   # Comprobación de salud del contenedor (Tabla 45). No pertenece a la interfaz
