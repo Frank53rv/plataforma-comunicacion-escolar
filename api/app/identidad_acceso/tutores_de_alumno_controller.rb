@@ -1,5 +1,5 @@
-# RF-04 Alta de alumnos y tutores · RF-05 · CU-05 · RN-01, RN-03, RN-05
-# Prueba: CP-RF-04 · CP-RF-05
+# RF-04 Alta de alumnos y tutores · RF-05 · RF-14 · CU-05 · RN-01, RN-03, RN-05, RN-29
+# Prueba: CP-RF-04 · CP-RF-05 · CP-RF-14
 #
 # Tabla 27 · POST /api/v1/alumnos/{id}/tutores · docente · «Vincular un tutor al alumno».
 # Tabla 40 · petición: nombre, apellido, correo. Respuesta: recurso usuario, tutor_alumno
@@ -8,23 +8,35 @@ class TutoresDeAlumnoController < ApplicationController
   # RN-03 · «El docente da de alta a los alumnos y tutores de sus cursos.»
   autoriza :crear, roles: %w[docente]
 
-  # CU-05 pasos 2 y 3 · «registra hasta dos tutores del alumno …; el sistema genera el
-  # código de activación de cada persona registrada».
+  # CU-05 pasos 2 y 3 · «registra hasta dos tutores del alumno, o vincula tutores ya
+  # existentes en el sistema; el sistema genera el código de activación de cada persona
+  # registrada».
   def crear
     alumno = alumno_de_sus_cursos
+    datos = datos_de_persona
 
-    resultado = ActiveRecord::Base.transaction do
-      alta = RegistroDePersona.registrar(**datos_de_persona, rol: "tutor", registrado_por: usuario_actual)
-      vinculacion = TutorAlumno.create!(tutor: alta.usuario, alumno: alumno,
-                                        vigente_desde: Time.current.to_date)
-      [ alta, vinculacion ]
+    tutor, vinculacion, alta = ActiveRecord::Base.transaction do
+      # El bloqueo del alumno serializa dos vinculaciones simultáneas: sin él, ambas
+      # podrían contar dos tutores y vincular un tercero, contra RN-29.
+      alumno.lock!
+      TutorAlumno.verificar_limite!(alumno)
+
+      existente = tutor_existente(datos[:correo], alumno)
+      alta = existente ? nil : RegistroDePersona.registrar(**datos, rol: "tutor", registrado_por: usuario_actual)
+      tutor = existente || alta.usuario
+
+      [ tutor, TutorAlumno.create!(tutor: tutor, alumno: alumno, vigente_desde: Time.current.to_date), alta ]
     end
-    alta, vinculacion = resultado
+
+    # CU-05 paso 3 · el código se genera para «cada persona registrada». El tutor que ya
+    # existía no es una persona registrada en este acto: conserva su cuenta y no recibe
+    # un código nuevo (CU-05 flujo A · RF-14 «bajo una única cuenta»).
+    codigo = alta&.codigo_activacion&.representacion(codigo_en_claro: alta.codigo_en_claro)
 
     render json: {
-      usuario: alta.usuario.recurso,
+      usuario: tutor.recurso,
       tutor_alumno: vinculacion.recurso,
-      codigo_activacion: alta.codigo_activacion.representacion(codigo_en_claro: alta.codigo_en_claro)
+      codigo_activacion: codigo
     }, status: :created
   end
 
@@ -47,6 +59,26 @@ class TutoresDeAlumnoController < ApplicationController
     end
 
     alumno
+  end
+
+  # CU-05 flujo A · «un mismo tutor con varios hijos, aun en cursos distintos, opera con
+  # una sola cuenta y sin perfiles separados». Se lo identifica por su correo, único
+  # según la Tabla 21. El correo de una persona con otro rol no es el de un tutor
+  # (RN-04) y sigue siendo un dato repetido.
+  def tutor_existente(correo, alumno)
+    persona = Usuario.find_by(correo: correo)
+    return if persona.nil?
+
+    if !persona.tutor? || persona.estado_dado_de_baja?
+      raise ErrorDeDominio::DatosInaceptables.new(detalle: "El correo pertenece a otra cuenta.")
+    end
+
+    # Tabla 21 · «Par único entre los vigentes»
+    if TutorAlumno.vigentes.exists?(tutor_id: persona.id, alumno_id: alumno.id)
+      raise ErrorDeDominio::DatosInaceptables.new(detalle: "El tutor ya está vinculado a este alumno.")
+    end
+
+    persona
   end
 
   def datos_de_persona
