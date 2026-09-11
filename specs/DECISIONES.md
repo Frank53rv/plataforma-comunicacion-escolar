@@ -411,6 +411,113 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
   ninguno. El cliente adopta la configuración que Vite propone para React, más la de
   Prettier para el formato.
 
+## D-15 · Auditoría del incremento 1: lo que se realizó sin enunciado del documento
+- **Dónde apareció:** auditoría del 11 de septiembre de 2026, a pedido del autor, de todo
+  lo construido en el incremento 1 contra el documento.
+- **Qué es esta entrada:** el inventario de las decisiones de realización que el código
+  tomó sin que el documento las enuncie. Ninguna contradice un enunciado; todas llenan un
+  silencio. Quedan escritas para que ninguna divergencia sea tácita. Las que dependen del
+  criterio del autor se separan en D-16 a D-20.
+- **Estados de éxito.** La Tabla 40 fija las formas y no los estados: se usa 201 cuando la
+  operación crea un recurso o una sesión, 204 cuando responde sin cuerpo y 200 en el resto.
+- **Rechazos que el documento no nombra, y la fila de la Tabla 35 que se les asigna:**
+  correo repetido, vinculación repetida, persona con otro rol, dato que excede su columna,
+  curso de otro año lectivo, alumno o docente dado de baja, reemplazo no vinculado, cuenta
+  no pendiente en la regeneración → 422, «datos inaceptables»; contraseña actual
+  equivocada y activación de una cuenta dada de baja → 401, «credencial inválida» y
+  «cuenta dada de baja»; forma de código inválida → 410, «inexistente»; curso o alumno
+  inexistente en las altas → 403, «docente no vinculado al curso», para no revelar qué
+  existe; persona inexistente en las demás operaciones → 404; baja de quien ya está dado
+  de baja → 200 sin cambios.
+- **Lecturas literales.** RN-09 bloquea toda operación, incluida `DELETE /sesiones`.
+  `DELETE /sesiones` no tiene efecto en el servidor porque RNF-02 exige un token sin
+  estado. El techo de 24 horas de RNF-02 recorta el valor de JWT_EXPIRACION_HORAS. La
+  precondición de CU-04 no se convierte en rechazo de `POST /docentes` porque CU-04 no
+  declara ese flujo de excepción. «Un curso del año lectivo vigente» (RF-13) rechaza el
+  curso de otro año. El alumno existente sin vinculación en el año no se revincula: esa
+  continuidad es del cierre del año lectivo, requisito Should have.
+- **Realización técnica.** La cuenta pendiente guarda la derivación de un valor aleatorio
+  hasta que la persona define su contraseña: la Tabla 38 no marca `contrasena_hash` como
+  anulable. El reemplazo del titular recibe una vinculación nueva desde el día del cambio.
+  «5 MB» se toma como 5 × 1024 × 1024 bytes. El código de activación se normaliza al
+  canjearlo (D-11). Los miembros `codigo` y `title` del cuerpo de error usan un
+  vocabulario propio, porque la Tabla 39 exige los miembros y no sus valores. Las
+  operaciones que escriben en más de una entidad bloquean la fila de la que depende la
+  regla, para que dos peticiones simultáneas no la violen. La bitácora filtra nombre y
+  apellido además de contraseña, código y correo (punto 1.7).
+- **Dependencias que la Tabla 34 no consigna por nombre**, todas auxiliares de un
+  componente que sí consigna: `rack-cors` (CORS_ORIGENES, Tabla 41), `factory_bot_rails`
+  (datos de prueba de RSpec), `json` fijada por compatibilidad; las que el framework trae
+  por omisión (`bootsnap`, `debug`, `bundler-audit`); Babel, `jest-environment-jsdom`,
+  `jest-dom` y `globals` para Jest; los complementos de ESLint y Prettier que exige el
+  Quality Spec; las imágenes `node` —para construir con Vite— y `nginx`.
+- **Composición.** `specs/` se monta de sólo lectura en el contenedor de la interfaz para
+  que la suite se contraste contra la Tabla 27; el supervisor de Solid Queue corre dentro
+  de Puma.
+- **Ramificación.** La Tabla 42 no prevé ramas para trabajo transversal sin requisito: se
+  usaron `feature/WP1-…`, con el paquete de trabajo de la Tabla 31 en el nombre. El ajuste
+  de RF-06 que D-12 exigió se hizo en la rama de RF-07, en un commit propio.
+- **Compuertas.** Además de D-05, D-06, D-08 y D-14: `esquema` dejó de contar los
+  `check_constraint` y los índices como columnas; `tiempo` dejó de exigir la comparación
+  de la franja en las migraciones, que sólo declaran la columna; `contrato` compara en
+  los tres sentidos que exige CP-RNF-17 y falla ante toda ruta fuera de `/api/v1`.
+- **Estado: RESUELTA como registro.**
+
+## D-16 · Petición mal formada y cuerpo de más de 1 MB
+- **Dónde apareció:** auditoría · Tabla 35 · Tabla 39
+- **Qué dice el documento:** la Tabla 39 limita el cuerpo de la petición a 1 MB, salvo
+  los adjuntos. La Tabla 35 es cerrada y no contiene el 400; su 422 es «petición **bien
+  formada** con datos inaceptables», y su 413 es «archivo adjunto que supera los 5 MB».
+- **Qué no dice:** con qué estado se rechaza un cuerpo JSON mal formado ni uno que
+  supera 1 MB.
+- **Hallazgo:** hoy el JSON mal formado responde **500**, que la Tabla 35 reserva al
+  «fallo no previsto», y el cuerpo de más de 1 MB **se acepta**.
+- **Estado: ABIERTA.**
+
+## D-17 · Nombre y apellido de la cuenta directiva semilla
+- **Dónde apareció:** auditoría · RN-08 · Tabla 41 · Tabla 38
+- **Qué dice el documento:** la Tabla 41 provee DIRECTIVO_CORREO y
+  DIRECTIVO_CREDENCIAL_PROVISIONAL. La Tabla 38 declara `nombre` y `apellido` no nulos.
+- **Qué no dice:** qué nombre y apellido lleva la cuenta semilla.
+- **Hallazgo:** la tarea de reposición escribe «Equipo» y «Directivo», valores que el
+  documento no enuncia.
+- **Estado: ABIERTA.**
+
+## D-18 · Cuatro lecturas del texto pendientes de confirmación
+- **Dónde apareció:** RF-15 · RF-14 · RF-09 · RF-10
+- **Las lecturas:** (a) un segundo titular vigente se rechaza con 409 y RN-13, aunque la
+  Tabla 35 no liste ese flujo; (b) el tutor que ya existe se vincula sin código nuevo y
+  la respuesta lleva `codigo_activacion` nulo, aunque la Tabla 40 no prevea la excepción;
+  (c) el «docente titular del curso» de un tutor es el titular del curso de sus alumnos, y
+  la baja no cierra las vinculaciones; (d) el alumno pendiente de activación es «alumno
+  activo» a los efectos de RN-12.
+- **Estado: ABIERTA.**
+
+## D-19 · Nombres de los campos derivados en el contrato OpenAPI
+- **Dónde apareció:** auditoría · `openapi/openapi.yaml` · Tabla 39 · Tabla 40
+- **Qué dice el documento:** la Tabla 39 exige nombres de campo «iguales a los del
+  diccionario de la Tabla 21». La Tabla 40 describe en prosa varios valores derivados que
+  no tienen nombre en el diccionario: «la cantidad de destinatarios resueltos», «el estado
+  de lectura de quien consulta», «cantidad de anuncios sin leer», «cantidad de no leídos»,
+  «total de destinatarios, cantidad con lectura registrada», entre otros.
+- **Hallazgo:** el contrato les puso nombre —`destinatarios_resueltos`, `leido`,
+  `anuncios_sin_leer`, `no_leidos`, `total_destinatarios`…—. Ninguna de esas operaciones
+  está construida todavía.
+- **Estado: ABIERTA.** Se resuelve antes de construir la primera operación que los
+  devuelva (incremento 2).
+
+## D-20 · Dónde termina la conexión cifrada y cómo se expone la interfaz
+- **Dónde apareció:** auditoría · Tabla 34 · Tabla 45 · Tabla 41 · paso 6 de la Tabla 46
+- **Qué dice el documento:** la Tabla 34 asigna a nginx «entrega los archivos … y
+  **termina la conexión cifrada**»; la Tabla 45 asigna a Cloudflare Tunnel «nombre de
+  dominio y **certificado válido** hacia internet». La Tabla 41 prevé un solo APP_HOST y
+  CORS_ORIGENES.
+- **Qué no dice:** si el cifrado termina en nginx o en el túnel, ni si la interfaz se
+  expone por el mismo dominio que el cliente —nginx haciendo de intermediario— o por uno
+  propio.
+- **Estado: ABIERTA.** Se resuelve con el paso 6, en el incremento 3. Nada de lo
+  construido depende de esta entrada.
+
 ---
 
 ## Pendiente de decisión del autor
