@@ -1,5 +1,5 @@
-# RF-04 Alta de alumnos y tutores · RF-05 · CU-05 · RN-01, RN-03, RN-05
-# Prueba: CP-RF-04 · CP-RF-05
+# RF-04 Alta de alumnos y tutores · RF-05 · RF-13 · CU-05 · RN-01, RN-03, RN-05, RN-30
+# Prueba: CP-RF-04 · CP-RF-05 · CP-RF-13
 #
 # Tabla 27 · POST /api/v1/alumnos · docente · «Dar de alta a un alumno y vincularlo a
 # un curso».
@@ -13,6 +13,13 @@ class AlumnosController < ApplicationController
   # cursos; el sistema genera el código de activación de cada persona registrada».
   def crear
     curso = curso_del_docente
+
+    # CU-05 E2 · «se rechaza la vinculación de un alumno a un segundo curso vigente
+    # dentro del mismo año lectivo». El alumno se identifica por su correo, que la Tabla
+    # 21 declara único; la regla se verifica antes que la unicidad del correo, para que
+    # el rechazo sea el de la regla y no el del dato repetido.
+    existente = Usuario.find_by(correo: datos_de_persona[:correo], rol: "alumno")
+    AlumnoCurso.verificar_pertenencia_unica!(alumno_id: existente.id, curso: curso) if existente
 
     # Quality Spec · persona, código y vinculación en una transacción: todo o nada.
     resultado = ActiveRecord::Base.transaction do
