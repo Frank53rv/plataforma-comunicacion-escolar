@@ -106,7 +106,7 @@ contraste contra la Tabla 22.
 
 ## 5 · Compuertas de verificación
 
-`bin/verificar` corre siete compuertas. Están escritas para **fallar**, no para informar.
+`bin/verificar` corre ocho compuertas. Están escritas para **fallar**, no para informar.
 No hay integración continua —el punto 4.5 lo declara de forma expresa—: las compuertas se
 corren en local antes de cada integración de rama, que es la condición que el Quality Spec
 establece en lugar de una cadena de integración.
@@ -120,6 +120,7 @@ establece en lugar de una cadena de integración.
 | `trazabilidad` | cada RF Must have tiene rama, código citado y `CP-RF-nn` | RNF-22 · CP-RNF-22 |
 | `cobertura` | cobertura de líneas de la API ≥ 70 % | RNF-20 · CP-RNF-20 |
 | `tiempo` | zona horaria, lectura de hora y franja de disponibilidad ↔ punto 4.2 | RF-33 · RN-24 · RN-32 |
+| `estilo` | RuboCop y ESLint sin hallazgos ni excepciones por archivo (D-14) | Quality Spec · Tabla 42 |
 
 ## 6 · Cuando encuentres un hueco
 

@@ -9,5 +9,5 @@ import Aplicacion from "./Aplicacion.jsx";
 createRoot(document.getElementById("raiz")).render(
   <StrictMode>
     <Aplicacion />
-  </StrictMode>
+  </StrictMode>,
 );

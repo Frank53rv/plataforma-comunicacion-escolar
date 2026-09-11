@@ -10,8 +10,8 @@ Repositorio construido **a partir del documento de grado**, no al revés.
 | `documento/` | El `.docx` versión 5.2. Fuente de verdad única. |
 | `specs/` | Su contenido normativo, extraído a Markdown y JSON. No se edita a mano. |
 | `CLAUDE.md` | Contrato que la asistencia de IA lee al abrir el repositorio. |
-| `tools/` | El extractor y las siete compuertas de verificación. |
-| `bin/verificar` | Corre las siete compuertas. Ninguna rama se integra en rojo. |
+| `tools/` | El extractor y las ocho compuertas de verificación. |
+| `bin/verificar` | Corre las ocho compuertas. Ninguna rama se integra en rojo. |
 
 ## Puesta en marcha
 
@@ -28,8 +28,10 @@ en el histórico de revisiones del documento.
 ## Antes de cada integración de rama
 
 ```bash
-bin/rails routes > tmp/rutas.txt
-bundle exec rspec                  # genera coverage/.last_run.json
+docker compose exec api bundle exec rspec                   # api/coverage/.last_run.json
+docker compose exec api bin/rails routes > api/tmp/rutas.txt
+docker compose exec api bundle exec rubocop --format json --out tmp/rubocop.json
+(cd cliente && npx eslint . -f json -o tmp/eslint.json)
 ./bin/verificar
 ```
 
@@ -39,7 +41,7 @@ Para que no dependa de la memoria, instalá el gancho:
 git config core.hooksPath hooks
 ```
 
-## Las siete compuertas
+## Las ocho compuertas
 
 | Compuerta | Compara | Verifica |
 |---|---|---|
@@ -50,6 +52,7 @@ git config core.hooksPath hooks
 | trazabilidad | cada Must have con código, prueba `CP-RF-nn` y rama | RNF-22 · CP-RNF-22 |
 | cobertura | líneas de la API ≥ 70 % | RNF-20 · CP-RNF-20 |
 | tiempo | zona horaria, lectura de hora y franja de disponibilidad ↔ punto 4.2 | RF-33 · RN-24 · RN-32 |
+| estilo | RuboCop y ESLint sin hallazgos ni excepciones (D-14) | Quality Spec · Tabla 42 |
 
 No hay integración continua: el punto 4.5 del documento lo declara de forma expresa. Estas
 compuertas son la condición de integración que la reemplaza, conforme al Quality Spec.
