@@ -319,6 +319,36 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
   del secreto, que con el costo de bcrypt y el vencimiento de siete días hacen inviable la
   búsqueda exhaustiva sin necesidad de limitar intentos.
 
+## D-12 · ¿Se regenera el código de una cuenta ya activa? El borde entre RF-07 y RF-08
+- **Dónde apareció:** RF-07 · RF-06 · RF-08 · CU-02 flujo B
+- **Qué dice el documento:**
+  - RF-07 (Must have): «regenerar el código de un alumno o tutor de sus cursos, y el
+    directivo el de un docente, **cuando el anterior venció o se perdió**, invalidando el
+    previo».
+  - RF-08 (**Should have**): «restablecer la contraseña **mediante un código regenerado
+    según RF-07**, sin requerir servicio de correo saliente». Tiene su propia operación,
+    `POST /recuperaciones`, que no se construye.
+  - CU-02 flujo alternativo B: «la recuperación de acceso de quien olvidó su contraseña
+    **recorre este mismo flujo** con un código regenerado conforme a CU-04 o CU-05».
+- **Qué no dice:** si RF-07 alcanza a la persona cuya cuenta ya está activa, ni si
+  `POST /activaciones` acepta el código de una cuenta activa.
+- **Por qué importa:** si RF-07 regenera para cuentas activas y `POST /activaciones` las
+  acepta, la recuperación de contraseña queda funcionando por dos operaciones Must have: es
+  RF-08 construido sin decisión adoptada, contra el Boundary 1. RF-06, tal como está
+  construido, aceptaría hoy ese código.
+- **Alternativas:**
+  - **A.** RF-07 regenera sólo para cuentas pendientes —«el anterior venció o se perdió»
+    se refiere al código de activación— y `POST /activaciones` rechaza la cuenta ya
+    activa. La recuperación queda fuera del MVP hasta que RF-08 se adopte; quien olvida su
+    contraseña no la recupera en la sesión de validación.
+  - **B.** RF-07 regenera para cualquier cuenta no dada de baja, pero `POST /activaciones`
+    sólo activa cuentas pendientes. El código de una cuenta activa queda a la espera de
+    `POST /recuperaciones`: se genera y no sirve para nada en el MVP.
+  - **C.** Se adopta RF-08 por decisión registrada y se construye `POST /recuperaciones`.
+    Exige la marca de adopción, actualizar la clasificación de la Tabla 17 y consume horas
+    fuera del presupuesto comprometido.
+- **Estado: ABIERTA.** Bloquea RF-07 y obliga a revisar RF-06.
+
 ---
 
 ## Pendiente de decisión del autor
