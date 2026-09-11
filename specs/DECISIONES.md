@@ -347,7 +347,13 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
   - **C.** Se adopta RF-08 por decisión registrada y se construye `POST /recuperaciones`.
     Exige la marca de adopción, actualizar la clasificación de la Tabla 17 y consume horas
     fuera del presupuesto comprometido.
-- **Estado: ABIERTA.** Bloquea RF-07 y obliga a revisar RF-06.
+- **Estado: RESUELTA · se adopta A** — decisión del autor, 11 de septiembre de 2026.
+- **Realización:** RF-07 regenera únicamente el código de una cuenta pendiente; ante una
+  cuenta activa o dada de baja responde 422. `POST /activaciones` activa únicamente
+  cuentas pendientes: el código de una cuenta ya activa se rechaza con el mismo 410 que el
+  código no vigente. La recuperación de contraseña queda fuera del MVP hasta que RF-08 se
+  adopte por decisión registrada; la cuenta directiva conserva su recuperación por
+  variable de entorno (RN-08).
 
 ---
 

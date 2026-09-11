@@ -109,6 +109,18 @@ RSpec.describe "Activación de cuenta", type: :request do
     expect(alta.codigo_activacion.reload.usado_en).to be_nil
   end
 
+  # D-12 · restablecer la contraseña de una cuenta activa es RF-08, Should have
+  it "no restablece la contraseña de una cuenta ya activa: 410, igual que un código no vigente" do
+    alta.usuario.update!(estado: "activo", contrasena: "clave-original-123")
+
+    activar(alta.codigo_en_claro, "clave-sustituta-456")
+
+    expect(response).to have_http_status(:gone)
+    expect(cuerpo["codigo"]).to eq("codigo_no_vigente")
+    expect(alta.usuario.reload.contrasena_valida?("clave-original-123")).to be(true)
+    expect(alta.codigo_activacion.reload.usado_en).to be_nil
+  end
+
   it "rechaza con 422 la petición sin los campos de la Tabla 40" do
     post "/api/v1/activaciones", params: { codigo: alta.codigo_en_claro }, as: :json
 
