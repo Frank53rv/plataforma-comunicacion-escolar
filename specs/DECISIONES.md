@@ -9,7 +9,7 @@ Formato de las entradas: ver `../CLAUDE.md`, punto 6.
 La marca `adoptado: RF-nn` en una entrada habilita a la compuerta `alcance` a aceptar ese
 requisito Should have; sin ella, construirlo deja la rama en rojo.
 
-**Actualizado el 10 de septiembre de 2026**, contra el documento en su versión 5.2.
+**Actualizado el 11 de septiembre de 2026**, contra el documento en su versión 5.2.
 
 ---
 
@@ -226,11 +226,98 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
     ser anterior al envío —`entregada_en`, `vista_en` y `leida_en` son nulas o posteriores o
     iguales a `enviada_en`— y la no regresión del estado se resuelve en la capa de negocio,
     con CP-RF-34 y CP-RF-36 como verificación.
-- **Estado: RESUELTA en cuanto al esquema · ABIERTA en cuanto a la invalidación de RF-07.**
+- **Estado: RESUELTA.** La invalidación de RF-07 la decidió el autor el 11 de septiembre
+  de 2026: al regenerar, el código anterior recibe `usado_en` con la hora del reemplazo.
+  Conserva la fila y su `generado_por` como rastro, y satisface el índice parcial. El
+  atributo `usado_en` pasa a leerse como «dejó de ser canjeable, por uso o por reemplazo».
 - **Fundamento:** el criterio no es nuevo: lo fija la propia nota de la Tabla 38 para las
   tres restricciones que ya reconoce inexpresables. Ninguna de las dos se omite: ambas se
   verifican, y la diferencia está en dónde. Ninguna entidad, atributo ni restricción del
   diccionario se agrega, suprime ni renombra, de modo que el Boundary 3 queda intacto.
+
+## D-10 · ¿La operación de alta devuelve el código de activación en claro?
+- **Dónde apareció:** RF-05 · RF-03 · CU-02 · CU-04 · Tabla 40
+- **Qué dice el documento:** cinco pasajes, que no concuerdan entre sí.
+  - Prosa que introduce la Tabla 40: «excluidos los que el resguardo impide exponer —la
+    contraseña derivada y el código de activación **se devuelven nunca**, conforme a
+    RNF-03 y RN-06—».
+  - Fila `POST /docentes`: «recurso usuario y codigo_activacion con vence_en, **sin el
+    código en claro**».
+  - Fila `POST /usuarios/{id}/codigos-activacion`: «codigo_activacion con vence_en y **el
+    código en claro, devuelto una sola vez**».
+  - Filas `POST /alumnos` y `POST /alumnos/{id}/tutores`: «codigo_activacion», sin
+    precisar.
+  - Nota de la Tabla 40: «El código de activación se devuelve en claro una sola vez, **en
+    la respuesta de la operación que lo genera o regenera**».
+  - CU-02, paso 1: «**quien realizó el alta entrega el código** por el canal que la
+    institución ya utiliza».
+- **El conflicto:** `POST /docentes` **genera** el código (CU-04 paso 2 · RF-05). La nota
+  manda devolverlo en claro en esa respuesta; la fila manda no hacerlo. Si no se devuelve,
+  quien hizo el alta nunca lo conoce y el paso 1 de CU-02 no puede ocurrir: la única forma
+  de obtener un código entregable sería regenerarlo en el acto, y CU-04 paso 4 reserva la
+  regeneración para «cuando el anterior venció o se perdió».
+- **Alternativas:**
+  - **A.** Prevalecen la nota y CU-02: las tres operaciones de alta y la de regeneración
+    devuelven el código en claro una sola vez. «Sin el código en claro» de la fila
+    `POST /docentes` se corrige en el documento, y la prosa introductoria se lee como
+    referida al código almacenado —su derivación—, que en efecto no se devuelve nunca.
+  - **B.** Prevalece la fila: el alta no devuelve el código y quien la hace lo obtiene
+    regenerándolo. Exige corregir la nota y CU-04 paso 4, y convierte cada alta en dos
+    peticiones.
+- **Consecuencia de cada una:** A hace ejecutable CU-02 tal como está escrito y exige
+  corregir una fila. B exige corregir la nota, un caso de uso y el flujo de cuatro tareas
+  críticas (TC-03, TC-08, TC-09, TC-15, TC-21).
+- **Estado: RESUELTA · se adopta A** — decisión del autor, 11 de septiembre de 2026.
+- **Fundamento:** la nota de la Tabla 40 y el paso 1 de CU-02 concuerdan entre sí y con el
+  flujo de las tareas críticas; la fila de `POST /docentes` es la que queda aislada. Las tres
+  operaciones de alta y la de regeneración devuelven el código en claro una sola vez, en el
+  miembro `codigo` de `codigo_activacion`. La prosa introductoria de la Tabla 40 se lee como
+  referida a la derivación almacenada, que en efecto no se devuelve nunca.
+  **Pendiente de reposición documental:** corregir en el `.docx` la fila `POST /docentes`
+  de la Tabla 40 —«sin el código en claro»— conforme a la nota de la misma tabla.
+
+## D-11 · Formato del código de activación y cómo se lo localiza al canjearlo
+- **Dónde apareció:** RF-05 · RF-06 · CU-02 · Tabla 38 · Tabla 40
+- **Qué dice el documento:** la entidad almacena `codigo_hash varchar(60)` y «su derivación
+  y no el valor, **del mismo modo que la contraseña**» (nota de la Tabla 40), es decir con
+  bcrypt, cuya salida mide exactamente 60 caracteres. `POST /activaciones` recibe
+  **únicamente** `codigo` y `contrasena` (Tabla 40): ni correo ni identificador.
+- **Qué no dice:** el formato del código —largo, alfabeto—, ni cómo se encuentra la fila
+  que corresponde al código presentado. bcrypt usa sal aleatoria: dos derivaciones del
+  mismo valor difieren, de modo que el código presentado no se puede buscar por igualdad
+  contra `codigo_hash`.
+- **Por qué importa además:** `POST /activaciones` es una operación sin autenticar. El
+  documento no prevé limitación de intentos, e incorporarla exigiría una dependencia que
+  la Tabla 34 no consigna (Boundary 7). La resistencia a la adivinación depende entonces
+  enteramente de la entropía del código.
+- **Alternativas:**
+  - **A.** Código aleatorio corto, bcrypt, y búsqueda recorriendo los códigos vigentes
+    uno por uno. Literal con la nota, pero cada canje cuesta una comparación bcrypt por
+    código pendiente: con noventa altas simultáneas del curso piloto, del orden de veinte
+    segundos por petición.
+  - **B.** Código en dos partes, `localizador-secreto`: el localizador son los primeros
+    caracteres del `id` de la fila de `codigo_activacion`, y el secreto se deriva con
+    bcrypt en `codigo_hash`. Localización por el identificador, una sola comparación
+    bcrypt, derivación «del mismo modo que la contraseña», sin columna nueva. Ejemplo:
+    `3F9A1C2E-K7PX9M4Q` —dieciocho caracteres, alfabeto sin ambigüedades, unos cuarenta
+    bits de secreto—.
+  - **C.** Derivación determinista con clave (HMAC-SHA256, 44 caracteres en base64) y
+    búsqueda por igualdad. Rápida y simple, pero no es la derivación de la contraseña y se
+    aparta de la letra de la nota.
+- **Consecuencia de cada una:** A es literal y lenta, y la lentitud crece con la
+  cantidad de altas pendientes. B es literal en la derivación y rápida, al costo de un
+  código más largo de dictar. C es rápida y corta, y se aparta de la nota.
+- **Estado: RESUELTA · se adopta B** — decisión del autor, 11 de septiembre de 2026.
+- **Realización:** el código tiene la forma `LLLLLLLL-SSSSSSSS`. El localizador son los
+  ocho primeros caracteres hexadecimales del `id` de la fila de `codigo_activacion`, que
+  genera el motor de manera aleatoria. El secreto son ocho caracteres del alfabeto de
+  Crockford —dígitos y mayúsculas sin I, L, O ni U, pensado para transcribirse a mano—, y
+  se deriva con bcrypt en `codigo_hash`, del mismo modo que la contraseña. Al canjear se
+  normaliza la entrada —mayúsculas, sin espacios ni guion, O por 0 e I o L por 1— porque el
+  código se entrega «por el canal que la institución ya utiliza» y se transcribe a mano.
+  El localizador no es secreto: la resistencia a la adivinación la dan los cuarenta bits
+  del secreto, que con el costo de bcrypt y el vencimiento de siete días hacen inviable la
+  búsqueda exhaustiva sin necesidad de limitar intentos.
 
 ---
 
