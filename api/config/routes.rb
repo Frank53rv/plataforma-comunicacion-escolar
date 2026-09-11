@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     # CU-02 · Activar cuenta con código · RF-06, RF-43
     post  "activaciones",           to: "activaciones#crear"
     patch "usuarios/me/contrasena", to: "usuarios#cambiar_contrasena"
+
+    # CU-04 · Administrar docentes y asignaciones · RF-03, RF-05
+    post "docentes", to: "docentes#crear"
   end
 
   # Comprobación de salud del contenedor (Tabla 45). No pertenece a la interfaz
