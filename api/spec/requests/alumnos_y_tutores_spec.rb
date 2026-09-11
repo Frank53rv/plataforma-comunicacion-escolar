@@ -106,7 +106,7 @@ RSpec.describe "Alta de alumnos y tutores", type: :request do
 
   describe "validaciones de forma · 422" do
     it "rechaza el alumno sin los campos de la Tabla 40" do
-      post "/api/v1/alumnos", params: { nombre: "Solo" , curso_id: curso.id },
+      post "/api/v1/alumnos", params: { nombre: "Solo", curso_id: curso.id },
            headers: cabecera_de(docente), as: :json
 
       expect(response).to have_http_status(:unprocessable_content)

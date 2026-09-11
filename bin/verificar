@@ -8,7 +8,7 @@ echo "  VERIFICACIÓN DE FIDELIDAD AL DOCUMENTO — TFG v5.2"
 echo "  ================================================="
 echo
 rojo=0
-for g in contrato errores esquema alcance trazabilidad tiempo cobertura; do
+for g in contrato errores esquema alcance trazabilidad tiempo cobertura estilo; do
   python3 "tools/gate_${g}.py" || rojo=1
 done
 if [ "$rojo" -ne 0 ]; then

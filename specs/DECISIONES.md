@@ -386,6 +386,24 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
   titularidad, la vinculación del reemplazo se cierra y se abre una nueva como titular
   desde ese día, de modo que el historial conserve desde cuándo lo es.
 
+## D-14 · El estilo no tenía compuerta
+- **Dónde apareció:** `bin/verificar` · al cerrar el módulo A del incremento 1
+- **Qué dice el documento:** el Quality Spec de la Tabla 37 exige «RuboCop con la
+  configuración por defecto del framework, sin excepciones por archivo» y «ESLint y
+  Prettier con la configuración recomendada para la biblioteca de interfaz», verificados
+  por «ejecución del analizador en cada envío al repositorio; **el incumplimiento detiene
+  la integración de la rama**». La Tabla 42 pide para `develop` «analizadores de estilo
+  sin hallazgos».
+- **Qué no dice:** nada. Divergencia de las herramientas: ninguna de las siete compuertas
+  verificaba el estilo, de modo que una rama con hallazgos podía integrarse en verde.
+- **Estado: RESUELTA.** Se agrega la octava compuerta, `estilo`, con el patrón de las
+  demás: lee el informe que produce cada analizador —`api/tmp/rubocop.json` y
+  `cliente/tmp/eslint.json`— y falla ante cualquier hallazgo o ante una excepción de
+  RuboCop en la configuración o en el código. Al activarla, RuboCop encontró un hallazgo
+  en todo lo construido hasta acá —un espacio antes de una coma, en una prueba— y ESLint
+  ninguno. El cliente adopta la configuración que Vite propone para React, más la de
+  Prettier para el formato.
+
 ---
 
 ## Pendiente de decisión del autor

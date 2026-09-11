@@ -190,13 +190,15 @@ Tabla 27, conforme a CP-RNF-17. La compuerta `contrato` contrasta los tres senti
 
 ## Antes de integrar cualquier rama
 
-No hay integración continua: el punto 4.5 lo declara de forma expresa. Las siete
+No hay integración continua: el punto 4.5 lo declara de forma expresa. Las ocho
 compuertas son la condición de integración que la reemplaza, conforme al Quality Spec de
 la Tabla 37.
 
 ```bash
 docker compose exec api bundle exec rspec              # genera api/coverage/.last_run.json
 docker compose exec api bin/rails routes > api/tmp/rutas.txt
+docker compose exec api bundle exec rubocop --format json --out tmp/rubocop.json
+(cd cliente && npx eslint . -f json -o tmp/eslint.json)
 ./bin/verificar
 ```
 
