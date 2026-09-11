@@ -12,9 +12,11 @@ Rails.application.routes.draw do
     post  "activaciones",           to: "activaciones#crear"
     patch "usuarios/me/contrasena", to: "usuarios#cambiar_contrasena"
 
-    # CU-04 · Administrar docentes y asignaciones · RF-03, RF-05, RF-15
-    post "docentes",              to: "docentes#crear"
-    post "cursos/:id/docentes",   to: "vinculaciones_docentes#crear"
+    # CU-04 · Administrar docentes y asignaciones · RF-03, RF-05, RF-15, RF-44
+    post   "docentes",                       to: "docentes#crear"
+    delete "docentes/:id",                   to: "docentes#destruir"
+    post   "cursos/:id/docentes",            to: "vinculaciones_docentes#crear"
+    delete "cursos/:id/docentes/:usuario_id", to: "vinculaciones_docentes#destruir"
 
     # CU-05 · Administrar alumnos y tutores · RF-04, RF-05, RF-09
     post   "alumnos",             to: "alumnos#crear"

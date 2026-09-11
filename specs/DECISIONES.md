@@ -377,8 +377,14 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
 - **Consecuencia de cada una:** A sigue el orden de RF-44 y RN-13 —desvincular, después dar
   de baja— y cada operación hace una sola cosa. B ahorra pasos pero cierra vinculaciones
   sin que ninguna operación lo declare. C contradice la postcondición de CU-04.
-- **Estado: ABIERTA.** Bloquea `DELETE /docentes/{id}`. La desvinculación
-  (`CP-RF-44`) está especificada y no depende de esta entrada.
+- **Estado: RESUELTA · se adopta A** — decisión del autor, 11 de septiembre de 2026.
+- **Realización:** `DELETE /docentes/{id}` responde 409 con RN-13 mientras el docente
+  conserve alguna vinculación vigente; sin vinculaciones, cambia únicamente el estado.
+  El autor decidió además que el reemplazo que se designa en la desvinculación del titular
+  debe tener ya una vinculación vigente con el curso —si no, 422—: la desvinculación no
+  crea vinculaciones, que la Tabla 27 asigna a `POST /cursos/{id}/docentes`. Al asumir la
+  titularidad, la vinculación del reemplazo se cierra y se abre una nueva como titular
+  desde ese día, de modo que el historial conserve desde cuándo lo es.
 
 ---
 
