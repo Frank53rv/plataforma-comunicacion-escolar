@@ -1,5 +1,6 @@
-# RF-04 Alta de alumnos y tutores · RF-05 · RF-13 · CU-05 · RN-01, RN-03, RN-05, RN-30
-# Prueba: CP-RF-04 · CP-RF-05 · CP-RF-13
+# RF-04 Alta de alumnos y tutores · RF-05 · RF-13 · RF-09 · CU-05 · RN-01, RN-03,
+# RN-05, RN-10, RN-11, RN-30
+# Prueba: CP-RF-04 · CP-RF-05 · CP-RF-13 · CP-RF-09
 #
 # Tabla 27 · POST /api/v1/alumnos · docente · «Dar de alta a un alumno y vincularlo a
 # un curso».
@@ -8,6 +9,9 @@
 class AlumnosController < ApplicationController
   # RN-03 · «El docente da de alta a los alumnos y tutores de sus cursos.»
   autoriza :crear, roles: %w[docente]
+  # Tabla 27 · DELETE /alumnos/{id}: «Directivo, docente titular». La titularidad la
+  # decide PotestadDeBaja (RN-10).
+  autoriza :destruir, roles: %w[directivo docente]
 
   # CU-05 pasos 1 y 3 · «el docente registra al alumno y lo vincula a uno de sus
   # cursos; el sistema genera el código de activación de cada persona registrada».
@@ -35,6 +39,13 @@ class AlumnosController < ApplicationController
       alumno_curso: vinculacion.recurso,
       codigo_activacion: alta.codigo_activacion.representacion(codigo_en_claro: alta.codigo_en_claro)
     }, status: :created
+  end
+
+  # CU-05 flujo B · Tabla 40 · sin cuerpo → recurso usuario con estado dado de baja.
+  def destruir
+    alumno = Usuario.alumno.find(params[:id])
+
+    render json: BajaLogica.ejecutar(persona: alumno, por: usuario_actual).recurso, status: :ok
   end
 
   private
