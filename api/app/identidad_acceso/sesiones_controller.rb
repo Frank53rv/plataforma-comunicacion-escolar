@@ -20,13 +20,7 @@ class SesionesController < ApplicationController
       raise ErrorDeDominio::NoAutenticado
     end
 
-    emitido = TokenDeSesion.emitir(usuario)
-
-    render json: {
-      token: emitido[:token],
-      vence_en: emitido[:vence_en],
-      usuario: usuario_publico(usuario)
-    }, status: :created
+    render json: RespuestaDeSesion.para(usuario), status: :created
   end
 
   # RNF-02 · el token es verificable sin estado. Cerrar la sesión consiste en que el
@@ -38,12 +32,6 @@ class SesionesController < ApplicationController
   end
 
   private
-
-  # Tabla 40 · «usuario con id, nombre, apellido, rol y credencial_provisional».
-  # La derivación de la contraseña no figura (RNF-03).
-  def usuario_publico(usuario)
-    usuario.slice(:id, :nombre, :apellido, :rol, :credencial_provisional)
-  end
 
   def parametros
     @parametros ||= params.permit(:correo, :contrasena).tap do |p|
