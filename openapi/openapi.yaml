@@ -1439,7 +1439,14 @@ components:
       properties:
         usuario: { $ref: '#/components/schemas/Usuario' }
         tutor_alumno: { $ref: '#/components/schemas/TutorAlumno' }
-        codigo_activacion: { $ref: '#/components/schemas/CodigoActivacionEnClaro' }
+        codigo_activacion:
+          description: >-
+            Nulo cuando el tutor ya existía: CU-05 paso 3 genera el código para «cada
+            persona registrada», y el tutor existente conserva su única cuenta (CU-05
+            flujo A · RF-14).
+          oneOf:
+            - $ref: '#/components/schemas/CodigoActivacionEnClaro'
+            - type: 'null'
 
     AnioLectivo:
       type: object
