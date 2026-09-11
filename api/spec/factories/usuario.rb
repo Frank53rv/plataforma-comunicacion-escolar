@@ -24,7 +24,7 @@ FactoryBot.define do
     # La cuenta existe pero todavía no fue activada con su código (CU-02)
     trait :pendiente do
       estado { "pendiente" }
-      contrasena { nil }
+      contrasena { SecureRandom.base58(32) }
     end
   end
 end

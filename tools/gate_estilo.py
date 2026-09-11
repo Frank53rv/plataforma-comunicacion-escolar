@@ -32,7 +32,7 @@ else:
 
 # --- configuración sin excepciones por archivo ---
 cfg = leer_texto(os.path.join(API, '.rubocop.yml'))
-if 'Exclude' in cfg or 'rubocop:disable' in ''.join(leer_texto(p) for p in archivos(('.rb',), 'api/app', 'api/lib', 'api/spec', 'api/config')):
+if 'Exclude' in cfg or 'rubocop:disable' in ''.join(leer_texto(p) for p in archivos(('.rb',), *CODIGO_API, 'api/spec', 'api/config')):
     R.falla('hay excepciones de RuboCop (Exclude o rubocop:disable): el Quality Spec no las admite')
 
 # --- cliente ---

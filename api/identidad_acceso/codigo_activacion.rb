@@ -86,10 +86,11 @@ class CodigoActivacion < ApplicationRecord
     usado_en.nil? && vence_en > Time.current
   end
 
-  # Tabla 40 · «codigo_activacion con vence_en». El código en claro se agrega sólo en
-  # la respuesta que lo genera o regenera.
+  # Tabla 40 · «codigo_activacion con vence_en» y, en la operación que lo genera o
+  # regenera, «el código en claro, devuelto una sola vez» (D-10). Nada más: la fila no
+  # se expone como recurso.
   def representacion(codigo_en_claro: nil)
-    base = { id: id, usuario_id: usuario_id, vence_en: vence_en }
+    base = { vence_en: vence_en }
     codigo_en_claro ? base.merge(codigo: codigo_en_claro) : base
   end
 end

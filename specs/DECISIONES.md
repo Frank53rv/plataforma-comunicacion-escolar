@@ -137,7 +137,14 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
   alumnos o privada»—; `causa` queda cerrada en cuatro valores por RF-37, CU-14 y la entrada
   D-04; `estado_suscripcion` por «el estado pasa a inválida ante credencial rechazada»;
   `canal` por RNF-11 y la resolución del canal de entrega del punto 4.2; y `estado_anio` por
-  RN-31 y la Tabla 40 («estado igual a cerrado»).
+  RN-31 y la Tabla 40 («estado igual a cerrado»). **Corrección de la auditoría del 11 de
+  septiembre de 2026:** `canal` no está enumerado en ninguna tabla; sus valores —`push` y
+  `aplicacion`— se derivan de RF-37 («entregar el aviso dentro de la aplicación»), de
+  RNF-11 y de la resolución del canal de entrega del punto 4.2. De `causa`, el documento
+  fija los cuatro supuestos pero no sus identificadores: se toman de la letra de RF-37 y de
+  CU-14 E1 —`indisponibilidad_del_servicio_push`, `ausencia_de_acuse_del_cliente`,
+  `falta_de_soporte_del_navegador`, `credencial_invalida`—. Y `tipo_conversacion` toma la
+  letra de la Tabla 21: `grupal_de_tutores`, `grupal_de_alumnos`, `privada`.
 - **Qué no dice:** los valores admisibles de `turno`, `estado_usuario`, `estado_curso` y
   `estado_conversacion`. La palabra «turno» aparece en CU-03 y en la Tabla 38, en ningún caso
   con sus valores.

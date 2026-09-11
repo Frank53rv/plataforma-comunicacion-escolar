@@ -1,10 +1,7 @@
 # Tabla 34 · ActionCable con adaptador Solid Cable, respaldado por la misma base de
-# datos y sin almacén en memoria adicional.
+# datos (D-08) y sin almacén en memoria adicional. Sin conexión propia: usa la principal.
 default: &default
   adapter: solid_cable
-  connects_to:
-    database:
-      writing: primary
   polling_interval: 0.1.seconds
   message_retention: 1.day
 

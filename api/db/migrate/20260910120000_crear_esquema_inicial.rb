@@ -13,11 +13,16 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     create_enum :estado_anio_enum,         %w[vigente cerrado]
     create_enum :estado_curso_enum,        %w[vigente archivado]
     create_enum :estado_anuncio_enum,      %w[borrador programado publicado archivado eliminado]
-    create_enum :tipo_conversacion_enum,   %w[grupal_tutores grupal_alumnos privada]
+    # Tabla 21 · «grupal de tutores, grupal de alumnos o privada»
+    create_enum :tipo_conversacion_enum,   %w[grupal_de_tutores grupal_de_alumnos privada]
     create_enum :estado_conversacion_enum, %w[activa solo_lectura]
     create_enum :canal_enum,               %w[push aplicacion]
-    create_enum :causa_enum,               %w[servicio_no_disponible sin_acuse_del_cliente
-                                              navegador_sin_soporte credencial_invalida]
+    # RF-37 · «indisponibilidad del servicio push, ausencia de acuse del cliente o falta de
+    # soporte del navegador» · CU-14 E1 · «credencial inválida». Cerrado en cuatro por D-04.
+    create_enum :causa_enum,               %w[indisponibilidad_del_servicio_push
+                                              ausencia_de_acuse_del_cliente
+                                              falta_de_soporte_del_navegador
+                                              credencial_invalida]
     create_enum :estado_suscripcion_enum,  %w[vigente invalida]
 
     # --- usuario · RN-04 · RN-15 · RNF-03 ---
@@ -25,10 +30,10 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
       t.string  :nombre,                 limit: 80,  null: false
       t.string  :apellido,               limit: 80,  null: false
       t.citext  :correo,                             null: false
-      t.string  :contrasena_hash,        limit: 60
+      t.string  :contrasena_hash,        limit: 60,  null: false
       t.enum    :rol,                    enum_type: "rol_enum",            null: false
       t.enum    :estado,                 enum_type: "estado_usuario_enum", null: false
-      t.boolean :credencial_provisional,             null: false, default: false
+      t.boolean :credencial_provisional,             null: false
       t.datetime :creado_en,                         null: false
     end
     add_index :usuario, :correo, unique: true
@@ -42,8 +47,8 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
       t.datetime :usado_en
       t.uuid     :generado_por,           null: false
     end
-    add_foreign_key :codigo_activacion, :usuario, column: :usuario_id
-    add_foreign_key :codigo_activacion, :usuario, column: :generado_por
+    add_foreign_key :codigo_activacion, :usuario, column: :usuario_id,   on_delete: :restrict
+    add_foreign_key :codigo_activacion, :usuario, column: :generado_por, on_delete: :restrict
     # D-09 · la mitad expresable de «UNIQUE parcial (usuario_id) donde usado_en es nulo
     # y vence_en es futuro»: el predicado no admite la hora actual por no ser inmutable.
     add_index :codigo_activacion, :usuario_id, unique: true,
@@ -54,7 +59,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
       t.uuid    :usuario_id,       null: false
       t.time    :hora_inicio,      null: false
       t.time    :hora_fin,         null: false
-      t.boolean :recibir_mensajes, null: false, default: true
+      t.boolean :recibir_mensajes, null: false
     end
     add_foreign_key :preferencia, :usuario, column: :usuario_id
     add_index :preferencia, :usuario_id, unique: true
@@ -85,7 +90,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     create_table :docente_curso, id: :uuid, default: -> { "gen_random_uuid()" } do |t|
       t.uuid    :usuario_id,    null: false
       t.uuid    :curso_id,      null: false
-      t.boolean :es_titular,    null: false, default: false
+      t.boolean :es_titular,    null: false
       t.date    :vigente_desde, null: false
       t.date    :vigente_hasta
     end
@@ -158,7 +163,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
       t.integer  :numero_version, limit: 2, null: false
       t.string   :titulo, limit: 160, null: false
       t.text     :cuerpo,             null: false
-      t.datetime :publicado_en
+      t.datetime :publicado_en,       null: false
     end
     add_foreign_key :anuncio_version, :anuncio, column: :anuncio_id, on_delete: :cascade
     add_index :anuncio_version, %i[anuncio_id numero_version], unique: true
@@ -179,7 +184,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
                          name: "chk_adjunto_una_sola_pertenencia"
     add_check_constraint :adjunto, "tipo_mime = 'application/pdf'",
                          name: "chk_adjunto_solo_pdf"
-    add_check_constraint :adjunto, "tamano > 0 AND tamano <= 5242880",
+    add_check_constraint :adjunto, "tamano <= 5242880",
                          name: "chk_adjunto_tamano_maximo"
 
     # --- entrega_anuncio · RN-32 · RF-34 · RF-36 ---
@@ -213,7 +218,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     end
     add_foreign_key :conversacion, :curso, column: :curso_id
     add_index :conversacion, %i[curso_id tipo], unique: true,
-              where: "tipo IN ('grupal_tutores', 'grupal_alumnos')",
+              where: "tipo IN ('grupal_de_tutores', 'grupal_de_alumnos')",
               name: "idx_conversacion_unica_grupal_por_curso"
 
     # --- participante · RN-23 · RF-29 ---
@@ -247,6 +252,10 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     add_foreign_key :puntero_lectura, :conversacion, column: :conversacion_id
     add_foreign_key :puntero_lectura, :usuario,      column: :usuario_id
     add_foreign_key :puntero_lectura, :mensaje,      column: :ultimo_mensaje_id
+
+    # Tabla 38 · adjunto: «FK a anuncio_version y a mensaje». La segunda se declara acá
+    # porque la tabla mensaje se crea después que adjunto.
+    add_foreign_key :adjunto, :mensaje, column: :mensaje_id
     add_index :puntero_lectura, %i[conversacion_id usuario_id], unique: true
 
     # --- suscripcion_push · RF-37 · RNF-11 ---
@@ -269,7 +278,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
       t.uuid     :entrega_anuncio_id
       t.uuid     :suscripcion_id
       t.enum     :causa, enum_type: "causa_enum", null: false
-      t.string   :codigo_proveedor, limit: 80
+      t.string   :codigo_proveedor, limit: 80, null: false
       t.datetime :ocurrido_en, null: false
     end
     add_foreign_key :bitacora_envio, :entrega_anuncio,  column: :entrega_anuncio_id

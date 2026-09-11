@@ -35,6 +35,9 @@ module ManejadorDeErrores
     # modelo; si dos peticiones simultáneas la violan, el motor la rechaza y el dato es
     # el mismo dato inaceptable, no un fallo interno.
     rescue_from ActiveRecord::RecordNotUnique,     with: :responder_datos_inaceptables
+    # Un dato que excede la longitud que la Tabla 38 declara para su columna es un dato
+    # inaceptable (422), no un «fallo no previsto» (500).
+    rescue_from ActiveRecord::ValueTooLong,        with: :responder_datos_inaceptables
     rescue_from ActionController::ParameterMissing, with: :responder_datos_inaceptables
   end
 

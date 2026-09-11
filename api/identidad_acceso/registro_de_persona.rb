@@ -13,11 +13,14 @@ class RegistroDePersona
 
   def self.registrar(nombre:, apellido:, correo:, rol:, registrado_por:)
     ActiveRecord::Base.transaction do
-      # La cuenta nace pendiente y sin contraseña: la define la propia persona al
-      # canjear su código (RN-06 · CU-02 paso 4).
+      # La contraseña la define la propia persona al canjear su código (RN-06 · CU-02
+      # paso 4). Hasta entonces la Tabla 38 exige contrasena_hash no nulo: se deriva un
+      # valor aleatorio que no se conserva ni se comunica a nadie. La cuenta pendiente no
+      # puede autenticarse con él porque no está activa (CU-01, precondición).
       usuario = Usuario.create!(
         nombre: nombre, apellido: apellido, correo: correo,
-        rol: rol, estado: "pendiente", credencial_provisional: false
+        rol: rol, estado: "pendiente", credencial_provisional: false,
+        contrasena: SecureRandom.base58(32)
       )
       registro, en_claro = CodigoActivacion.generar(usuario: usuario, generado_por: registrado_por)
 

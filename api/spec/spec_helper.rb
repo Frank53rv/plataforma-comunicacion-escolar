@@ -4,17 +4,19 @@
 require "simplecov"
 
 SimpleCov.start "rails" do
+  # Figura 18 · los módulos viven fuera de app/: se incluyen en la medición.
+  track_files "{app,lib,identidad_acceso,estructura_academica,anuncios,mensajeria,notificaciones,compartido}/**/*.rb"
   enable_coverage :line
   minimum_coverage line: 70
 
   # Los módulos de la Figura 18 se reportan por separado, de modo que la evidencia de
   # cobertura se lea contra la columna «Módulo / componente» de la Tabla 22.
-  group "A · Identidad y acceso",     "app/identidad_acceso"
-  group "B · Estructura académica",   "app/estructura_academica"
-  group "C · Anuncios",               "app/anuncios"
-  group "D · Mensajería",             "app/mensajeria"
-  group "E · Notificaciones",         "app/notificaciones"
-  group "G · Transversal",            "app/compartido"
+  group "A · Identidad y acceso",     "identidad_acceso"
+  group "B · Estructura académica",   "estructura_academica"
+  group "C · Anuncios",               "anuncios"
+  group "D · Mensajería",             "mensajeria"
+  group "E · Notificaciones",         "notificaciones"
+  group "G · Transversal",            "compartido"
 end
 
 RSpec.configure do |config|

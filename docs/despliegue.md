@@ -48,12 +48,12 @@ cd plataforma-comunicacion-escolar
 ```
 plataforma-comunicacion-escolar/
 ├── api/                        interfaz de programación
-│   ├── app/identidad_acceso/       módulo A
-│   ├── app/estructura_academica/   módulo B
-│   ├── app/anuncios/               módulo C
-│   ├── app/mensajeria/             módulo D
-│   ├── app/notificaciones/         módulo E
-│   ├── app/compartido/             errores (Tabla 35), autorización
+│   ├── identidad_acceso/           módulo A
+│   ├── estructura_academica/       módulo B
+│   ├── anuncios/                   módulo C
+│   ├── mensajeria/                 módulo D
+│   ├── notificaciones/             módulo E
+│   ├── compartido/                 errores (Tabla 35), autorización
 │   └── spec/                       pruebas CP-RF y CP-RNF
 ├── cliente/                    cliente web
 │   ├── paneles/                    una carpeta por rol (RF-40)
@@ -120,8 +120,13 @@ edición manual de ningún archivo.
 
 ```bash
 docker compose exec api bin/rails db:prepare
-docker compose exec api bin/rails db:seed
+docker compose exec api bin/rails db:seed      # pendiente: ver la advertencia de abajo
 ```
+
+> **Pendiente.** El archivo de datos de prueba con el volumen de RNF-09 todavía no
+> existe: requiere los anuncios, las entregas, los mensajes y la bitácora de los
+> módulos C, D y E, que se construyen en los incrementos 2 y 3. Hasta entonces este paso
+> sólo aplica las migraciones.
 
 **Verificación:** el esquema corresponde al diccionario de la Tabla 21 —diecinueve
 entidades— y el volumen al declarado en RNF-09: un año lectivo cerrado y uno vigente,

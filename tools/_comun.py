@@ -8,6 +8,11 @@ SPECS = os.path.join(RAIZ, 'specs')
 # cliente/. Las compuertas exploran esas rutas y no la raíz; de lo contrario no
 # encontrarían nada y aprobarían por ceguera.
 API = os.path.join(RAIZ, 'api')
+# Figura 18 · raíces del código de la interfaz: los cinco módulos funcionales, el
+# componente transversal y las carpetas propias del framework.
+MODULOS = ('identidad_acceso', 'estructura_academica', 'anuncios', 'mensajeria',
+           'notificaciones', 'compartido')
+CODIGO_API = tuple('api/' + m for m in MODULOS) + ('api/app', 'api/lib')
 
 def cargar(nombre):
     with open(os.path.join(SPECS, nombre), encoding='utf-8') as f:

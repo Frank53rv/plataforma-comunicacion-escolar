@@ -27,8 +27,4 @@ Rails.application.routes.draw do
     # CU-04, CU-05 · Regeneración del código de activación · RF-07
     post "usuarios/:id/codigos-activacion", to: "codigos_activacion#crear"
   end
-
-  # Comprobación de salud del contenedor (Tabla 45). No pertenece a la interfaz
-  # versionada y la compuerta `contrato` no la considera.
-  get "up" => "rails/health#show", as: :rails_health_check
 end

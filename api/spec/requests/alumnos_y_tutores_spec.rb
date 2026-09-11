@@ -56,7 +56,7 @@ RSpec.describe "Alta de alumnos y tutores", type: :request do
       alta_de_tutor(alumno_id, correo: "tutor@ejemplo.test")
 
       tutor_id = cuerpo["usuario"]["id"]
-      codigo = CodigoActivacion.find(cuerpo["codigo_activacion"]["id"])
+      codigo = CodigoActivacion.localizar(cuerpo["codigo_activacion"]["codigo"])
       expect(codigo.usuario_id).to eq(tutor_id)
       expect(codigo.vence_en).to eq(Time.current + 7.days)
       expect(codigo.usado_en).to be_nil

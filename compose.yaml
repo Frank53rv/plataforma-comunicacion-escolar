@@ -9,20 +9,28 @@ name: plataforma-comunicacion-escolar
 services:
   db:
     image: postgres:18
-    environment:
-      POSTGRES_USER: plataforma
-      POSTGRES_PASSWORD: plataforma
-      POSTGRES_DB: plataforma_desarrollo
+    # Tabla 41 · las credenciales del motor son las de DATABASE_URL y ninguna otra: el
+    # contenedor las toma de esa misma cadena, de modo que no hace falta una variable
+    # que la tabla no enumere ni queda una credencial escrita en este archivo.
+    env_file: .env
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        export POSTGRES_USER="$$(echo "$$DATABASE_URL" | sed -E 's#^[a-z]+://([^:]+):.*#\1#')"
+        export POSTGRES_PASSWORD="$$(echo "$$DATABASE_URL" | sed -E 's#^[a-z]+://[^:]+:([^@]+)@.*#\1#')"
+        export POSTGRES_DB="$$(echo "$$DATABASE_URL" | sed -E 's#^.*/([^/?]+)([?].*)?$$#\1#')"
+        exec docker-entrypoint.sh postgres
     volumes:
       # PostgreSQL 18 ubica los datos en un subdirectorio de este punto de montaje
       - datos_postgres:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U plataforma -d plataforma_desarrollo"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432"]
       interval: 5s
       timeout: 5s
       retries: 20
-    ports:
-      - "5432:5432"
+    # Sin puertos hacia el equipo: la base sólo es alcanzable desde la red privada de la
+    # composición. La Tabla 45 no la expone.
 
   api:
     build: ./api
@@ -42,7 +50,9 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:3000/up || exit 1"]
+      # Boundary 4 · sin ruta de salud propia: se comprueba con una operación del
+      # inventario, que sin token debe responder 401 (Tabla 35).
+      test: ["CMD-SHELL", "test \"$$(curl -s -o /dev/null -w '%{http_code}' -X DELETE http://127.0.0.1:3000/api/v1/sesiones)\" = 401"]
       interval: 10s
       timeout: 5s
       retries: 12

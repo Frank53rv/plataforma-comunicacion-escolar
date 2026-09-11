@@ -64,8 +64,8 @@ RSpec.describe "Generación del código de activación", type: :model do
     it "la representación ordinaria no incluye el código" do
       alta = alta_de_un_tutor
 
-      expect(alta.codigo_activacion.representacion).not_to have_key(:codigo)
-      expect(alta.codigo_activacion.representacion).to include(:vence_en)
+      # Tabla 40 · «codigo_activacion con vence_en»
+      expect(alta.codigo_activacion.representacion.keys).to eq([ :vence_en ])
     end
   end
 

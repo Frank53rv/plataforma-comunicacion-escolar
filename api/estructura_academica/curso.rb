@@ -13,5 +13,8 @@ class Curso < ApplicationRecord
   has_many :vinculaciones_docentes, class_name: "DocenteCurso", foreign_key: :curso_id,
                                     inverse_of: :curso
 
+  # Tabla 38 · nombre varchar(60) · turno varchar(20) (D-07)
   validates :nombre, :turno, presence: true
+  validates :nombre, length: { maximum: 60 }
+  validates :turno, length: { maximum: 20 }
 end

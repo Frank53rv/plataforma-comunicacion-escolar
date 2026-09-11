@@ -51,8 +51,12 @@ for linea in leer_texto(fuente).splitlines():
     m = re.search(r'\b(GET|POST|PUT|PATCH|DELETE)\b\s+(/\S*)', linea)
     if not m: continue
     ruta = m.group(2)
-    if not ruta.startswith('/api/'): continue          # sólo la interfaz versionada
-    if '/rails/' in ruta or '/cable' in ruta: continue
+    # Boundary 4 · ninguna ruta fuera de la Tabla 27, tampoco fuera del prefijo: sólo se
+    # admite /cable, que es el canal WSS que la propia tabla declara.
+    if ruta.startswith('/cable'): continue
+    if not ruta.startswith('/api/v1/'):
+        R.falla('ruta fuera de la interfaz versionada que la Tabla 27 no declara: %s %s' % (m.group(1), ruta))
+        continue
     reales.add((m.group(1), normalizar_ruta(ruta)))
 
 sobrantes = sorted(reales - esperadas)
