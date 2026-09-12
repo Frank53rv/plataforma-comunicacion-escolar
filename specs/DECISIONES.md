@@ -587,13 +587,27 @@ complemento de semántica temporal—: `documento/TFG_entrega_5_Etapa4_v52.docx`
   columna nueva en ambos casos. Las ocho compuertas corren en VERDE contra el paquete
   regenerado, con evidencia real y no heredada: 184 ejemplos y 0 fallos de RSpec,
   cobertura de líneas 98,76 %, RuboCop sin hallazgos en 76 archivos.
-  **Pendiente de reconciliación editorial**, no de decisión: la Tabla 26 (Quality Spec)
-  del documento nuevo declara siete compuertas y la de estilo «pendiente»; el repositorio
-  la tiene construida e integrada desde D-14. No se retira: D-14 sigue vigente y esta
-  entrada dispara el correspondiente D-08 nuevo de la Tabla 38 —Solid Queue y Solid Cable
-  no instalados— como deuda técnica ya reconocida por el documento y no un hueco a cerrar
-  acá. La reconciliación de ambos puntos con el histórico de revisiones del documento
-  queda para el autor.
+  **Dos puntos donde el código adelantó al documento, resueltos por el autor el 12 de
+  septiembre de 2026: se adopta lo construido en ambos.**
+  - **Octava compuerta.** La Tabla 26 (Quality Spec) del documento nuevo declara siete
+    compuertas y la de estilo «pendiente»; el repositorio la tiene construida e
+    integrada desde D-14, verificando exactamente el estándar que la propia Tabla 26 ya
+    exige (RuboCop y ESLint sin hallazgos). Se adopta: D-14 sigue vigente, `bin/verificar`
+    sigue corriendo ocho compuertas. Retirarla no ahorraría nada y dejaría de frenar un
+    hallazgo de estilo antes de integrar una rama.
+  - **Solid Queue y Solid Cable.** D-08 de la Tabla 38 del documento nuevo los registra
+    como «declarados en la configuración pero no instalados… deuda declarada que
+    condiciona RF-37 y RNF-12»; el repositorio los tiene instalados desde antes de esta
+    sesión (D-08 de este registro), con sus tablas en el esquema y el proceso de cola
+    corriendo dentro de Puma. Se adopta: siguen instalados. El propio punto 6.2 del
+    documento nuevo recomienda instalarlos («sin los cuales no se verifican el envío
+    diferido ni sus reintentos»), de modo que desinstalarlos sería retroceder contra la
+    dirección que el documento mismo señala, y dejaría RF-37/RNF-12 no verificables sin
+    ningún beneficio a cambio.
+  - **Pendiente de reposición documental**, igual que D-07 y D-10: en la próxima versión
+    del documento, la Tabla 38 debe dejar de listar D-02/D-08 (Solid Queue y Solid Cable)
+    como deuda abierta, y la Tabla 26 y la Tabla 40 deben contar ocho compuertas y no
+    siete. No bloquea el código: ambas piezas ya están construidas, probadas y en verde.
 
 ## D-22 · Estructura del repositorio: `api/app/<módulo>/`, conforme a D-03 de la Tabla 38
 - **Dónde apareció:** Figura 18 · D-03 de `specs/50-divergencias.md` (Tabla 38 de la
