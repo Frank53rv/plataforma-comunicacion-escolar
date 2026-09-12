@@ -1,8 +1,8 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
+<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 26 · Tareas críticas por rol
+# Tabla 17 · Tareas críticas por rol
 
 | Cód. | Tarea crítica | Rol | Requisitos Must have que realiza | Caso de uso |
 |---|---|---|---|---|
@@ -31,4 +31,4 @@
 | TC-23 | Abrir el detalle de un anuncio y registrar su lectura | Alumno | RF-22, RF-34 | CU-10 |
 | TC-24 | Configurar sus preferencias de recepción | Alumno | RF-33 | CU-13 |
 
-> Nota. La tabla constituye el denominador de RNF-13 y de RNF-15 y el conjunto que RNF-18 exige ejecutar en los tres anchos de referencia. La sesión de validación de la Etapa 4 no ejecuta las veinticuatro tareas con cada participante: sobre la duración de treinta minutos que declara el Anexo E se selecciona un subconjunto de una tarea por rol y por módulo funcional, y el umbral del 90 % se calcula sobre el total de ejecuciones efectivamente registradas. Las tareas que realizan requisitos clasificados Should have no integran este conjunto, conforme al criterio de la nota de la Tabla 17.
+> Nota. La tabla constituye el denominador de RNF-13 y de RNF-15 y el conjunto que RNF-18 exige ejecutar en los tres anchos de referencia. La sesión de validación de la Etapa 4 no ejecuta las veinticuatro tareas con cada participante: sobre la duración de treinta minutos que declara el Anexo E se selecciona un subconjunto de una tarea por rol y por módulo funcional, y el umbral del 90 % se calcula sobre el total de ejecuciones efectivamente registradas. Las tareas que realizan requisitos clasificados Should have no integran este conjunto, conforme al criterio de la nota de la Tabla 10.

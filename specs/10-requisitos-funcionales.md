@@ -1,8 +1,8 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
+<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 17 · Matriz de requisitos funcionales
+# Tabla 10 · Matriz de requisitos funcionales
 
 | Código | Requisito funcional | Descripción | Compl. | Prior. |
 |---|---|---|---|---|
@@ -60,4 +60,4 @@
 | RF-41 | Interfaz responsiva | El cliente debe ser operable desde navegador en dispositivos de escritorio y móviles, en los anchos de referencia de 360 px, 768 px y 1280 px. | Media | M |
 | RF-42 | Cobertura de flujos en interfaz | La totalidad de los flujos comprometidos debe poder ejecutarse desde el cliente web, sin recurrir a herramientas de composición de peticiones. | Media | M |
 
-> Nota. Prioridad MoSCoW: M Must have, S Should have, C Could have, W Won't have. El conjunto comprende 36 requisitos Must have y 11 Should have. La clasificación de RF-08, RF-19, RF-24, RF-26 y RF-27 como Should have responde a un criterio explícito: cada uno replica un mecanismo que otro requisito Must have ya demuestra —la regeneración de códigos en el caso de RF-08, y el canal de tiempo real de RF-25 en el caso de los tres requisitos de conversación—, de modo que su implementación no aporta evidencia adicional sobre el objeto de estudio. Mientras RF-19 permanezca en Should have, la corrección de un anuncio se resuelve como eliminación lógica y publicación nueva, con su propio conjunto de constancias, de modo que ningún acuse queda atribuido a un contenido que el destinatario no leyó. La estimación de esfuerzo de la Etapa 2 determina cuáles de los requisitos Should have se incorporan efectivamente.
+> Nota. Prioridad MoSCoW: M Must have, S Should have, C Could have, W Won't have. El conjunto comprende 36 requisitos Must have y 11 Should have.

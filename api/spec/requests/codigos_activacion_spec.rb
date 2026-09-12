@@ -40,7 +40,7 @@ RSpec.describe "Regeneración del código de activación", type: :request do
 
       expect(response).to have_http_status(:created)
       expect(alta_alumno.codigo_activacion.reload.usado_en).to be_present
-      nuevo = CodigoActivacion.find(cuerpo["id"])
+      nuevo = CodigoActivacion.localizar(cuerpo["codigo"])
       expect(nuevo).to be_vigente
       expect(nuevo.generado_por).to eq(docente_del_curso.id)
     end
@@ -78,8 +78,8 @@ RSpec.describe "Regeneración del código de activación", type: :request do
   it "responde la forma de la Tabla 40, con el código en claro" do
     regenerar(alumno, por: docente_del_curso)
 
-    expect(cuerpo.keys).to contain_exactly("id", "usuario_id", "vence_en", "codigo")
-    expect(cuerpo["usuario_id"]).to eq(alumno.id)
+    expect(cuerpo.keys).to contain_exactly("vence_en", "codigo")
+    expect(CodigoActivacion.localizar(cuerpo["codigo"]).usuario_id).to eq(alumno.id)
     expect(cuerpo["codigo"]).to match(/\A[0-9A-F]{8}-[0-9A-Z]{8}\z/)
   end
 

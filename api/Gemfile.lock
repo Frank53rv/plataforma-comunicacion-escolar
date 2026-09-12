@@ -325,22 +325,22 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  bcrypt (~> 3.1.7)
+  bcrypt (~> 3.1.22)
   bootsnap
   bundler-audit
   debug
-  factory_bot_rails
-  json (~> 2.18)
-  jwt (~> 3.1)
+  factory_bot_rails (~> 6.5.1)
+  json (~> 2.21.2)
+  jwt (~> 3.2.0)
   pg (~> 1.1)
   puma (>= 5.0)
-  rack-cors
+  rack-cors (~> 3.0.0)
   rails (~> 8.1.3, >= 8.1.3.1)
-  rspec-rails (~> 8.0)
+  rspec-rails (~> 8.0.4)
   rubocop-rails-omakase
-  simplecov
-  solid_cable
-  solid_queue
+  simplecov (~> 1.2.0)
+  solid_cable (~> 4.0.2)
+  solid_queue (~> 1.7.0)
   tzinfo-data
 
 CHECKSUMS

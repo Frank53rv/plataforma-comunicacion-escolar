@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""Compuerta ERRORES · Tabla 35 · Boundary 6
+"""Compuerta ERRORES · Tabla 24 · Boundary 6
 El catálogo es cerrado: ningún rechazo emite un estado que la tabla no contemple.
 """
 import os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _comun import *
 
-R = Reporte('errores', 'Tabla 35 · catálogo cerrado · Boundary 6')
+R = Reporte('errores', 'Tabla 24 · catálogo cerrado · Boundary 6')
 permitidos_error = {e['estado'] for e in cargar('21-errores.json')['estados']}
 exito = {200, 201, 202, 204, 304}
 SIMBOLO = {'ok':200,'created':201,'accepted':202,'no_content':204,'not_modified':304,
@@ -19,7 +19,7 @@ SIMBOLO = {'ok':200,'created':201,'accepted':202,'no_content':204,'not_modified'
            'not_implemented':501,'bad_gateway':502,'service_unavailable':503}
 
 hallazgos = {}
-for p in archivos(('.rb',), 'api/app', 'api/lib', 'api/config'):
+for p in archivos(('.rb',), *CODIGO_API, 'api/config'):
     txt = leer_texto(p)
     for m in re.finditer(r'status:\s*(?::([a-z_]+)|(\d{3}))', txt):
         cod = SIMBOLO.get(m.group(1)) if m.group(1) else int(m.group(2))
@@ -36,7 +36,7 @@ if not hallazgos:
            % ', '.join(str(x) for x in sorted(permitidos_error)))
 
 # el manejador central es una exigencia del Quality Spec
-manejadores = [p for p in archivos(('.rb',), 'api/app')
+manejadores = [p for p in archivos(('.rb',), *CODIGO_API)
                if re.search(r'rescue_from|ProblemDetails|problem_details', leer_texto(p))]
 if manejadores:
     R.bien('manejador central de excepciones presente (%s)'

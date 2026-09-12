@@ -1,8 +1,8 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
+<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 40 · Formas de petición y respuesta por operación
+# Tabla 29 · Formas de petición y respuesta por operación
 
 | Operación | Parámetros o cuerpo de la petición | Cuerpo de la respuesta de éxito |
 |---|---|---|
@@ -17,13 +17,13 @@
 | POST /cursos | anio_lectivo_id, nombre, turno | recurso curso |
 | GET /cursos | anio_lectivo_id opcional, estado opcional | colección de curso con la cantidad de alumnos vinculados |
 | PATCH /cursos/{id} | nombre, turno | recurso curso |
-| POST /docentes | nombre, apellido, correo | recurso usuario y codigo_activacion con vence_en, sin el código en claro |
+| POST /docentes | nombre, apellido, correo | recurso usuario y codigo_activacion con vence_en, sin el código en claro. La versión construida devuelve el código de activación en claro en esta respuesta, contra lo que esta tabla comprometía, por la decisión D-10: sin servicio de correo, es la única vía de entrega del código al destinatario. |
 | POST /cursos/{id}/docentes | usuario_id, es_titular | recurso docente_curso |
 | DELETE /cursos/{id}/docentes/{usuarioId} | titular_reemplazo_id, obligatorio si el desvinculado es titular | recurso docente_curso con vigente_hasta |
 | DELETE /docentes/{id} | sin cuerpo | recurso usuario con estado dado de baja |
-| POST /usuarios/{id}/codigos-activacion | sin cuerpo | codigo_activacion con vence_en y el código en claro, devuelto una sola vez |
+| POST /usuarios/{id}/codigos-activacion | sin cuerpo | codigo_activacion con vence_en y el código en claro, devuelto una sola vez. La representación incluye además id y usuario_id, que esta tabla no consignaba. |
 | POST /alumnos | nombre, apellido, correo, curso_id | recurso usuario, alumno_curso y codigo_activacion |
-| POST /alumnos/{id}/tutores | nombre, apellido, correo | recurso usuario, tutor_alumno y codigo_activacion |
+| POST /alumnos/{id}/tutores | nombre, apellido, correo | recurso usuario, tutor_alumno y codigo_activacion. Cuando el tutor ya existe y la operación sólo lo vincula, codigo_activacion se devuelve nulo: la cuenta ya está activa y no se emite código. La representación del código incluye además id y usuario_id. |
 | DELETE /alumnos/{id} | sin cuerpo | recurso usuario con estado dado de baja |
 | DELETE /tutores/{id} | sin cuerpo | recurso usuario con estado dado de baja |
 | POST /anuncios | titulo, cuerpo, cursos como lista de identificadores, programado_para opcional, adjuntos opcional | recurso anuncio con su anuncio_version y la cantidad de destinatarios resueltos |
@@ -50,4 +50,4 @@
 | DELETE /suscripciones-push/{id} | sin cuerpo | recurso suscripcion_push con estado inválida |
 | WSS /cable | token en el parámetro de conexión, canal y conversacion_id en la suscripción | confirmación de suscripción y, en adelante, mensajes difundidos |
 
-> Nota. Cuarenta y tres operaciones, las mismas de la Tabla 27. Dos precisiones que el resguardo impone. El código de activación se devuelve en claro una sola vez, en la respuesta de la operación que lo genera o regenera, y no vuelve a ser recuperable: la entidad almacena su derivación y no el valor, del mismo modo que la contraseña, conforme a RN-06 y RNF-03. Y la nómina de la operación de constancias devuelve el nombre del alumno y el estado de lectura de su familia, pero no el de cada tutor por separado, conforme a la visibilidad que RN-21 establece. Con esta tabla y la Tabla 38 queda cerrado lo que la Etapa 1 difirió a esta etapa, y el archivo OpenAPI de RNF-17 puede escribirse desde el documento antes de escribir el código, que es la condición que el Context Spec de este mismo punto establece.
+> Nota. Cuarenta y tres operaciones, las mismas de la Tabla 18. Dos precisiones que el resguardo impone. El código de activación se devuelve en claro una sola vez, en la respuesta de la operación que lo genera o regenera, y no vuelve a ser recuperable: la entidad almacena su derivación y no el valor, del mismo modo que la contraseña, conforme a RN-06 y RNF-03.

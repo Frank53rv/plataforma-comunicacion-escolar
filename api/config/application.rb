@@ -24,12 +24,13 @@ module Api
 
     config.autoload_lib(ignore: %w[assets tasks])
 
-    # Figura 18 · los cinco módulos funcionales y el componente transversal son carpetas
-    # propias bajo app/, de modo que toda unidad de código se remonte a su fila de la
-    # Tabla 22. Se declaran como raíces de carga para que no impongan un espacio de
-    # nombres y los identificadores reproduzcan literalmente el diccionario (Tabla 37).
-    %w[identidad_acceso estructura_academica anuncios mensajeria notificaciones compartido]
-      .each { |modulo| config.autoload_paths << Rails.root.join("app", modulo) }
+    # D-21 · los cinco módulos funcionales y el componente transversal son carpetas
+    # propias bajo api/app/ —identidad_acceso, estructura_academica, anuncios, mensajeria,
+    # notificaciones y compartido—, de modo que toda unidad de código se remonte a su fila
+    # de la Tabla 15. La divergencia D-03 de la Tabla 38 resuelve que lo que se corrige es
+    # la Figura 18 y no el código. El framework toma cada carpeta de app/ como raíz de
+    # carga, por lo que no imponen espacio de nombres y los identificadores reproducen el
+    # diccionario de la Tabla 14 (Quality Spec, Tabla 26): no hace falta declararlas.
 
     # Punto 4.2, semántica temporal · la zona de interpretación es una sola y el
     # almacenamiento permanece en tiempo universal coordinado. No se declara una zona

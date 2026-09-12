@@ -17,7 +17,9 @@ class Usuario < ApplicationRecord
     pendiente: "pendiente", activo: "activo", dado_de_baja: "dado_de_baja"
   }, prefix: :estado, validate: true
 
+  # Tabla 38 · nombre varchar(80) · apellido varchar(80)
   validates :nombre, :apellido, :correo, presence: true
+  validates :nombre, :apellido, length: { maximum: 80 }
   validates :correo, uniqueness: { case_sensitive: false }
 
   before_validation :registrar_creacion, on: :create

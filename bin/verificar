@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Compuertas de integración de rama · punto 4.5 del documento de grado.
-# No hay integración continua: esta es la condición que la reemplaza (Quality Spec, Tabla 37).
+# No hay integración continua: esta es la condición que la reemplaza (Quality Spec, Tabla 26).
 set -u
 cd "$(dirname "$0")/.."
 echo
-echo "  VERIFICACIÓN DE FIDELIDAD AL DOCUMENTO — TFG v5.2"
+echo "  VERIFICACIÓN DE FIDELIDAD AL DOCUMENTO — edición vigente · 75 páginas"
 echo "  ================================================="
 echo
 rojo=0

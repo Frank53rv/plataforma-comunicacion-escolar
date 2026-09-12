@@ -70,7 +70,7 @@ class TutoresDeAlumnoController < ApplicationController
     return if persona.nil?
 
     if !persona.tutor? || persona.estado_dado_de_baja?
-      raise ErrorDeDominio::DatosInaceptables.new(detalle: "El correo pertenece a otra cuenta.")
+      raise ErrorDeDominio::DatosInaceptables.new(detalle: "El correo indicado no puede vincularse como tutor.")
     end
 
     # Tabla 21 · «Par único entre los vigentes»

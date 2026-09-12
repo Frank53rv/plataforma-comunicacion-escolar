@@ -9,7 +9,10 @@ Formato de las entradas: ver `../CLAUDE.md`, punto 6.
 La marca `adoptado: RF-nn` en una entrada habilita a la compuerta `alcance` a aceptar ese
 requisito Should have; sin ella, construirlo deja la rama en rojo.
 
-**Actualizado el 11 de septiembre de 2026**, contra el documento en su versión 5.2.
+**Actualizado el 12 de septiembre de 2026.** Fuente absoluta: `documento/TFG_ENTREGA_75paginas.docx`
+(edición vigente). Anexo normativo, sólo para lo que la edición vigente condensó —narrativa
+de los quince casos de uso, los sesenta y nueve casos de prueba individuales y el
+complemento de semántica temporal—: `documento/TFG_entrega_5_Etapa4_v52.docx`. Ver D-21.
 
 ---
 
@@ -137,7 +140,14 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
   alumnos o privada»—; `causa` queda cerrada en cuatro valores por RF-37, CU-14 y la entrada
   D-04; `estado_suscripcion` por «el estado pasa a inválida ante credencial rechazada»;
   `canal` por RNF-11 y la resolución del canal de entrega del punto 4.2; y `estado_anio` por
-  RN-31 y la Tabla 40 («estado igual a cerrado»).
+  RN-31 y la Tabla 40 («estado igual a cerrado»). **Corrección de la auditoría del 11 de
+  septiembre de 2026:** `canal` no está enumerado en ninguna tabla; sus valores —`push` y
+  `aplicacion`— se derivan de RF-37 («entregar el aviso dentro de la aplicación»), de
+  RNF-11 y de la resolución del canal de entrega del punto 4.2. De `causa`, el documento
+  fija los cuatro supuestos pero no sus identificadores: se toman de la letra de RF-37 y de
+  CU-14 E1 —`indisponibilidad_del_servicio_push`, `ausencia_de_acuse_del_cliente`,
+  `falta_de_soporte_del_navegador`, `credencial_invalida`—. Y `tipo_conversacion` toma la
+  letra de la Tabla 21: `grupal_de_tutores`, `grupal_de_alumnos`, `privada`.
 - **Qué no dice:** los valores admisibles de `turno`, `estado_usuario`, `estado_curso` y
   `estado_conversacion`. La palabra «turno» aparece en CU-03 y en la Tabla 38, en ningún caso
   con sus valores.
@@ -403,6 +413,238 @@ requisito Should have; sin ella, construirlo deja la rama en rojo.
   en todo lo construido hasta acá —un espacio antes de una coma, en una prueba— y ESLint
   ninguno. El cliente adopta la configuración que Vite propone para React, más la de
   Prettier para el formato.
+
+## D-15 · Auditoría del incremento 1: lo que se realizó sin enunciado del documento
+- **Dónde apareció:** auditoría del 11 de septiembre de 2026, a pedido del autor, de todo
+  lo construido en el incremento 1 contra el documento.
+- **Qué es esta entrada:** el inventario de las decisiones de realización que el código
+  tomó sin que el documento las enuncie. Ninguna contradice un enunciado; todas llenan un
+  silencio. Quedan escritas para que ninguna divergencia sea tácita. Las que dependen del
+  criterio del autor se separan en D-16 a D-20.
+- **Estados de éxito.** La Tabla 40 fija las formas y no los estados: se usa 201 cuando la
+  operación crea un recurso o una sesión, 204 cuando responde sin cuerpo y 200 en el resto.
+- **Rechazos que el documento no nombra, y la fila de la Tabla 35 que se les asigna:**
+  correo repetido, vinculación repetida, persona con otro rol, dato que excede su columna,
+  curso de otro año lectivo, alumno o docente dado de baja, reemplazo no vinculado, cuenta
+  no pendiente en la regeneración → 422, «datos inaceptables»; contraseña actual
+  equivocada y activación de una cuenta dada de baja → 401, «credencial inválida» y
+  «cuenta dada de baja»; forma de código inválida → 410, «inexistente»; curso o alumno
+  inexistente en las altas → 403, «docente no vinculado al curso», para no revelar qué
+  existe; persona inexistente en las demás operaciones → 404; baja de quien ya está dado
+  de baja → 200 sin cambios.
+- **Lecturas literales.** RN-09 bloquea toda operación, incluida `DELETE /sesiones`.
+  `DELETE /sesiones` no tiene efecto en el servidor porque RNF-02 exige un token sin
+  estado. El techo de 24 horas de RNF-02 recorta el valor de JWT_EXPIRACION_HORAS. La
+  precondición de CU-04 no se convierte en rechazo de `POST /docentes` porque CU-04 no
+  declara ese flujo de excepción. «Un curso del año lectivo vigente» (RF-13) rechaza el
+  curso de otro año. El alumno existente sin vinculación en el año no se revincula: esa
+  continuidad es del cierre del año lectivo, requisito Should have.
+- **Realización técnica.** La cuenta pendiente guarda la derivación de un valor aleatorio
+  hasta que la persona define su contraseña: la Tabla 38 no marca `contrasena_hash` como
+  anulable. El reemplazo del titular recibe una vinculación nueva desde el día del cambio.
+  «5 MB» se toma como 5 × 1024 × 1024 bytes. El código de activación se normaliza al
+  canjearlo (D-11). Los miembros `codigo` y `title` del cuerpo de error usan un
+  vocabulario propio, porque la Tabla 39 exige los miembros y no sus valores. Las
+  operaciones que escriben en más de una entidad bloquean la fila de la que depende la
+  regla, para que dos peticiones simultáneas no la violen. La bitácora filtra nombre y
+  apellido además de contraseña, código y correo (punto 1.7).
+- **Dependencias que la Tabla 34 no consigna por nombre**, todas auxiliares de un
+  componente que sí consigna: `rack-cors` (CORS_ORIGENES, Tabla 41), `factory_bot_rails`
+  (datos de prueba de RSpec), `json` fijada por compatibilidad; las que el framework trae
+  por omisión (`bootsnap`, `debug`, `bundler-audit`); Babel, `jest-environment-jsdom`,
+  `jest-dom` y `globals` para Jest; los complementos de ESLint y Prettier que exige el
+  Quality Spec; las imágenes `node` —para construir con Vite— y `nginx`.
+- **Composición.** `specs/` se monta de sólo lectura en el contenedor de la interfaz para
+  que la suite se contraste contra la Tabla 27; el supervisor de Solid Queue corre dentro
+  de Puma.
+- **Ramificación.** La Tabla 42 no prevé ramas para trabajo transversal sin requisito: se
+  usaron `feature/WP1-…`, con el paquete de trabajo de la Tabla 31 en el nombre. El ajuste
+  de RF-06 que D-12 exigió se hizo en la rama de RF-07, en un commit propio.
+- **Compuertas.** Además de D-05, D-06, D-08 y D-14: `esquema` dejó de contar los
+  `check_constraint` y los índices como columnas; `tiempo` dejó de exigir la comparación
+  de la franja en las migraciones, que sólo declaran la columna; `contrato` compara en
+  los tres sentidos que exige CP-RNF-17 y falla ante toda ruta fuera de `/api/v1`.
+- **Estado: RESUELTA como registro.**
+
+## D-16 · Petición mal formada y cuerpo de más de 1 MB
+- **Dónde apareció:** auditoría · Tabla 35 · Tabla 39
+- **Qué dice el documento:** la Tabla 39 limita el cuerpo de la petición a 1 MB, salvo
+  los adjuntos. La Tabla 35 es cerrada y no contiene el 400; su 422 es «petición **bien
+  formada** con datos inaceptables», y su 413 es «archivo adjunto que supera los 5 MB».
+- **Qué no dice:** con qué estado se rechaza un cuerpo JSON mal formado ni uno que
+  supera 1 MB.
+- **Hallazgo:** hoy el JSON mal formado responde **500**, que la Tabla 35 reserva al
+  «fallo no previsto», y el cuerpo de más de 1 MB **se acepta**.
+- **Estado: ABIERTA.**
+
+## D-17 · Nombre y apellido de la cuenta directiva semilla
+- **Dónde apareció:** auditoría · RN-08 · Tabla 41 · Tabla 38
+- **Qué dice el documento:** la Tabla 41 provee DIRECTIVO_CORREO y
+  DIRECTIVO_CREDENCIAL_PROVISIONAL. La Tabla 38 declara `nombre` y `apellido` no nulos.
+- **Qué no dice:** qué nombre y apellido lleva la cuenta semilla.
+- **Hallazgo:** la tarea de reposición escribe «Equipo» y «Directivo», valores que el
+  documento no enuncia.
+- **Estado: ABIERTA.**
+
+## D-18 · Cuatro lecturas del texto pendientes de confirmación
+- **Dónde apareció:** RF-15 · RF-14 · RF-09 · RF-10
+- **Las lecturas:** (a) un segundo titular vigente se rechaza con 409 y RN-13, aunque la
+  Tabla 35 no liste ese flujo; (b) el tutor que ya existe se vincula sin código nuevo y
+  la respuesta lleva `codigo_activacion` nulo, aunque la Tabla 40 no prevea la excepción;
+  (c) el «docente titular del curso» de un tutor es el titular del curso de sus alumnos, y
+  la baja no cierra las vinculaciones; (d) el alumno pendiente de activación es «alumno
+  activo» a los efectos de RN-12.
+- **Estado: ABIERTA.**
+
+## D-19 · Nombres de los campos derivados en el contrato OpenAPI
+- **Dónde apareció:** auditoría · `openapi/openapi.yaml` · Tabla 39 · Tabla 40
+- **Qué dice el documento:** la Tabla 39 exige nombres de campo «iguales a los del
+  diccionario de la Tabla 21». La Tabla 40 describe en prosa varios valores derivados que
+  no tienen nombre en el diccionario: «la cantidad de destinatarios resueltos», «el estado
+  de lectura de quien consulta», «cantidad de anuncios sin leer», «cantidad de no leídos»,
+  «total de destinatarios, cantidad con lectura registrada», entre otros.
+- **Hallazgo:** el contrato les puso nombre —`destinatarios_resueltos`, `leido`,
+  `anuncios_sin_leer`, `no_leidos`, `total_destinatarios`…—. Ninguna de esas operaciones
+  está construida todavía.
+- **Estado: ABIERTA.** Se resuelve antes de construir la primera operación que los
+  devuelva (incremento 2).
+
+## D-20 · Dónde termina la conexión cifrada y cómo se expone la interfaz
+- **Dónde apareció:** auditoría · Tabla 34 · Tabla 45 · Tabla 41 · paso 6 de la Tabla 46
+- **Qué dice el documento:** la Tabla 34 asigna a nginx «entrega los archivos … y
+  **termina la conexión cifrada**»; la Tabla 45 asigna a Cloudflare Tunnel «nombre de
+  dominio y **certificado válido** hacia internet». La Tabla 41 prevé un solo APP_HOST y
+  CORS_ORIGENES.
+- **Qué no dice:** si el cifrado termina en nginx o en el túnel, ni si la interfaz se
+  expone por el mismo dominio que el cliente —nginx haciendo de intermediario— o por uno
+  propio.
+- **Estado: ABIERTA.** Se resuelve con el paso 6, en el incremento 3. Nada de lo
+  construido depende de esta entrada.
+
+## D-21 · Adopción del documento de 75 páginas como fuente absoluta, dos niveles
+- **Dónde apareció:** `documento/TFG_ENTREGA_75paginas.docx`, incorporado el 12 de
+  septiembre de 2026 como guía definitiva del proyecto, en reemplazo de
+  `TFG_entrega_5_Etapa4_v52.docx` como fuente de las tablas.
+- **Qué dice el documento nuevo:** renumera las 40 tablas normativas —17→10, 18→11,
+  19→12, 20→13, 21→14, 22→15, 26→17, 27→18, 34→23, 35→24, 36→25, 37→26, 38→27, 39→28,
+  40→29, 41→30, 42→31, 45→34, 46→35— y agrega tres tablas de cierre que no existían en
+  la v5.2: la Tabla 38 «Divergencias entre el documento y la versión construida», la
+  Tabla 39 «Decisiones adoptadas donde el documento no determinaba la cuestión» y la
+  Tabla 40 «Modificaciones en las herramientas de verificación». Esas tres ya incorporan
+  el resultado de la auditoría del 11 de septiembre: entre otras cosas, resuelven D-01 y
+  D-04 de este registro como defectos corregidos, D-08 nuevo (RF-13/14/15 adelantados)
+  como corrección de plan incorporada a la Tabla 25 de incrementos, y D-03 nuevo
+  (ubicación de los módulos) como decisión de corregir la Figura 18. La Tabla 26 (Quality
+  Spec) declara **siete** compuertas —sin `estilo`— y la registra como «compuerta
+  adicional prevista… a la fecha de esta entrega no está incorporada». La Tabla 38
+  clasifica Solid Queue y Solid Cable como «declarados en la configuración pero no
+  instalados»: deuda que condiciona RF-37 y RNF-12.
+- **Qué no dice:** la edición de 75 páginas condensó tres artefactos que el
+  procedimiento de construcción usa en cada rama y que ella misma no reproduce: la
+  narrativa de los quince casos de uso con sus flujos de excepción (punto 2.3), los
+  sesenta y nueve casos de prueba individuales `CP-RF-nn`/`CP-RNF-nn` (antes Tabla 43,
+  resumida ahora en cinco filas por grupo en la Tabla 32) y el complemento de la
+  semántica temporal —franja que cruza la medianoche, diferimiento y resolución del
+  canal de entrega—, de los que sólo sobrevive la declaración de la zona horaria.
+- **Alternativas:**
+  - **A.** Regenerar `specs/` estrictamente desde la edición de 75 páginas y perder los
+    tres artefactos: CLAUDE.md §3.2 y §3.4 dejarían de tener fuente y habría que
+    reescribirlos.
+  - **B.** Dos niveles de fuente, declarados: la edición de 75 páginas gobierna la
+    totalidad de las tablas con su numeración nueva; la v5.2 queda como anexo normativo
+    únicamente para los tres artefactos que la edición nueva no contiene, con su
+    procedencia marcada en el encabezado de cada archivo generado.
+  - **C.** Editar a mano el campo `fuente` de los siete JSON, sin regenerar el resto:
+    viola «estos archivos no se editan a mano» (specs/README.md) y deja las citas
+    «Tabla nn» del resto del paquete en la numeración v5.2.
+- **Consecuencia de cada una:** A es la lectura más literal de «el documento nuevo es la
+  guía definitiva», pero rompe el ciclo de trabajo de CLAUDE.md sin que el propio
+  documento lo pida —nada en la edición de 75 páginas dice que la narrativa de CU o los
+  CP dejan de regir—; es más fiel leer la condensación como económica y no como
+  derogación. B conserva ambos compromisos, al costo de que `specs/` ya no provenga de
+  un único archivo. C no se adopta bajo ninguna alternativa: viola la regla de
+  generación por herramienta.
+- **Estado: RESUELTA · se adopta B** — decisión del autor, 12 de septiembre de 2026.
+- **Realización:** `tools/extraer_specs.py` lee dos documentos. `DOC_VIGENTE`
+  (`TFG_ENTREGA_75paginas.docx`) gobierna las 25 tablas que produce el `PLAN` y el
+  Context Spec; sus artefactos llevan el encabezado `HEAD` con la advertencia habitual.
+  `DOC_ANEXO` (`TFG_entrega_5_Etapa4_v52.docx`) provee únicamente
+  `specs/14-casos-uso-narrativa.md`, los 69 casos de `specs/30-casos-prueba.md` y el
+  complemento de `specs/25-semantica-temporal.md`; estos tres llevan el encabezado
+  `HEAD_ANEXO`, que nombra la edición vigente y explica por qué el contenido viene de la
+  v5.2. `specs/30-casos-prueba.md` en particular queda con dos secciones: el resumen por
+  grupo de la Tabla 32 vigente y los 69 casos del anexo. El paquete de la Tabla 38
+  «Divergencias» pasa a `specs/50-divergencias.md`, la Tabla 39 «Decisiones» a
+  `specs/51-decisiones-del-documento.md` y la Tabla 40 «Herramientas» a
+  `specs/52-herramientas-verificacion.md`: son registro nuevo del documento, distinto de
+  este archivo, y no se fusionan con él.
+  Las compuertas (`tools/gate_*.py`) y `bin/verificar` se actualizaron para citar la
+  numeración vigente. Se verificó que los campos que las compuertas consumen —`codigo`,
+  `moscow`, `titulo`, `metodo`, `ruta`, `should`, `requisitos`, `estado`, `entidad`,
+  `columnas`, `restricciones`— existen igual en las tablas renumeradas, aun donde la
+  forma de la fila cambió: la Tabla 18 (antes 27) perdió la columna «Operación» y la
+  Tabla 15 (antes 22) perdió la columna «Requisito»; el extractor se ajustó a la
+  columna nueva en ambos casos. Las ocho compuertas corren en VERDE contra el paquete
+  regenerado, con evidencia real y no heredada: 184 ejemplos y 0 fallos de RSpec,
+  cobertura de líneas 98,76 %, RuboCop sin hallazgos en 76 archivos.
+  **Pendiente de reconciliación editorial**, no de decisión: la Tabla 26 (Quality Spec)
+  del documento nuevo declara siete compuertas y la de estilo «pendiente»; el repositorio
+  la tiene construida e integrada desde D-14. No se retira: D-14 sigue vigente y esta
+  entrada dispara el correspondiente D-08 nuevo de la Tabla 38 —Solid Queue y Solid Cable
+  no instalados— como deuda técnica ya reconocida por el documento y no un hueco a cerrar
+  acá. La reconciliación de ambos puntos con el histórico de revisiones del documento
+  queda para el autor.
+
+## D-22 · Estructura del repositorio: `api/app/<módulo>/`, conforme a D-03 de la Tabla 38
+- **Dónde apareció:** Figura 18 · D-03 de `specs/50-divergencias.md` (Tabla 38 de la
+  edición vigente) · D-06 de este registro, que esta entrada reabre.
+- **Qué dice el documento:** la Figura 18 dibuja los módulos como carpetas de `api/` sin
+  el segmento `app/`. La Tabla 38 (D-03) registra que «no existe ningún módulo de
+  dominio: `api/app/` contiene únicamente las carpetas por defecto del framework» y fija
+  el tratamiento «se corrige la Figura 18 en la próxima versión» — es decir, D-03 asume
+  que los módulos **sí** van bajo `api/app/`, y es la figura la que hay que corregir.
+- **Qué no dice:** nada nuevo respecto de D-06; la novedad es que el documento resolvió
+  en sentido contrario a como D-06 lo había resuelto sobre la v5.2.
+- **Estado: RESUELTA · se corrige el código** — decisión del autor, 12 de septiembre de
+  2026, que reabre y sustituye D-06.
+- **Realización:** los seis módulos —`identidad_acceso`, `estructura_academica`,
+  `anuncios`, `mensajeria`, `notificaciones`, `compartido`— se movieron de `api/<módulo>`
+  a `api/app/<módulo>` con `git mv`, conservando el historial de cada archivo.
+  `api/config/application.rb` deja de declarar `autoload_paths`/`eager_load_paths` a
+  mano: el framework toma cada carpeta directa de `app/` como raíz de carga por
+  convención, sin imponer espacio de nombres, de modo que los identificadores siguen
+  reproduciendo el diccionario de la Tabla 14. `tools/_comun.py` pasa a explorar
+  `api/app` en lugar de listar cada módulo por separado. `api/spec/spec_helper.rb`
+  simplifica el `track_files` de SimpleCov a `{app,lib}/**/*.rb`. Se verificó contra el
+  entorno real y no sólo contra las compuertas: `docker compose up` con los tres
+  contenedores saludables, `bin/rails routes` regenerado, RuboCop sin hallazgos y RSpec
+  en 184 ejemplos / 0 fallos / 98,76 % de cobertura, todo con el árbol movido.
+
+## D-23 · Cierre del puerto 5432 y de la credencial de muestra, ya realizado
+- **Dónde apareció:** D-04 de `specs/50-divergencias.md` (Tabla 38 de la edición
+  vigente), ampliada respecto de D-04 de este registro con el detalle del puerto
+  publicado.
+- **Qué dice el documento:** «el archivo de ejemplo trae una credencial de base
+  utilizable… ésta publica el puerto 5432 al equipo anfitrión, de modo que la credencial
+  es alcanzable desde fuera», con tratamiento «defecto: se corrige en el repositorio».
+- **Estado: CERRADA · ya corregido en `HEAD`, sin cambios adicionales.**
+- **Fundamento:** `compose.yaml` no publica el puerto de `db` hacia el equipo anfitrión
+  y la base toma sus credenciales de `DATABASE_URL`, sin valor por omisión escrito en el
+  repositorio; el `.env.example` lo declara explícitamente no utilizable. Se deja
+  constancia de que el defecto que señala el documento nuevo ya no existe en el código
+  al momento de esta lectura.
+
+## D-24 · Foreign key `adjunto → mensaje`, ya realizada
+- **Dónde apareció:** D-01 de `specs/50-divergencias.md` (Tabla 38 de la edición
+  vigente): «la versión construida declara únicamente la clave hacia
+  `anuncio_version`», tratamiento «defecto: se corrige en el código».
+- **Estado: CERRADA · ya corregida en `HEAD`, sin cambios adicionales.**
+- **Fundamento:** la migración inicial declara ambas claves —`adjunto → anuncio_version`
+  y `adjunto → mensaje`, esta última agregada después de crear la tabla `mensaje`— y
+  `db/schema.rb` las refleja. Igual que D-23, se corrigió editando la migración inicial
+  y no con una migración nueva: sobre una base ya creada con el esquema anterior no se
+  aplicaría; queda para el autor decidir si el entorno de demostración necesita una
+  migración incremental o si recrear el esquema desde cero es aceptable en esta etapa.
 
 ---
 

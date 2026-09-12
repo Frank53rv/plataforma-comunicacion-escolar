@@ -20,7 +20,7 @@ if not os.path.exists(SPEC):
 if ZONA not in leer_texto(SPEC):
     R.falla('specs/25-semantica-temporal.md no declara la zona %s' % ZONA)
 
-RB = tuple(archivos(('.rb',), 'api/app', 'api/lib', 'api/config', 'api/db'))
+RB = tuple(archivos(('.rb',), *CODIGO_API, 'api/config', 'api/db'))
 
 # 1 · ninguna otra zona horaria en el código
 otras = {}

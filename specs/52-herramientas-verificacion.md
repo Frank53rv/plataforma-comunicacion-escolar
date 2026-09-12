@@ -1,0 +1,17 @@
+<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
+     La fuente de verdad es el documento de grado. Si este archivo y el
+     documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
+
+# Tabla 40 · Modificaciones en las herramientas de verificación
+
+| Herramienta | Modificación aplicada | Decisión | Escenario de medición | Incremento |
+|---|---|---|---|---|
+| Extractor de especificaciones | Se incorpora un campo nuevo al inventario de operaciones y se regenera el archivo de endpoints. | D-05 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
+| Compuerta de esquema | Las restricciones de verificación dejan de contarse como columnas. | D-05 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
+| Compuerta de estructura | Las rutas se resuelven contra api/ conforme a la ubicación real de los módulos. | D-06 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
+| Compuerta de esquema, excepción | Se exceptúan las tablas del prefijo solid_, que la versión construida no crea. | D-08 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
+| Compuerta de semántica temporal | Deja de inspeccionar el directorio de migraciones. | D-05 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
+| Compuerta de contrato | El contraste pasa a ser de tres sentidos: enrutador, archivo OpenAPI e inventario de la Tabla 18. | RNF-17 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
+| Compuerta adicional prevista | Se proyecta una octava compuerta y la actualización del archivo de instrucciones del repositorio y de su documento de presentación. A la fecha de esta entrega no está incorporada: el repositorio mantiene las siete y así lo declara su archivo de instrucciones. | D-14 · pendiente | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
+
+> Nota. Las compuertas son el instrumento con el que se verifica, antes de cada integración, que el código realiza lo que las tablas de este documento comprometen. Su modificación se registra aquí porque altera el alcance de esa verificación y, por lo tanto, el valor probatorio de la matriz de la Tabla 15.

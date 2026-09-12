@@ -76,6 +76,32 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
     end
   end
 
+  # CP-RF-02 · la misma verificación sobre una operación real de la Tabla 27 que expone
+  # datos académicos: POST /cursos/{id}/docentes, habilitada sólo para el directivo.
+  describe "CP-RF-02 · sobre una operación de datos académicos" do
+    let(:curso) { create(:curso) }
+
+    def vincular(por:)
+      post "/api/v1/cursos/#{curso.id}/docentes",
+           params: { usuario_id: create(:usuario, :docente).id, es_titular: false },
+           headers: cabecera_de(por), as: :json
+    end
+
+    it "sólo el rol habilitado obtiene respuesta" do
+      vincular(por: create(:usuario, :directivo))
+
+      expect(response).to have_http_status(:created)
+    end
+
+    %w[docente tutor alumno].each do |rol|
+      it "#{rol} recibe 403" do
+        vincular(por: create(:usuario, rol: rol))
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
   # CP-RNF-01 · «Las 37 operaciones Must have por los cuatro roles: 148 casos. Sin token,
   # 401 en el 100 %; con rol no autorizado, 403 en el 100 %.»
   #

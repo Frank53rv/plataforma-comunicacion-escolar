@@ -1403,11 +1403,11 @@ components:
     CodigoActivacion:
       type: object
       description: >-
-        El código en claro no figura acá: la entidad almacena su derivación y no el
-        valor, del mismo modo que la contraseña (nota de la Tabla 40 · RN-06 · RNF-03).
+        Tabla 40 · «codigo_activacion con vence_en». El código en claro no figura acá: la
+        entidad almacena su derivación y no el valor, del mismo modo que la contraseña
+        (nota de la Tabla 40 · RN-06 · RNF-03).
+      required: [vence_en]
       properties:
-        id: { type: string, format: uuid }
-        usuario_id: { type: string, format: uuid }
         vence_en: { type: string, format: date-time }
 
     CodigoActivacionEnClaro:

@@ -45,14 +45,14 @@ git config core.hooksPath hooks
 
 | Compuerta | Compara | Verifica |
 |---|---|---|
-| contrato | enrutador ↔ 43 operaciones de la Tabla 27 | RNF-17 · CP-RNF-17 |
-| errores | estados emitidos ↔ catálogo cerrado de 9, Tabla 35 | Boundary 6 |
-| esquema | `db/schema.rb` ↔ 19 entidades de la Tabla 38 | Boundary 3 |
+| contrato | enrutador ↔ 43 operaciones de la Tabla 18 | RNF-17 · CP-RNF-17 |
+| errores | estados emitidos ↔ catálogo cerrado de 9, Tabla 24 | Boundary 6 |
+| esquema | `db/schema.rb` ↔ 19 entidades de la Tabla 27 | Boundary 3 |
 | alcance | ningún Should have construido sin decisión adoptada | Boundary 1 |
 | trazabilidad | cada Must have con código, prueba `CP-RF-nn` y rama | RNF-22 · CP-RNF-22 |
 | cobertura | líneas de la API ≥ 70 % | RNF-20 · CP-RNF-20 |
 | tiempo | zona horaria, lectura de hora y franja de disponibilidad ↔ punto 4.2 | RF-33 · RN-24 · RN-32 |
-| estilo | RuboCop y ESLint sin hallazgos ni excepciones (D-14) | Quality Spec · Tabla 42 |
+| estilo | RuboCop y ESLint sin hallazgos ni excepciones (D-14) | Quality Spec · Tabla 26 |
 
 No hay integración continua: el punto 4.5 del documento lo declara de forma expresa. Estas
 compuertas son la condición de integración que la reemplaza, conforme al Quality Spec.

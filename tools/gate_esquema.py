@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Compuerta ESQUEMA · Tabla 38 · Boundary 3
+"""Compuerta ESQUEMA · Tabla 27 · Boundary 3
 Ni una entidad ni una columna de más o de menos respecto del esquema físico.
 Entrada: api/db/schema.rb (lo genera la primera migración).
 """
@@ -7,7 +7,7 @@ import os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _comun import *
 
-R = Reporte('esquema', 'Tabla 38 · 19 entidades · Boundary 3')
+R = Reporte('esquema', 'Tabla 27 · 19 entidades · Boundary 3')
 doc = cargar('22-esquema-fisico.json')['entidades']
 esperado = {e['entidad']: set(e['columnas']) for e in doc}
 
@@ -24,7 +24,7 @@ if not os.path.exists(ruta):
     R.aviso('todavía no existe api/db/schema.rb · la compuerta se activa con la primera migración')
     R.cerrar()
 
-# D-08 · Solid Queue y Solid Cable son componentes que la Tabla 34 consigna, y sus
+# D-08 · Solid Queue y Solid Cable son componentes que la Tabla 23 consigna, y sus
 # tablas son infraestructura del framework y no entidades del diccionario de la Tabla
 # 21. La excepción es nominada: cualquier otra tabla ajena al diccionario sigue
 # dejando la rama en rojo.
@@ -35,8 +35,8 @@ real = {}
 for m in re.finditer(r'create_table\s+"([^"]+)"(.*?)\n  end', txt, re.S):
     tabla, cuerpo = m.group(1), m.group(2)
     if tabla.startswith(INFRAESTRUCTURA): continue
-    # t.check_constraint y t.index declaran restricciones e índices de la Tabla 38,
-    # no columnas del diccionario de la Tabla 21: no se cuentan como tales.
+    # t.check_constraint y t.index declaran restricciones e índices de la Tabla 27,
+    # no columnas del diccionario de la Tabla 14: no se cuentan como tales.
     cuerpo = re.sub(r'^\s*t\.(check_constraint|index)\b.*$', '', cuerpo, flags=re.M)
     cols = set(re.findall(r't\.\w+\s+"([^"]+)"', cuerpo))
     cols |= {c + '_id' for c in re.findall(r't\.references\s+"([^"]+)"', cuerpo)}
@@ -46,7 +46,7 @@ for m in re.finditer(r'create_table\s+"([^"]+)"(.*?)\n  end', txt, re.S):
 sobran = sorted(set(real) - set(esperado))
 faltan = sorted(set(esperado) - set(real))
 for t in sobran:
-    R.falla('entidad que la Tabla 38 no declara: %s' % real[t][0])
+    R.falla('entidad que la Tabla 27 no declara: %s' % real[t][0])
 if faltan:
     R.aviso('entidades comprometidas aún no migradas: %d (%s%s)'
             % (len(faltan), ', '.join(faltan[:5]), '…' if len(faltan) > 5 else ''))
@@ -58,9 +58,9 @@ for ent, cols in esperado.items():
     extra = sorted(reales - cols - tecnicas)
     ausentes = sorted(cols - reales)
     for c in extra:
-        R.falla('%s: columna «%s» fuera del diccionario de la Tabla 21' % (nombre, c))
+        R.falla('%s: columna «%s» fuera del diccionario de la Tabla 14' % (nombre, c))
     for c in ausentes:
-        R.falla('%s: falta la columna «%s» que la Tabla 38 declara' % (nombre, c))
+        R.falla('%s: falta la columna «%s» que la Tabla 27 declara' % (nombre, c))
 
 if not R.fallas:
     R.bien('%d de %d entidades migradas, sin columnas fuera del diccionario'
