@@ -1,6 +1,6 @@
 # Documentación de despliegue del entorno de demostración
 
-Realiza el procedimiento de la **Tabla 46** y es el instrumento de verificación de
+Realiza el procedimiento de la **Tabla 35** y es el instrumento de verificación de
 **RNF-19**: el entorno completo se levanta mediante contenedores a partir del
 repositorio, **sin edición manual de archivos**. La única intervención admitida es la
 carga de valores en el archivo de variables de entorno.
@@ -48,12 +48,13 @@ cd plataforma-comunicacion-escolar
 ```
 plataforma-comunicacion-escolar/
 ├── api/                        interfaz de programación
-│   ├── identidad_acceso/           módulo A
-│   ├── estructura_academica/       módulo B
-│   ├── anuncios/                   módulo C
-│   ├── mensajeria/                 módulo D
-│   ├── notificaciones/             módulo E
-│   ├── compartido/                 errores (Tabla 35), autorización
+│   ├── app/
+│   │   ├── identidad_acceso/       módulo A
+│   │   ├── estructura_academica/   módulo B
+│   │   ├── anuncios/               módulo C
+│   │   ├── mensajeria/             módulo D
+│   │   ├── notificaciones/         módulo E
+│   │   └── compartido/             errores (Tabla 24), autorización
 │   └── spec/                       pruebas CP-RF y CP-RNF
 ├── cliente/                    cliente web
 │   ├── paneles/                    una carpeta por rol (RF-40)
@@ -63,8 +64,8 @@ plataforma-comunicacion-escolar/
 │   ├── comun/                      manifiesto y service worker
 │   └── tests/
 ├── compose.yaml
-├── .env.example                variables de la Tabla 41
-├── openapi/                    contrato de la Tabla 27
+├── .env.example                variables de la Tabla 30
+├── openapi/                    contrato de la Tabla 18
 ├── specs/                      Context, Boundary y Quality Spec
 └── docs/                       despliegue y manual
 ```
@@ -77,7 +78,7 @@ cp .env.example .env
 
 Se editan **únicamente** los valores de `.env`. Ningún archivo del proyecto se modifica.
 
-**Verificación:** ninguna variable de la Tabla 41 queda sin valor. Son quince, en trece
+**Verificación:** ninguna variable de la Tabla 30 queda sin valor. Son quince, en trece
 filas de la tabla:
 
 | Variable | Qué provee |
@@ -98,7 +99,7 @@ filas de la tabla:
 
 `RAILS_MASTER_KEY` es el contenido de `api/config/master.key`, que **no se versiona**.
 La separación entre el archivo de ejemplo y el de valores efectivos es el control de
-segregación de credenciales que prescribe ISO/IEC 27001 (nota de la Tabla 41).
+segregación de credenciales que prescribe ISO/IEC 27001 (nota de la Tabla 30).
 
 ## Paso 3 · Levantar los tres servicios
 
@@ -107,7 +108,7 @@ docker compose up -d --build
 docker compose ps
 ```
 
-**Verificación:** los tres contenedores de la Tabla 45 alcanzan estado saludable sin
+**Verificación:** los tres contenedores de la Tabla 34 alcanzan estado saludable sin
 edición manual de ningún archivo.
 
 | Servicio | Tecnología | Función |
@@ -128,7 +129,7 @@ docker compose exec api bin/rails db:seed      # pendiente: ver la advertencia d
 > módulos C, D y E, que se construyen en los incrementos 2 y 3. Hasta entonces este paso
 > sólo aplica las migraciones.
 
-**Verificación:** el esquema corresponde al diccionario de la Tabla 21 —diecinueve
+**Verificación:** el esquema corresponde al diccionario de la Tabla 14 —diecinueve
 entidades— y el volumen al declarado en RNF-09: un año lectivo cerrado y uno vigente,
 184 cuentas, 400 anuncios, 36.000 filas de entrega, 16.000 mensajes en cuatro
 conversaciones y 2.000 registros de bitácora de envío.
@@ -139,7 +140,7 @@ declara que el entorno opera con datos de prueba (Boundary 8).
 Se contrasta con:
 
 ```bash
-./bin/verificar          # la compuerta «esquema» compara contra la Tabla 38
+./bin/verificar          # la compuerta «esquema» compara contra la Tabla 27
 ```
 
 ## Paso 5 · Credencial provisional de la cuenta directiva
@@ -160,7 +161,7 @@ operación se habilita** hasta que el cambio se complete, conforme a CP-RF-43 y 
 cloudflared tunnel --url http://localhost:8080
 ```
 
-El túnel corre como proceso auxiliar junto a la composición (Tabla 45) y expone el
+El túnel corre como proceso auxiliar junto a la composición (Tabla 34) y expone el
 entorno sobre HTTPS con certificado válido, sin abrir puertos del equipo. El valor
 asignado se carga en `APP_HOST` y en `CORS_ORIGENES`.
 
@@ -189,7 +190,7 @@ docker compose exec api bin/rails routes > api/tmp/rutas.txt
 ```
 
 **Verificación:** diferencia nula entre enrutador, archivo OpenAPI e inventario de la
-Tabla 27, conforme a CP-RNF-17. La compuerta `contrato` contrasta los tres sentidos.
+Tabla 18, conforme a CP-RNF-17. La compuerta `contrato` contrasta los tres sentidos.
 
 ---
 
@@ -197,7 +198,7 @@ Tabla 27, conforme a CP-RNF-17. La compuerta `contrato` contrasta los tres senti
 
 No hay integración continua: el punto 4.5 lo declara de forma expresa. Las ocho
 compuertas son la condición de integración que la reemplaza, conforme al Quality Spec de
-la Tabla 37.
+la Tabla 26.
 
 ```bash
 docker compose exec api bundle exec rspec              # genera api/coverage/.last_run.json

@@ -1,11 +1,10 @@
 {
-  "fuente": "Tabla 27 · TFG v5.2",
+  "fuente": "Tabla 18 · TFG_ENTREGA_75paginas.docx",
   "total": 43,
   "endpoints": [
     {
       "metodo": "POST",
       "ruta": "/api/v1/sesiones",
-      "operacion": "Autenticar y emitir el token",
       "roles": [
         "Sin autenticar"
       ],
@@ -19,7 +18,6 @@
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/sesiones",
-      "operacion": "Cerrar la sesión activa",
       "roles": [
         "Directivo",
         "docente",
@@ -36,7 +34,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/activaciones",
-      "operacion": "Canjear el código y definir la contraseña",
       "roles": [
         "Sin autenticar"
       ],
@@ -50,7 +47,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/recuperaciones",
-      "operacion": "Restablecer el acceso mediante código regenerado",
       "roles": [
         "Sin autenticar"
       ],
@@ -66,7 +62,6 @@
     {
       "metodo": "PATCH",
       "ruta": "/api/v1/usuarios/me/contrasena",
-      "operacion": "Sustituir la credencial provisional",
       "roles": [
         "Directivo",
         "docente",
@@ -83,7 +78,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/anios-lectivos",
-      "operacion": "Crear el año lectivo",
       "roles": [
         "Directivo"
       ],
@@ -97,7 +91,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/anios-lectivos",
-      "operacion": "Consultar los años lectivos",
       "roles": [
         "Directivo"
       ],
@@ -111,7 +104,6 @@
     {
       "metodo": "PATCH",
       "ruta": "/api/v1/anios-lectivos/{id}",
-      "operacion": "Cerrar el año lectivo",
       "roles": [
         "Directivo"
       ],
@@ -127,7 +119,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/cursos",
-      "operacion": "Crear un curso del año lectivo vigente",
       "roles": [
         "Directivo"
       ],
@@ -141,7 +132,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/cursos",
-      "operacion": "Consultar los cursos",
       "roles": [
         "Directivo",
         "docente"
@@ -156,7 +146,6 @@
     {
       "metodo": "PATCH",
       "ruta": "/api/v1/cursos/{id}",
-      "operacion": "Editar un curso",
       "roles": [
         "Directivo"
       ],
@@ -170,7 +159,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/docentes",
-      "operacion": "Dar de alta a un docente y generar su código",
       "roles": [
         "Directivo"
       ],
@@ -185,7 +173,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/cursos/{id}/docentes",
-      "operacion": "Vincular un docente al curso con su atributo de titularidad",
       "roles": [
         "Directivo"
       ],
@@ -199,7 +186,6 @@
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/cursos/{id}/docentes/{usuarioId}",
-      "operacion": "Desvincular al docente designando otro titular",
       "roles": [
         "Directivo"
       ],
@@ -213,7 +199,6 @@
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/docentes/{id}",
-      "operacion": "Dar de baja lógica a un docente",
       "roles": [
         "Directivo"
       ],
@@ -227,7 +212,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/usuarios/{id}/codigos-activacion",
-      "operacion": "Regenerar el código de activación",
       "roles": [
         "Directivo (docentes)",
         "docente (alumnos",
@@ -243,7 +227,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/alumnos",
-      "operacion": "Dar de alta a un alumno y vincularlo a un curso",
       "roles": [
         "Docente"
       ],
@@ -259,7 +242,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/alumnos/{id}/tutores",
-      "operacion": "Vincular un tutor al alumno",
       "roles": [
         "Docente"
       ],
@@ -275,7 +257,6 @@
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/alumnos/{id}",
-      "operacion": "Dar de baja lógica a un alumno",
       "roles": [
         "Directivo",
         "docente titular"
@@ -290,7 +271,6 @@
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/tutores/{id}",
-      "operacion": "Dar de baja lógica a un tutor",
       "roles": [
         "Directivo",
         "docente titular"
@@ -306,7 +286,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/anuncios",
-      "operacion": "Publicar un anuncio de forma inmediata o programada",
       "roles": [
         "Docente"
       ],
@@ -325,7 +304,6 @@
     {
       "metodo": "PATCH",
       "ruta": "/api/v1/anuncios/{id}",
-      "operacion": "Editar el anuncio generando una versión nueva",
       "roles": [
         "Docente autor"
       ],
@@ -342,7 +320,6 @@
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/anuncios/{id}",
-      "operacion": "Eliminar lógicamente el anuncio",
       "roles": [
         "Docente autor"
       ],
@@ -356,7 +333,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/anuncios",
-      "operacion": "Consultar el historial filtrado por fecha, curso y remitente",
       "roles": [
         "Directivo",
         "docente",
@@ -374,7 +350,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/anuncios/{id}",
-      "operacion": "Consultar el detalle de un anuncio",
       "roles": [
         "Directivo",
         "docente",
@@ -391,7 +366,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/anuncios/{id}/constancias",
-      "operacion": "Consultar el recuento de lecturas y la nómina de quienes no leyeron",
       "roles": [
         "Docente autor"
       ],
@@ -408,7 +382,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/paneles/me",
-      "operacion": "Obtener el panel correspondiente al rol autenticado",
       "roles": [
         "Directivo",
         "docente",
@@ -425,7 +398,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/supervision/cursos",
-      "operacion": "Consultar el estado agregado de entrega y lectura por curso",
       "roles": [
         "Directivo"
       ],
@@ -439,7 +411,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/entregas/acuses",
-      "operacion": "Registrar el acuse de recepción emitido por el cliente",
       "roles": [
         "Tutor",
         "alumno"
@@ -454,7 +425,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/entregas/vistas",
-      "operacion": "Registrar en lote los eventos de vista",
       "roles": [
         "Tutor",
         "alumno"
@@ -471,7 +441,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/entregas/lecturas",
-      "operacion": "Registrar el evento de lectura",
       "roles": [
         "Tutor",
         "alumno"
@@ -487,7 +456,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/cursos/{id}/conversaciones",
-      "operacion": "Obtener los canales del curso que corresponden al rol",
       "roles": [
         "Docente",
         "tutor",
@@ -510,7 +478,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/conversaciones",
-      "operacion": "Consultar las conversaciones del usuario y sus mensajes no leídos",
       "roles": [
         "Docente",
         "tutor",
@@ -529,7 +496,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/conversaciones/{id}/mensajes",
-      "operacion": "Consultar el historial paginado de la conversación",
       "roles": [
         "Participantes de la conversación"
       ],
@@ -544,7 +510,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/conversaciones/{id}/mensajes",
-      "operacion": "Emitir un mensaje en la conversación",
       "roles": [
         "Participantes de la conversación"
       ],
@@ -560,7 +525,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/conversaciones/{id}/adjuntos",
-      "operacion": "Adjuntar un archivo en formato PDF",
       "roles": [
         "Participantes de la conversación"
       ],
@@ -576,7 +540,6 @@
     {
       "metodo": "PUT",
       "ruta": "/api/v1/conversaciones/{id}/puntero-lectura",
-      "operacion": "Actualizar el puntero de lectura",
       "roles": [
         "Participantes de la conversación"
       ],
@@ -592,7 +555,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/supervision/conversaciones",
-      "operacion": "Acceder a las conversaciones del año lectivo vigente",
       "roles": [
         "Directivo"
       ],
@@ -608,7 +570,6 @@
     {
       "metodo": "GET",
       "ruta": "/api/v1/usuarios/me/preferencias",
-      "operacion": "Consultar el horario de disponibilidad y las preferencias",
       "roles": [
         "Directivo",
         "docente",
@@ -625,7 +586,6 @@
     {
       "metodo": "PUT",
       "ruta": "/api/v1/usuarios/me/preferencias",
-      "operacion": "Configurar el horario de disponibilidad y las preferencias",
       "roles": [
         "Directivo",
         "docente",
@@ -642,7 +602,6 @@
     {
       "metodo": "POST",
       "ruta": "/api/v1/suscripciones-push",
-      "operacion": "Registrar el identificador de destino del navegador",
       "roles": [
         "Directivo",
         "docente",
@@ -659,7 +618,6 @@
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/suscripciones-push/{id}",
-      "operacion": "Invalidar un identificador de destino",
       "roles": [
         "Directivo",
         "docente",
@@ -676,7 +634,6 @@
     {
       "metodo": "WSS",
       "ruta": "/cable",
-      "operacion": "Establecer el canal de tiempo real, autenticado con el mismo token",
       "roles": [
         "Docente",
         "tutor",

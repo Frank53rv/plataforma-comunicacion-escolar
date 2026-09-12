@@ -4,15 +4,15 @@ import json, os, re, subprocess, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SPECS = os.path.join(RAIZ, 'specs')
-# D-06 · el árbol es el de la Figura 18: la interfaz vive en api/ y el cliente en
-# cliente/. Las compuertas exploran esas rutas y no la raíz; de lo contrario no
-# encontrarían nada y aprobarían por ceguera.
+# D-06 · la interfaz vive en api/ y el cliente en cliente/. Las compuertas exploran esas
+# rutas y no la raíz; de lo contrario no encontrarían nada y aprobarían por ceguera.
 API = os.path.join(RAIZ, 'api')
-# Figura 18 · raíces del código de la interfaz: los cinco módulos funcionales, el
-# componente transversal y las carpetas propias del framework.
+# D-21 · los cinco módulos funcionales y el componente transversal son carpetas bajo
+# api/app/. La divergencia D-03 de la Tabla 38 resuelve que se corrige la Figura 18 y no
+# el código, de modo que api/app las contiene a todas y basta con explorar esa raíz.
 MODULOS = ('identidad_acceso', 'estructura_academica', 'anuncios', 'mensajeria',
            'notificaciones', 'compartido')
-CODIGO_API = tuple('api/' + m for m in MODULOS) + ('api/app', 'api/lib')
+CODIGO_API = ('api/app', 'api/lib')
 
 def cargar(nombre):
     with open(os.path.join(SPECS, nombre), encoding='utf-8') as f:

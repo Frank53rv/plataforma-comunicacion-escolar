@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""Compuerta ERRORES · Tabla 35 · Boundary 6
+"""Compuerta ERRORES · Tabla 24 · Boundary 6
 El catálogo es cerrado: ningún rechazo emite un estado que la tabla no contemple.
 """
 import os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _comun import *
 
-R = Reporte('errores', 'Tabla 35 · catálogo cerrado · Boundary 6')
+R = Reporte('errores', 'Tabla 24 · catálogo cerrado · Boundary 6')
 permitidos_error = {e['estado'] for e in cargar('21-errores.json')['estados']}
 exito = {200, 201, 202, 204, 304}
 SIMBOLO = {'ok':200,'created':201,'accepted':202,'no_content':204,'not_modified':304,

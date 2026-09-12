@@ -1,14 +1,14 @@
 {
-  "fuente": "Tabla 35 · catálogo cerrado",
+  "fuente": "Tabla 24 · catálogo cerrado · TFG_ENTREGA_75paginas.docx",
   "estados": [
     {
       "estado": 401,
-      "cuando": "Credencial inválida, cuenta dada de baja, token ausente, expirado o alterado",
+      "cuando": "Credencial inválida, cuenta dada de baja, token ausente, expirado o alterado. Se añade: contraseña actual equivocada en el cambio de credencial, e intento de activación de una cuenta dada de baja.",
       "flujos": "CU-01 E1 y E2 · RNF-02"
     },
     {
       "estado": 403,
-      "cuando": "Autenticado pero no habilitado: credencial provisional sin cambiar, rol sin la atribución, docente no vinculado al curso, anuncio del que no es autor, participación en conversación ajena, supervisión que no habilita emitir",
+      "cuando": "Autenticado pero no habilitado: credencial provisional sin cambiar, rol sin la atribución, docente no vinculado al curso, anuncio del que no es autor, participación en conversación ajena, supervisión que no habilita emitir. Se añade: curso o alumno inexistente en las operaciones de alta, donde se responde 403 y no 404 para no revelar la existencia del recurso.",
       "flujos": "CU-01 A · CU-02 A · CU-06 E1 · CU-07 E1 · CU-08 E1 · CU-11 E1 · CU-12 E1 · CU-15 E1"
     },
     {
@@ -18,12 +18,12 @@
     },
     {
       "estado": 409,
-      "cuando": "Conflicto con una regla de negocio del dominio, con el código de la regla consignado",
+      "cuando": "Conflicto con una regla de negocio del dominio, con el código de la regla consignado. Se añade: designación de un segundo titular sobre un curso que ya lo tiene (RN-13), flujo que la versión anterior de esta tabla no listaba.",
       "flujos": "CU-03 E1 y E2 · CU-04 E1 · CU-05 E1, E2 y E3"
     },
     {
       "estado": 410,
-      "cuando": "Código de activación vencido, ya utilizado o inexistente",
+      "cuando": "Código de activación vencido, ya utilizado o inexistente. Se añade: código de activación mal formado, que se equipara al inexistente.",
       "flujos": "CU-02 E1"
     },
     {
@@ -38,7 +38,7 @@
     },
     {
       "estado": 422,
-      "cuando": "Petición bien formada con datos inaceptables, incluida la publicación con más de tres adjuntos",
+      "cuando": "Petición bien formada con datos inaceptables, incluida la publicación con más de tres adjuntos. Se añade: correo ya registrado, vinculación duplicada, persona con otro rol asignado, curso perteneciente a otro año lectivo, alumno o tutor dado de baja, y alumno existente sin vinculación vigente en el año en curso, que no se revincula de manera automática.",
       "flujos": "RN-33 y validaciones de forma"
     },
     {

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """Compuerta TRAZABILIDAD · RNF-22 · CP-RNF-22
 Cada requisito Must have con código citado en el código, prueba CP-RF-nn presente y rama
-feature/RF-nn en el historial. Es la Tabla 22 verificada contra el repositorio.
+feature/RF-nn en el historial. Es la Tabla 15 verificada contra el repositorio.
 """
 import os, re, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _comun import *
 
-R = Reporte('trazabilidad', 'RNF-22 · CP-RNF-22 · Tabla 22')
+R = Reporte('trazabilidad', 'RNF-22 · CP-RNF-22 · Tabla 15')
 rf = cargar('10-requisitos-funcionales.json')['requisitos']
 must = [x for x in rf if x['moscow'] == 'M']
 cps = {c['codigo'] for c in cargar('30-casos-prueba.json')['casos']}

@@ -1,15 +1,15 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
+<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 34 · Selección tecnológica definitiva y justificación por capa
+# Tabla 23 · Selección tecnológica definitiva y justificación por capa
 
 | Capa | Tecnología y versión | Por qué esta elección | Requisito que la sostiene |
 |---|---|---|---|
 | Lenguaje y framework del servidor | Ruby 4.0 · Ruby on Rails 8.1 en modo interfaz | Provee enrutamiento, capa de acceso a datos, serialización, cola de trabajos y canal de tiempo real en un solo framework, sin sumar servicios. Es el stack en el que el autor declara un año de experiencia previa, lo que reduce el riesgo R-07 | RNF-21 · RNF-08 |
-| Base de datos | PostgreSQL 18 | Integridad referencial, transacciones y control de acceso a nivel de motor. Único almacén: aloja datos de negocio, cola de trabajos y publicación-suscripción, conforme a la Tabla 24 | RNF-07 · RN-28 |
-| Canal de tiempo real | ActionCable con adaptador Solid Cable | Difusión sobre conexiones persistentes respaldada por la misma base de datos, sin almacén en memoria adicional. La comparación está en la Tabla 24 | RNF-08 · RF-25 |
-| Cola de trabajos | Solid Queue | Ejecución diferida del envío de notificaciones y de los reintentos, sobre la misma base de datos | RF-37 · RNF-12 |
+| Base de datos | PostgreSQL 18 | Integridad referencial, transacciones y control de acceso a nivel de motor. Único almacén: aloja datos de negocio, cola de trabajos y publicación-suscripción, conforme a la Tabla 23 | RNF-07 · RN-28 |
+| Canal de tiempo real | ActionCable con adaptador Solid Cable | Difusión sobre conexiones persistentes respaldada por la misma base de datos, sin almacén en memoria adicional. La comparación está en la Tabla 23. Declarado en la configuración pero no instalado en la versión construida: no existen sus tablas ni el proceso correspondiente (D-08). | RNF-08 · RF-25 |
+| Cola de trabajos | Solid Queue | Ejecución diferida del envío de notificaciones y de los reintentos, sobre la misma base de datos. Declarado en la configuración pero no instalado en la versión construida: la ejecución diferida queda comprometida y no verificada (D-08). | RF-37 · RNF-12 |
 | Biblioteca y construcción del cliente | React 19 · Vite 8 · React Router | Produce archivos estáticos y elimina el proceso de servidor de renderizado, innecesario para paneles autenticados conforme a la Tabla 23. Es el stack con dos años de experiencia declarada | RF-40 · RNF-21 |
 | Estilos | Tailwind CSS 4.3 | Clases utilitarias orientadas al diseño responsivo en los tres anchos de referencia. El proyecto usa los patrones que la biblioteca provee y no diseña un sistema propio, conforme a la exclusión del punto 1.6 | RF-41 · RNF-18 |
 | Servidor de archivos estáticos | nginx | Entrega los archivos producidos por la construcción del cliente y termina la conexión cifrada | RNF-06 |
@@ -20,5 +20,10 @@
 | Documentación y validación de la interfaz | OpenAPI · Postman | Contrato legible por máquina y colección de validación ejecutable | RNF-17 |
 | Control de versiones | Git · GitHub, repositorio privado | Historial de commits, ramas y merges como evidencia de autoría y frecuencia de trabajo | Template, punto 5.2 |
 | Exposición del entorno | Cloudflare Tunnel | Expone el entorno de demostración sobre HTTPS con certificado válido, condición del push web y de la verificación del transporte cifrado | RNF-06 · RNF-19 |
+| Dependencias del servidor no consignadas en la versión anterior | rack-cors · factory_bot_rails · json (serie 2) · bootsnap · debug · bundler-audit | Las tres primeras se incorporan por decisión de construcción: control de origen cruzado, factorías de prueba y fijación de la serie del serializador. Las tres últimas provienen de la plantilla por defecto del framework y se conservan. | RNF-06 · RNF-20 · RNF-22 |
+| Dependencias del cliente no consignadas en la versión anterior | Babel · jest-environment-jsdom · jest-dom · complementos de ESLint · globals · Prettier | Cadena de transformación y entorno de prueba del cliente, exigidos por la ejecución de Jest y de React Testing Library ya comprometidos. | RNF-20 · RNF-22 |
+| Imágenes base de los contenedores | nginx:1.27-alpine · node:22-slim | Fijan la versión de las dos imágenes que la composición levanta y que la fila de nginx no precisaba. | RNF-19 |
+| Componentes retirados respecto de la versión anterior | solid_cache · thruster · brakeman · active_storage · action_mailer | Se retiran por no tener requisito que los sostenga. La supresión es coherente con el límite 7 del Boundary Spec de la Tabla 25: no se incorpora componente sin requisito. | Tabla 25, límite 7 |
+| Exposición de puertos y montajes de la composición | Puerto 5432 publicado hacia el equipo anfitrión · carpeta specs/ montada dentro del contenedor | Ninguna de las dos cosas es exigida por un requisito: el puerto publicado se conserva sólo para inspección durante el desarrollo y debe cerrarse en el entorno de demostración; el montaje de specs/ permite que las compuertas de verificación lean las especificaciones desde dentro del contenedor. | RNF-19 · Tabla 36, límite 7 |
 
-> Nota. Las versiones se expresan por serie mayor y menor, y se actualizan únicamente dentro de la serie de parches durante la ejecución. La verificación contra la publicación oficial de cada producto se realizó al redactar la Tabla 10 y se repitió al fijar estas versiones como definitivas. La caché de aplicación no figura en esta tabla porque el producto mínimo viable no compromete ninguna: si la medición de CP-RNF-09 lo justificara, se incorporaría el componente nativo sobre la resolución de destinatarios, sin agregar infraestructura, conforme a la nota de la Tabla 24.
+> Nota. Las versiones se expresan por serie mayor y menor, y se actualizan únicamente dentro de la serie de parches durante la ejecución. La verificación contra la publicación oficial de cada producto se realizó al fijar el stack preliminar del punto 1.8 y se repitió al fijar estas versiones como definitivas. La caché de aplicación no figura en esta tabla porque el producto mínimo viable no compromete ninguna: si la medición de CP-RNF-09 lo justificara, se incorporaría el componente nativo sobre la resolución de destinatarios, sin agregar infraestructura, conforme a la nota de la Tabla 23.

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Compuerta CONTRATO · RNF-17 · CP-RNF-17
 Diferencia nula en los tres sentidos que el caso de prueba exige: rutas del enrutador,
-archivo OpenAPI e inventario de la Tabla 27.
+archivo OpenAPI e inventario de la Tabla 18.
 Entrada: api/tmp/rutas.txt, producido por `bin/rails routes > tmp/rutas.txt`.
 """
 import os, re, sys
@@ -22,7 +22,7 @@ if not os.path.exists(fuente):
         R.aviso('todavía no existe el enrutador · la compuerta se activa con la aplicación')
     R.cerrar()
 
-# --- segundo sentido · el archivo OpenAPI contra la Tabla 27 ---
+# --- segundo sentido · el archivo OpenAPI contra la Tabla 18 ---
 openapi = os.path.join(RAIZ, 'openapi', 'openapi.yaml')
 if not os.path.exists(openapi):
     R.falla('falta openapi/openapi.yaml · RNF-17 exige la interfaz descrita en ese formato')
@@ -39,11 +39,11 @@ else:
     sobran_doc = sorted(documentadas - esperadas)
     faltan_doc = sorted(esperadas - documentadas)
     for m, r in sobran_doc:
-        R.falla('el OpenAPI describe una operación que la Tabla 27 no declara: %-6s %s' % (m, r))
+        R.falla('el OpenAPI describe una operación que la Tabla 18 no declara: %-6s %s' % (m, r))
     for m, r in faltan_doc:
-        R.falla('el OpenAPI no describe la operación %-6s %s de la Tabla 27' % (m, r))
+        R.falla('el OpenAPI no describe la operación %-6s %s de la Tabla 18' % (m, r))
     if not sobran_doc and not faltan_doc:
-        R.bien('OpenAPI ↔ Tabla 27: diferencia nula (%d operaciones descritas)' % len(documentadas))
+        R.bien('OpenAPI ↔ Tabla 18: diferencia nula (%d operaciones descritas)' % len(documentadas))
 
 # --- tercer sentido · el enrutador ---
 reales = set()
@@ -51,11 +51,11 @@ for linea in leer_texto(fuente).splitlines():
     m = re.search(r'\b(GET|POST|PUT|PATCH|DELETE)\b\s+(/\S*)', linea)
     if not m: continue
     ruta = m.group(2)
-    # Boundary 4 · ninguna ruta fuera de la Tabla 27, tampoco fuera del prefijo: sólo se
+    # Boundary 4 · ninguna ruta fuera de la Tabla 18, tampoco fuera del prefijo: sólo se
     # admite /cable, que es el canal WSS que la propia tabla declara.
     if ruta.startswith('/cable'): continue
     if not ruta.startswith('/api/v1/'):
-        R.falla('ruta fuera de la interfaz versionada que la Tabla 27 no declara: %s %s' % (m.group(1), ruta))
+        R.falla('ruta fuera de la interfaz versionada que la Tabla 18 no declara: %s %s' % (m.group(1), ruta))
         continue
     reales.add((m.group(1), normalizar_ruta(ruta)))
 
@@ -63,7 +63,7 @@ sobrantes = sorted(reales - esperadas)
 faltantes = sorted(comprometidas - reales)
 
 for m, r in sobrantes:
-    R.falla('ruta que la Tabla 27 no declara: %-6s %s' % (m, r))
+    R.falla('ruta que la Tabla 18 no declara: %-6s %s' % (m, r))
 if faltantes:
     muestra = ', '.join('%s %s' % (m, r) for m, r in faltantes[:4])
     R.aviso('operaciones comprometidas aún no construidas: %d (p. ej. %s)'

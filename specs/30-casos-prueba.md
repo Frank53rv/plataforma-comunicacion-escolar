@@ -1,8 +1,27 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
-     La fuente de verdad es el documento de grado. Si este archivo y el
-     documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
+<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx, ANEXO NORMATIVO. NO EDITAR A MANO.
+     La edición vigente (TFG_ENTREGA_75paginas.docx) condensó este artefacto y ya no lo
+     contiene. Se conserva de la v5.2 por decisión D-21: es la única
+     fuente escrita de este contenido. Toda TABLA, en cambio, se lee de
+     la edición vigente y con su numeración. -->
 
-# Tabla 43 · Matriz de casos de prueba
+# Matriz de casos de prueba
+
+## Resumen por grupo · Tabla 32 de la edición vigente
+
+| Grupo de casos | Origen | Casos | Criterio de aprobación | Resultado esperado |
+|---|---|---|---|---|
+| Requisitos funcionales | Uno por cada requisito de la Tabla 10 | 47 | El flujo principal del caso de uso que lo realiza produce la postcondición comprometida | Token firmado con identidad, rol y vencimiento. El segundo intento responde 401 sin distinguir cuál de los dos datos falló |
+| Reglas de negocio críticas | Reglas de la Tabla 12 con rechazo asociado | 12 | La operación se rechaza con el código del catálogo de la Tabla 24 y sin efectos parciales | Token firmado con identidad, rol y vencimiento. El segundo intento responde 401 sin distinguir cuál de los dos datos falló |
+| Requisitos no funcionales verificables por prueba | Tabla 11, filas con umbral instrumentable | 10 | La medición alcanza el umbral declarado, conforme al protocolo de la Tabla 37 | Token firmado con identidad, rol y vencimiento. El segundo intento responde 401 sin distinguir cuál de los dos datos falló |
+| Total | — | 69 | Umbral global del 80 % de casos aprobados | Token firmado con identidad, rol y vencimiento. El segundo intento responde 401 sin distinguir cuál de los dos datos falló |
+
+> Nota. Sesenta y nueve casos: cuarenta y siete de requisitos funcionales y veintidós de no funcionales, en correspondencia uno a uno con las filas de la Tabla 15.
+
+## Los sesenta y nueve casos · Tabla 43 del anexo TFG_entrega_5_Etapa4_v52.docx
+
+> La edición vigente no enuncia los casos uno por uno. Se conservan de la v5.2 porque
+> son el enunciado con el que se escribe cada prueba (CLAUDE.md §3.4) y la fuente que
+> la compuerta `trazabilidad` contrasta.
 
 | Cód. | Req. | Descripción del caso | Datos de entrada | Resultado esperado |
 |---|---|---|---|---|

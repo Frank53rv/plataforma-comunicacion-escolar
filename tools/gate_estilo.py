@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Compuerta ESTILO · Quality Spec, Tabla 37 · D-14
+"""Compuerta ESTILO · Quality Spec, Tabla 26 · D-14
 «RuboCop con la configuración por defecto del framework, sin excepciones por archivo ·
 Ejecución del analizador en cada envío al repositorio; el incumplimiento detiene la
 integración de la rama.» Ídem ESLint para el cliente.
@@ -9,7 +9,7 @@ import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _comun import *
 
-R = Reporte('estilo', 'Quality Spec · Tabla 37 · RuboCop y ESLint')
+R = Reporte('estilo', 'Quality Spec · Tabla 26 · RuboCop y ESLint')
 
 # --- servidor ---
 rubocop = os.path.join(API, 'tmp', 'rubocop.json')

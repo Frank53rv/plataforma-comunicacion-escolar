@@ -1,12 +1,17 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
-     La fuente de verdad es el documento de grado. Si este archivo y el
-     documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
+<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx, ANEXO NORMATIVO. NO EDITAR A MANO.
+     La edición vigente (TFG_ENTREGA_75paginas.docx) condensó este artefacto y ya no lo
+     contiene. Se conserva de la v5.2 por decisión D-21: es la única
+     fuente escrita de este contenido. Toda TABLA, en cambio, se lee de
+     la edición vigente y con su numeración. -->
 
 # Especificación narrativa de los quince casos de uso (punto 2.3)
 
 Cada caso declara actor, precondición, flujo principal numerado, flujos alternativos,
 flujos de excepción, postcondición y reglas aplicadas. **Los pasos del flujo principal
 son la especificación de la operación: no se agregan ni se omiten pasos.**
+
+> Procedencia. La edición vigente conserva únicamente el resumen de los casos de uso
+> (Tabla 13). Esta narrativa se toma de la v5.2, que es donde está escrita.
 
 ## CU-01
 

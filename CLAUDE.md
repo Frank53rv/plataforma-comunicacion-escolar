@@ -2,9 +2,11 @@
 
 > Este archivo se carga automáticamente al iniciar cualquier sesión de asistencia en este
 > repositorio. Es la traducción operativa del **Context Spec**, el **Boundary Spec**
-> (Tabla 36) y el **Quality Spec** (Tabla 37) del punto 4.2 del documento de grado
+> (Tabla 25) y el **Quality Spec** (Tabla 26) del punto 4.2 del documento de grado
 > *«API REST de un colegio para una plataforma de comunicación escolar con notificaciones
-> inteligentes»*, versión 5.2.
+> inteligentes»*. Fuente absoluta: la edición vigente de 75 páginas
+> (`documento/TFG_ENTREGA_75paginas.docx`); la v5.2 queda como anexo normativo sólo para
+> lo que esa edición condensó —ver D-21 de `specs/DECISIONES.md`.
 
 ## 0 · Regla de precedencia
 
@@ -17,7 +19,7 @@ extracción literal de sus tablas, generada por herramienta y no editada a mano.
 3. Si el documento **no dice nada** sobre algo que hace falta decidir → **no lo decidas**.
    Detené la tarea, registrá la pregunta en `specs/DECISIONES.md` y esperá al autor.
    Inventar un comportamiento no especificado es la falla más grave posible en este
-   repositorio, porque rompe la matriz de trazabilidad de la Tabla 22, que es el
+   repositorio, porque rompe la matriz de trazabilidad de la Tabla 15, que es el
    instrumento de control declarado en el punto 2.4.
 
 ## 1 · Antes de escribir código, leer
@@ -34,7 +36,7 @@ extracción literal de sus tablas, generada por herramienta y no editada a mano.
 
 No trabajes de memoria ni de resumen: abrí el archivo y citá la fila.
 
-## 2 · Ocho prohibiciones absolutas (Boundary Spec, Tabla 36)
+## 2 · Ocho prohibiciones absolutas (Boundary Spec, Tabla 25)
 
 Son límites de **asunción**, no de sugerencia. Podés proponer cualquiera de estos cambios;
 no podés aplicarlos por tu cuenta.
@@ -58,7 +60,7 @@ no podés aplicarlos por tu cuenta.
 8. **Datos.** Ningún dato real de personas o de la institución en el código, las
    migraciones, las semillas ni las capturas. Sólo datos ficticios (puntos 1.6 y 1.7).
 
-**Sobre el tiempo, además.** Las ocho prohibiciones vienen de la Tabla 36. Hay una novena
+**Sobre el tiempo, además.** Las ocho prohibiciones vienen de la Tabla 25. Hay una novena
 regla que no está en esa tabla sino en la prosa del punto 4.2, y que conviene tratar con el
 mismo rigor porque es la que una asistencia completa por su cuenta sin darse cuenta: **no
 asumas ninguna zona horaria, ninguna forma de leer la hora ni ninguna regla de franja
@@ -68,7 +70,7 @@ descartar ni agrupar. La compuerta `tiempo` lo verifica.
 
 ## 3 · Ciclo de trabajo por requisito
 
-Una rama por requisito funcional, conforme a la Tabla 42:
+Una rama por requisito funcional, conforme a la Tabla 31:
 
 ```
 feature/RF-nn-descripcion-corta
@@ -84,10 +86,10 @@ Pasos obligatorios, en este orden:
    implementado con el estado del catálogo.
 3. **Leer la fila del endpoint** en `specs/20-endpoints.md` y su forma en
    `specs/24-formas-peticion-respuesta.md`. Los nombres de campo son literalmente los del
-   diccionario de la Tabla 21.
+   diccionario de la Tabla 14.
 4. **Escribir la prueba primero**, con el `CP-RF-nn` de `specs/30-casos-prueba.md` como
    enunciado: mismos datos de entrada, mismo resultado esperado.
-5. **Implementar** en el módulo que la Tabla 22 asigna. La lógica va en la API, nunca en
+5. **Implementar** en el módulo que la Tabla 15 asigna. La lógica va en la API, nunca en
    el cliente.
 6. **Verificar**: `bin/verificar`. Ninguna rama se integra con una compuerta en rojo.
 7. **Commit** citando el código:
@@ -97,7 +99,7 @@ Pasos obligatorios, en este orden:
 
 Todo controlador, servicio, modelo y política lleva un comentario de encabezado con los
 códigos que realiza. No es adorno: es lo que permite que la evidencia del punto 5.2 se
-contraste contra la Tabla 22.
+contraste contra la Tabla 15.
 
 ```ruby
 # RF-17 Publicación de anuncios · CU-06 · RN-16, RN-17, RN-18, RN-19
@@ -113,14 +115,14 @@ establece en lugar de una cadena de integración.
 
 | Compuerta | Qué compara | Requisito que verifica |
 |---|---|---|
-| `contrato` | rutas del enrutador ↔ las 43 de la Tabla 27 | RNF-17 · CP-RNF-17 |
-| `errores` | estados HTTP emitidos ↔ catálogo de 9 de la Tabla 35 | RNF-17 · Boundary 6 |
-| `esquema` | tablas y columnas de `db/schema.rb` ↔ las 19 entidades de la Tabla 38 | Boundary 3 |
+| `contrato` | rutas del enrutador ↔ las 43 de la Tabla 18 | RNF-17 · CP-RNF-17 |
+| `errores` | estados HTTP emitidos ↔ catálogo de 9 de la Tabla 24 | RNF-17 · Boundary 6 |
+| `esquema` | tablas y columnas de `db/schema.rb` ↔ las 19 entidades de la Tabla 27 | Boundary 3 |
 | `alcance` | ninguna ruta `Should have` implementada sin decisión registrada | Boundary 1 |
 | `trazabilidad` | cada RF Must have tiene rama, código citado y `CP-RF-nn` | RNF-22 · CP-RNF-22 |
 | `cobertura` | cobertura de líneas de la API ≥ 70 % | RNF-20 · CP-RNF-20 |
 | `tiempo` | zona horaria, lectura de hora y franja de disponibilidad ↔ punto 4.2 | RF-33 · RN-24 · RN-32 |
-| `estilo` | RuboCop y ESLint sin hallazgos ni excepciones por archivo (D-14) | Quality Spec · Tabla 42 |
+| `estilo` | RuboCop y ESLint sin hallazgos ni excepciones por archivo (D-14) | Quality Spec · Tabla 26 |
 
 ## 6 · Cuando encuentres un hueco
 
@@ -139,5 +141,5 @@ tarea:
 
 La adopción de cualquier alternativa exige **primero** actualizar el artefacto del
 documento que la gobierna y registrar el cambio en el histórico de revisiones. Esa es la
-condición que la nota de la Tabla 36 impone, y es lo que impide que el código diverja del
+condición que la nota de la Tabla 25 impone, y es lo que impide que el código diverja del
 documento sin que la divergencia quede escrita.

@@ -1,8 +1,8 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
+<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 41 · Variables de entorno del despliegue
+# Tabla 30 · Variables de entorno del despliegue
 
 | Variable | Qué provee | Origen del compromiso |
 |---|---|---|
@@ -20,4 +20,4 @@
 | RETENCION_BITACORA_MESES | Plazo de conservación de la bitácora técnica de fallos de envío | RNF-07 · RN-27 |
 | ADJUNTO_TAMANO_MAXIMO_MB y ADJUNTO_CANTIDAD_MAXIMA | Límites del archivo adjunto | RN-33 · RF-30 |
 
-> Nota. El repositorio incluye un archivo de ejemplo con la totalidad de estas variables, su descripción y un valor de muestra que no es utilizable en ninguna instalación real; el archivo con los valores efectivos nunca se versiona. Es lo que permite que CP-RNF-19 se ejecute sobre un repositorio recién clonado sin editar ningún archivo manualmente. La separación entre el archivo de ejemplo y el de valores efectivos es también el control de segregación de credenciales que ISO/IEC 27001 prescribe y la razón por la que el punto 5.2 puede mostrar el historial completo del repositorio sin exponer secretos.
+> Nota. El repositorio incluye un archivo de ejemplo con la totalidad de estas variables, su descripción y un valor de muestra que no es utilizable en ninguna instalación real; el archivo con los valores efectivos nunca se versiona. Es lo que permite que CP-RNF-19 se ejecute sobre un repositorio recién clonado sin editar ningún archivo manualmente.
