@@ -13,10 +13,18 @@
 # Tabla 29 · titulo, cuerpo, cursos (lista de ids) → recurso anuncio. DELETE: sin cuerpo
 # → recurso anuncio con eliminado_en y eliminado_por. GET índice: curso_id,
 # remitente_id, desde, hasta, pagina, por_pagina → colección con titulo, publicado_en,
-# autor_id y leida_en de quien consulta. GET detalle: sin parámetros → recurso anuncio
-# con su versión vigente, sus cursos y sus adjuntos. GET constancias: pagina, por_pagina
-# → total de destinatarios, cantidad con lectura registrada y nómina paginada de quienes
-# no leyeron.
+# autor (recurso completo) y leido de quien consulta. GET detalle: sin parámetros →
+# recurso anuncio con su versión vigente, sus cursos (recurso completo) y sus adjuntos.
+# GET constancias: pagina, por_pagina → total de destinatarios, cantidad con lectura
+# registrada y nómina paginada de alumnos sin lectura registrada.
+# openapi/openapi.yaml (esquemas AnuncioEnBandeja, AnuncioDetalle, Constancias) y
+# specs/23-convenciones-api.md (Tabla 28: paginación con total/pagina/por_pagina y
+# orden por fecha descendente por omisión) precisan estas formas más allá de la prosa de
+# la Tabla 29: la primera versión de este controlador divergía de ambos —usaba
+# autor_id/leida_en en el índice, «anuncio_version»/ids de curso en el detalle,
+# «no_leyeron» sin paginar e incluyendo tutores en el detalle, y ordenaba el índice por
+# id—, detectado al verificar la arquitectura al cerrar el módulo C (corrección
+# hotfix/CP-RF-22-CP-RF-23-CP-RF-45-forma-contrato).
 # D-05 · CU-11 paso 4 («familia alcanzada») depende de RF-38, Should have: la respuesta
 # de constancias no incluye ese indicador. D-05 anticipa exactamente este caso al citar
 # RF-23 entre las operaciones donde un requisito Should have viaja junto a uno Must have
@@ -104,15 +112,21 @@ class AnunciosController < ApplicationController
   end
 
   # CU-09 pasos 2 y 3 · filtra y devuelve únicamente los anuncios que corresponden al
-  # rol y a las vinculaciones vigentes de quien consulta.
+  # rol y a las vinculaciones vigentes de quien consulta. Tabla 28 · «el historial de
+  # anuncios… ordena por fecha descendente por omisión»; admite `orden=publicado_en:asc`
+  # para invertirlo.
   def index
     pagina = [ params[:pagina].to_i, 1 ].max
     por_pagina = params[:por_pagina].to_i
     por_pagina = 25 if por_pagina <= 0
     por_pagina = [ por_pagina, 100 ].min
+    sentido = params[:orden].to_s == "publicado_en:asc" ? "ASC" : "DESC"
 
-    relacion = filtrar(alcance_del_rol)
-    datos = relacion.order(id: :desc).offset((pagina - 1) * por_pagina).limit(por_pagina)
+    relacion = filtrar(alcance_del_rol).order(Arel.sql(<<~SQL.squish))
+      (SELECT av.publicado_en FROM anuncio_version av
+        WHERE av.anuncio_id = anuncio.id ORDER BY av.numero_version DESC LIMIT 1) #{sentido}
+    SQL
+    datos = relacion.offset((pagina - 1) * por_pagina).limit(por_pagina)
 
     render json: {
       datos: datos.map { |anuncio| fila_de_indice(anuncio) },
@@ -145,18 +159,21 @@ class AnunciosController < ApplicationController
     por_pagina = 25 if por_pagina <= 0
     por_pagina = [ por_pagina, 100 ].min
 
+    # openapi/openapi.yaml · esquema Constancias: «sin_lectura» devuelve el nombre del
+    # alumno, no el de cada tutor por separado. Un tutor que no leyó no aparece acá: su
+    # familia figura por el lado del alumno, con RF-38 (familia_alcanzada, Should have)
+    # todavía sin construir.
     entregas = anuncio.version_vigente.entregas
-    sin_leer = Usuario.where(id: entregas.where(leida_en: nil).select(:destinatario_id))
-                       .order(:apellido, :nombre)
-    pagina_sin_leer = sin_leer.offset((pagina - 1) * por_pagina).limit(por_pagina)
+    alumnos_sin_leer = Usuario.alumno
+                              .where(id: entregas.where(leida_en: nil).select(:destinatario_id))
+                              .order(:apellido, :nombre)
+    pagina_actual = alumnos_sin_leer.offset((pagina - 1) * por_pagina).limit(por_pagina)
 
     render json: {
       total_destinatarios: entregas.count,
       con_lectura_registrada: entregas.where.not(leida_en: nil).count,
-      no_leyeron: {
-        datos: pagina_sin_leer.map(&:recurso), total: sin_leer.count,
-        pagina: pagina, por_pagina: por_pagina
-      }
+      sin_lectura: pagina_actual.map { |alumno| { "alumno" => alumno.slice(:id, :nombre, :apellido) } },
+      total: alumnos_sin_leer.count, pagina: pagina, por_pagina: por_pagina
     }, status: :ok
   end
 
@@ -192,17 +209,21 @@ class AnunciosController < ApplicationController
   # año lectivo vigente. El docente, a los de los cursos que dicta. El tutor y el
   # alumno, a aquellos donde tienen una fila de entrega —la misma resolución de RN-19,
   # que ya excluye lo publicado antes de vincularse (RF-21).
+  # Por subconsulta (`where(id: …)`) y no por join+distinct: el índice ordena por la
+  # fecha de publicación con una subconsulta propia (más abajo), y Postgres rechaza
+  # combinar `SELECT DISTINCT` con un `ORDER BY` que no figure en la lista de columnas
+  # seleccionadas.
   def alcance_del_rol
     case usuario_actual.rol
     when "directivo"
-      Anuncio.joins(vinculaciones_curso: { curso: :anio_lectivo })
-             .where(anio_lectivo: { estado: "vigente" }).distinct
+      cursos_vigentes = Curso.where(anio_lectivo_id: AnioLectivo.where(estado: "vigente").select(:id))
+      Anuncio.where(id: AnuncioCurso.where(curso_id: cursos_vigentes.select(:id)).select(:anuncio_id))
     when "docente"
-      Anuncio.joins(:vinculaciones_curso)
-             .where(anuncio_curso: { curso_id: usuario_actual.cursos_vigentes_como_docente }).distinct
+      Anuncio.where(id: AnuncioCurso.where(curso_id: usuario_actual.cursos_vigentes_como_docente)
+                                    .select(:anuncio_id))
     else
-      Anuncio.joins(versiones: :entregas)
-             .where(entrega_anuncio: { destinatario_id: usuario_actual.id }).distinct
+      entregas_propias = EntregaAnuncio.where(destinatario_id: usuario_actual.id).select(:anuncio_version_id)
+      Anuncio.where(id: AnuncioVersion.where(id: entregas_propias).select(:anuncio_id))
     end
   end
 
@@ -210,28 +231,26 @@ class AnunciosController < ApplicationController
   def filtrar(relacion)
     relacion = relacion.where(autor_id: params[:remitente_id]) if params[:remitente_id].present?
     if params[:curso_id].present?
-      relacion = relacion.joins(:vinculaciones_curso)
-                          .where(anuncio_curso: { curso_id: params[:curso_id] }).distinct
+      relacion = relacion.where(id: AnuncioCurso.where(curso_id: params[:curso_id]).select(:anuncio_id))
     end
     if params[:desde].present? || params[:hasta].present?
-      relacion = relacion.joins(:versiones)
-      relacion = relacion.where(anuncio_version: { publicado_en: params[:desde].. }) if params[:desde].present?
-      relacion = relacion.where(anuncio_version: { publicado_en: ..params[:hasta] }) if params[:hasta].present?
-      relacion = relacion.distinct
+      versiones = AnuncioVersion.all
+      versiones = versiones.where(publicado_en: params[:desde]..) if params[:desde].present?
+      versiones = versiones.where(publicado_en: ..params[:hasta]) if params[:hasta].present?
+      relacion = relacion.where(id: versiones.select(:anuncio_id))
     end
     relacion
   end
 
-  # Tabla 40 · «colección de anuncio con titulo, publicado_en, autor y el estado de
-  # lectura de quien consulta» (GET /anuncios). El directivo no es destinatario de
-  # ninguno: su entrega propia no existe, y leida_en queda en nulo.
+  # openapi/openapi.yaml · esquema AnuncioEnBandeja: id, titulo, publicado_en, autor (el
+  # recurso Usuario completo, no sólo su id) y leido (booleano). El directivo no es
+  # destinatario de ninguno: su entrega propia no existe, y leido queda en falso.
   def fila_de_indice(anuncio)
     version = anuncio.version_vigente
     entrega_propia = version.entregas.find_by(destinatario_id: usuario_actual.id)
     {
       "id" => anuncio.id, "titulo" => version.titulo, "publicado_en" => version.publicado_en,
-      "autor_id" => anuncio.autor_id, "estado" => anuncio.estado,
-      "leida_en" => entrega_propia&.leida_en
+      "autor" => anuncio.autor.recurso, "leido" => entrega_propia&.leida_en.present?
     }
   end
 

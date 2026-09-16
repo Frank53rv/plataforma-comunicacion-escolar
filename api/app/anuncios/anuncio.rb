@@ -29,28 +29,41 @@ class Anuncio < ApplicationRecord
     versiones.order(numero_version: :desc).first
   end
 
-  # Tabla 40 · recurso anuncio con su anuncio_version y la cantidad de destinatarios
-  # resueltos (POST /anuncios).
+  # openapi/openapi.yaml · esquema Anuncio: id, autor_id, estado, programado_para,
+  # creado_en. programado_para queda siempre en nulo: RF-18 (Should have) no se
+  # construye, así que ningún anuncio de esta entrega llega a ese estado.
+  def base
+    slice(:id, :autor_id, :estado, :programado_para, :creado_en)
+  end
+
+  # openapi/openapi.yaml · esquema AnuncioVersion: id, anuncio_id, numero_version,
+  # titulo, cuerpo, publicado_en.
+  def self.version_recurso(version)
+    version.slice(:id, :anuncio_id, :numero_version, :titulo, :cuerpo, :publicado_en)
+  end
+
+  # openapi/openapi.yaml · esquema AnuncioPublicado: Anuncio + anuncio_version +
+  # destinatarios_resueltos (POST /anuncios).
   def recurso(destinatarios_resueltos:)
-    version = version_vigente
-    slice(:id, :autor_id, :estado, :creado_en).merge(
-      "anuncio_version" => version.slice(:id, :numero_version, :titulo, :cuerpo, :publicado_en),
+    base.merge(
+      "anuncio_version" => self.class.version_recurso(version_vigente),
       "destinatarios_resueltos" => destinatarios_resueltos
     )
   end
 
-  # Tabla 40 · recurso anuncio con eliminado_en y eliminado_por (DELETE /anuncios/{id}).
+  # openapi/openapi.yaml · esquema AnuncioEliminado: Anuncio + eliminado_en +
+  # eliminado_por (DELETE /anuncios/{id}).
   def recurso_eliminado
-    slice(:id, :autor_id, :estado, :creado_en, :eliminado_en, :eliminado_por)
+    base.merge(slice(:eliminado_en, :eliminado_por))
   end
 
-  # Tabla 40 · recurso anuncio con su versión vigente, sus cursos y sus adjuntos
-  # (GET /anuncios/{id}). Adjuntos vacío: RF-30 (Should have) no se construye acá.
+  # openapi/openapi.yaml · esquema AnuncioDetalle: Anuncio + version (con ese nombre,
+  # no «anuncio_version») + cursos (el recurso Curso completo, no sólo su id) +
+  # adjuntos. Adjuntos vacío: RF-30 (Should have) no se construye acá.
   def recurso_detalle
-    version = version_vigente
-    slice(:id, :autor_id, :estado, :creado_en).merge(
-      "anuncio_version" => version.slice(:id, :numero_version, :titulo, :cuerpo, :publicado_en),
-      "cursos" => vinculaciones_curso.pluck(:curso_id),
+    base.merge(
+      "version" => self.class.version_recurso(version_vigente),
+      "cursos" => vinculaciones_curso.map { |vinculo| vinculo.curso.recurso },
       "adjuntos" => []
     )
   end
