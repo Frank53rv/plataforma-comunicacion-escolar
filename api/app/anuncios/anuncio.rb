@@ -1,11 +1,12 @@
-# RF-17 Publicación de anuncios · CU-06 · RN-16, RN-17
-# Prueba: CP-RF-17
+# RF-17 Publicación de anuncios · RF-20 Borrado lógico de anuncios · CU-06, CU-08 ·
+# RN-14, RN-16, RN-17, RN-20
+# Prueba: CP-RF-17 · CP-RF-20
 #
 # Tabla 21 · «Comunicación institucional que el docente dirige a los cursos que dicta.»
 # Tabla 27 · nombre de tabla en singular conforme a D-01. `programado_para` y el estado
-# `programado` pertenecen a RF-18 (Should have): esta entrega sólo produce el estado
-# `publicado`, la publicación inmediata que semantica-temporal.md fija como «el caso
-# ordinario y el único comprometido».
+# `programado` pertenecen a RF-18 (Should have): esta entrega sólo produce los estados
+# `publicado` y `eliminado`, la publicación inmediata que semantica-temporal.md fija
+# como «el caso ordinario y el único comprometido», y el borrado lógico de RN-20.
 class Anuncio < ApplicationRecord
   self.table_name = "anuncio"
 
@@ -15,7 +16,10 @@ class Anuncio < ApplicationRecord
   }, prefix: :estado, validate: true
 
   belongs_to :autor, class_name: "Usuario", foreign_key: :autor_id
-  belongs_to :eliminado_por, class_name: "Usuario", optional: true
+  # La columna `eliminado_por` no lleva el sufijo `_id`: la asociación se nombra
+  # distinto para que el atributo crudo (el uuid que la petición escribe) no quede
+  # sustituido por el setter de la asociación, que exigiría un Usuario y no un uuid.
+  belongs_to :eliminador, class_name: "Usuario", foreign_key: "eliminado_por", optional: true
   has_many :vinculaciones_curso, class_name: "AnuncioCurso", foreign_key: :anuncio_id,
                                  inverse_of: :anuncio
   has_many :versiones, class_name: "AnuncioVersion", foreign_key: :anuncio_id,
@@ -33,5 +37,10 @@ class Anuncio < ApplicationRecord
       "anuncio_version" => version.slice(:id, :numero_version, :titulo, :cuerpo, :publicado_en),
       "destinatarios_resueltos" => destinatarios_resueltos
     )
+  end
+
+  # Tabla 40 · recurso anuncio con eliminado_en y eliminado_por (DELETE /anuncios/{id}).
+  def recurso_eliminado
+    slice(:id, :autor_id, :estado, :creado_en, :eliminado_en, :eliminado_por)
   end
 end
