@@ -1,17 +1,23 @@
-# RF-17 Publicación de anuncios · CU-06 · RN-16, RN-17, RN-19
-# Prueba: CP-RF-17
+# RF-17 Publicación de anuncios · RF-20 Borrado lógico de anuncios · CU-06, CU-08 ·
+# RN-14, RN-16, RN-17, RN-19, RN-20
+# Prueba: CP-RF-17 · CP-RF-20
 #
 # Tabla 18 · POST /api/v1/anuncios · docente · «Publicar un anuncio sobre uno o varios
-# de sus cursos».
-# Tabla 29 · titulo, cuerpo, cursos (lista de ids) → recurso anuncio.
-# D-05 · la operación es Must have aunque uno de sus requisitos (RF-18, programación) es
-# Should have: este incremento sólo construye la publicación inmediata, que
-# specs/25-semantica-temporal.md fija como «el caso ordinario y el único comprometido».
-# `programado_para` y `adjuntos` (RF-18 y RF-30, ambos Should have) no se admiten: se
-# descartan en `parametros` como cualquier clave no permitida.
+# de sus cursos». DELETE /api/v1/anuncios/{id} · docente autor · «Eliminar un anuncio
+# propio».
+# Tabla 29 · titulo, cuerpo, cursos (lista de ids) → recurso anuncio. DELETE: sin cuerpo
+# → recurso anuncio con eliminado_en y eliminado_por.
+# D-05 · la operación de creación es Must have aunque uno de sus requisitos (RF-18,
+# programación) es Should have: este incremento sólo construye la publicación
+# inmediata, que specs/25-semantica-temporal.md fija como «el caso ordinario y el único
+# comprometido». `programado_para` y `adjuntos` (RF-18 y RF-30, ambos Should have) no se
+# admiten: se descartan en `parametros` como cualquier clave no permitida.
 class AnunciosController < ApplicationController
   # RN-16 · «Los anuncios los publica el docente…»
   autoriza :crear, roles: %w[docente]
+  # Tabla 27 · «docente autor»: el rol es docente; que sea el autor lo verifica CU-08 E1
+  # con 403, dentro de la acción (specs/support/inventario.rb).
+  autoriza :destruir, roles: %w[docente]
 
   # CU-06 flujo principal (1)-(6) · publicación inmediata, la única comprometida.
   def crear
@@ -45,6 +51,29 @@ class AnunciosController < ApplicationController
     entregas.each { |entrega| NotificacionAnuncioJob.perform_later(entrega.id) }
 
     render json: anuncio.recurso(destinatarios_resueltos: entregas.size), status: :created
+  end
+
+  # CU-08 · «el docente solicita la eliminación… el sistema marca el anuncio como
+  # eliminado y registra el autor y la fecha… las filas de entrega asociadas se
+  # conservan.» No se toca entrega_anuncio: al no tocarla, se conserva.
+  def destruir
+    anuncio = Anuncio.find(params[:id])
+
+    # CU-08 E1 · «se rechaza la eliminación de un anuncio del que el docente no es
+    # autor.»
+    unless anuncio.autor_id == usuario_actual.id
+      raise ErrorDeDominio::NoHabilitado.new(
+        codigo: "no_es_autor", detalle: "Sólo el autor del anuncio puede eliminarlo."
+      )
+    end
+
+    # RN-11 (baja lógica en general) · idempotente, igual que BajaLogica: repetir la
+    # eliminación no reescribe la fecha ni el autor ya registrados.
+    unless anuncio.estado_eliminado?
+      anuncio.update!(estado: "eliminado", eliminado_en: Time.current, eliminado_por: usuario_actual.id)
+    end
+
+    render json: anuncio.recurso_eliminado, status: :ok
   end
 
   private
