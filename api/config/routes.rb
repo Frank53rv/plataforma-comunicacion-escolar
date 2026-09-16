@@ -33,5 +33,8 @@ Rails.application.routes.draw do
     post  "cursos",         to: "cursos#crear"
     get   "cursos",         to: "cursos#index"
     patch "cursos/:id",     to: "cursos#actualizar"
+
+    # CU-06 · Publicar anuncio · RF-17
+    post "anuncios", to: "anuncios#crear"
   end
 end

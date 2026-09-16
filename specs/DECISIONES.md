@@ -688,6 +688,47 @@ complemento de semántica temporal—: `documento/TFG_entrega_5_Etapa4_v52.docx`
   `Usuario#cursos_vigentes_como_docente` ya expone y que RN-03/RN-07 ya emplean en
   cadena. Queda para el autor confirmar la lectura si el criterio no fuera ese.
 
+## D-26 · Las compuertas `alcance` y `trazabilidad` leían el archivo entero y no el encabezado
+- **Dónde apareció:** al construir RF-17, `tools/gate_alcance.py` y
+  `tools/gate_trazabilidad.py`, detectado por `bin/verificar` en rojo sobre una rama
+  cuyo `bundle exec rspec` está en verde (233 ejemplos, 0 fallas).
+- **Qué dice el documento:** CLAUDE.md §4 (traducción operativa del punto 5.2) fija que
+  «todo controlador, servicio, modelo y política lleva un comentario de encabezado con
+  los códigos que realiza», con el ejemplo `# RF-17 … · CU-06 · RN-16…` seguido de
+  `# Prueba: CP-RF-17`. Es el encabezado, y no el archivo completo, el que declara qué
+  realiza la unidad — es la evidencia que la Tabla 15 contrasta.
+- **Qué no dice:** nada nuevo respecto de D-05. No es un hueco del documento sino la
+  misma divergencia de la herramienta que D-05 ya nombró: ambas compuertas buscaban
+  `\bRF-\d\d\b` sobre el **texto completo** de cada archivo (`api/app`, `api/spec`,
+  `cliente`), sin distinguir el encabezado declarativo de la prosa posterior. Al
+  documentar en `anuncios_controller.rb` y `notificacion_anuncio_job.rb` por qué RF-18 y
+  RF-30 (Should have) no se construyen acá, y que RF-31 «todavía sin construir» sólo
+  queda encolado para una rama futura, esas menciones —hechas precisamente para no
+  inventar un comportamiento no especificado— se leyeron como si esos requisitos
+  estuvieran implementados: `alcance` los marcó Should have construidos sin decisión
+  adoptada, y `trazabilidad` exigió su CP y su rama.
+- **Alternativas:**
+  - **A.** Corregir la detección para que lea sólo el encabezado (desde el inicio del
+    archivo hasta la línea `# Prueba: …` inclusive, el mismo tramo que CLAUDE.md §4
+    define), no el archivo completo.
+  - **B.** No mencionar el código de un RF Should have o todavía no construido en ningún
+    comentario, para no activar el patrón de las compuertas.
+  - **C.** Registrar la divergencia y dejar la rama en rojo hasta una decisión.
+- **Consecuencia de cada una:** A corrige la herramienta para que verifique lo que el
+  documento realmente exige —qué realiza la unidad, no qué nombra— sin tocar una sola
+  regla de negocio ni el alcance comprometido; es exactamente el tratamiento que D-05 ya
+  dio a la misma clase de falla. B evita tocar las compuertas pero renuncia a la
+  precisión de trazabilidad que motivó citar esos códigos en primer lugar, y obligaría a
+  repetir la omisión en cada RF futuro que toque el mismo límite de alcance (RF-19,
+  RF-20 con RF-16, RF-31…37 entre sí, etc.). C no resuelve nada: bloquea la integración
+  de un requisito Must have correctamente construido por un defecto ajeno a su código.
+- **Estado: RESUELTA · se adopta A, por decisión del autor** — 16 de septiembre de 2026.
+- **Realización:** `tools/_comun.py` agrega `rf_realizados(texto)`, que recorta el
+  encabezado (bloque de comentario inicial hasta `# Prueba: …` inclusive) antes de
+  buscar `RF-\d\d`. `gate_alcance.py` y `gate_trazabilidad.py` lo usan en lugar de la
+  búsqueda de subcadena sobre el archivo completo. No cambia ninguna regla de negocio,
+  ruta ni entidad: sólo la fuente de la que las compuertas leen qué realiza cada unidad.
+
 ---
 
 ## Pendiente de decisión del autor
