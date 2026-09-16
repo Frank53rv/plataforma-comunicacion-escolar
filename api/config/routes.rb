@@ -27,8 +27,11 @@ Rails.application.routes.draw do
     # CU-04, CU-05 · Regeneración del código de activación · RF-07
     post "usuarios/:id/codigos-activacion", to: "codigos_activacion#crear"
 
-    # CU-03 · Administrar año lectivo y cursos · RF-11
-    post "anios-lectivos", to: "anios_lectivos#crear"
-    get  "anios-lectivos", to: "anios_lectivos#index"
+    # CU-03 · Administrar año lectivo y cursos · RF-11, RF-12
+    post  "anios-lectivos", to: "anios_lectivos#crear"
+    get   "anios-lectivos", to: "anios_lectivos#index"
+    post  "cursos",         to: "cursos#crear"
+    get   "cursos",         to: "cursos#index"
+    patch "cursos/:id",     to: "cursos#actualizar"
   end
 end

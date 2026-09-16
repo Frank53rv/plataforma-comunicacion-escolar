@@ -660,6 +660,34 @@ complemento de semántica temporal—: `documento/TFG_entrega_5_Etapa4_v52.docx`
   aplicaría; queda para el autor decidir si el entorno de demostración necesita una
   migración incremental o si recrear el esquema desde cero es aceptable en esta etapa.
 
+## D-25 · Alcance del docente en `GET /cursos`
+- **Dónde apareció:** RF-12 · `specs/20-endpoints.md` (Tabla 18) · `specs/16-trazabilidad.md`
+  (Tabla 15).
+- **Qué dice el documento:** la fila de `GET /cursos` autoriza «Directivo, docente»
+  (Tabla 18). La regla asociada de RF-12 en la trazabilidad es únicamente RN-02:
+  «El directivo crea el año lectivo y los cursos, da de alta a los docentes y les
+  asigna cursos.» — no menciona al docente en absoluto.
+- **Qué no dice:** qué subconjunto de cursos ve un docente al listar. La forma de la
+  Tabla 29 tampoco lo aclara: «anio_lectivo_id opcional, estado opcional → colección de
+  curso con la cantidad de alumnos vinculados», igual para ambos roles.
+- **Alternativas:**
+  - **A.** El docente ve la totalidad de los cursos, igual que el directivo. Es la
+    lectura más simple del silencio, pero expone al docente el listado completo de la
+    institución sin que ninguna regla se lo asigne.
+  - **B.** El docente ve únicamente los cursos a los que tiene una vinculación vigente
+    (`dicta_curso?`), replicando el criterio de alcance que RN-03 y RN-07 ya aplican en
+    toda otra operación del docente sobre alumnos, tutores y códigos.
+- **Consecuencia de cada una:** A es más simple de implementar pero es la única
+  operación de todo el módulo donde el docente vería datos fuera de sus cursos, sin que
+  ninguna regla lo autorice explícitamente: rompería el patrón uniforme del resto del
+  sistema. B mantiene ese patrón sin inventar una regla nueva: generaliza el criterio
+  que RN-03 y RN-07 ya aplican («sus cursos» del docente) al único otro lugar del
+  contrato donde el rol docente opera sobre la entidad curso.
+- **Estado: RESUELTA · se adopta B, por precedencia interna** — 12 de septiembre de
+  2026. No es una regla nueva: es la aplicación del mismo criterio de alcance que
+  `Usuario#cursos_vigentes_como_docente` ya expone y que RN-03/RN-07 ya emplean en
+  cadena. Queda para el autor confirmar la lectura si el criterio no fuera ese.
+
 ---
 
 ## Pendiente de decisión del autor
