@@ -40,5 +40,8 @@ Rails.application.routes.draw do
     delete "anuncios/:id", to: "anuncios#destruir"
     get    "anuncios",     to: "anuncios#index"
     get    "anuncios/:id", to: "anuncios#mostrar"
+
+    # CU-11 · Consultar constancias de lectura · RF-23
+    get "anuncios/:id/constancias", to: "anuncios#constancias"
   end
 end
