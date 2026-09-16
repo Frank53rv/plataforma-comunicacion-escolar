@@ -43,5 +43,8 @@ Rails.application.routes.draw do
 
     # CU-11 · Consultar constancias de lectura · RF-23
     get "anuncios/:id/constancias", to: "anuncios#constancias"
+
+    # CU-15 · Supervisar estado de la comunicación · RF-45
+    get "supervision/cursos", to: "supervision#cursos"
   end
 end
