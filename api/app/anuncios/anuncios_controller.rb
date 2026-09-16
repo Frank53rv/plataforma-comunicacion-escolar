@@ -1,12 +1,17 @@
 # RF-17 Publicación de anuncios · RF-20 Borrado lógico de anuncios · RF-21 Resolución de
-# destinatarios · CU-06, CU-08 · RN-14, RN-16, RN-17, RN-19, RN-20
-# Prueba: CP-RF-17 · CP-RF-20 · CP-RF-21
+# destinatarios · RF-22 Consulta del historial de anuncios · CU-06, CU-08, CU-09 ·
+# RN-14, RN-15, RN-16, RN-17, RN-19, RN-20, RN-22, RN-27, RN-28
+# Prueba: CP-RF-17 · CP-RF-20 · CP-RF-21 · CP-RF-22
 #
 # Tabla 18 · POST /api/v1/anuncios · docente · «Publicar un anuncio sobre uno o varios
 # de sus cursos». DELETE /api/v1/anuncios/{id} · docente autor · «Eliminar un anuncio
-# propio».
+# propio». GET /api/v1/anuncios y GET /api/v1/anuncios/{id} · directivo, docente, tutor,
+# alumno · «Consultar el historial de anuncios que corresponde al rol».
 # Tabla 29 · titulo, cuerpo, cursos (lista de ids) → recurso anuncio. DELETE: sin cuerpo
-# → recurso anuncio con eliminado_en y eliminado_por.
+# → recurso anuncio con eliminado_en y eliminado_por. GET índice: curso_id,
+# remitente_id, desde, hasta, pagina, por_pagina → colección con titulo, publicado_en,
+# autor_id y leida_en de quien consulta. GET detalle: sin parámetros → recurso anuncio
+# con su versión vigente, sus cursos y sus adjuntos.
 # D-05 · la operación de creación es Must have aunque uno de sus requisitos (RF-18,
 # programación) es Should have: este incremento sólo construye la publicación
 # inmediata, que specs/25-semantica-temporal.md fija como «el caso ordinario y el único
@@ -24,6 +29,9 @@ class AnunciosController < ApplicationController
   # Tabla 27 · «docente autor»: el rol es docente; que sea el autor lo verifica CU-08 E1
   # con 403, dentro de la acción (specs/support/inventario.rb).
   autoriza :destruir, roles: %w[docente]
+  # RN-15 · acceso mediado, sobre los cuatro roles.
+  autoriza :index, roles: %w[directivo docente tutor alumno]
+  autoriza :mostrar, roles: %w[directivo docente tutor alumno]
 
   # CU-06 flujo principal (1)-(6) · publicación inmediata, la única comprometida.
   def crear
@@ -82,6 +90,32 @@ class AnunciosController < ApplicationController
     render json: anuncio.recurso_eliminado, status: :ok
   end
 
+  # CU-09 pasos 2 y 3 · filtra y devuelve únicamente los anuncios que corresponden al
+  # rol y a las vinculaciones vigentes de quien consulta.
+  def index
+    pagina = [ params[:pagina].to_i, 1 ].max
+    por_pagina = params[:por_pagina].to_i
+    por_pagina = 25 if por_pagina <= 0
+    por_pagina = [ por_pagina, 100 ].min
+
+    relacion = filtrar(alcance_del_rol)
+    datos = relacion.order(id: :desc).offset((pagina - 1) * por_pagina).limit(por_pagina)
+
+    render json: {
+      datos: datos.map { |anuncio| fila_de_indice(anuncio) },
+      total: relacion.count, pagina: pagina, por_pagina: por_pagina
+    }, status: :ok
+  end
+
+  # CU-09 paso 4 · abrir el detalle. E1 · un anuncio ajeno a las vinculaciones de quien
+  # consulta responde 404, con independencia de lo que el cliente presente.
+  def mostrar
+    anuncio = alcance_del_rol.find_by(id: params[:id])
+    raise ErrorDeDominio::NoEncontrado.new if anuncio.nil?
+
+    render json: anuncio.recurso_detalle, status: :ok
+  end
+
   private
 
   # CU-06 paso 3 y E1 · «si el docente no está vinculado a alguno de los cursos
@@ -107,6 +141,54 @@ class AnunciosController < ApplicationController
     alumno_ids = AlumnoCurso.vigentes.where(curso_id: cursos_ids).distinct.pluck(:usuario_id)
     tutor_ids = TutorAlumno.vigentes.where(alumno_id: alumno_ids).distinct.pluck(:tutor_id)
     (alumno_ids + tutor_ids).uniq
+  end
+
+  # CU-09 paso 3 · «únicamente los anuncios que le corresponden según su rol y sus
+  # vinculaciones vigentes.» RN-22 · el directivo accede a los de todos los cursos del
+  # año lectivo vigente. El docente, a los de los cursos que dicta. El tutor y el
+  # alumno, a aquellos donde tienen una fila de entrega —la misma resolución de RN-19,
+  # que ya excluye lo publicado antes de vincularse (RF-21).
+  def alcance_del_rol
+    case usuario_actual.rol
+    when "directivo"
+      Anuncio.joins(vinculaciones_curso: { curso: :anio_lectivo })
+             .where(anio_lectivo: { estado: "vigente" }).distinct
+    when "docente"
+      Anuncio.joins(:vinculaciones_curso)
+             .where(anuncio_curso: { curso_id: usuario_actual.cursos_vigentes_como_docente }).distinct
+    else
+      Anuncio.joins(versiones: :entregas)
+             .where(entrega_anuncio: { destinatario_id: usuario_actual.id }).distinct
+    end
+  end
+
+  # CU-09 paso 2 · filtra por fecha, curso o remitente, dentro del alcance ya resuelto.
+  def filtrar(relacion)
+    relacion = relacion.where(autor_id: params[:remitente_id]) if params[:remitente_id].present?
+    if params[:curso_id].present?
+      relacion = relacion.joins(:vinculaciones_curso)
+                          .where(anuncio_curso: { curso_id: params[:curso_id] }).distinct
+    end
+    if params[:desde].present? || params[:hasta].present?
+      relacion = relacion.joins(:versiones)
+      relacion = relacion.where(anuncio_version: { publicado_en: params[:desde].. }) if params[:desde].present?
+      relacion = relacion.where(anuncio_version: { publicado_en: ..params[:hasta] }) if params[:hasta].present?
+      relacion = relacion.distinct
+    end
+    relacion
+  end
+
+  # Tabla 40 · «colección de anuncio con titulo, publicado_en, autor y el estado de
+  # lectura de quien consulta» (GET /anuncios). El directivo no es destinatario de
+  # ninguno: su entrega propia no existe, y leida_en queda en nulo.
+  def fila_de_indice(anuncio)
+    version = anuncio.version_vigente
+    entrega_propia = version.entregas.find_by(destinatario_id: usuario_actual.id)
+    {
+      "id" => anuncio.id, "titulo" => version.titulo, "publicado_en" => version.publicado_en,
+      "autor_id" => anuncio.autor_id, "estado" => anuncio.estado,
+      "leida_en" => entrega_propia&.leida_en
+    }
   end
 
   def parametros
