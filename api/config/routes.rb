@@ -35,7 +35,10 @@ Rails.application.routes.draw do
     patch "cursos/:id",     to: "cursos#actualizar"
 
     # CU-06 · Publicar anuncio · RF-17 · CU-08 · Eliminar anuncio · RF-20
+    # CU-09 · Consultar anuncios e historial · RF-22
     post   "anuncios",     to: "anuncios#crear"
     delete "anuncios/:id", to: "anuncios#destruir"
+    get    "anuncios",     to: "anuncios#index"
+    get    "anuncios/:id", to: "anuncios#mostrar"
   end
 end

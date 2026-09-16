@@ -1,6 +1,6 @@
-# RF-17 Publicación de anuncios · RF-20 Borrado lógico de anuncios · CU-06, CU-08 ·
-# RN-14, RN-16, RN-17, RN-20
-# Prueba: CP-RF-17 · CP-RF-20
+# RF-17 Publicación de anuncios · RF-20 Borrado lógico de anuncios · RF-22 Consulta del
+# historial de anuncios · CU-06, CU-08, CU-09 · RN-14, RN-16, RN-17, RN-20, RN-22
+# Prueba: CP-RF-17 · CP-RF-20 · CP-RF-22
 #
 # Tabla 21 · «Comunicación institucional que el docente dirige a los cursos que dicta.»
 # Tabla 27 · nombre de tabla en singular conforme a D-01. `programado_para` y el estado
@@ -42,5 +42,16 @@ class Anuncio < ApplicationRecord
   # Tabla 40 · recurso anuncio con eliminado_en y eliminado_por (DELETE /anuncios/{id}).
   def recurso_eliminado
     slice(:id, :autor_id, :estado, :creado_en, :eliminado_en, :eliminado_por)
+  end
+
+  # Tabla 40 · recurso anuncio con su versión vigente, sus cursos y sus adjuntos
+  # (GET /anuncios/{id}). Adjuntos vacío: RF-30 (Should have) no se construye acá.
+  def recurso_detalle
+    version = version_vigente
+    slice(:id, :autor_id, :estado, :creado_en).merge(
+      "anuncio_version" => version.slice(:id, :numero_version, :titulo, :cuerpo, :publicado_en),
+      "cursos" => vinculaciones_curso.pluck(:curso_id),
+      "adjuntos" => []
+    )
   end
 end
