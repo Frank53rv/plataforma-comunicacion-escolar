@@ -1,17 +1,26 @@
 # RF-17 Publicación de anuncios · RF-20 Borrado lógico de anuncios · RF-21 Resolución de
-# destinatarios · RF-22 Consulta del historial de anuncios · CU-06, CU-08, CU-09 ·
-# RN-14, RN-15, RN-16, RN-17, RN-19, RN-20, RN-22, RN-27, RN-28
-# Prueba: CP-RF-17 · CP-RF-20 · CP-RF-21 · CP-RF-22
+# destinatarios · RF-22 Consulta del historial de anuncios · RF-23 Panel de constancias
+# del docente · CU-06, CU-08, CU-09, CU-11 · RN-14, RN-15, RN-16, RN-17, RN-19, RN-20,
+# RN-21, RN-22, RN-27, RN-28
+# Prueba: CP-RF-17 · CP-RF-20 · CP-RF-21 · CP-RF-22 · CP-RF-23
 #
 # Tabla 18 · POST /api/v1/anuncios · docente · «Publicar un anuncio sobre uno o varios
 # de sus cursos». DELETE /api/v1/anuncios/{id} · docente autor · «Eliminar un anuncio
 # propio». GET /api/v1/anuncios y GET /api/v1/anuncios/{id} · directivo, docente, tutor,
-# alumno · «Consultar el historial de anuncios que corresponde al rol».
+# alumno · «Consultar el historial de anuncios que corresponde al rol». GET
+# /api/v1/anuncios/{id}/constancias · docente autor · «Consultar el recuento de
+# lecturas y la nómina de quienes no leyeron».
 # Tabla 29 · titulo, cuerpo, cursos (lista de ids) → recurso anuncio. DELETE: sin cuerpo
 # → recurso anuncio con eliminado_en y eliminado_por. GET índice: curso_id,
 # remitente_id, desde, hasta, pagina, por_pagina → colección con titulo, publicado_en,
 # autor_id y leida_en de quien consulta. GET detalle: sin parámetros → recurso anuncio
-# con su versión vigente, sus cursos y sus adjuntos.
+# con su versión vigente, sus cursos y sus adjuntos. GET constancias: pagina, por_pagina
+# → total de destinatarios, cantidad con lectura registrada y nómina paginada de quienes
+# no leyeron.
+# D-05 · CU-11 paso 4 («familia alcanzada») depende de RF-38, Should have: la respuesta
+# de constancias no incluye ese indicador. D-05 anticipa exactamente este caso al citar
+# RF-23 entre las operaciones donde un requisito Should have viaja junto a uno Must have
+# en la misma fila de la Tabla 18.
 # D-05 · la operación de creación es Must have aunque uno de sus requisitos (RF-18,
 # programación) es Should have: este incremento sólo construye la publicación
 # inmediata, que specs/25-semantica-temporal.md fija como «el caso ordinario y el único
@@ -32,6 +41,10 @@ class AnunciosController < ApplicationController
   # RN-15 · acceso mediado, sobre los cuatro roles.
   autoriza :index, roles: %w[directivo docente tutor alumno]
   autoriza :mostrar, roles: %w[directivo docente tutor alumno]
+  # RN-21 · «El docente ve, por anuncio, cuántos leyeron… Tutores y alumnos no ven la
+  # constancia de nadie más.» Tabla 27 · «docente autor»: la autoría se verifica en la
+  # acción, con CU-11 E1 y 403.
+  autoriza :constancias, roles: %w[docente]
 
   # CU-06 flujo principal (1)-(6) · publicación inmediata, la única comprometida.
   def crear
@@ -114,6 +127,37 @@ class AnunciosController < ApplicationController
     raise ErrorDeDominio::NoEncontrado.new if anuncio.nil?
 
     render json: anuncio.recurso_detalle, status: :ok
+  end
+
+  # CU-11 pasos 1 a 3 · recuento de lecturas sobre la publicación vigente y nómina
+  # paginada de quienes no leyeron. E1 · 403 si el docente no es autor. El paso 4
+  # (familia alcanzada) depende de RF-38, Should have: no se calcula acá (D-05).
+  def constancias
+    anuncio = Anuncio.find(params[:id])
+    unless anuncio.autor_id == usuario_actual.id
+      raise ErrorDeDominio::NoHabilitado.new(
+        codigo: "no_es_autor", detalle: "Sólo el autor del anuncio puede consultar sus constancias."
+      )
+    end
+
+    pagina = [ params[:pagina].to_i, 1 ].max
+    por_pagina = params[:por_pagina].to_i
+    por_pagina = 25 if por_pagina <= 0
+    por_pagina = [ por_pagina, 100 ].min
+
+    entregas = anuncio.version_vigente.entregas
+    sin_leer = Usuario.where(id: entregas.where(leida_en: nil).select(:destinatario_id))
+                       .order(:apellido, :nombre)
+    pagina_sin_leer = sin_leer.offset((pagina - 1) * por_pagina).limit(por_pagina)
+
+    render json: {
+      total_destinatarios: entregas.count,
+      con_lectura_registrada: entregas.where.not(leida_en: nil).count,
+      no_leyeron: {
+        datos: pagina_sin_leer.map(&:recurso), total: sin_leer.count,
+        pagina: pagina, por_pagina: por_pagina
+      }
+    }, status: :ok
   end
 
   private
