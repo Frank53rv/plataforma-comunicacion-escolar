@@ -40,8 +40,21 @@ RSpec.describe "Panel de constancias del docente", type: :request do
       expect(response).to have_http_status(:ok)
       expect(cuerpo["total_destinatarios"]).to eq(2)
       expect(cuerpo["con_lectura_registrada"]).to eq(1)
-      expect(cuerpo["no_leyeron"]["datos"].pluck("id")).to contain_exactly(no_leyo.id)
-      expect(cuerpo["no_leyeron"]).to include("total" => 1, "pagina" => 1, "por_pagina" => 25)
+      expect(cuerpo["sin_lectura"].map { |fila| fila["alumno"]["id"] }).to contain_exactly(no_leyo.id)
+      expect(cuerpo).to include("total" => 1, "pagina" => 1, "por_pagina" => 25)
+    end
+
+    it "no incluye a los tutores en la nómina: sin_lectura es por alumno (openapi Constancias)" do
+      alumno = create(:usuario, :alumno)
+      create(:alumno_curso, alumno: alumno, curso: curso)
+      tutor = create(:usuario, :tutor)
+      create(:tutor_alumno, tutor: tutor, alumno: alumno)
+      publicar(cursos: [ curso.id ])
+
+      constancias(cuerpo["id"])
+
+      expect(cuerpo["total_destinatarios"]).to eq(2)
+      expect(cuerpo["sin_lectura"].map { |fila| fila["alumno"]["id"] }).to contain_exactly(alumno.id)
     end
 
     it "rechaza con 403 la consulta de un anuncio del que no es autor (CU-11 E1)" do
@@ -70,12 +83,13 @@ RSpec.describe "Panel de constancias del docente", type: :request do
       constancias(cuerpo["id"])
 
       expect(cuerpo).not_to have_key("familia_alcanzada")
-      expect(cuerpo["no_leyeron"]["datos"].first).not_to have_key("familia_alcanzada")
+      expect(cuerpo["sin_lectura"].first).not_to have_key("familia_alcanzada")
+      expect(cuerpo["sin_lectura"].first["alumno"]).not_to have_key("familia_alcanzada")
     end
   end
 
   describe "paginación de la nómina de quienes no leyeron" do
-    it "pagina la nómina con pagina y por_pagina" do
+    it "pagina la nómina con pagina y por_pagina, informados junto a los datos (Tabla 28)" do
       3.times do |n|
         alumno = create(:usuario, :alumno, nombre: "Alumno#{n}")
         create(:alumno_curso, alumno: alumno, curso: curso)
@@ -84,8 +98,8 @@ RSpec.describe "Panel de constancias del docente", type: :request do
 
       constancias(cuerpo["id"], por_pagina: 2, pagina: 2)
 
-      expect(cuerpo["no_leyeron"]["datos"].size).to eq(1)
-      expect(cuerpo["no_leyeron"]).to include("total" => 3, "pagina" => 2, "por_pagina" => 2)
+      expect(cuerpo["sin_lectura"].size).to eq(1)
+      expect(cuerpo).to include("total" => 3, "pagina" => 2, "por_pagina" => 2)
     end
   end
 

@@ -7,6 +7,11 @@
 # Tabla 29 · anio_lectivo_id (opcional, por omisión el año lectivo vigente) → por curso:
 # cantidad de anuncios, enviadas, entregadas, vistas y leídas.
 # GET /api/v1/supervision/conversaciones es RF-46 (Should have): no se construye acá.
+# openapi/openapi.yaml · esquema EstadoPorCurso: «curso» es el recurso Curso completo
+# (no «curso_id») y el conteo de anuncios se llama «anuncios» (no
+# «cantidad_de_anuncios»). La respuesta envuelve `datos` con total/pagina/por_pagina
+# conforme a specs/23-convenciones-api.md (Tabla 28): sin parámetros de paginación
+# declarados para esta operación, se informa todo en una sola página.
 class SupervisionController < ApplicationController
   # RN-22 · «El directivo accede a los anuncios de todos los cursos del año lectivo
   # vigente y a su estado agregado de entrega y lectura.»
@@ -18,7 +23,7 @@ class SupervisionController < ApplicationController
     anio_lectivo = anio_lectivo_de_la_consulta
     filas = Curso.where(anio_lectivo_id: anio_lectivo&.id).order(:nombre).map { |curso| fila_de(curso) }
 
-    render json: { datos: filas }, status: :ok
+    render json: { datos: filas, total: filas.size, pagina: 1, por_pagina: 25 }, status: :ok
   end
 
   private
@@ -42,8 +47,8 @@ class SupervisionController < ApplicationController
     entregas = EntregaAnuncio.where(anuncio_version_id: version_ids, destinatario_id: alumno_ids + tutor_ids)
 
     {
-      "curso_id" => curso.id,
-      "cantidad_de_anuncios" => anuncios.count,
+      "curso" => curso.recurso,
+      "anuncios" => anuncios.count,
       "enviadas" => entregas.count,
       "entregadas" => entregas.where.not(entregada_en: nil).count,
       "vistas" => entregas.where.not(vista_en: nil).count,

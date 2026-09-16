@@ -44,13 +44,14 @@ RSpec.describe "Supervisión directiva del estado de la comunicación", type: :r
       supervisar
 
       expect(response).to have_http_status(:ok)
-      fila_a = cuerpo["datos"].find { |f| f["curso_id"] == curso_a.id }
-      fila_b = cuerpo["datos"].find { |f| f["curso_id"] == curso_b.id }
+      expect(cuerpo).to include("pagina" => 1, "por_pagina" => 25)
+      fila_a = cuerpo["datos"].find { |f| f["curso"]["id"] == curso_a.id }
+      fila_b = cuerpo["datos"].find { |f| f["curso"]["id"] == curso_b.id }
       expect(fila_a).to include(
-        "cantidad_de_anuncios" => 1, "enviadas" => 1, "entregadas" => 0, "vistas" => 0, "leidas" => 1
+        "anuncios" => 1, "enviadas" => 1, "entregadas" => 0, "vistas" => 0, "leidas" => 1
       )
       expect(fila_b).to include(
-        "cantidad_de_anuncios" => 1, "enviadas" => 1, "entregadas" => 0, "vistas" => 0, "leidas" => 0
+        "anuncios" => 1, "enviadas" => 1, "entregadas" => 0, "vistas" => 0, "leidas" => 0
       )
     end
 
@@ -64,10 +65,10 @@ RSpec.describe "Supervisión directiva del estado de la comunicación", type: :r
 
       supervisar
 
-      fila_a = cuerpo["datos"].find { |f| f["curso_id"] == curso_a.id }
-      fila_b = cuerpo["datos"].find { |f| f["curso_id"] == curso_b.id }
-      expect(fila_a).to include("cantidad_de_anuncios" => 1, "enviadas" => 1)
-      expect(fila_b).to include("cantidad_de_anuncios" => 1, "enviadas" => 1)
+      fila_a = cuerpo["datos"].find { |f| f["curso"]["id"] == curso_a.id }
+      fila_b = cuerpo["datos"].find { |f| f["curso"]["id"] == curso_b.id }
+      expect(fila_a).to include("anuncios" => 1, "enviadas" => 1)
+      expect(fila_b).to include("anuncios" => 1, "enviadas" => 1)
     end
   end
 
@@ -75,7 +76,8 @@ RSpec.describe "Supervisión directiva del estado de la comunicación", type: :r
     it "por omisión usa el año lectivo vigente" do
       supervisar
 
-      expect(cuerpo["datos"].pluck("curso_id")).to include(curso_a.id, curso_b.id)
+      expect(cuerpo["datos"].map { |f| f["curso"]["id"] }).to include(curso_a.id, curso_b.id)
+      expect(cuerpo["total"]).to eq(cuerpo["datos"].size)
     end
 
     it "admite consultar un año lectivo distinto, ya cerrado" do
@@ -84,7 +86,7 @@ RSpec.describe "Supervisión directiva del estado de la comunicación", type: :r
 
       supervisar(anio_lectivo_id: otro_anio.id)
 
-      expect(cuerpo["datos"].pluck("curso_id")).to contain_exactly(curso_de_otro_anio.id)
+      expect(cuerpo["datos"].map { |f| f["curso"]["id"] }).to contain_exactly(curso_de_otro_anio.id)
     end
   end
 

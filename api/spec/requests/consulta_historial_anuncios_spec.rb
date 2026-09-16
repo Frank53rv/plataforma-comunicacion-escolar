@@ -101,7 +101,7 @@ RSpec.describe "Consulta del historial de anuncios", type: :request do
   end
 
   describe "forma de la respuesta" do
-    it "el índice trae titulo, publicado_en, autor_id, estado y leida_en de quien consulta" do
+    it "el índice trae titulo, publicado_en, autor (recurso completo) y leido de quien consulta" do
       alumno = create(:usuario, :alumno)
       create(:alumno_curso, alumno: alumno, curso: curso)
       publicar(cursos: [ curso.id ], titulo: "Reunión")
@@ -111,30 +111,52 @@ RSpec.describe "Consulta del historial de anuncios", type: :request do
       listar(por: alumno)
 
       fila = cuerpo["datos"].first
-      expect(fila).to include("titulo" => "Reunión", "autor_id" => docente.id, "estado" => "publicado")
+      expect(fila).to include("titulo" => "Reunión", "leido" => true)
+      expect(fila["autor"]).to include("id" => docente.id)
       expect(fila["publicado_en"]).to be_present
-      expect(fila["leida_en"]).to be_present
     end
 
-    it "el directivo, que no es destinatario, recibe leida_en en nulo" do
+    it "el directivo, que no es destinatario, recibe leido en falso" do
       directivo = create(:usuario, :directivo)
       publicar(cursos: [ curso.id ])
 
       listar(por: directivo)
 
-      expect(cuerpo["datos"].first["leida_en"]).to be_nil
+      expect(cuerpo["datos"].first["leido"]).to be(false)
     end
 
-    it "el detalle trae la versión vigente, los cursos y los adjuntos" do
+    it "el detalle trae la versión vigente, los cursos (recurso completo) y los adjuntos" do
       publicar(cursos: [ curso.id ], titulo: "Detalle")
       anuncio_id = cuerpo["id"]
 
       ver(anuncio_id, por: docente)
 
       expect(response).to have_http_status(:ok)
-      expect(cuerpo["anuncio_version"]).to include("titulo" => "Detalle")
-      expect(cuerpo["cursos"]).to contain_exactly(curso.id)
+      expect(cuerpo["version"]).to include("titulo" => "Detalle")
+      expect(cuerpo["cursos"].pluck("id")).to contain_exactly(curso.id)
       expect(cuerpo["adjuntos"]).to eq([])
+    end
+  end
+
+  # specs/23-convenciones-api.md (Tabla 28) · «el historial de anuncios… ordena por
+  # fecha descendente por omisión».
+  describe "orden · Tabla 28" do
+    it "ordena por fecha de publicación descendente por omisión" do
+      travel_to(2.minutes.ago) { publicar(cursos: [ curso.id ], titulo: "Primero") }
+      publicar(cursos: [ curso.id ], titulo: "Segundo")
+
+      listar(por: docente)
+
+      expect(cuerpo["datos"].pluck("titulo")).to eq([ "Segundo", "Primero" ])
+    end
+
+    it "admite orden=publicado_en:asc para invertirlo" do
+      travel_to(2.minutes.ago) { publicar(cursos: [ curso.id ], titulo: "Primero") }
+      publicar(cursos: [ curso.id ], titulo: "Segundo")
+
+      listar(por: docente, orden: "publicado_en:asc")
+
+      expect(cuerpo["datos"].pluck("titulo")).to eq([ "Primero", "Segundo" ])
     end
   end
 
