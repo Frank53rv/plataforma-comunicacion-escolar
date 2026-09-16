@@ -1,6 +1,6 @@
-# RF-17 Publicación de anuncios · RF-20 Borrado lógico de anuncios · CU-06, CU-08 ·
-# RN-14, RN-16, RN-17, RN-19, RN-20
-# Prueba: CP-RF-17 · CP-RF-20
+# RF-17 Publicación de anuncios · RF-20 Borrado lógico de anuncios · RF-21 Resolución de
+# destinatarios · CU-06, CU-08 · RN-14, RN-16, RN-17, RN-19, RN-20
+# Prueba: CP-RF-17 · CP-RF-20 · CP-RF-21
 #
 # Tabla 18 · POST /api/v1/anuncios · docente · «Publicar un anuncio sobre uno o varios
 # de sus cursos». DELETE /api/v1/anuncios/{id} · docente autor · «Eliminar un anuncio
@@ -12,6 +12,12 @@
 # inmediata, que specs/25-semantica-temporal.md fija como «el caso ordinario y el único
 # comprometido». `programado_para` y `adjuntos` (RF-18 y RF-30, ambos Should have) no se
 # admiten: se descartan en `parametros` como cualquier clave no permitida.
+# CU-07 flujo alternativo A · «mientras RF-19 permanezca clasificado como Should have,
+# la corrección de un anuncio se resuelve como eliminación lógica conforme a CU-08 y
+# publicación nueva conforme a CU-06». No hay, por eso, ninguna acción `actualizar` ni
+# ruta PATCH en este controlador: RF-21 («inicial o de reemplazo») queda enteramente
+# cubierto por `crear` (resolución inicial) y por la secuencia `destruir` + `crear`
+# (resolución de reemplazo), sin una tercera vía que RF-19 todavía no habilita.
 class AnunciosController < ApplicationController
   # RN-16 · «Los anuncios los publica el docente…»
   autoriza :crear, roles: %w[docente]
@@ -94,6 +100,9 @@ class AnunciosController < ApplicationController
 
   # RN-16 · «dirigidos a los tutores y alumnos de sus cursos.» Los tutores de esos
   # alumnos se agregan porque CU-06 nombra a ambos como destinatarios.
+  # RN-19 · RF-21 · se resuelve en este instante, sobre las vinculaciones vigentes: quien
+  # se incorpora al curso después no recibe esta publicación (CP-RF-21), porque esta
+  # consulta ya corrió y no vuelve a ejecutarse para esa publicación.
   def resolver_destinatarios(cursos_ids)
     alumno_ids = AlumnoCurso.vigentes.where(curso_id: cursos_ids).distinct.pluck(:usuario_id)
     tutor_ids = TutorAlumno.vigentes.where(alumno_id: alumno_ids).distinct.pluck(:tutor_id)
