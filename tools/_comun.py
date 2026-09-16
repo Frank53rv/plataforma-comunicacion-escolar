@@ -55,3 +55,22 @@ def leer_texto(p):
     try:
         with open(p, encoding='utf-8', errors='replace') as f: return f.read()
     except OSError: return ''
+
+# D-26 · mismo defecto que D-05 resolvió sobre el flag `should`: una coincidencia de
+# subcadena sobre el archivo entero no distingue el código que una unidad REALIZA
+# (CLAUDE.md §4: el comentario de encabezado con los códigos que realiza) de un código
+# apenas MENCIONADO en la prosa posterior para acotar un límite de alcance —«RF-18 es
+# Should have y no se construye acá»—, que es precisamente el tipo de nota que evita
+# inventar un comportamiento no especificado. El encabezado es el bloque de comentario
+# inicial del archivo hasta la línea «# Prueba: …» inclusive, tal como lo fijan los
+# ejemplos de CLAUDE.md §4 y los archivos ya integrados.
+def rf_realizados(texto):
+    encabezado = []
+    for linea in texto.splitlines():
+        recorte = linea.strip()
+        if recorte and not recorte.startswith('#'):
+            break
+        encabezado.append(linea)
+        if re.match(r'#\s*Prueba:', recorte):
+            break
+    return set(re.findall(r'\bRF-\d\d\b', '\n'.join(encabezado)))

@@ -14,7 +14,7 @@ cps = {c['codigo'] for c in cargar('30-casos-prueba.json')['casos']}
 
 src, tst = set(), set()
 for p in archivos(('.rb', '.jsx', '.js', '.ts', '.tsx'), *CODIGO_API, 'cliente'):
-    src |= set(re.findall(r'\bRF-\d\d\b', leer_texto(p)))
+    src |= rf_realizados(leer_texto(p))
 for p in archivos(('.rb', '.js', '.jsx', '.ts', '.tsx'), 'api/spec', 'cliente/tests'):
     t = leer_texto(p)
     tst |= set(re.findall(r'\bCP-RF-\d\d\b', t))

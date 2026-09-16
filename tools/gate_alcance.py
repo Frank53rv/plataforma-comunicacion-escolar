@@ -17,7 +17,7 @@ adoptados = set(re.findall(r'adoptado:\s*(RF-\d\d)', dec))
 
 citados = set()
 for p in archivos(('.rb', '.jsx', '.js', '.ts', '.tsx'), *CODIGO_API, 'api/spec', 'cliente'):
-    citados |= set(re.findall(r'\bRF-\d\d\b', leer_texto(p)))
+    citados |= rf_realizados(leer_texto(p))
 
 # rutas Should have expuestas en el enrutador
 eps = cargar('20-endpoints.json')['endpoints']
