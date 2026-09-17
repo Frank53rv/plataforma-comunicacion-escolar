@@ -47,8 +47,10 @@ Rails.application.routes.draw do
     # CU-15 · Supervisar estado de la comunicación · RF-45
     get "supervision/cursos", to: "supervision#cursos"
 
-    # CU-12 · Participar en conversación · RF-25
-    get "cursos/:id/conversaciones", to: "conversaciones#del_curso"
-    get "conversaciones",            to: "conversaciones#index"
+    # CU-12 · Participar en conversación · RF-25, RF-28
+    get  "cursos/:id/conversaciones",  to: "conversaciones#del_curso"
+    get  "conversaciones",             to: "conversaciones#index"
+    get  "conversaciones/:id/mensajes", to: "mensajes#index"
+    post "conversaciones/:id/mensajes", to: "mensajes#crear"
   end
 end

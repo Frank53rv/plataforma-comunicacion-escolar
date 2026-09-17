@@ -701,6 +701,11 @@ paths:
           in: query
           required: false
           schema: { type: string, format: date-time }
+        - name: orden
+          in: query
+          required: false
+          description: Tabla 28 · por fecha de publicación, descendente por omisión.
+          schema: { type: string, enum: ['publicado_en:desc', 'publicado_en:asc'], default: 'publicado_en:desc' }
         - name: pagina
           in: query
           required: false
@@ -1040,6 +1045,16 @@ paths:
           in: query
           required: false
           schema: { type: string, format: date-time }
+        - name: remitente_id
+          in: query
+          required: false
+          description: RF-28 · mensajes de un participante, por su autor.
+          schema: { type: string, format: uuid }
+        - name: orden
+          in: query
+          required: false
+          description: Tabla 28 · por fecha de envío, descendente por omisión.
+          schema: { type: string, enum: ['enviado_en:desc', 'enviado_en:asc'], default: 'enviado_en:desc' }
       responses:
         '200':
           description: Operación completada
