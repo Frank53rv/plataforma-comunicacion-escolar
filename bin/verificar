@@ -13,7 +13,7 @@ for g in contrato errores esquema alcance trazabilidad tiempo cobertura estilo; 
 done
 if [ "$rojo" -ne 0 ]; then
   echo "  RESULTADO: ROJO — la rama no se integra."
-  echo "  Corregí el código, o registrá la divergencia en specs/DECISIONES.md y actualizá el documento."
+  echo "  Corregí el código o actualizá el documento."
   exit 1
 fi
 echo "  RESULTADO: VERDE — la rama puede integrarse."

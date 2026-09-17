@@ -24,9 +24,9 @@ class ActivacionesController < ApplicationController
       )
     end
 
-    # D-12 · el canje activa únicamente cuentas pendientes. Restablecer la contraseña de
+    # El canje activa únicamente cuentas pendientes. Restablecer la contraseña de
     # una cuenta ya activa es la recuperación de contraseña, requisito Should have con su
-    # propia operación: aceptarlo acá la construiría sin decisión adoptada (Boundary 1).
+    # propia operación: aceptarlo acá la construiría (Boundary 1).
     raise ErrorDeDominio::CodigoNoVigente unless usuario.estado_pendiente?
 
     # Quality Spec · escribe en dos entidades: todo o nada. El bloqueo de la fila impide

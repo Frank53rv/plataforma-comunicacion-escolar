@@ -5,7 +5,7 @@
 # Tabla 21 · «Vinculación entre un alumno y un curso.» Un alumno pertenece a un solo
 # curso vigente por año lectivo (RN-30), verificado en la capa de negocio conforme a la
 # nota de la Tabla 38.
-# Tabla 38 · nombre de tabla en singular conforme a D-01.
+# Tabla 27 · nombre de tabla en singular.
 class AlumnoCurso < ApplicationRecord
   self.table_name = "alumno_curso"
 

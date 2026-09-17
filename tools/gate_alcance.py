@@ -21,7 +21,7 @@ for p in archivos(('.rb', '.jsx', '.js', '.ts', '.tsx'), *CODIGO_API, 'api/spec'
 
 # rutas Should have expuestas en el enrutador
 eps = cargar('20-endpoints.json')['endpoints']
-# D-05 · una operación es Should have sólo si TODOS sus requisitos lo son, y se la
+# Una operación es Should have sólo si TODOS sus requisitos lo son, y se la
 # juzga contra el conjunto entero y no contra el último código de su lista.
 rutas_should = {}
 for e in eps:

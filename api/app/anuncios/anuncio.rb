@@ -3,7 +3,7 @@
 # Prueba: CP-RF-17 · CP-RF-20 · CP-RF-22
 #
 # Tabla 21 · «Comunicación institucional que el docente dirige a los cursos que dicta.»
-# Tabla 27 · nombre de tabla en singular conforme a D-01. `programado_para` y el estado
+# Tabla 27 · nombre de tabla en singular. `programado_para` y el estado
 # `programado` pertenecen a RF-18 (Should have): esta entrega sólo produce los estados
 # `publicado` y `eliminado`, la publicación inmediata que semantica-temporal.md fija
 # como «el caso ordinario y el único comprometido», y el borrado lógico de RN-20.

@@ -73,7 +73,7 @@ RSpec.describe "Panel de constancias del docente", type: :request do
     end
   end
 
-  # D-05 · RF-38 (familia alcanzada) es Should have: no se construye en esta entrega.
+  # RF-38 (familia alcanzada) es Should have (Tabla 10): no se construye en esta entrega.
   describe "alcance · Boundary 1 · RF-38 no se construye" do
     it "no incluye el indicador de familia alcanzada en la respuesta" do
       alumno = create(:usuario, :alumno)

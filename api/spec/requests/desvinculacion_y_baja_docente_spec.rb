@@ -56,7 +56,7 @@ RSpec.describe "Desvinculación y baja de docente", type: :request do
     end
   end
 
-  # D-13 · el reemplazo asume la titularidad desde hoy
+  # El reemplazo asume la titularidad desde hoy
   it "conserva en el historial desde cuándo el reemplazo es titular" do
     otro_docente
     desvincular(titular, reemplazo: otro_docente)
@@ -65,7 +65,7 @@ RSpec.describe "Desvinculación y baja de docente", type: :request do
     expect(del_reemplazo.map { |v| [ v.es_titular, v.vigente_hasta.nil? ] }).to eq([ [ false, false ], [ true, true ] ])
   end
 
-  describe "rechazos de la designación · D-13" do
+  describe "rechazos de la designación" do
     it "rechaza con 422 un reemplazo no vinculado al curso" do
       desvincular(titular, reemplazo: create(:usuario, :docente))
 
@@ -102,7 +102,7 @@ RSpec.describe "Desvinculación y baja de docente", type: :request do
     expect(response).to have_http_status(:not_found)
   end
 
-  describe "baja lógica del docente · D-13" do
+  describe "baja lógica del docente" do
     it "rechaza con 409 y RN-13 la baja del docente que conserva vinculaciones vigentes" do
       dar_de_baja(titular)
 

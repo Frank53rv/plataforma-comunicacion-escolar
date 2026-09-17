@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Extrae el contenido normativo del documento de grado a artefactos legibles por máquina.
 
-Dos niveles de fuente, conforme a D-21:
+Dos niveles de fuente:
 
   · La **edición vigente** —el documento de 75 páginas— gobierna la totalidad de las
     tablas, con su numeración propia. Es la fuente absoluta.
@@ -122,8 +122,8 @@ def dump_tabla(num, fname, extra=''):
 
 
 written = []
-# Numeración de la edición vigente. La correspondencia con la v5.2 queda en D-21 y en
-# specs/README.md: 17->10, 18->11, 19->12, 20->13, 21->14, 22->15, 26->17, 27->18,
+# Numeración de la edición vigente. Correspondencia con la v5.2 (también en
+# specs/README.md): 17->10, 18->11, 19->12, 20->13, 21->14, 22->15, 26->17, 27->18,
 # 34->23, 35->24, 36->25, 37->26, 38->27, 39->28, 40->29, 41->30, 42->31, 45->34, 46->35.
 PLAN = [
     (10, 'specs/10-requisitos-funcionales.md'),
@@ -272,7 +272,7 @@ for r in rows[1:]:
     if not m:
         print('  ! fila no parseada:', r[0]); continue
     roles = [x.strip() for x in re.split(r',| y ', r[1]) if x.strip()]
-    # D-05 · la tabla marca «(Should)» por requisito y no por operación. Una operación es
+    # La tabla marca «(Should)» por requisito y no por operación. Una operación es
     # Should have sólo si TODOS sus requisitos lo son; de lo contrario realiza al menos un
     # Must have y se construye. Las 43 operaciones menos las 5 puramente Should dan las 37
     # que el escenario de medición de CP-RNF-01 cuenta.

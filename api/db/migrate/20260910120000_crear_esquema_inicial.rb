@@ -1,7 +1,7 @@
 # Tabla 38 · Esquema físico: tipos, claves e índices · Boundary 3
 # Las diecinueve entidades de la Tabla 21, sin agregar ni suprimir ninguna.
-# Nombres en singular conforme a D-01. turno como varchar(20) conforme a D-07.
-# Restricciones inexpresables de manera declarativa: D-09 y la nota de la Tabla 38.
+# Nombres en singular. turno como varchar(20).
+# Las restricciones que no admiten expresión declarativa se verifican en la capa de negocio.
 class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
   def change
     enable_extension "citext"
@@ -18,7 +18,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     create_enum :estado_conversacion_enum, %w[activa solo_lectura]
     create_enum :canal_enum,               %w[push aplicacion]
     # RF-37 · «indisponibilidad del servicio push, ausencia de acuse del cliente o falta de
-    # soporte del navegador» · CU-14 E1 · «credencial inválida». Cerrado en cuatro por D-04.
+    # soporte del navegador» · CU-14 E1 · «credencial inválida». Cerrado en esos cuatro.
     create_enum :causa_enum,               %w[indisponibilidad_del_servicio_push
                                               ausencia_de_acuse_del_cliente
                                               falta_de_soporte_del_navegador
@@ -49,7 +49,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     end
     add_foreign_key :codigo_activacion, :usuario, column: :usuario_id,   on_delete: :restrict
     add_foreign_key :codigo_activacion, :usuario, column: :generado_por, on_delete: :restrict
-    # D-09 · la mitad expresable de «UNIQUE parcial (usuario_id) donde usado_en es nulo
+    # La parte expresable de «UNIQUE parcial (usuario_id) donde usado_en es nulo
     # y vence_en es futuro»: el predicado no admite la hora actual por no ser inmutable.
     add_index :codigo_activacion, :usuario_id, unique: true,
               where: "usado_en IS NULL", name: "idx_codigo_activacion_vigente_por_usuario"
@@ -202,7 +202,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     add_foreign_key :entrega_anuncio, :usuario,         column: :destinatario_id
     add_index :entrega_anuncio, %i[anuncio_version_id destinatario_id], unique: true
     add_index :entrega_anuncio, %i[destinatario_id leida_en]
-    # D-09 · ninguna marca es anterior al envío. La no regresión del estado que RN-32
+    # Ninguna marca es anterior al envío. La no regresión del estado que RN-32
     # compromete se verifica en la capa de negocio, con CP-RF-34 y CP-RF-36.
     add_check_constraint :entrega_anuncio,
                          "(entregada_en IS NULL OR entregada_en >= enviada_en) AND " \

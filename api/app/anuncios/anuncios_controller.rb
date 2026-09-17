@@ -17,23 +17,15 @@
 # recurso anuncio con su versión vigente, sus cursos (recurso completo) y sus adjuntos.
 # GET constancias: pagina, por_pagina → total de destinatarios, cantidad con lectura
 # registrada y nómina paginada de alumnos sin lectura registrada.
-# openapi/openapi.yaml (esquemas AnuncioEnBandeja, AnuncioDetalle, Constancias) y
-# specs/23-convenciones-api.md (Tabla 28: paginación con total/pagina/por_pagina y
-# orden por fecha descendente por omisión) precisan estas formas más allá de la prosa de
-# la Tabla 29: la primera versión de este controlador divergía de ambos —usaba
-# autor_id/leida_en en el índice, «anuncio_version»/ids de curso en el detalle,
-# «no_leyeron» sin paginar e incluyendo tutores en el detalle, y ordenaba el índice por
-# id—, detectado al verificar la arquitectura al cerrar el módulo C (corrección
-# hotfix/CP-RF-22-CP-RF-23-CP-RF-45-forma-contrato).
-# D-05 · CU-11 paso 4 («familia alcanzada») depende de RF-38, Should have: la respuesta
-# de constancias no incluye ese indicador. D-05 anticipa exactamente este caso al citar
-# RF-23 entre las operaciones donde un requisito Should have viaja junto a uno Must have
-# en la misma fila de la Tabla 18.
-# D-05 · la operación de creación es Must have aunque uno de sus requisitos (RF-18,
-# programación) es Should have: este incremento sólo construye la publicación
-# inmediata, que specs/25-semantica-temporal.md fija como «el caso ordinario y el único
-# comprometido». `programado_para` y `adjuntos` (RF-18 y RF-30, ambos Should have) no se
-# admiten: se descartan en `parametros` como cualquier clave no permitida.
+# openapi/openapi.yaml (esquemas AnuncioEnBandeja, AnuncioDetalle, Constancias) y la
+# Tabla 28 (paginación con total/pagina/por_pagina y orden por fecha descendente por
+# omisión) fijan estas formas.
+# CU-11 paso 4 («familia alcanzada») depende de RF-38, Should have (Tabla 10): la
+# respuesta de constancias no incluye ese indicador.
+# RF-18 (programación) es Should have (Tabla 10): sólo se construye la publicación
+# inmediata, «el caso ordinario y el único comprometido» (punto 4.2, semántica
+# temporal). `programado_para` y `adjuntos` (RF-18 y RF-30, Should have) no se admiten:
+# se descartan en `parametros` como cualquier clave no permitida.
 # CU-07 flujo alternativo A · «mientras RF-19 permanezca clasificado como Should have,
 # la corrección de un anuncio se resuelve como eliminación lógica conforme a CU-08 y
 # publicación nueva conforme a CU-06». No hay, por eso, ninguna acción `actualizar` ni
@@ -145,7 +137,7 @@ class AnunciosController < ApplicationController
 
   # CU-11 pasos 1 a 3 · recuento de lecturas sobre la publicación vigente y nómina
   # paginada de quienes no leyeron. E1 · 403 si el docente no es autor. El paso 4
-  # (familia alcanzada) depende de RF-38, Should have: no se calcula acá (D-05).
+  # (familia alcanzada) depende de RF-38, Should have: no se calcula acá.
   def constancias
     anuncio = Anuncio.find(params[:id])
     unless anuncio.autor_id == usuario_actual.id
@@ -183,7 +175,7 @@ class AnunciosController < ApplicationController
   # seleccionados, la operación se rechaza sin efectos parciales». Se verifica antes de
   # escribir nada, y no dentro de la transacción, para que el rechazo no dependa de una
   # reversión. Un curso inexistente se trata igual que uno ajeno (403 y no 404), para no
-  # revelar su existencia, conforme al criterio ya registrado en D-15 para las altas.
+  # revelar su existencia, conforme a la fila del 403 de la Tabla 24.
   def verificar_vinculacion!(cursos_ids)
     return if cursos_ids.all? { |curso_id| usuario_actual.dicta_curso?(curso_id) }
 

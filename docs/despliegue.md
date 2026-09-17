@@ -67,7 +67,11 @@ plataforma-comunicacion-escolar/
 ├── .env.example                variables de la Tabla 30
 ├── openapi/                    contrato de la Tabla 18
 ├── specs/                      Context, Boundary y Quality Spec
-└── docs/                       despliegue y manual
+├── docs/                       despliegue y manual
+├── documento/                  documento de grado, fuente de verdad
+├── tools/                      compuertas de verificación y extractor de specs/
+├── bin/                        verificar: corre las ocho compuertas
+└── hooks/                      pre-push: corre bin/verificar antes de cada envío
 ```
 
 ## Paso 2 · Completar las variables de entorno
@@ -201,7 +205,7 @@ compuertas son la condición de integración que la reemplaza, conforme al Quali
 la Tabla 26.
 
 ```bash
-docker compose exec api bundle exec rspec              # genera api/coverage/.last_run.json
+docker compose run --rm --no-deps -e RAILS_ENV=test api bundle exec rspec   # genera api/coverage/.last_run.json
 docker compose exec api bin/rails routes > api/tmp/rutas.txt
 docker compose exec api bundle exec rubocop --format json --out tmp/rubocop.json
 (cd cliente && npx eslint . -f json -o tmp/eslint.json)

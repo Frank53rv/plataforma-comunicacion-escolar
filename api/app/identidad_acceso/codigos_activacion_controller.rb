@@ -21,7 +21,7 @@ class CodigosActivacionController < ApplicationController
       )
     end
 
-    # D-12 · sólo se regenera el código de una cuenta pendiente. Restablecer el acceso
+    # Sólo se regenera el código de una cuenta pendiente. Restablecer el acceso
     # de una cuenta activa es la recuperación de contraseña, requisito Should have.
     unless persona.estado_pendiente?
       raise ErrorDeDominio::DatosInaceptables.new(

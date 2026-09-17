@@ -2,7 +2,7 @@
 # Prueba: CP-RF-12
 #
 # Tabla 18 · POST /api/v1/cursos y PATCH /api/v1/cursos/{id} · directivo.
-# Tabla 18 · GET /api/v1/cursos · directivo, docente (D-25 · alcance del docente).
+# Tabla 18 · GET /api/v1/cursos · directivo, docente; el docente ve sólo sus cursos.
 # Tabla 29 · POST: anio_lectivo_id, nombre, turno. PATCH: nombre, turno.
 require "rails_helper"
 
@@ -124,9 +124,9 @@ RSpec.describe "Administración de cursos", type: :request do
       expect(cuerpo["datos"].pluck("id")).to contain_exactly(curso_archivado.id)
     end
 
-    # D-25 · el docente ve únicamente los cursos a los que tiene una vinculación
+    # El docente ve únicamente los cursos a los que tiene una vinculación
     # vigente, igual que en toda otra operación de RN-03/RN-07.
-    it "restringe al docente a sus propios cursos vigentes (D-25)" do
+    it "restringe al docente a sus propios cursos vigentes" do
       docente = create(:usuario, :docente)
       curso_propio = create(:curso, anio_lectivo: anio_lectivo)
       create(:docente_curso, docente: docente, curso: curso_propio)

@@ -69,7 +69,7 @@ RSpec.describe "Generación del código de activación", type: :model do
     end
   end
 
-  # D-11 · forma LLLLLLLL-SSSSSSSS
+  # Forma LLLLLLLL-SSSSSSSS
   describe "forma y localización" do
     it "tiene la forma localizador-secreto y el localizador es el comienzo del id" do
       alta = alta_de_un_tutor

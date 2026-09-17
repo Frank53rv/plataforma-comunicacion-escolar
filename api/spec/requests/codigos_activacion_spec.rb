@@ -141,8 +141,8 @@ RSpec.describe "Regeneración del código de activación", type: :request do
     end
   end
 
-  # D-12 · sólo cuentas pendientes
-  describe "estado de la cuenta · D-12" do
+  # Sólo cuentas pendientes
+  describe "estado de la cuenta" do
     it "rechaza con 422 la cuenta ya activa" do
       alumno.update!(estado: "activo", contrasena: "clave-123")
 

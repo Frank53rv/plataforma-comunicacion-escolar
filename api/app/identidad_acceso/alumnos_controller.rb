@@ -5,7 +5,7 @@
 # Tabla 27 · POST /api/v1/alumnos · docente · «Dar de alta a un alumno y vincularlo a
 # un curso».
 # Tabla 40 · petición: nombre, apellido, correo, curso_id. Respuesta: recurso usuario,
-# alumno_curso y codigo_activacion, con el código en claro una sola vez (D-10).
+# alumno_curso y codigo_activacion, con el código en claro una sola vez.
 class AlumnosController < ApplicationController
   # RN-03 · «El docente da de alta a los alumnos y tutores de sus cursos.»
   autoriza :crear, roles: %w[docente]

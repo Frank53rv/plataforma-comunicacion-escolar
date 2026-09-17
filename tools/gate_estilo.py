@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Compuerta ESTILO · Quality Spec, Tabla 26 · D-14
+"""Compuerta ESTILO · Quality Spec, Tabla 26
 «RuboCop con la configuración por defecto del framework, sin excepciones por archivo ·
 Ejecución del analizador en cada envío al repositorio; el incumplimiento detiene la
 integración de la rama.» Ídem ESLint para el cliente.

@@ -3,7 +3,7 @@
 #
 # Tabla 18 · POST /api/v1/cursos y PATCH /api/v1/cursos/{id} · directivo · «Crear y
 # editar cursos dentro del año lectivo vigente».
-# Tabla 18 · GET /api/v1/cursos · directivo, docente · D-25 · el docente ve únicamente
+# Tabla 18 · GET /api/v1/cursos · directivo, docente · el docente ve únicamente
 # sus propios cursos, igual que en el resto de sus operaciones (RN-03, RN-07).
 # Tabla 29 · POST: anio_lectivo_id, nombre, turno → recurso curso. PATCH: nombre, turno
 # → recurso curso. GET: anio_lectivo_id y estado opcionales → colección paginada.
@@ -77,7 +77,7 @@ class CursosController < ApplicationController
     p.to_h.symbolize_keys
   end
 
-  # D-25 · el directivo ve la totalidad de los cursos; el docente, únicamente aquellos a
+  # El directivo ve la totalidad de los cursos; el docente, únicamente aquellos a
   # los que tiene una vinculación vigente, igual que en toda otra operación suya.
   def alcance_del_rol
     return Curso.all if usuario_actual.rol == "directivo"
