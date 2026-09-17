@@ -1,10 +1,12 @@
-# RF-25 Canal grupal del curso · RF-28 Persistencia e historial de mensajes · CU-12 · RN-23
-# Prueba: CP-RF-25 · CP-RF-28
+# RF-25 Canal grupal del curso · RF-28 Persistencia e historial de mensajes · RF-29
+# Restricción de participación · CU-12 · RN-23
+# Prueba: CP-RF-25 · CP-RF-28 · CP-RF-29
 #
 # Tabla 29 · WSS /cable · «canal y conversacion_id en la suscripción» → confirmación de
 # suscripción y, en adelante, mensajes difundidos. Figura 8 · pasos «validar token y
 # vinculación con el curso» → «suscripción autorizada» → «canal establecido».
 class ConversacionChannel < ApplicationCable::Channel
+  # CU-12 E1 · «si el usuario no está vinculado al curso, la suscripción se rechaza».
   def subscribed
     conversacion = Conversacion.find_by(id: params[:conversacion_id])
     return reject unless conversacion&.participa?(usuario_actual)

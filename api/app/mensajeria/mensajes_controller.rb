@@ -1,6 +1,6 @@
-# RF-28 Persistencia e historial de mensajes · RF-25 Canal grupal del curso · CU-12 ·
-# RN-23, RN-27, RN-28
-# Prueba: CP-RF-28 · CP-RF-25
+# RF-28 Persistencia e historial de mensajes · RF-25 Canal grupal del curso · RF-29
+# Restricción de participación · CU-12 · RN-23, RN-27, RN-28
+# Prueba: CP-RF-28 · CP-RF-25 · CP-RF-29
 #
 # Tabla 18 · GET y POST /api/v1/conversaciones/{id}/mensajes · participantes de la
 # conversación · «Consultar el historial paginado» y «Emitir un mensaje».
@@ -49,16 +49,8 @@ class MensajesController < ApplicationController
   private
 
   # CU-12 E1 · «si el usuario no está vinculado al curso, la suscripción se rechaza».
-  # Tabla 24 · 403, «participación en conversación ajena».
   def conversacion_del_participante!
-    conversacion = Conversacion.find(params[:id])
-    unless conversacion.participa?(usuario_actual)
-      raise ErrorDeDominio::NoHabilitado.new(
-        codigo: "no_participa_de_la_conversacion",
-        detalle: "El usuario no participa de esta conversación."
-      )
-    end
-
+    conversacion = Conversacion.de_participante!(params[:id], usuario_actual)
     conversacion.sincronizar_participantes!
     conversacion
   end

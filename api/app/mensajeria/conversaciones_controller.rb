@@ -1,5 +1,5 @@
-# RF-25 Canal grupal del curso · CU-12 · RN-23
-# Prueba: CP-RF-25
+# RF-25 Canal grupal del curso · RF-29 Restricción de participación · CU-12 · RN-23
+# Prueba: CP-RF-25 · CP-RF-29
 #
 # Tabla 18 · GET /api/v1/cursos/{id}/conversaciones · docente, tutor, alumno · «Obtener
 # los canales del curso que corresponden al rol». GET /api/v1/conversaciones · docente,
@@ -17,11 +17,7 @@ class ConversacionesController < ApplicationController
   # canal de RF-25 no lo integra: recibe la colección vacía.
   def del_curso
     curso = Curso.find(params[:id])
-    unless Conversacion.vinculado_al_curso?(usuario_actual, curso.id)
-      raise ErrorDeDominio::NoHabilitado.new(
-        codigo: "no_vinculado_al_curso", detalle: "El usuario no está vinculado a este curso."
-      )
-    end
+    Conversacion.verificar_vinculacion_al_curso!(usuario_actual, curso.id)
 
     canales = Conversacion.del_usuario(usuario_actual).where(curso_id: curso.id).order(:tipo).to_a
     canales.each(&:sincronizar_participantes!)
