@@ -1,0 +1,844 @@
+{
+  "info": {
+    "name": "Plataforma de Comunicación Escolar · API v1",
+    "description": "Colección de validación de la interfaz de programación (RNF-17 · CP-RNF-17).\n\nContiene las operaciones de la Tabla 18 que el enrutador expone hoy, agrupadas por caso de uso, con los cuerpos y parámetros que cada operación admite. Se amplía con cada módulo que se construye.\n\nConvenciones de la Tabla 28: identificadores UUID en rutas y cuerpos; JSON con los nombres de campo del diccionario de la Tabla 14; fechas ISO 8601 en tiempo universal coordinado; colecciones paginadas con `pagina` y `por_pagina` (25 por omisión, 100 como máximo), respondidas con `datos`, `total`, `pagina` y `por_pagina`.\n\nLos errores responden `application/problem+json` con uno de los nueve estados de la Tabla 24.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "CU-01 · Autenticarse",
+      "item": [
+        {
+          "name": "Autenticar y emitir el token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/sesiones",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "sesiones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{directivo_correo}}\",\n  \"contrasena\": \"{{directivo_contrasena}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "RF-01. Responde 201 con token, vence_en y usuario; el token queda guardado en la variable de entorno `token`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.environment.set(\"token\", pm.response.json().token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cerrar la sesión activa",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/sesiones",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "sesiones"
+              ]
+            },
+            "description": "RF-01. Responde 204."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CU-02 · Activar cuenta con código",
+      "item": [
+        {
+          "name": "Canjear el código y definir la contraseña",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/activaciones",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "activaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"LLLLLLLL-SSSSSSSS\",\n  \"contrasena\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "RF-06. Sólo cuentas en estado pendiente."
+          }
+        },
+        {
+          "name": "Sustituir la credencial provisional",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/usuarios/me/contrasena",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "usuarios",
+                "me",
+                "contrasena"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contrasena_actual\": \"\",\n  \"contrasena_nueva\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-43."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CU-03 · Administrar año lectivo y cursos",
+      "item": [
+        {
+          "name": "Crear el año lectivo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/anios-lectivos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "anios-lectivos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"anio\": 2026\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-11 · directivo."
+          }
+        },
+        {
+          "name": "Consultar los años lectivos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/anios-lectivos?pagina=1&por_pagina=25",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "anios-lectivos"
+              ],
+              "query": [
+                {
+                  "key": "pagina",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "por_pagina",
+                  "value": "25",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "RF-11 · directivo."
+          }
+        },
+        {
+          "name": "Crear un curso del año lectivo vigente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cursos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cursos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"anio_lectivo_id\": \"{{anio_lectivo_id}}\",\n  \"nombre\": \"\",\n  \"turno\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-12 · directivo."
+          }
+        },
+        {
+          "name": "Consultar los cursos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/cursos?anio_lectivo_id={{anio_lectivo_id}}&estado=vigente&pagina=1&por_pagina=25",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cursos"
+              ],
+              "query": [
+                {
+                  "key": "anio_lectivo_id",
+                  "value": "{{anio_lectivo_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "estado",
+                  "value": "vigente",
+                  "disabled": true
+                },
+                {
+                  "key": "pagina",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "por_pagina",
+                  "value": "25",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "RF-12 · directivo (todos) y docente (sólo sus cursos vigentes)."
+          }
+        },
+        {
+          "name": "Editar un curso",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cursos/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cursos",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{curso_id}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"\",\n  \"turno\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-12 · directivo."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CU-04 · Administrar docentes y asignaciones",
+      "item": [
+        {
+          "name": "Dar de alta a un docente y generar su código",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/docentes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "docentes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"\",\n  \"apellido\": \"\",\n  \"correo\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-03, RF-05 · directivo. Devuelve el código de activación en claro una sola vez."
+          }
+        },
+        {
+          "name": "Vincular un docente al curso con su atributo de titularidad",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cursos/:id/docentes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cursos",
+                ":id",
+                "docentes"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{curso_id}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario_id\": \"{{docente_id}}\",\n  \"es_titular\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-15 · directivo."
+          }
+        },
+        {
+          "name": "Desvincular al docente designando otro titular",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cursos/:id/docentes/:usuario_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cursos",
+                ":id",
+                "docentes",
+                ":usuario_id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{curso_id}}"
+                },
+                {
+                  "key": "usuario_id",
+                  "value": "{{docente_id}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titular_reemplazo_id\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-44 · directivo. `titular_reemplazo_id` sólo si el docente desvinculado es el titular; debe ser otro docente vinculado al curso."
+          }
+        },
+        {
+          "name": "Dar de baja lógica a un docente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/docentes/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "docentes",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{docente_id}}"
+                }
+              ]
+            },
+            "description": "RF-44 · directivo. Se rechaza con 409 mientras el docente tenga vinculaciones vigentes."
+          }
+        },
+        {
+          "name": "Regenerar el código de activación",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/usuarios/:id/codigos-activacion",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "usuarios",
+                ":id",
+                "codigos-activacion"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{usuario_id}}"
+                }
+              ]
+            },
+            "description": "RF-07 · directivo (docentes) y docente (alumnos y tutores de sus cursos). Sólo cuentas pendientes."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CU-05 · Administrar alumnos y tutores",
+      "item": [
+        {
+          "name": "Dar de alta a un alumno y vincularlo a un curso",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/alumnos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "alumnos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"\",\n  \"apellido\": \"\",\n  \"correo\": \"\",\n  \"curso_id\": \"{{curso_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-04, RF-13 · docente."
+          }
+        },
+        {
+          "name": "Vincular un tutor al alumno",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/alumnos/:id/tutores",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "alumnos",
+                ":id",
+                "tutores"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{alumno_id}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"\",\n  \"apellido\": \"\",\n  \"correo\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-04, RF-14 · docente."
+          }
+        },
+        {
+          "name": "Dar de baja lógica a un alumno",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/alumnos/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "alumnos",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{alumno_id}}"
+                }
+              ]
+            },
+            "description": "RF-09 · directivo, docente titular."
+          }
+        },
+        {
+          "name": "Dar de baja lógica a un tutor",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tutores/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tutores",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{tutor_id}}"
+                }
+              ]
+            },
+            "description": "RF-09, RF-10 · directivo, docente titular."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CU-06 · Publicar anuncio",
+      "item": [
+        {
+          "name": "Publicar un anuncio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/anuncios",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "anuncios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"\",\n  \"cuerpo\": \"\",\n  \"cursos\": [\n    \"{{curso_id}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-17, RF-21 · docente. Publicación inmediata."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CU-08 · Eliminar anuncio",
+      "item": [
+        {
+          "name": "Eliminar lógicamente el anuncio",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/anuncios/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "anuncios",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{anuncio_id}}"
+                }
+              ]
+            },
+            "description": "RF-20 · docente autor."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CU-09 · Consultar anuncios e historial",
+      "item": [
+        {
+          "name": "Consultar el historial filtrado por fecha, curso y remitente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/anuncios?curso_id={{curso_id}}&remitente_id=&desde=&hasta=&orden=publicado_en:asc&pagina=1&por_pagina=25",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "anuncios"
+              ],
+              "query": [
+                {
+                  "key": "curso_id",
+                  "value": "{{curso_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "remitente_id",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "desde",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "hasta",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "orden",
+                  "value": "publicado_en:asc",
+                  "disabled": true
+                },
+                {
+                  "key": "pagina",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "por_pagina",
+                  "value": "25",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "RF-22 · los cuatro roles. Orden por fecha descendente por omisión."
+          }
+        },
+        {
+          "name": "Consultar el detalle de un anuncio",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/anuncios/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "anuncios",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{anuncio_id}}"
+                }
+              ]
+            },
+            "description": "RF-22 · los cuatro roles. Un anuncio ajeno responde 404."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CU-11 · Consultar constancias de lectura",
+      "item": [
+        {
+          "name": "Consultar el recuento de lecturas y la nómina de quienes no leyeron",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/anuncios/:id/constancias?pagina=1&por_pagina=25",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "anuncios",
+                ":id",
+                "constancias"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{anuncio_id}}"
+                }
+              ],
+              "query": [
+                {
+                  "key": "pagina",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "por_pagina",
+                  "value": "25",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "RF-23 · docente autor."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CU-15 · Supervisar estado de la comunicación",
+      "item": [
+        {
+          "name": "Consultar el estado agregado de entrega y lectura por curso",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/supervision/cursos?anio_lectivo_id={{anio_lectivo_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "supervision",
+                "cursos"
+              ],
+              "query": [
+                {
+                  "key": "anio_lectivo_id",
+                  "value": "{{anio_lectivo_id}}",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "RF-45 · directivo. Sin anio_lectivo_id, el año lectivo vigente."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -196,6 +196,11 @@ docker compose exec api bin/rails routes > api/tmp/rutas.txt
 **Verificación:** diferencia nula entre enrutador, archivo OpenAPI e inventario de la
 Tabla 18, conforme a CP-RNF-17. La compuerta `contrato` contrasta los tres sentidos.
 
+La colección de validación ejecutable está en `openapi/postman_collection.json`, con su
+entorno en `openapi/postman_environment.json`. Se importan en Postman y se recorren como
+indica `openapi/POSTMAN_README.md`: autenticarse con la cuenta directiva, sustituir la
+credencial provisional y seguir por caso de uso.
+
 ---
 
 ## Antes de integrar cualquier rama
