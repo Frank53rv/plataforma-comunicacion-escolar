@@ -1,5 +1,5 @@
-# RF-25 Canal grupal del curso · CU-12 · RN-23
-# Prueba: CP-RF-25
+# RF-25 Canal grupal del curso · RF-28 Persistencia e historial de mensajes · CU-12 · RN-23
+# Prueba: CP-RF-25 · CP-RF-28
 require "rails_helper"
 
 RSpec.describe ConversacionChannel, type: :channel do
@@ -33,6 +33,32 @@ RSpec.describe ConversacionChannel, type: :channel do
 
       expect(subscription).to be_confirmed
       expect(canal.participantes.pluck(:usuario_id)).to include(tutor.id)
+    end
+  end
+
+  # CP-RF-28 · Figura 8 · el mensaje emitido por el canal se persiste, se difunde a los
+  # conectados y encola su notificación, igual que por la vía HTTP.
+  describe "CP-RF-28 · emisión por el canal" do
+    include ActiveJob::TestHelper
+
+    it "persiste, difunde y encola el mensaje emitido" do
+      stub_connection usuario_actual: tutor
+      subscribe(conversacion_id: canal.id)
+
+      expect { perform :emitir, cuerpo: "Por el canal" }
+        .to have_broadcasted_to(canal).with(hash_including("cuerpo" => "Por el canal"))
+
+      mensaje = Mensaje.find_by!(cuerpo: "Por el canal")
+      expect(mensaje).to have_attributes(conversacion_id: canal.id, autor_id: tutor.id)
+      expect(NotificacionMensajeJob).to have_been_enqueued.with(mensaje.id)
+    end
+
+    it "no persiste un mensaje sin cuerpo" do
+      stub_connection usuario_actual: tutor
+      subscribe(conversacion_id: canal.id)
+
+      expect { perform :emitir, cuerpo: "" }.not_to have_broadcasted_to(canal)
+      expect(Mensaje.count).to eq(0)
     end
   end
 end

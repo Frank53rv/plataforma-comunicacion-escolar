@@ -866,6 +866,102 @@
             },
             "description": "RF-25 · docente, tutor, alumno. Ordenadas por nombre del curso, con su último mensaje."
           }
+        },
+        {
+          "name": "Consultar el historial paginado de la conversación",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/conversaciones/:id/mensajes?desde=&hasta=&remitente_id=&orden=enviado_en:asc&pagina=1&por_pagina=25",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "conversaciones",
+                ":id",
+                "mensajes"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{conversacion_id}}"
+                }
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "hasta",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "remitente_id",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "orden",
+                  "value": "enviado_en:asc",
+                  "disabled": true
+                },
+                {
+                  "key": "pagina",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "por_pagina",
+                  "value": "25",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "RF-28 · participantes de la conversación. Filtros por fecha (desde, hasta) y por participante (remitente_id); orden por enviado_en descendente por omisión. Quien no participa recibe 403."
+          }
+        },
+        {
+          "name": "Emitir un mensaje en la conversación",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/conversaciones/:id/mensajes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "conversaciones",
+                ":id",
+                "mensajes"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{conversacion_id}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cuerpo\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-25, RF-28 · participantes de la conversación. Persiste el mensaje, lo difunde por WSS /cable a los conectados y encola su notificación. Responde 201 con el recurso mensaje."
+          }
         }
       ]
     },

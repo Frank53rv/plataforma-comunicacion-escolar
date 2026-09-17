@@ -1,5 +1,5 @@
-# RF-25 Canal grupal del curso · CU-12 · RN-23
-# Prueba: CP-RF-25
+# RF-25 Canal grupal del curso · RF-28 Persistencia e historial de mensajes · CU-12 · RN-23
+# Prueba: CP-RF-25 · CP-RF-28
 #
 # Tabla 29 · WSS /cable · «canal y conversacion_id en la suscripción» → confirmación de
 # suscripción y, en adelante, mensajes difundidos. Figura 8 · pasos «validar token y
@@ -10,6 +10,14 @@ class ConversacionChannel < ApplicationCable::Channel
     return reject unless conversacion&.participa?(usuario_actual)
 
     conversacion.sincronizar_participantes!
+    @conversacion = conversacion
     stream_for conversacion
+  end
+
+  # Figura 8 · «emitir mensaje» por el canal. Un cuerpo vacío no se persiste.
+  def emitir(datos)
+    return if datos["cuerpo"].blank?
+
+    EmisionDeMensaje.emitir(conversacion: @conversacion, autor: usuario_actual, cuerpo: datos["cuerpo"])
   end
 end

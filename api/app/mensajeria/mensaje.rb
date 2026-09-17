@@ -1,5 +1,6 @@
-# RF-25 Canal grupal del curso · CU-12 · RN-23
-# Prueba: CP-RF-25
+# RF-25 Canal grupal del curso · RF-28 Persistencia e historial de mensajes · CU-12 ·
+# RN-23, RN-27, RN-28
+# Prueba: CP-RF-25 · CP-RF-28
 #
 # Tabla 14 · «Unidad de comunicación dentro de una conversación.» Tabla 27 · índice sobre
 # (conversacion_id, enviado_en descendente).

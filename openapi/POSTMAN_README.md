@@ -1,7 +1,7 @@
 # Colección de validación · Postman
 
 Colección de validación ejecutable de la interfaz de programación (RNF-17 · CP-RNF-17).
-Contiene las operaciones de la Tabla 18 que el enrutador expone hoy —26— agrupadas por
+Contiene las operaciones de la Tabla 18 que el enrutador expone hoy —28— agrupadas por
 caso de uso, con los cuerpos y parámetros que cada una admite. Se amplía con cada módulo
 que se construye, y su contenido coincide operación por operación con las rutas de
 `bin/rails routes`.
@@ -24,7 +24,7 @@ En Postman: **Import** → seleccionar los dos archivos → elegir el entorno
 | `token` | Se completa sola al autenticarse con éxito |
 | `directivo_correo` | El valor de `DIRECTIVO_CORREO` del archivo `.env` |
 | `directivo_contrasena` | La credencial del directivo: la provisional de `.env` en el primer acceso, la propia después |
-| `anio_lectivo_id`, `curso_id`, `docente_id`, `usuario_id`, `alumno_id`, `tutor_id`, `anuncio_id` | Identificadores que devuelven las operaciones de alta; se cargan a mano para las operaciones que los usan en la ruta o en el cuerpo |
+| `anio_lectivo_id`, `curso_id`, `docente_id`, `usuario_id`, `alumno_id`, `tutor_id`, `anuncio_id`, `conversacion_id` | Identificadores que devuelven las operaciones de alta; se cargan a mano para las operaciones que los usan en la ruta o en el cuerpo |
 
 ## Recorrido
 
@@ -38,7 +38,9 @@ En Postman: **Import** → seleccionar los dos archivos → elegir el entorno
    sola vez; con él, **CU-02 · Canjear el código** activa la cuenta del docente.
 4. Autenticado como docente: **CU-05** alumnos y tutores, **CU-06** anuncios, **CU-09**
    historial, **CU-11** constancias y **CU-12** el canal grupal del curso, que integran sus
-   docentes y los tutores de sus alumnos.
+   docentes y los tutores de sus alumnos: su historial y la emisión de mensajes. El canal
+   de tiempo real (`WSS /cable?token=…`) no es una operación HTTP y no figura en la
+   colección.
 
 Para operar con otro rol se vuelve a autenticar con su correo y contraseña: el token nuevo
 reemplaza al anterior.
