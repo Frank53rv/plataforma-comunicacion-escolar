@@ -811,6 +811,65 @@
       ]
     },
     {
+      "name": "CU-12 · Participar en conversación",
+      "item": [
+        {
+          "name": "Obtener los canales del curso que corresponden al rol",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/cursos/:id/conversaciones",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cursos",
+                ":id",
+                "conversaciones"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{curso_id}}"
+                }
+              ]
+            },
+            "description": "RF-25 · docente, tutor, alumno. El canal grupal del curso lo integran sus docentes y los tutores de sus alumnos; el alumno recibe la colección vacía. Un usuario no vinculado al curso recibe 403."
+          }
+        },
+        {
+          "name": "Consultar las conversaciones del usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/conversaciones?pagina=1&por_pagina=25",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "conversaciones"
+              ],
+              "query": [
+                {
+                  "key": "pagina",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "por_pagina",
+                  "value": "25",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "RF-25 · docente, tutor, alumno. Ordenadas por nombre del curso, con su último mensaje."
+          }
+        }
+      ]
+    },
+    {
       "name": "CU-15 · Supervisar estado de la comunicación",
       "item": [
         {

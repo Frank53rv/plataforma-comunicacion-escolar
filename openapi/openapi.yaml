@@ -1646,7 +1646,7 @@ components:
       properties:
         id: { type: string, format: uuid }
         curso_id: { type: string, format: uuid }
-        tipo: { type: string, enum: [grupal_tutores, grupal_alumnos, privada] }
+        tipo: { type: string, enum: [grupal_de_tutores, grupal_de_alumnos, privada] }
         estado: { type: string, enum: [activa, solo_lectura] }
 
     Mensaje:

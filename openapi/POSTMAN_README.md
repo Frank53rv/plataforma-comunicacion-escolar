@@ -1,7 +1,7 @@
 # Colección de validación · Postman
 
 Colección de validación ejecutable de la interfaz de programación (RNF-17 · CP-RNF-17).
-Contiene las operaciones de la Tabla 18 que el enrutador expone hoy —24— agrupadas por
+Contiene las operaciones de la Tabla 18 que el enrutador expone hoy —26— agrupadas por
 caso de uso, con los cuerpos y parámetros que cada una admite. Se amplía con cada módulo
 que se construye, y su contenido coincide operación por operación con las rutas de
 `bin/rails routes`.
@@ -37,7 +37,8 @@ En Postman: **Import** → seleccionar los dos archivos → elegir el entorno
    vincularlo al curso. La respuesta del alta trae el código de activación en claro, una
    sola vez; con él, **CU-02 · Canjear el código** activa la cuenta del docente.
 4. Autenticado como docente: **CU-05** alumnos y tutores, **CU-06** anuncios, **CU-09**
-   historial y **CU-11** constancias.
+   historial, **CU-11** constancias y **CU-12** el canal grupal del curso, que integran sus
+   docentes y los tutores de sus alumnos.
 
 Para operar con otro rol se vuelve a autenticar con su correo y contraseña: el token nuevo
 reemplaza al anterior.

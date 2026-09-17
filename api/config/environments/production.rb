@@ -65,4 +65,9 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Tabla 30 · CORS_ORIGENES: los mismos orígenes que consumen la interfaz abren el canal
+  # de tiempo real (WSS /cable).
+  config.action_cable.allowed_request_origins =
+    ENV.fetch("CORS_ORIGENES", "").split(",").map(&:strip).reject(&:empty?)
 end

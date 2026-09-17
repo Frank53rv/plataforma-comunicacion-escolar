@@ -1,6 +1,6 @@
-# RF-12 Administración de cursos · RF-15 Vinculación de docentes a cursos · CU-03, CU-04 ·
-# RN-02, RN-26
-# Prueba: CP-RF-12 · CP-RF-15
+# RF-12 Administración de cursos · RF-15 Vinculación de docentes a cursos · RF-25 Canal
+# grupal del curso · CU-03, CU-04, CU-12 · RN-02, RN-23, RN-26
+# Prueba: CP-RF-12 · CP-RF-15 · CP-RF-25
 #
 # Tabla 14 · «Unidad académica dentro de un año lectivo.» Nombre único dentro del año.
 # Tabla 27 · nombre de tabla en singular. turno varchar(20). UNIQUE (anio_lectivo_id,
@@ -15,6 +15,11 @@ class Curso < ApplicationRecord
                                     inverse_of: :curso
   has_many :alumnos_vinculados_curso, class_name: "AlumnoCurso", foreign_key: :curso_id,
                                       inverse_of: :curso
+  has_many :conversaciones, class_name: "Conversacion", inverse_of: :curso
+
+  # RF-25 · «un canal grupal … existente desde la creación del curso». Se abre en la misma
+  # transacción del alta, cualquiera sea la vía por la que el curso se crea.
+  after_create :abrir_canal_grupal
 
   # Tabla 27 · nombre varchar(60) · turno varchar(20)
   validates :nombre, :turno, presence: true
@@ -39,5 +44,11 @@ class Curso < ApplicationRecord
   def recurso
     slice(:id, :anio_lectivo_id, :nombre, :turno, :estado)
       .merge("alumnos_vinculados" => alumnos_vinculados_curso.vigentes.count)
+  end
+
+  private
+
+  def abrir_canal_grupal
+    conversaciones.create!(tipo: "grupal_de_tutores", estado: "activa")
   end
 end
