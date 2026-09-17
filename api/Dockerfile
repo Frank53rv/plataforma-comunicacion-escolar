@@ -19,4 +19,6 @@ RUN bundle install
 COPY . .
 
 EXPOSE 3000
-CMD ["bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+# RNF-19 · el entorno se levanta sin intervención manual: el archivo de PID que deja un
+# apagado no limpio en el directorio montado no impide el arranque siguiente.
+CMD ["sh", "-c", "rm -f tmp/pids/server.pid && exec bin/rails server -b 0.0.0.0 -p 3000"]
