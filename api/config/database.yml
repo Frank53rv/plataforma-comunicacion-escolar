@@ -1,5 +1,5 @@
 # Tabla 34 · PostgreSQL 18, único almacén: datos de negocio, cola de trabajos y
-# mecanismo de publicación y suscripción sobre la misma base de datos (D-08).
+# mecanismo de publicación y suscripción sobre la misma base de datos.
 # Tabla 41 · el valor propio de cada instalación se provee por DATABASE_URL (RNF-19), sin
 # valor por omisión escrito en el repositorio. La base de pruebas es la misma cadena con
 # el sufijo _prueba en el nombre.

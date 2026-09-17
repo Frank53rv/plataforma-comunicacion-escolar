@@ -61,7 +61,7 @@ RSpec.describe "Publicación de anuncios", type: :request do
       expect(AnuncioCurso.count).to eq(0)
     end
 
-    it "trata un curso inexistente igual que uno ajeno: 403 y no 404 (D-15)" do
+    it "trata un curso inexistente igual que uno ajeno: 403 y no 404" do
       publicar(cursos: [ SecureRandom.uuid ])
 
       expect(response).to have_http_status(:forbidden)
@@ -98,7 +98,7 @@ RSpec.describe "Publicación de anuncios", type: :request do
     end
   end
 
-  # D-05 · RF-18 (programación) y RF-30 (adjuntos) son Should have y no integran este
+  # RF-18 (programación) y RF-30 (adjuntos) son Should have (Tabla 10) y no integran este
   # incremento: la publicación es siempre inmediata y sin adjuntos, cualquiera sea el
   # cuerpo de la petición.
   describe "alcance · Boundary 1 · RF-18 y RF-30 no se construyen" do

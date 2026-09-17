@@ -24,7 +24,7 @@ if not os.path.exists(ruta):
     R.aviso('todavía no existe api/db/schema.rb · la compuerta se activa con la primera migración')
     R.cerrar()
 
-# D-08 · Solid Queue y Solid Cable son componentes que la Tabla 23 consigna, y sus
+# Solid Queue y Solid Cable son componentes que la Tabla 23 consigna, y sus
 # tablas son infraestructura del framework y no entidades del diccionario de la Tabla
 # 21. La excepción es nominada: cualquier otra tabla ajena al diccionario sigue
 # dejando la rama en rojo.

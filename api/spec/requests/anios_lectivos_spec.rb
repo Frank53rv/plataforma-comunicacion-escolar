@@ -50,8 +50,8 @@ RSpec.describe "Creación del año lectivo", type: :request do
     end
 
     # Tabla 27 · «UNIQUE (anio)»: no se reutiliza el mismo año calendario, ni siquiera
-    # cerrado. La violación del índice se traduce al 422 general (D-15, patrón ya
-    # establecido para toda unicidad sin flujo de excepción propio).
+    # cerrado. La violación del índice se traduce al 422 general, como toda
+    # unicidad sin flujo de excepción propio.
     it "rechaza un año calendario ya utilizado, aunque el vigente esté cerrado" do
       create(:anio_lectivo, anio: 2025, estado: "cerrado")
 

@@ -3,7 +3,7 @@
 # Prueba: CP-RF-11 · CP-RF-15
 #
 # Tabla 14 · «Período académico que contiene los cursos y delimita el archivado.»
-# Tabla 27 · nombre de tabla en singular conforme a D-01. Un solo año lectivo vigente,
+# Tabla 27 · nombre de tabla en singular. Un solo año lectivo vigente,
 # garantizado por el índice parcial de la Tabla 27 (RN-31).
 class AnioLectivo < ApplicationRecord
   self.table_name = "anio_lectivo"

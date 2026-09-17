@@ -3,7 +3,7 @@
 #
 # Tabla 27 · POST /api/v1/alumnos/{id}/tutores · docente · «Vincular un tutor al alumno».
 # Tabla 40 · petición: nombre, apellido, correo. Respuesta: recurso usuario, tutor_alumno
-# y codigo_activacion, con el código en claro una sola vez (D-10).
+# y codigo_activacion, con el código en claro una sola vez.
 class TutoresDeAlumnoController < ApplicationController
   # RN-03 · «El docente da de alta a los alumnos y tutores de sus cursos.»
   autoriza :crear, roles: %w[docente]

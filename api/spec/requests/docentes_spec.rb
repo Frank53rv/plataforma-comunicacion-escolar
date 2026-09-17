@@ -3,7 +3,7 @@
 #
 # Tabla 27 · POST /api/v1/docentes · directivo.
 # Tabla 40 · petición: nombre, apellido, correo. Respuesta: recurso usuario y
-# codigo_activacion con vence_en, y el código en claro una sola vez (D-10).
+# codigo_activacion con vence_en, y el código en claro una sola vez.
 require "rails_helper"
 
 RSpec.describe "Alta de docentes", type: :request do
@@ -31,7 +31,7 @@ RSpec.describe "Alta de docentes", type: :request do
       expect(cuerpo["usuario"]).not_to have_key("contrasena_hash")
     end
 
-    it "genera su código de activación y lo devuelve en claro una sola vez (D-10)" do
+    it "genera su código de activación y lo devuelve en claro una sola vez" do
       freeze_time do
         dar_de_alta
 

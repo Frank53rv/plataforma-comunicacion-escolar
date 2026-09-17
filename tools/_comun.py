@@ -4,12 +4,11 @@ import json, os, re, subprocess, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SPECS = os.path.join(RAIZ, 'specs')
-# D-06 · la interfaz vive en api/ y el cliente en cliente/. Las compuertas exploran esas
+# La interfaz vive en api/ y el cliente en cliente/. Las compuertas exploran esas
 # rutas y no la raíz; de lo contrario no encontrarían nada y aprobarían por ceguera.
 API = os.path.join(RAIZ, 'api')
-# D-21 · los cinco módulos funcionales y el componente transversal son carpetas bajo
-# api/app/. La divergencia D-03 de la Tabla 38 resuelve que se corrige la Figura 18 y no
-# el código, de modo que api/app las contiene a todas y basta con explorar esa raíz.
+# Los cinco módulos funcionales y el componente transversal son carpetas bajo
+# api/app/, de modo que basta con explorar esa raíz.
 MODULOS = ('identidad_acceso', 'estructura_academica', 'anuncios', 'mensajeria',
            'notificaciones', 'compartido')
 CODIGO_API = ('api/app', 'api/lib')
@@ -56,8 +55,7 @@ def leer_texto(p):
         with open(p, encoding='utf-8', errors='replace') as f: return f.read()
     except OSError: return ''
 
-# D-26 · mismo defecto que D-05 resolvió sobre el flag `should`: una coincidencia de
-# subcadena sobre el archivo entero no distingue el código que una unidad REALIZA
+# Una coincidencia de subcadena sobre el archivo entero no distinguiría el código que una unidad REALIZA
 # (CLAUDE.md §4: el comentario de encabezado con los códigos que realiza) de un código
 # apenas MENCIONADO en la prosa posterior para acotar un límite de alcance —«RF-18 es
 # Should have y no se construye acá»—, que es precisamente el tipo de nota que evita

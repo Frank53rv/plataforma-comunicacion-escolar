@@ -1,4 +1,4 @@
-# Tabla 34 · Solid Queue y Solid Cable, «sobre la misma base de datos» · D-08
+# Tabla 34 · Solid Queue y Solid Cable, «sobre la misma base de datos»
 # Las tablas de los dos adaptadores las define el framework, no el diccionario de la
 # Tabla 21: son la realización física de dos componentes que la Tabla 34 consigna. La
 # compuerta `esquema` las distingue de las diecinueve entidades por su prefijo.

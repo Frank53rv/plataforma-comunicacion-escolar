@@ -59,7 +59,7 @@ class VinculacionesDocentesController < ApplicationController
       if vinculacion.es_titular
         reemplazo = vinculacion_del_reemplazo(curso, vinculacion)
         vinculacion.update!(vigente_hasta: hoy)
-        # D-13 · el reemplazo asume la titularidad desde hoy: su vinculación se cierra y se
+        # El reemplazo asume la titularidad desde hoy: su vinculación se cierra y se
         # abre otra como titular, para que el historial conserve desde cuándo lo es.
         reemplazo.update!(vigente_hasta: hoy)
         curso.vinculaciones_docentes.create!(usuario_id: reemplazo.usuario_id, es_titular: true,
@@ -87,7 +87,7 @@ class VinculacionesDocentesController < ApplicationController
       )
     end
 
-    # D-13 · el reemplazo debe ser ya un docente vinculado al curso y habilitado.
+    # El reemplazo debe ser ya un docente vinculado al curso y habilitado.
     reemplazo = curso.vinculaciones_docentes.vigentes.find_by(usuario_id: reemplazo_id)
     if reemplazo.nil? || reemplazo.usuario_id == desvinculada.usuario_id || reemplazo.docente.estado_dado_de_baja?
       raise ErrorDeDominio::DatosInaceptables.new(

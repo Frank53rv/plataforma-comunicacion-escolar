@@ -2,7 +2,7 @@
 # Prueba: CP-RF-01 · CP-RNF-03
 #
 # Tabla 21 · «Persona con acceso al sistema, bajo un único rol.»
-# Tabla 38 · nombre de tabla en singular conforme a D-01.
+# Tabla 27 · nombre de tabla en singular.
 class Usuario < ApplicationRecord
   self.table_name = "usuario"
 

@@ -19,7 +19,7 @@ class DocentesController < ApplicationController
   def crear
     alta = RegistroDePersona.registrar(**parametros, rol: "docente", registrado_por: usuario_actual)
 
-    # Tabla 40 y D-10 · recurso usuario y codigo_activacion con vence_en, con el código
+    # Tabla 29 · recurso usuario y codigo_activacion con vence_en, con el código
     # en claro devuelto una sola vez.
     render json: {
       usuario: alta.usuario.recurso,
@@ -31,7 +31,7 @@ class DocentesController < ApplicationController
   def destruir
     docente = Usuario.docente.find(params[:id])
 
-    # D-13 · primero se desvincula, después se da de baja: la baja no lleva cuerpo y no
+    # Primero se desvincula, después se da de baja: la baja no lleva cuerpo y no
     # puede designar reemplazo, y el curso no puede quedar con un titular sin acceso
     # (CU-04, «la titularidad del curso siempre definida»).
     if DocenteCurso.vigentes.exists?(usuario_id: docente.id)

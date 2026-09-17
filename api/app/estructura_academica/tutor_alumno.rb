@@ -4,7 +4,7 @@
 #
 # Tabla 21 · «Vinculación entre un tutor y un alumno.» Hasta dos tutores vigentes por
 # alumno (RN-29), verificado en la capa de negocio conforme a la nota de la Tabla 38.
-# Tabla 38 · nombre de tabla en singular conforme a D-01.
+# Tabla 27 · nombre de tabla en singular.
 class TutorAlumno < ApplicationRecord
   self.table_name = "tutor_alumno"
 

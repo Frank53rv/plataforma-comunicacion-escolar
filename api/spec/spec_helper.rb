@@ -4,7 +4,7 @@
 require "simplecov"
 
 SimpleCov.start "rails" do
-  # D-21 · los seis módulos viven bajo app/: la medición los alcanza con app/**.
+  # Los seis módulos viven bajo app/: la medición los alcanza con app/**.
   track_files "{app,lib}/**/*.rb"
   enable_coverage :line
   minimum_coverage line: 70

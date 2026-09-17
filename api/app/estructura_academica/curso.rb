@@ -3,8 +3,8 @@
 # Prueba: CP-RF-12 · CP-RF-15
 #
 # Tabla 14 · «Unidad académica dentro de un año lectivo.» Nombre único dentro del año.
-# Tabla 27 · nombre de tabla en singular conforme a D-01. turno como texto acotado
-# conforme a D-07. UNIQUE (anio_lectivo_id, nombre) atribuido a RN-26.
+# Tabla 27 · nombre de tabla en singular. turno varchar(20). UNIQUE (anio_lectivo_id,
+# nombre) atribuido a RN-26.
 class Curso < ApplicationRecord
   self.table_name = "curso"
 
@@ -16,7 +16,7 @@ class Curso < ApplicationRecord
   has_many :alumnos_vinculados_curso, class_name: "AlumnoCurso", foreign_key: :curso_id,
                                       inverse_of: :curso
 
-  # Tabla 27 · nombre varchar(60) · turno varchar(20) (D-07)
+  # Tabla 27 · nombre varchar(60) · turno varchar(20)
   validates :nombre, :turno, presence: true
   validates :nombre, length: { maximum: 60 }
   validates :turno, length: { maximum: 20 }
