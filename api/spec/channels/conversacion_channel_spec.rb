@@ -1,5 +1,6 @@
-# RF-25 Canal grupal del curso · RF-28 Persistencia e historial de mensajes · CU-12 · RN-23
-# Prueba: CP-RF-25 · CP-RF-28
+# RF-25 Canal grupal del curso · RF-28 Persistencia e historial de mensajes · RF-29
+# Restricción de participación · CU-12 · RN-23
+# Prueba: CP-RF-25 · CP-RF-28 · CP-RF-29
 require "rails_helper"
 
 RSpec.describe ConversacionChannel, type: :channel do
@@ -33,6 +34,51 @@ RSpec.describe ConversacionChannel, type: :channel do
 
       expect(subscription).to be_confirmed
       expect(canal.participantes.pluck(:usuario_id)).to include(tutor.id)
+    end
+  end
+
+  # CP-RF-29 · «Token de un usuario ajeno a la conversación. Suscripción rechazada.»
+  # CU-12 E1 · «si el usuario no está vinculado al curso, la suscripción se rechaza».
+  describe "CP-RF-29 · suscripción de un usuario ajeno" do
+    let(:otro_curso) { create(:curso) }
+
+    def rechaza_a(usuario)
+      stub_connection usuario_actual: usuario
+      subscribe(conversacion_id: canal.id)
+      expect(subscription).to be_rejected
+    end
+
+    it "rechaza al docente de otro curso" do
+      ajeno = create(:usuario, :docente)
+      create(:docente_curso, docente: ajeno, curso: otro_curso)
+      rechaza_a(ajeno)
+    end
+
+    it "rechaza al tutor de un alumno de otro curso" do
+      ajeno = create(:usuario, :tutor)
+      hijo = create(:usuario, :alumno)
+      create(:alumno_curso, alumno: hijo, curso: otro_curso)
+      create(:tutor_alumno, tutor: ajeno, alumno: hijo)
+      rechaza_a(ajeno)
+    end
+
+    it "rechaza al alumno del curso, que el canal de RF-25 no integra" do
+      rechaza_a(AlumnoCurso.find_by!(curso: curso).alumno)
+    end
+
+    it "rechaza al directivo" do
+      rechaza_a(create(:usuario, :directivo))
+    end
+
+    it "rechaza al docente cuya vinculación terminó" do
+      DocenteCurso.find_by!(docente: docente).update!(vigente_hasta: Time.current.to_date)
+      rechaza_a(docente)
+    end
+
+    it "rechaza una conversación inexistente" do
+      stub_connection usuario_actual: docente
+      subscribe(conversacion_id: SecureRandom.uuid)
+      expect(subscription).to be_rejected
     end
   end
 
