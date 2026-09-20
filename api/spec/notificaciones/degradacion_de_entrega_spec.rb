@@ -124,7 +124,7 @@ RSpec.describe "Degradación ante fallo de entrega", type: :model do
       cliente_que_responde([ :transitorio, "503" ])
       suscripcion = suscribir
 
-      perform_enqueued_jobs { EnvioDeAvisoJob.perform_later(entrega.id, "T", "C") }
+      perform_enqueued_jobs { NotificacionAnuncioJob.perform_later(entrega.id) }
       # 1 intento inicial + 3 reintentos, cada uno diferido: se ejecutan todos.
       travel_to(1.hour.from_now) { perform_enqueued_jobs }
       travel_to(2.hours.from_now) { perform_enqueued_jobs }

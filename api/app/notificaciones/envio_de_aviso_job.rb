@@ -3,7 +3,8 @@
 #
 # RNF-12 · «Los envíos fallidos por causa transitoria se reintentan desde la cola.» Los
 # reintentos siguen PoliticaDeEnvio::REINTENTOS; agotados, RF-37 exige entregar el aviso
-# dentro de la aplicación y registrar la causa.
+# dentro de la aplicación y registrar la causa. Base de los trabajos que notifican una fila
+# de entrega: cada uno declara el título y el cuerpo del aviso en `contenido`.
 class EnvioDeAvisoJob < ApplicationJob
   queue_as :default
 
@@ -14,10 +15,17 @@ class EnvioDeAvisoJob < ApplicationJob
     EnvioDeAviso.degradar(entrega, "indisponibilidad_del_servicio_push", error.codigo) if entrega
   end
 
-  def perform(entrega_id, titulo, cuerpo)
+  def perform(entrega_id)
     entrega = EntregaAnuncio.find_by(id: entrega_id)
     return if entrega.nil? || entrega.entregada_en.present?
 
+    titulo, cuerpo = contenido(entrega)
     EnvioDeAviso.para_entrega(entrega, titulo: titulo, cuerpo: cuerpo)
+  end
+
+  private
+
+  def contenido(_entrega)
+    raise NotImplementedError, "#{self.class} debe declarar el contenido del aviso"
   end
 end
