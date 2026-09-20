@@ -97,7 +97,7 @@ RSpec.describe ConversacionChannel, type: :channel do
 
       mensaje = Mensaje.find_by!(cuerpo: "Por el canal")
       expect(mensaje).to have_attributes(conversacion_id: canal.id, autor_id: tutor.id)
-      expect(NotificacionMensajeJob).to have_been_enqueued.with(mensaje.id)
+      expect(NotificacionMensajeJob).to have_been_enqueued.with(mensaje.id, [])
     end
 
     it "no persiste un mensaje sin cuerpo" do

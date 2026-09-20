@@ -43,6 +43,14 @@ class Preferencia < ApplicationRecord
     inicio < fin ? (h >= inicio && h < fin) : (h >= inicio || h < fin)
   end
 
+  # RN-24 · cuándo sale un mensaje para esta persona: ahora si está disponible, al
+  # comienzo de su próxima franja si no; nunca, si no recibe mensajes por push.
+  def instante_de_envio(desde)
+    return nil unless recibir_mensajes
+
+    admite_envio?(desde) ? desde : proximo_inicio(desde)
+  end
+
   # RN-24 · diferir consiste en encolar hasta el comienzo de la próxima franja.
   def proximo_inicio(desde)
     zona = "America/Asuncion"

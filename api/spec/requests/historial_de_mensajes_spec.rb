@@ -124,7 +124,7 @@ RSpec.describe "Persistencia e historial de mensajes", type: :request do
     it "encola la notificación del mensaje (RF-32, módulo E)" do
       emitir(por: docente, texto: "Aviso")
 
-      expect(NotificacionMensajeJob).to have_been_enqueued.with(cuerpo["id"])
+      expect(NotificacionMensajeJob).to have_been_enqueued.with(cuerpo["id"], [])
     end
 
     it "rechaza con 422 un mensaje sin cuerpo" do
