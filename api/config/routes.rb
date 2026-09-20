@@ -56,5 +56,8 @@ Rails.application.routes.draw do
     # CU-13 · Configurar preferencias · RF-33
     get "usuarios/me/preferencias", to: "preferencias#mostrar"
     put "usuarios/me/preferencias", to: "preferencias#actualizar"
+
+    # CU-14 · Entregar notificación · RF-34
+    post "entregas/acuses", to: "entregas#acusar"
   end
 end

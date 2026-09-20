@@ -1,7 +1,7 @@
 # Colección de validación · Postman
 
 Colección de validación ejecutable de la interfaz de programación (RNF-17 · CP-RNF-17).
-Contiene las operaciones de la Tabla 18 que el enrutador expone hoy —28— agrupadas por
+Contiene las operaciones de la Tabla 18 que el enrutador expone hoy —31— agrupadas por
 caso de uso, con los cuerpos y parámetros que cada una admite. Se amplía con cada módulo
 que se construye, y su contenido coincide operación por operación con las rutas de
 `bin/rails routes`.
