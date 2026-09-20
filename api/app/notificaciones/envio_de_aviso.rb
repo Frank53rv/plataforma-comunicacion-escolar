@@ -21,36 +21,47 @@ class EnvioDeAviso
     end
   end
 
+  Resumen = Struct.new(:aceptadas, :transitorios, :invalidadas)
+
   def self.para_entrega(entrega, titulo:, cuerpo:)
     suscripciones = SuscripcionPush.vigentes.where(usuario_id: entrega.destinatario_id).to_a
     if suscripciones.empty?
       return degradar(entrega, "falta_de_soporte_del_navegador", "sin_suscripcion")
     end
 
+    resumen = enviar_a(suscripciones, titulo: titulo, cuerpo: cuerpo, entrega: entrega)
+
+    if resumen.aceptadas.positive?
+      entrega.update!(canal: "push", causa_fallo: nil)
+      VerificacionDeAcuseJob.set(wait: PoliticaDeEnvio::ESPERA_DE_ACUSE).perform_later(entrega.id)
+    elsif resumen.transitorios.any?
+      raise ErrorTransitorio, resumen.transitorios.first
+    else
+      entrega.update!(canal: "aplicacion", causa_fallo: "credencial_invalida")
+    end
+  end
+
+  # Envía a cada suscripción y clasifica el resultado. El destino que el proveedor rechaza
+  # queda inválido y en la bitácora (RNF-07: «causa, código de error del proveedor y token
+  # invalidado»), sea el aviso de una fila de entrega o el de un mensaje.
+  def self.enviar_a(suscripciones, titulo:, cuerpo:, entrega: nil)
     cliente = ClienteFcm.desde_el_entorno
-    aceptadas, transitorios, invalidadas = 0, [], []
+    resumen = Resumen.new(0, [], [])
 
     suscripciones.each do |suscripcion|
       resultado = enviar(cliente, suscripcion, titulo, cuerpo)
       case resultado.estado
-      when :aceptado then aceptadas += 1
+      when :aceptado then resumen.aceptadas += 1
       when :credencial_invalida
         suscripcion.invalidar!
         BitacoraEnvio.registrar!(causa: "credencial_invalida", codigo_proveedor: resultado.codigo,
                                  entrega: entrega, suscripcion: suscripcion)
-        invalidadas << resultado.codigo
-      else transitorios << resultado.codigo
+        resumen.invalidadas << resultado.codigo
+      else resumen.transitorios << resultado.codigo
       end
     end
 
-    if aceptadas.positive?
-      entrega.update!(canal: "push", causa_fallo: nil)
-      VerificacionDeAcuseJob.set(wait: PoliticaDeEnvio::ESPERA_DE_ACUSE).perform_later(entrega.id)
-    elsif transitorios.any?
-      raise ErrorTransitorio, transitorios.first
-    else
-      entrega.update!(canal: "aplicacion", causa_fallo: "credencial_invalida")
-    end
+    resumen
   end
 
   # RNF-11 · la indisponibilidad del servicio no impide operar: el aviso se entrega dentro

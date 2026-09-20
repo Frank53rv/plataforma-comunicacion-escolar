@@ -74,6 +74,11 @@ class Conversacion < ApplicationRecord
     Conversacion.del_usuario(usuario).exists?(id: id)
   end
 
+  # Los usuarios que integran la conversación hoy, tengan o no fila de participante.
+  def integrantes_ids
+    integrantes.keys
+  end
+
   # Registra como participantes a los integrantes vigentes que todavía no lo están. La
   # fecha de ingreso es el inicio del día de la vinculación que los incorpora, en la zona
   # del punto 4.2: la del docente al curso; para el tutor, la más tardía entre la suya con
