@@ -1051,6 +1051,43 @@
           }
         }
       ]
+    },
+    {
+      "name": "CU-14 · Entregar notificación",
+      "item": [
+        {
+          "name": "Registrar el acuse de recepción emitido por el cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/entregas/acuses",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "entregas",
+                "acuses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"anuncio_version_ids\": [\n    \"\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-34 · tutor, alumno. Registra entregada_en de la propia fila de cada publicación. Responde registrada y omitida_por_idempotencia; una publicación que no le corresponde, o cuyo estado ya está registrado, cuenta como omitida."
+          }
+        }
+      ]
     }
   ]
 }
