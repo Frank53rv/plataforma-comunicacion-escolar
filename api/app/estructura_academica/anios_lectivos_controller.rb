@@ -9,9 +9,9 @@ class AniosLectivosController < ApplicationController
   autoriza :crear, roles: %w[directivo]
   autoriza :index, roles: %w[directivo]
 
-  # CU-03 paso 1 · «el directivo crea el año lectivo, que queda en estado vigente».
-  # Flujo de excepción E1 · «la creación de un segundo año lectivo en estado vigente se
-  # rechaza mientras el anterior no se cierre» → 409 con RN-31 (Tabla 24, fila CU-03 E1).
+  # RF-11 · el directivo crea el año lectivo, que queda en estado vigente. RN-31 · la
+  # creación de un segundo año lectivo vigente se rechaza mientras el anterior no se
+  # cierre → 409 (Tabla 24, fila CU-03 E1).
   def crear
     if AnioLectivo.estado_vigente.exists?
       raise ErrorDeDominio::ConflictoDeRegla.new(

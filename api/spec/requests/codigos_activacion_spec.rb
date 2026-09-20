@@ -32,8 +32,9 @@ RSpec.describe "Regeneración del código de activación", type: :request do
     post "/api/v1/activaciones", params: { codigo: codigo, contrasena: "clave-propia-123" }, as: :json
   end
 
-  # CP-RF-07 · «Docente del curso; luego docente ajeno al curso → Código anterior
-  # invalidado y nuevo vigente. El docente ajeno obtiene 403.»
+  # CP-RF-07 · RF-07 (Tabla 10): «El docente debe poder regenerar el código de un
+  # alumno o tutor de sus cursos… cuando el anterior venció o se perdió, invalidando el
+  # previo.» El docente ajeno obtiene 403 (RN-07).
   describe "CP-RF-07" do
     it "el docente del curso regenera: el anterior queda invalidado y el nuevo vigente" do
       regenerar(alumno, por: docente_del_curso)

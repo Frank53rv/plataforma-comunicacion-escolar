@@ -1,7 +1,7 @@
 # Tabla 35 · Catálogo de errores de la interfaz de programación · Boundary 6
 # El catálogo es cerrado: ningún rechazo de la interfaz emite un estado que la tabla
-# no contemple. Cada excepción de este archivo corresponde a una fila de la Tabla 35 y
-# se deriva de un flujo de excepción ya especificado en el punto 2.3.
+# no contemple. Cada excepción de este archivo corresponde a una fila de la Tabla 35, y
+# el flujo que cita en su comentario es el de la columna «Flujos» de esa misma tabla.
 #
 # Prueba: CP-RNF-17
 class ErrorDeDominio < StandardError

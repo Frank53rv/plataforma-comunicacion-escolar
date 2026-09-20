@@ -13,15 +13,15 @@ class AlumnosController < ApplicationController
   # decide PotestadDeBaja (RN-10).
   autoriza :destruir, roles: %w[directivo docente]
 
-  # CU-05 pasos 1 y 3 · «el docente registra al alumno y lo vincula a uno de sus
-  # cursos; el sistema genera el código de activación de cada persona registrada».
+  # RF-04, RF-05, RF-13 · el docente registra al alumno y lo vincula a uno de sus
+  # cursos; el sistema genera el código de activación de cada persona registrada.
   def crear
     curso = curso_del_docente
 
-    # CU-05 E2 · «se rechaza la vinculación de un alumno a un segundo curso vigente
-    # dentro del mismo año lectivo». El alumno se identifica por su correo, que la Tabla
-    # 21 declara único; la regla se verifica antes que la unicidad del correo, para que
-    # el rechazo sea el de la regla y no el del dato repetido.
+    # RN-30 (Tabla 24, fila 409, CU-05 E2): se rechaza la vinculación de un alumno a un
+    # segundo curso vigente dentro del mismo año lectivo. El alumno se identifica por su
+    # correo, que la Tabla 21 declara único; la regla se verifica antes que la unicidad
+    # del correo, para que el rechazo sea el de la regla y no el del dato repetido.
     existente = Usuario.find_by(correo: datos_de_persona[:correo], rol: "alumno")
     AlumnoCurso.verificar_pertenencia_unica!(alumno_id: existente.id, curso: curso) if existente
 
@@ -41,7 +41,7 @@ class AlumnosController < ApplicationController
     }, status: :created
   end
 
-  # CU-05 flujo B · Tabla 40 · sin cuerpo → recurso usuario con estado dado de baja.
+  # RF-09 · Tabla 40 · sin cuerpo → recurso usuario con estado dado de baja.
   def destruir
     alumno = Usuario.alumno.find(params[:id])
 

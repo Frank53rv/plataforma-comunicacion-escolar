@@ -13,7 +13,7 @@ class CursosController < ApplicationController
   autoriza :actualizar, roles: %w[directivo]
   autoriza :index, roles: %w[directivo docente]
 
-  # CU-03 paso 2 · «crea dentro de él los cursos, con su nombre y su turno».
+  # RF-12 · crea, dentro del año lectivo vigente, los cursos con su nombre y su turno.
   def crear
     anio_lectivo = AnioLectivo.find(parametros[:anio_lectivo_id])
     Curso.verificar_nombre_disponible!(anio_lectivo_id: anio_lectivo.id, nombre: parametros[:nombre])
@@ -24,8 +24,7 @@ class CursosController < ApplicationController
     render json: curso.recurso, status: :created
   end
 
-  # CU-03 paso 3 · «edita los cursos existentes mientras el año lectivo permanezca
-  # vigente».
+  # RF-12 · edita los cursos existentes mientras el año lectivo permanezca vigente.
   def actualizar
     curso = Curso.find(params[:id])
     cambios = params.permit(:nombre, :turno).to_h.symbolize_keys

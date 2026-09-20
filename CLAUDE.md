@@ -4,9 +4,8 @@
 > repositorio. Es la traducción operativa del **Context Spec**, el **Boundary Spec**
 > (Tabla 25) y el **Quality Spec** (Tabla 26) del punto 4.2 del documento de grado
 > *«API REST de un colegio para una plataforma de comunicación escolar con notificaciones
-> inteligentes»*. Fuente absoluta: la edición vigente de 75 páginas
-> (`documento/TFG_ENTREGA_75paginas.docx`); la v5.2 queda como anexo normativo sólo para
-> lo que esa edición condensó —ver D-21 de `specs/DECISIONES.md`.
+> inteligentes»*. Fuente única y absoluta: la edición vigente de 75 páginas
+> (`documento/TFG_ENTREGA_75paginas.docx`). No hay ningún otro documento normativo.
 
 ## 0 · Regla de precedencia
 
@@ -28,10 +27,10 @@ extracción literal de sus tablas, generada por herramienta y no editada a mano.
 |---|---|
 | Cualquier cosa | `specs/00-context-spec.md`, `specs/01-boundary-spec.md`, `specs/02-quality-spec.md` |
 | Una operación de la API | `specs/20-endpoints.md`, `specs/23-convenciones-api.md`, `specs/24-formas-peticion-respuesta.md`, `specs/21-errores.md` |
-| Lógica de negocio | `specs/12-reglas-negocio.md` y el caso de uso en `specs/14-casos-uso-narrativa.md` |
+| Lógica de negocio | `specs/12-reglas-negocio.md` y la postcondición del caso de uso en `specs/13-casos-uso-resumen.md` |
 | Horarios, marcas de tiempo, motor de notificaciones | `specs/25-semantica-temporal.md` |
 | Migraciones o modelos | `specs/15-diccionario-datos.md` y `specs/22-esquema-fisico.md` |
-| Pruebas | `specs/30-casos-prueba.md` |
+| Pruebas | `specs/16-trazabilidad.md` (el `CP-RF-nn`) y `specs/30-casos-prueba.md` (criterio de aprobación por grupo) |
 | Infraestructura o despliegue | `specs/40-stack.md`, `specs/41-variables-entorno.md`, `specs/43-infraestructura.md`, `specs/44-despliegue.md` |
 
 No trabajes de memoria ni de resumen: abrí el archivo y citá la fila.
@@ -80,15 +79,18 @@ Pasos obligatorios, en este orden:
 
 1. **Situar.** Buscá `RF-nn` en `specs/16-trazabilidad.md`. Eso te da: la regla de negocio
    asociada, el caso de uso, el módulo de destino y el caso de prueba `CP-RF-nn`.
-2. **Leer el caso de uso completo** en `specs/14-casos-uso-narrativa.md`. Los pasos
-   numerados del flujo principal **son** la especificación de la operación: no se agrega
-   ni se omite ninguno. Cada flujo de excepción `E1`, `E2`… debe tener su rechazo
-   implementado con el estado del catálogo.
+2. **Leer la fila del caso de uso** en `specs/13-casos-uso-resumen.md` y las figuras que
+   le asigna `specs/16-trazabilidad.md`. La especificación de la operación es esa
+   postcondición, junto con la fila del endpoint y las reglas que la trazabilidad asocia
+   al requisito. Cada flujo de excepción que fija `specs/21-errores.md` debe tener su
+   rechazo implementado con el estado del catálogo.
 3. **Leer la fila del endpoint** en `specs/20-endpoints.md` y su forma en
    `specs/24-formas-peticion-respuesta.md`. Los nombres de campo son literalmente los del
    diccionario de la Tabla 14.
-4. **Escribir la prueba primero**, con el `CP-RF-nn` de `specs/30-casos-prueba.md` como
-   enunciado: mismos datos de entrada, mismo resultado esperado.
+4. **Escribir la prueba primero**, con el `CP-RF-nn` como enunciado: el requisito de
+   `specs/10-requisitos-funcionales.md` y la postcondición del caso de uso son los datos
+   de entrada y el resultado esperado; el criterio de aprobación es el de su grupo en
+   `specs/30-casos-prueba.md`.
 5. **Implementar** en el módulo que la Tabla 15 asigna. La lógica va en la API, nunca en
    el cliente.
 6. **Verificar**: `bin/verificar`. Ninguna rama se integra con una compuerta en rojo.

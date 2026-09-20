@@ -1,4 +1,4 @@
-# RF-09 Baja lógica de alumnos y tutores · CU-05 flujo B · RN-10
+# RF-09 Baja lógica de alumnos y tutores · CU-05 · RN-10
 # Prueba: CP-RF-09
 #
 # RN-10 · «La baja de un alumno o un tutor la ejecuta el directivo o el docente titular

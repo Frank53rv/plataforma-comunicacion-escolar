@@ -1,4 +1,4 @@
-# RF-43 Cambio obligatorio de credencial provisional · CU-02 flujo alternativo A ·
+# RF-43 Cambio obligatorio de credencial provisional · CU-02 ·
 # RN-08, RN-09
 # Prueba: CP-RF-43
 #

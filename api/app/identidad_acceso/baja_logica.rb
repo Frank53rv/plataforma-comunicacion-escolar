@@ -1,5 +1,5 @@
 # RF-09 Baja lógica de alumnos y tutores · RF-10 Restricción de baja de tutor vinculado ·
-# CU-05 flujo B y E3 · RN-10, RN-11, RN-12, RN-14
+# CU-05 · RN-10, RN-11, RN-12, RN-14
 # Prueba: CP-RF-09 · CP-RF-10
 #
 # RN-11 · «Toda baja es lógica: revoca el acceso y conserva la totalidad del historial
@@ -23,7 +23,7 @@ class BajaLogica
   end
 
   # RN-12 · «No se puede dar de baja a un tutor que mantenga al menos un alumno activo
-  # en cualquier curso.» CU-05 E3 · 409 con la regla consignada.
+  # en cualquier curso.» CU-05 E3 (Tabla 24, fila 409) con la regla consignada.
   #
   # «Alumno activo en un curso» se lee como el alumno no dado de baja que conserva una
   # vinculación vigente con un curso, con independencia de que ya haya activado su

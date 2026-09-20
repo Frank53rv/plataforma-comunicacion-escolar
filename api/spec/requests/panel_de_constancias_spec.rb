@@ -21,9 +21,9 @@ RSpec.describe "Panel de constancias del docente", type: :request do
     get ruta, headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-23 · «Constancias del anuncio propio y del ajeno. Anuncio con destinatarios
-  # que leyeron y que no leyeron. Recuento sobre el total y nómina de quienes no
-  # leyeron; el ajeno responde 403.»
+  # CP-RF-23 · RF-23 (Tabla 10): «El docente debe poder consultar, por anuncio, la
+  # cantidad de destinatarios que registraron lectura sobre el total y la nómina de
+  # quienes no lo hicieron.» El ajeno responde 403 (RN-21).
   describe "CP-RF-23 · constancias" do
     it "recuenta las lecturas sobre el total y lista a quienes no leyeron" do
       leyo = create(:usuario, :alumno, nombre: "Ana", apellido: "Aguilar")

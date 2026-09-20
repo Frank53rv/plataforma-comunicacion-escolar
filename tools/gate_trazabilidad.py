@@ -10,7 +10,9 @@ from _comun import *
 R = Reporte('trazabilidad', 'RNF-22 · CP-RNF-22 · Tabla 15')
 rf = cargar('10-requisitos-funcionales.json')['requisitos']
 must = [x for x in rf if x['moscow'] == 'M']
-cps = {c['codigo'] for c in cargar('30-casos-prueba.json')['casos']}
+# La Tabla 15 trae, fila por fila, el CP-RF-nn de cada requisito: es la propia fuente del
+# código y no un catálogo aparte.
+cps = {f['caso_prueba'] for f in cargar('16-trazabilidad.json')['filas']}
 
 src, tst = set(), set()
 for p in archivos(('.rb', '.jsx', '.js', '.ts', '.tsx'), *CODIGO_API, 'cliente'):

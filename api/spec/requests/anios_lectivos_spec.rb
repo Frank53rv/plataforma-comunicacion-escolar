@@ -18,10 +18,11 @@ RSpec.describe "Creación del año lectivo", type: :request do
     get "/api/v1/anios-lectivos", headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-11 · «Creación del año lectivo y de un segundo con el anterior vigente. La
-  # primera se crea; la segunda se rechaza con 409 y RN-31.»
+  # CP-RF-11 · RF-11 (Tabla 10): «El directivo debe poder crear un año lectivo, que
+  # actúa como contenedor de los cursos y delimita el archivado.» Un segundo año
+  # lectivo con el anterior vigente se rechaza con 409 y RN-31 (Tabla 24, fila 409).
   describe "CP-RF-11 · creación y unicidad del año vigente" do
-    it "crea el año lectivo en estado vigente, conforme a CU-03 paso 1" do
+    it "crea el año lectivo en estado vigente, conforme a RF-11" do
       crear_anio(anio: 2026)
 
       expect(response).to have_http_status(:created)

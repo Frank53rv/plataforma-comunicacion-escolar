@@ -8,9 +8,8 @@ class TutoresDeAlumnoController < ApplicationController
   # RN-03 · «El docente da de alta a los alumnos y tutores de sus cursos.»
   autoriza :crear, roles: %w[docente]
 
-  # CU-05 pasos 2 y 3 · «registra hasta dos tutores del alumno, o vincula tutores ya
-  # existentes en el sistema; el sistema genera el código de activación de cada persona
-  # registrada».
+  # RF-14 · registra hasta dos tutores del alumno, o vincula tutores ya existentes en
+  # el sistema; RF-05 genera el código de activación de cada persona registrada.
   def crear
     alumno = alumno_de_sus_cursos
     datos = datos_de_persona
@@ -28,9 +27,9 @@ class TutoresDeAlumnoController < ApplicationController
       [ tutor, TutorAlumno.create!(tutor: tutor, alumno: alumno, vigente_desde: Time.current.to_date), alta ]
     end
 
-    # CU-05 paso 3 · el código se genera para «cada persona registrada». El tutor que ya
-    # existía no es una persona registrada en este acto: conserva su cuenta y no recibe
-    # un código nuevo (CU-05 flujo A · RF-14 «bajo una única cuenta»).
+    # RF-05 · el código se genera para cada persona registrada. El tutor que ya existía
+    # no es una persona registrada en este acto: conserva su cuenta y no recibe un
+    # código nuevo (RF-14 · «bajo una única cuenta»).
     codigo = alta&.codigo_activacion&.representacion(codigo_en_claro: alta.codigo_en_claro)
 
     render json: {
@@ -42,8 +41,9 @@ class TutoresDeAlumnoController < ApplicationController
 
   private
 
-  # CU-05 precondición · «el docente está vinculado al curso» del alumno. El alumno
-  # inexistente, o ajeno a sus cursos, no es suyo: 403 como en la fila de la Tabla 35.
+  # CU-05 (Tabla 13) precondición: el docente está vinculado al curso del alumno. El
+  # alumno inexistente, o ajeno a sus cursos, no es suyo: 403 como en la fila de la
+  # Tabla 24.
   def alumno_de_sus_cursos
     alumno = Usuario.find_by(id: params[:id], rol: "alumno")
     unless alumno && usuario_actual.alumnos_de_sus_cursos.exists?(usuario_id: alumno.id)
@@ -61,10 +61,10 @@ class TutoresDeAlumnoController < ApplicationController
     alumno
   end
 
-  # CU-05 flujo A · «un mismo tutor con varios hijos, aun en cursos distintos, opera con
-  # una sola cuenta y sin perfiles separados». Se lo identifica por su correo, único
-  # según la Tabla 21. El correo de una persona con otro rol no es el de un tutor
-  # (RN-04) y sigue siendo un dato repetido.
+  # RF-14 · un mismo tutor con varios hijos, aun en cursos distintos, opera con una
+  # sola cuenta y sin perfiles separados. Se lo identifica por su correo, único según
+  # la Tabla 21. El correo de una persona con otro rol no es el de un tutor (RN-04) y
+  # sigue siendo un dato repetido.
   def tutor_existente(correo, alumno)
     persona = Usuario.find_by(correo: correo)
     return if persona.nil?

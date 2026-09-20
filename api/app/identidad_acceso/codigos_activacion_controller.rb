@@ -11,9 +11,9 @@ class CodigosActivacionController < ApplicationController
   def crear
     persona = Usuario.find(params[:id])
 
-    # RN-07 · la cadena decide sobre quién. CP-RF-07 · «el docente ajeno obtiene 403».
-    # Se verifica antes que el estado de la cuenta, de modo que quien no tiene la
-    # atribución no averigüe nada sobre la persona.
+    # RN-07 · la cadena decide sobre quién; el docente ajeno obtiene 403. Se verifica
+    # antes que el estado de la cuenta, de modo que quien no tiene la atribución no
+    # averigüe nada sobre la persona.
     unless CadenaDeRegeneracion.permite?(quien: usuario_actual, para: persona)
       raise ErrorDeDominio::NoHabilitado.new(
         codigo: "fuera_de_la_cadena_de_regeneracion",

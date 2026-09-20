@@ -14,9 +14,9 @@ RSpec.describe "Borrado lógico de anuncios", type: :request do
     delete "/api/v1/anuncios/#{anuncio_id}", headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-20 · «Borrado lógico de anuncio propio y de anuncio ajeno. Anuncio propio;
-  # luego de otro docente. El propio se elimina con autor y fecha, conservando las
-  # filas de entrega; el ajeno responde 403.»
+  # CP-RF-20 · RF-20 (Tabla 10): «El docente debe poder eliminar un anuncio propio. La
+  # eliminación es lógica, deja registro de autor y fecha, y conserva las filas de
+  # entrega asociadas.» Un anuncio ajeno responde 403 (Tabla 24, fila 403).
   describe "CP-RF-20 · borrado" do
     it "elimina el anuncio propio, con autor y fecha, y conserva las filas de entrega" do
       eliminar(anuncio.id)

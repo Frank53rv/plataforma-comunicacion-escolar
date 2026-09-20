@@ -20,8 +20,10 @@ RSpec.describe "Activación de cuenta", type: :request do
     post "/api/v1/activaciones", params: { codigo: codigo, contrasena: contrasena }, as: :json
   end
 
-  # CP-RF-06 · «Código vigente y contraseña propia; luego el mismo código →
-  # Cuenta activa y código invalidado. El segundo canje responde 410.»
+  # CP-RF-06 · RF-06 (Tabla 10): «La persona debe poder activar su cuenta ingresando el
+  # código válido y definiendo su propia contraseña. El código se invalida al ser
+  # utilizado.» Postcondición de CU-02 (Tabla 13): «La cuenta queda activa con
+  # contraseña propia y el código se invalida.»
   describe "CP-RF-06" do
     it "activa la cuenta con contraseña propia e invalida el código" do
       activar(alta.codigo_en_claro)
@@ -62,8 +64,8 @@ RSpec.describe "Activación de cuenta", type: :request do
     expect(response).to have_http_status(:created)
   end
 
-  # CU-02 E1 · «si el código venció, ya fue utilizado o no existe, la activación se
-  # rechaza». Los tres supuestos responden igual: el rechazo no revela cuál fue.
+  # CU-02 E1 (Tabla 24, fila 410): código vencido, ya utilizado o inexistente. Los
+  # tres supuestos responden igual: el rechazo no revela cuál fue.
   describe "CU-02 E1 · 410" do
     it "rechaza el código vencido" do
       travel_to(Time.current + 7.days + 1.minute) { activar(alta.codigo_en_claro) }

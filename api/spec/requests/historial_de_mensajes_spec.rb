@@ -30,8 +30,8 @@ RSpec.describe "Persistencia e historial de mensajes", type: :request do
     get ruta, headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-28 · «Persistencia y recuperación por fecha y participante. Conversación con
-  # mensajes de varias jornadas. La totalidad de los mensajes se recupera, paginada.»
+  # CP-RF-28 · RF-28 (Tabla 10): «El sistema debe persistir la totalidad de los
+  # mensajes y permitir su recuperación por fecha y por participante.»
   describe "CP-RF-28 · mensajes de varias jornadas" do
     let!(:dias) do
       [ 3.days.ago, 2.days.ago, 1.day.ago ].map do |momento|
@@ -101,7 +101,7 @@ RSpec.describe "Persistencia e historial de mensajes", type: :request do
     end
   end
 
-  # CU-12 pasos (3) a (6) · emitir, persistir, difundir y encolar la notificación.
+  # RF-25, RF-28 · emitir, persistir, difundir y encolar la notificación.
   describe "emisión de un mensaje" do
     it "lo persiste con su autor y su hora de envío, y responde 201 con el recurso" do
       freeze_time do

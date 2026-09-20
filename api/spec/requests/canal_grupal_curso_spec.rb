@@ -27,8 +27,9 @@ RSpec.describe "Canal grupal del curso", type: :request do
     get ruta, headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-25 · «Curso recién creado. Canal disponible, integrado por sus docentes y los
-  # tutores de sus alumnos.»
+  # CP-RF-25 · RF-25 (Tabla 10): «Cada curso debe disponer de un canal grupal en
+  # tiempo real integrado por sus docentes y los tutores de sus alumnos, existente
+  # desde la creación del curso.»
   describe "CP-RF-25 · canal existente desde la creación del curso" do
     it "el alta del curso abre su canal grupal de tutores, activo" do
       anio = create(:anio_lectivo)

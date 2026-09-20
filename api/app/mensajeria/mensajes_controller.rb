@@ -33,7 +33,7 @@ class MensajesController < ApplicationController
     }, status: :ok
   end
 
-  # CU-12 pasos (3) a (6).
+  # RF-25, RF-28 · emitir, persistir, difundir y encolar la notificación.
   def crear
     conversacion = conversacion_del_participante!
     texto = params.permit(:cuerpo)[:cuerpo]
@@ -48,7 +48,7 @@ class MensajesController < ApplicationController
 
   private
 
-  # CU-12 E1 · «si el usuario no está vinculado al curso, la suscripción se rechaza».
+  # RF-29 (Tabla 10) · se impide la participación de un usuario en una conversación de un curso al que no está vinculado.
   def conversacion_del_participante!
     conversacion = Conversacion.de_participante!(params[:id], usuario_actual)
     conversacion.sincronizar_participantes!

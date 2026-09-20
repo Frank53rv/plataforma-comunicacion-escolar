@@ -15,8 +15,8 @@ class VinculacionesDocentesController < ApplicationController
   # RN-13 · «El directivo desvincula y da de baja a los docentes.»
   autoriza :destruir, roles: %w[directivo]
 
-  # CU-04 paso 3 · «el directivo lo vincula a uno o varios cursos, indicando en cada
-  # vinculación si posee la atribución de titular».
+  # RF-15 · el directivo vincula al docente a uno o varios cursos, indicando en cada
+  # vinculación si posee la atribución de titular.
   def crear
     curso = Curso.find(params[:id])
     docente = docente_a_vincular
@@ -45,7 +45,7 @@ class VinculacionesDocentesController < ApplicationController
     render json: vinculacion.recurso, status: :created
   end
 
-  # CU-04 flujo A y E1 · RN-13 · RN-14
+  # RF-44 · RN-13 · RN-14
   def destruir
     curso = Curso.find(params[:id])
     vinculacion = curso.vinculaciones_docentes.vigentes.find_by!(usuario_id: params[:usuario_id])
@@ -75,9 +75,9 @@ class VinculacionesDocentesController < ApplicationController
 
   private
 
-  # CU-04 E1 · «si el docente desvinculado era el titular del curso, la operación exige
-  # designar otro titular en el mismo acto y se rechaza si no se lo designa». La Tabla 35
-  # asigna 409 a CU-04 E1, con la regla consignada.
+  # RF-44 · si el docente desvinculado era el titular del curso, la operación exige
+  # designar otro titular en el mismo acto y se rechaza si no se lo designa, con 409 y
+  # la regla RN-13 consignada (Tabla 24, fila 409).
   def vinculacion_del_reemplazo(curso, desvinculada)
     reemplazo_id = params[:titular_reemplazo_id]
     if reemplazo_id.blank?

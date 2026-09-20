@@ -56,8 +56,8 @@ class Usuario < ApplicationRecord
     AlumnoCurso.vigentes.where(curso_id: cursos_vigentes_como_docente)
   end
 
-  # CU-01 precondición · «la cuenta existe y está activada».
-  # CU-01 E2 · la cuenta dada de baja tiene el acceso revocado.
+  # CU-01 (Tabla 13) precondición: la cuenta existe y está activada.
+  # CU-01 E2 (Tabla 24, fila 401) · la cuenta dada de baja tiene el acceso revocado.
   def puede_autenticarse?
     estado_activo? && contrasena_hash.present?
   end

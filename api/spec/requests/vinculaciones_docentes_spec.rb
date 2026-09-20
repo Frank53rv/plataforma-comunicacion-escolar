@@ -17,8 +17,9 @@ RSpec.describe "Vinculación de docentes a cursos", type: :request do
          headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-15 · «Dos docentes, uno marcado como titular → Ambos vinculados y un solo
-  # titular vigente.»
+  # CP-RF-15 · RF-15 (Tabla 10): «El sistema debe permitir vincular uno o varios
+  # docentes a un mismo curso, distinguiendo mediante un atributo de la vinculación
+  # cuál posee las atribuciones de titular.»
   it "CP-RF-15 · vincula a dos docentes y deja un solo titular vigente" do
     titular = create(:usuario, :docente)
     otro = create(:usuario, :docente)
@@ -33,8 +34,9 @@ RSpec.describe "Vinculación de docentes a cursos", type: :request do
     expect(vigentes.titulares.pluck(:usuario_id)).to eq([ titular.id ])
   end
 
-  # CP-RF-03 · «Datos del docente, curso y atributo de titular → Docente creado,
-  # vinculado como titular y con código de activación generado.»
+  # CP-RF-03 · RF-03 (Tabla 10): «El directivo debe poder registrar docentes y
+  # asignarlos a uno o varios cursos, indicando en la vinculación cuál de ellos es el
+  # titular.»
   it "CP-RF-03 · alta del docente y vinculación como titular, de extremo a extremo" do
     post "/api/v1/docentes",
          params: { nombre: "Docente", apellido: "Titular", correo: "titular@ejemplo.test" },
@@ -73,7 +75,7 @@ RSpec.describe "Vinculación de docentes a cursos", type: :request do
     end
   end
 
-  # El docente se vincula antes de activar su cuenta: CU-04 pasos 1 a 3.
+  # El docente se vincula antes de activar su cuenta (RF-03, RF-05, RF-15).
   it "vincula al docente todavía pendiente de activación" do
     pendiente = create(:usuario, :docente, :pendiente)
 

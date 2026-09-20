@@ -40,8 +40,9 @@ RSpec.describe "Restricción de participación", type: :request do
     expect(cuerpo).to include("status" => 403, "codigo" => "no_participa_de_la_conversacion")
   end
 
-  # CP-RF-29 · «Participación de un usuario no vinculado al curso. Token de un usuario
-  # ajeno a la conversación. Suscripción rechazada con 403.»
+  # CP-RF-29 · RF-29 (Tabla 10): «El sistema debe impedir la participación de
+  # cualquier usuario en una conversación de un curso al que no se encuentre
+  # vinculado.»
   describe "CP-RF-29 · usuario ajeno a la conversación" do
     {
       "docente de otro curso" => :docente_ajeno,
