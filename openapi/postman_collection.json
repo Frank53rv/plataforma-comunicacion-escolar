@@ -1086,6 +1086,61 @@
             },
             "description": "RF-34 · tutor, alumno. Registra entregada_en de la propia fila de cada publicación. Responde registrada y omitida_por_idempotencia; una publicación que no le corresponde, o cuyo estado ya está registrado, cuenta como omitida."
           }
+        },
+        {
+          "name": "Registrar el identificador de destino del navegador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/suscripciones-push",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "suscripciones-push"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"\",\n  \"navegador\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-37 · los cuatro roles. Registra la suscripción vigente de quien la presenta; el mismo token de la misma persona responde la misma suscripción, y uno que tenía otra persona pasa a quien lo presenta. El token no se devuelve."
+          }
+        },
+        {
+          "name": "Invalidar un identificador de destino",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/suscripciones-push/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "suscripciones-push",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{suscripcion_id}}"
+                }
+              ]
+            },
+            "description": "RF-37 · los cuatro roles. Deja la suscripción inválida, con su marca; es idempotente. Una suscripción ajena responde 404."
+          }
         }
       ]
     },

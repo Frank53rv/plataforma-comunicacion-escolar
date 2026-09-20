@@ -63,5 +63,9 @@ Rails.application.routes.draw do
     # CU-10 · Registrar vista y lectura · RF-35, RF-36
     post "entregas/vistas",   to: "entregas#ver"
     post "entregas/lecturas", to: "entregas#leer"
+
+    # CU-14 · Entregar notificación · RF-37
+    post   "suscripciones-push",     to: "suscripciones_push#crear"
+    delete "suscripciones-push/:id", to: "suscripciones_push#destruir"
   end
 end
