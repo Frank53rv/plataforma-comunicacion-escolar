@@ -1623,7 +1623,7 @@ components:
         causa_fallo:
           type: string
           nullable: true
-          enum: [servicio_no_disponible, sin_acuse_del_cliente, navegador_sin_soporte, credencial_invalida]
+          enum: [indisponibilidad_del_servicio_push, ausencia_de_acuse_del_cliente, falta_de_soporte_del_navegador, credencial_invalida]
 
     RegistroEnLote:
       type: object
