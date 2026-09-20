@@ -1088,6 +1088,43 @@
           }
         }
       ]
+    },
+    {
+      "name": "CU-10 · Registrar vista y lectura",
+      "item": [
+        {
+          "name": "Registrar el evento de lectura",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/entregas/lecturas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "entregas",
+                "lecturas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"anuncio_version_id\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-34, RF-36 · tutor, alumno. Registra leida_en de la propia fila; la reemisión no altera la marca original y responde igual que la primera vez. Una publicación sin fila propia responde 404."
+          }
+        }
+      ]
     }
   ]
 }
