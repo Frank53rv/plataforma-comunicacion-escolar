@@ -1,22 +1,31 @@
-# RF-34 Registro de estados de notificación · RF-36 Idempotencia del registro de eventos ·
-# CU-10, CU-14 · RN-32
-# Prueba: CP-RF-34 · CP-RF-36
+# RF-34 Registro de estados de notificación · RF-35 Emisión de eventos de vista en lote ·
+# RF-36 Idempotencia del registro de eventos · CU-10, CU-14 · RN-32
+# Prueba: CP-RF-34 · CP-RF-35 · CP-RF-36
 #
 # Tabla 18 · POST /api/v1/entregas/acuses · tutor, alumno · «Registrar el acuse de
-# recepción emitido por el cliente». POST /api/v1/entregas/lecturas · tutor, alumno ·
-# «Registrar el evento de lectura».
-# Tabla 29 · acuses: anuncio_version_ids como lista → cantidad registrada y omitida por
-# idempotencia. lecturas: anuncio_version_id → entrega_anuncio con leida_en.
+# recepción emitido por el cliente». POST /api/v1/entregas/vistas · tutor, alumno ·
+# «Registrar en lote los eventos de vista». POST /api/v1/entregas/lecturas · tutor,
+# alumno · «Registrar el evento de lectura».
+# Tabla 29 · acuses y vistas: anuncio_version_ids como lista → cantidad registrada y
+# omitida por idempotencia. lecturas: anuncio_version_id → entrega_anuncio con leida_en.
 # openapi/openapi.yaml · esquemas RegistroEnLote y EntregaAnuncio.
 # Figura 9 · el disparador de la transición a entregada es el acuse emitido por el
 # cliente del destinatario, y no la respuesta del servicio push.
 class EntregasController < ApplicationController
   autoriza :acusar, roles: %w[tutor alumno]
+  autoriza :ver, roles: %w[tutor alumno]
   autoriza :leer, roles: %w[tutor alumno]
 
   # CU-14 (Tabla 13) · la entrega queda registrada como entregada por acuse del cliente.
   def acusar
     render json: registrar_en_lote("entregada"), status: :ok
+  end
+
+  # RF-35 · el cliente acumula los identificadores de los anuncios que ingresan al área
+  # visible y los emite agrupados en una sola petición. CU-10 (Tabla 13) · el estado
+  # vista queda registrado con marca de tiempo, de forma monótona e idempotente.
+  def ver
+    render json: registrar_en_lote("vista"), status: :ok
   end
 
   # RF-36 · la reemisión de la lectura no altera la marca original y responde igual que

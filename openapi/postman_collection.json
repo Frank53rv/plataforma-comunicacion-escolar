@@ -1093,6 +1093,38 @@
       "name": "CU-10 · Registrar vista y lectura",
       "item": [
         {
+          "name": "Registrar en lote los eventos de vista",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/entregas/vistas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "entregas",
+                "vistas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"anuncio_version_ids\": [\n    \"\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-34, RF-35, RF-36 · tutor, alumno. Recibe los identificadores acumulados por el cliente en una sola petición y registra vista_en en la propia fila de cada publicación. Responde registrada y omitida_por_idempotencia."
+          }
+        },
+        {
           "name": "Registrar el evento de lectura",
           "request": {
             "method": "POST",

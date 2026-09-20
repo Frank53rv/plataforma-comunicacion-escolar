@@ -60,7 +60,8 @@ Rails.application.routes.draw do
     # CU-14 · Entregar notificación · RF-34
     post "entregas/acuses", to: "entregas#acusar"
 
-    # CU-10 · Registrar vista y lectura · RF-36
+    # CU-10 · Registrar vista y lectura · RF-35, RF-36
+    post "entregas/vistas",   to: "entregas#ver"
     post "entregas/lecturas", to: "entregas#leer"
   end
 end
