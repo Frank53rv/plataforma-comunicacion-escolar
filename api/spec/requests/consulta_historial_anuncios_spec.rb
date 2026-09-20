@@ -24,9 +24,9 @@ RSpec.describe "Consulta del historial de anuncios", type: :request do
     get "/api/v1/anuncios/#{id}", headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-22 · «Historial filtrado por fecha, curso y remitente. Consulta con los tres
-  # filtros combinados. Sólo los anuncios que corresponden a las vinculaciones del
-  # usuario; el ajeno responde 404.»
+  # CP-RF-22 · RF-22 (Tabla 10): «Todo usuario debe poder recuperar los anuncios que
+  # le corresponden, filtrando por fecha, curso y remitente.» El ajeno a sus
+  # vinculaciones responde 404 (Tabla 24, fila 404, CU-09 E1).
   describe "CP-RF-22 · historial filtrado y ajeno" do
     it "filtra por curso, remitente y rango de fechas combinados" do
       otro_docente = create(:usuario, :docente)

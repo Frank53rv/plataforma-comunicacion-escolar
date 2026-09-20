@@ -6,7 +6,7 @@
 # suscripción y, en adelante, mensajes difundidos. Figura 8 · pasos «validar token y
 # vinculación con el curso» → «suscripción autorizada» → «canal establecido».
 class ConversacionChannel < ApplicationCable::Channel
-  # CU-12 E1 · «si el usuario no está vinculado al curso, la suscripción se rechaza».
+  # RF-29 (Tabla 10) · se impide la participación de un usuario en una conversación de un curso al que no está vinculado.
   def subscribed
     conversacion = Conversacion.find_by(id: params[:conversacion_id])
     return reject unless conversacion&.participa?(usuario_actual)

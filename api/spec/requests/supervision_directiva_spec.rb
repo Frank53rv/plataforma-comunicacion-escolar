@@ -26,9 +26,9 @@ RSpec.describe "Supervisión directiva del estado de la comunicación", type: :r
     get ruta, headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-45 · «Consulta directiva del estado agregado. Sesión de directivo sobre el
-  # año lectivo vigente. Anuncios de la totalidad de los cursos y estado agregado de
-  # entrega y lectura por curso.»
+  # CP-RF-45 · RF-45 (Tabla 10): «El directivo debe poder consultar los anuncios de la
+  # totalidad de los cursos del año lectivo vigente y el estado agregado de entrega y
+  # lectura por curso.»
   describe "CP-RF-45 · estado agregado por curso" do
     it "agrega, por curso, la cantidad de anuncios y el estado de entrega y lectura" do
       alumno_a = create(:usuario, :alumno)

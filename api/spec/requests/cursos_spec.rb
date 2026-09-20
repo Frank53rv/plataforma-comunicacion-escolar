@@ -28,10 +28,11 @@ RSpec.describe "Administración de cursos", type: :request do
     get ruta, headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-12 · «Creación y edición de curso, con nombre repetido en el mismo año. Dos
-  # cursos de igual nombre en el año lectivo vigente. El segundo se rechaza con 409.»
+  # CP-RF-12 · RF-12 (Tabla 10): «El directivo debe poder crear y editar cursos dentro
+  # del año lectivo vigente.» Un nombre repetido en el mismo año se rechaza con 409
+  # (RN-26, Tabla 24 fila 409).
   describe "CP-RF-12 · creación y edición" do
-    it "crea el curso dentro del año lectivo, conforme a CU-03 paso 2" do
+    it "crea el curso dentro del año lectivo, conforme a RF-12" do
       crear_curso(nombre: "1º A", turno: "mañana")
 
       expect(response).to have_http_status(:created)
@@ -60,7 +61,7 @@ RSpec.describe "Administración de cursos", type: :request do
       expect(response).to have_http_status(:created)
     end
 
-    it "edita nombre y turno mientras el año lectivo permanece vigente, conforme a CU-03 paso 3" do
+    it "edita nombre y turno mientras el año lectivo permanece vigente, conforme a RF-12" do
       curso = create(:curso, anio_lectivo: anio_lectivo, nombre: "1º A", turno: "mañana")
 
       editar_curso(curso, nombre: "1º B", turno: "tarde")

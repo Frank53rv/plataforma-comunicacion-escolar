@@ -9,7 +9,7 @@ class SesionesController < ApplicationController
   autoriza :crear,    roles: Autorizacion::SIN_AUTENTICAR
   autoriza :destruir, roles: %w[directivo docente tutor alumno]
 
-  # Flujo principal de CU-01, pasos 1 a 3.
+  # RF-01 · CU-01.
   def crear
     usuario = Usuario.find_by(correo: parametros[:correo])
 

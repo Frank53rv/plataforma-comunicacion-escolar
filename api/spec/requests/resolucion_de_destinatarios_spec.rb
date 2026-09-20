@@ -1,10 +1,10 @@
 # RF-21 Resolución de destinatarios · CU-06, CU-07 · RN-19
 # Prueba: CP-RF-21
 #
-# CU-07 flujo alternativo A · mientras RF-19 (Should have) no se construya, «editar» un
-# anuncio es esta misma secuencia: DELETE (CU-08 · RF-20) y POST nuevo (CU-06 · RF-17).
-# No hay ruta PATCH que probar acá: lo que RF-21 exige —resolver en cada publicación
-# efectiva, inicial o de reemplazo— ya lo cubren esas dos operaciones.
+# RF-19 es Should have (Tabla 10): mientras no se construya, «editar» un anuncio es
+# esta misma secuencia: DELETE (RF-20) y POST nuevo (RF-17). No hay ruta PATCH que
+# probar acá: lo que RF-21 exige —resolver en cada publicación efectiva, inicial o de
+# reemplazo— ya lo cubren esas dos operaciones.
 require "rails_helper"
 
 RSpec.describe "Resolución de destinatarios", type: :request do
@@ -21,9 +21,10 @@ RSpec.describe "Resolución de destinatarios", type: :request do
          headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-21 · «Resolución de destinatarios en la publicación efectiva. Alumno
-  # incorporado al curso con posterioridad a la publicación. El alumno incorporado
-  # después no recibe la publicación anterior.»
+  # CP-RF-21 · RF-21 (Tabla 10): «El sistema debe resolver el conjunto de
+  # destinatarios en cada publicación efectiva… y no en el momento de la redacción.
+  # Las personas incorporadas al curso con posterioridad no reciben publicaciones
+  # anteriores.»
   describe "CP-RF-21 · resolución inicial, no en la redacción" do
     it "no incluye al alumno vinculado después de la publicación" do
       alumno_previo = create(:usuario, :alumno)
@@ -41,9 +42,9 @@ RSpec.describe "Resolución de destinatarios", type: :request do
     end
   end
 
-  # CU-07 flujo alternativo A · «de reemplazo»: eliminar y publicar de nuevo resuelve
-  # los destinatarios otra vez, sobre las vinculaciones vigentes en ese momento.
-  describe "resolución de reemplazo (CU-07 A) · eliminar y publicar de nuevo" do
+  # RF-21 · «de reemplazo»: eliminar y publicar de nuevo resuelve los destinatarios
+  # otra vez, sobre las vinculaciones vigentes en ese momento.
+  describe "resolución de reemplazo · eliminar y publicar de nuevo" do
     it "resuelve de nuevo, con el alumno incorporado entre ambas publicaciones" do
       alumno_original = create(:usuario, :alumno)
       create(:alumno_curso, alumno: alumno_original, curso: curso)

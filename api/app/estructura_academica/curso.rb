@@ -26,9 +26,10 @@ class Curso < ApplicationRecord
   validates :nombre, length: { maximum: 60 }
   validates :turno, length: { maximum: 20 }
 
-  # CU-03 E2 · «se rechaza el nombre de curso repetido dentro del mismo año lectivo».
-  # Tabla 27 atribuye el índice único (anio_lectivo_id, nombre) a RN-26: se verifica acá
-  # para rechazar con 409 y la regla consignada, antes de la violación del índice.
+  # CU-03 E2 (Tabla 24, fila 409): se rechaza el nombre de curso repetido dentro del
+  # mismo año lectivo. Tabla 27 atribuye el índice único (anio_lectivo_id, nombre) a
+  # RN-26: se verifica acá para rechazar con 409 y la regla consignada, antes de la
+  # violación del índice.
   def self.verificar_nombre_disponible!(anio_lectivo_id:, nombre:, excepto_id: nil)
     en_conflicto = where(anio_lectivo_id: anio_lectivo_id, nombre: nombre)
     en_conflicto = en_conflicto.where.not(id: excepto_id) if excepto_id

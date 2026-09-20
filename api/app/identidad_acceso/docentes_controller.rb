@@ -12,9 +12,9 @@ class DocentesController < ApplicationController
   # RN-13 · «El directivo desvincula y da de baja a los docentes.»
   autoriza :destruir, roles: %w[directivo]
 
-  # CU-04 pasos 1 y 2 · «el directivo registra al docente, que en ningún caso se
+  # RF-03, RF-05 · el directivo registra al docente, que en ningún caso se
   # autorregistra; el sistema genera su código de activación de un solo uso, con
-  # vencimiento de siete días». La vinculación con los cursos (paso 3) es
+  # vencimiento de siete días. La vinculación con los cursos (RF-15) es
   # POST /cursos/{id}/docentes.
   def crear
     alta = RegistroDePersona.registrar(**parametros, rol: "docente", registrado_por: usuario_actual)

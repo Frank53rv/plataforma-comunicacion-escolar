@@ -1,4 +1,4 @@
-# RF-09 Baja lógica de alumnos y tutores · RF-10 · CU-05 flujo B y E3 · RN-10, RN-11,
+# RF-09 Baja lógica de alumnos y tutores · RF-10 · CU-05 · RN-10, RN-11,
 # RN-12
 # Prueba: CP-RF-09 · CP-RF-10
 #

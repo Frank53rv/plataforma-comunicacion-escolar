@@ -37,8 +37,9 @@ RSpec.describe ConversacionChannel, type: :channel do
     end
   end
 
-  # CP-RF-29 · «Token de un usuario ajeno a la conversación. Suscripción rechazada.»
-  # CU-12 E1 · «si el usuario no está vinculado al curso, la suscripción se rechaza».
+  # CP-RF-29 · RF-29 (Tabla 10): «El sistema debe impedir la participación de
+  # cualquier usuario en una conversación de un curso al que no se encuentre
+  # vinculado.»
   describe "CP-RF-29 · suscripción de un usuario ajeno" do
     let(:otro_curso) { create(:curso) }
 

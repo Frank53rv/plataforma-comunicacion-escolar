@@ -31,7 +31,7 @@ RSpec.describe "Sesiones", type: :request do
       expect(cuerpo["usuario"]).not_to have_key("contrasena_hash")
       expect(response.body).not_to include("clave-correcta-123")
 
-      # el token transporta la identidad y el rol (paso 3 del flujo principal)
+      # RF-01 · el token transporta la identidad y el rol
       carga = TokenDeSesion.verificar(cuerpo["token"])
       expect(carga["sub"]).to eq(usuario.id)
       expect(carga["rol"]).to eq("docente")
@@ -55,7 +55,7 @@ RSpec.describe "Sesiones", type: :request do
       expect(cuerpo["detail"]).not_to match(/correo|contrase|usuario|exist/i)
     end
 
-    # CU-01 E2 · «si la cuenta fue dada de baja, el acceso se rechaza y el historial se conserva»
+    # CU-01 E2 (Tabla 24, fila 401) · RN-11: la baja revoca el acceso y conserva el historial
     it "rechaza a la cuenta dada de baja y conserva su historial" do
       baja = create(:usuario, :tutor, :dado_de_baja,
                     correo: "baja@ejemplo.test", contrasena: "clave-correcta-123")
@@ -69,7 +69,7 @@ RSpec.describe "Sesiones", type: :request do
       expect(Usuario.find(baja.id).estado).to eq("dado_de_baja")
     end
 
-    # CU-01 flujo alternativo A · el token se emite; el bloqueo lo impone RF-43
+    # RF-43 · el token se emite; el bloqueo de las demás operaciones lo impone RF-43
     it "emite el token a quien tiene credencial provisional y lo declara en la respuesta" do
       create(:usuario, :directivo, :con_credencial_provisional,
              correo: "directivo@ejemplo.test", contrasena: "provisional-123")

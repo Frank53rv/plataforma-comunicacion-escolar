@@ -1,17 +1,11 @@
 # -*- coding: utf-8 -*-
 """Extrae el contenido normativo del documento de grado a artefactos legibles por máquina.
 
-Dos niveles de fuente:
-
-  · La **edición vigente** —el documento de 75 páginas— gobierna la totalidad de las
-    tablas, con su numeración propia. Es la fuente absoluta.
-  · La **v5.2** queda como anexo normativo de tres artefactos que la edición vigente
-    condensó y ya no contiene: la narrativa de los quince casos de uso (punto 2.3), los
-    sesenta y nueve casos de prueba individuales y el complemento de la semántica
-    temporal —la franja que cruza la medianoche y la resolución del canal de entrega—.
-
-Cada archivo generado declara en su encabezado de cuál de las dos proviene, de modo que
-ninguna lectura del paquete pueda confundir un nivel con el otro.
+Fuente única: la edición vigente de 75 páginas (`TFG_ENTREGA_75paginas.docx`), con su
+numeración propia. No hay ningún otro documento normativo: el paquete generado no
+enuncia narrativa de casos de uso ni un catálogo individual de casos de prueba, porque
+la edición vigente sólo trae el resumen por caso de uso (Tabla 13) y el resumen por
+grupo de pruebas (Tabla 32).
 """
 import os, re, json
 from docx import Document
@@ -20,13 +14,8 @@ from docx.text.paragraph import Paragraph
 
 OUT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# La elección del archivo no se deja al orden alfabético: «TFG_ENTREGA_75paginas.docx»
-# ordena antes que «TFG_entrega_5_Etapa4_v52.docx» porque las mayúsculas preceden a las
-# minúsculas, de modo que tomar el último de la lista devolvería la edición vieja.
 DOC_VIGENTE = os.environ.get('TFG_DOCX',
                              os.path.join(OUT, 'documento', 'TFG_ENTREGA_75paginas.docx'))
-DOC_ANEXO = os.environ.get('TFG_DOCX_ANEXO',
-                           os.path.join(OUT, 'documento', 'TFG_entrega_5_Etapa4_v52.docx'))
 
 
 def leer_docx(ruta):
@@ -73,11 +62,8 @@ def leer_docx(ruta):
 
 
 TAB, PARAS = leer_docx(DOC_VIGENTE)
-TAB_A, PARAS_A = leer_docx(DOC_ANEXO)
 BASE = os.path.basename(DOC_VIGENTE)
-BASE_A = os.path.basename(DOC_ANEXO)
 print('edición vigente:', BASE, '->', len(TAB), 'tablas,', len(PARAS), 'párrafos')
-print('anexo v5.2     :', BASE_A, '->', len(TAB_A), 'tablas,', len(PARAS_A), 'párrafos')
 
 
 def md_table(rows):
@@ -102,13 +88,6 @@ def w(path, text):
 HEAD = (f"<!-- GENERADO desde {BASE}, edición vigente. NO EDITAR A MANO.\n"
         "     La fuente de verdad es el documento de grado. Si este archivo y el\n"
         "     documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->\n")
-
-HEAD_ANEXO = (f"<!-- GENERADO desde {BASE_A}, ANEXO NORMATIVO. NO EDITAR A MANO.\n"
-              f"     La edición vigente ({BASE}) condensó este artefacto y ya no lo\n"
-              "     contiene. Se conserva de la v5.2 por decisión D-21: es la única\n"
-              "     fuente escrita de este contenido. Toda TABLA, en cambio, se lee de\n"
-              "     la edición vigente y con su numeración. -->\n")
-
 
 def dump_tabla(num, fname, extra=''):
     if num not in TAB:
@@ -173,31 +152,10 @@ def bloque_desde(paras, titulo, hasta):
     return out
 
 
-# ---- ANEXO · narrativa de los quince casos de uso (punto 2.3 de la v5.2) ----
-# Los pasos numerados del flujo principal son la especificación de la operación: sin este
-# artefacto los requisitos que restan quedan sin enunciado paso a paso (CLAUDE.md §3.2).
-cu = [p for p in PARAS_A if re.match(r'^CU-\d\d\. ', p)]
-assert len(cu) == 15, f'se esperaban 15 casos de uso narrados en el anexo, hay {len(cu)}'
-w('specs/14-casos-uso-narrativa.md',
-  HEAD_ANEXO + "\n# Especificación narrativa de los quince casos de uso (punto 2.3)\n\n"
-  "Cada caso declara actor, precondición, flujo principal numerado, flujos alternativos,\n"
-  "flujos de excepción, postcondición y reglas aplicadas. **Los pasos del flujo principal\n"
-  "son la especificación de la operación: no se agregan ni se omiten pasos.**\n\n"
-  "> Procedencia. La edición vigente conserva únicamente el resumen de los casos de uso\n"
-  "> (Tabla 13). Esta narrativa se toma de la v5.2, que es donde está escrita.\n\n"
-  + '\n\n'.join('## ' + c.split('.')[0] + '\n\n' + c for c in cu))
-written.append('specs/14-casos-uso-narrativa.md')
-
 # ---- semántica temporal · edición vigente, completada con el anexo ----
 temporal = bloque_desde(PARAS, 'Semántica temporal del motor de notificaciones',
                         'Formas de petición y respuesta')
-temporal_a = bloque_desde(PARAS_A, 'Semántica temporal del motor de notificaciones',
-                          'Formas de petición y respuesta')
-canal_a = [p for p in PARAS_A
-           if p.startswith('Una precisión sobre la creación de la fila de entrega')]
 assert temporal, 'la edición vigente no trae la subsección de semántica temporal'
-assert temporal_a, 'el anexo no trae la subsección de semántica temporal'
-assert canal_a, 'el anexo no trae el párrafo de resolución del canal de entrega'
 
 w('specs/25-semantica-temporal.md',
   HEAD + """
@@ -219,36 +177,19 @@ exactamente el tipo de decisión que una asistencia inventaría si no las encont
 
 ## Texto de la edición vigente
 
-""" + '\n\n'.join(temporal) + f"""
-
-## Complemento del anexo v5.2 · D-21
-
-> La edición vigente condensó esta subsección y dejó fuera la franja que cruza la
-> medianoche, el diferimiento y la resolución del canal de entrega. El texto que sigue es
-> el de `{BASE_A}`, única fuente escrita de esas reglas. La compuerta `tiempo` las verifica.
-
-""" + '\n\n'.join(temporal_a) + """
-
-### Resolución del canal de entrega
-
-""" + '\n\n'.join(canal_a) + "\n")
+""" + '\n\n'.join(temporal) + "\n")
 written.append('specs/25-semantica-temporal.md')
 
-# ---- ANEXO · los sesenta y nueve casos de prueba (Tabla 43 de la v5.2) ----
-# La edición vigente resume la matriz en cinco filas por grupo (Tabla 32) y no enuncia un
-# solo CP-RF-nn individual. El punto 3.4 de CLAUDE.md exige el caso como enunciado de la
-# prueba, y la compuerta `trazabilidad` lo contrasta requisito por requisito.
+# ---- los casos de prueba, resumidos por grupo (Tabla 32) ----
+# La edición vigente no enuncia un CP-RF-nn por requisito: resume la matriz en cinco
+# filas por grupo, con el criterio de aprobación de la Tabla 32. El enunciado de cada
+# prueba se arma con el requisito (Tabla 10) y la postcondición del caso de uso que lo
+# realiza (Tabla 13), como fija CLAUDE.md §3.4.
 tit_v, rows_v, nota_v = TAB[32]
-tit_a, rows_a, nota_a = TAB_A[43]
 w('specs/30-casos-prueba.md',
-  HEAD_ANEXO + f"\n# Matriz de casos de prueba\n\n"
-  f"## Resumen por grupo · Tabla 32 de la edición vigente\n\n" + md_table(rows_v) + '\n'
-  + (f'\n> {nota_v}\n' if nota_v else '')
-  + f"\n## Los sesenta y nueve casos · Tabla 43 del anexo {BASE_A}\n\n"
-  "> La edición vigente no enuncia los casos uno por uno. Se conservan de la v5.2 porque\n"
-  "> son el enunciado con el que se escribe cada prueba (CLAUDE.md §3.4) y la fuente que\n"
-  "> la compuerta `trazabilidad` contrasta.\n\n" + md_table(rows_a) + '\n'
-  + (f'\n> {nota_a}\n' if nota_a else ''))
+  HEAD + f"\n# Matriz de casos de prueba\n\n"
+  f"## Resumen por grupo · Tabla 32\n\n" + md_table(rows_v) + '\n'
+  + (f'\n> {nota_v}\n' if nota_v else ''))
 written.append('specs/30-casos-prueba.md')
 
 print('markdown:', len(written), 'archivos')
@@ -340,12 +281,3 @@ for r in rows[1:]:
 print('entidades:', len(ent))
 wj('specs/22-esquema-fisico.json',
    {'fuente': f'Tabla 27 · {BASE}', 'total': len(ent), 'entidades': ent})
-
-# --- ANEXO · casos de prueba · Tabla 43 de la v5.2 ---
-tit, rows, _ = TAB_A[43]
-cp = [{'codigo': r[0].strip(), 'requisito': r[1].strip(), 'descripcion': r[2],
-       'entrada': r[3], 'esperado': r[4]}
-      for r in rows[1:] if re.match(r'^CP-', r[0].strip())]
-print('CP (anexo):', len(cp))
-wj('specs/30-casos-prueba.json',
-   {'fuente': f'Tabla 43 · ANEXO {BASE_A} · D-21', 'total': len(cp), 'casos': cp})

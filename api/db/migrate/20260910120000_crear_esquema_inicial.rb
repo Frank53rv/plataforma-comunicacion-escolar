@@ -18,7 +18,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     create_enum :estado_conversacion_enum, %w[activa solo_lectura]
     create_enum :canal_enum,               %w[push aplicacion]
     # RF-37 · «indisponibilidad del servicio push, ausencia de acuse del cliente o falta de
-    # soporte del navegador» · CU-14 E1 · «credencial inválida». Cerrado en esos cuatro.
+    # soporte del navegador» · CU-14 · «credencial inválida». Cerrado en esos cuatro.
     create_enum :causa_enum,               %w[indisponibilidad_del_servicio_push
                                               ausencia_de_acuse_del_cliente
                                               falta_de_soporte_del_navegador

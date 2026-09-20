@@ -22,8 +22,10 @@ RSpec.describe "Alta de alumnos y tutores", type: :request do
          headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-04 · «Datos del alumno, su curso y dos tutores → Alumno y tutores creados y
-  # vinculados, con un código por persona.»
+  # CP-RF-04 · RF-04 (Tabla 10): «El docente debe poder registrar alumnos de sus
+  # cursos y hasta dos tutores por alumno.» Postcondición de CU-05 (Tabla 13):
+  # «Alumnos y tutores quedan registrados, vinculados o dados de baja, con su código
+  # generado.»
   it "CP-RF-04 · alta de un alumno con dos tutores, vinculados y con un código por persona" do
     alta_de_alumno
     expect(response).to have_http_status(:created)
@@ -46,8 +48,9 @@ RSpec.describe "Alta de alumnos y tutores", type: :request do
       "tutor.uno@ejemplo.test", "tutor.dos@ejemplo.test" ]).select(:id)).count).to eq(3)
   end
 
-  # CP-RF-05 · «Alta de un tutor → Código de un solo uso, con vencimiento a siete días,
-  # asociado a esa persona», ahora sobre la operación.
+  # CP-RF-05 · RF-05 (Tabla 10): «Al registrar a una persona, el sistema debe generar
+  # un código de activación de un solo uso, con vencimiento de siete días, asociado a
+  # ella», ahora sobre la operación de alta de tutor.
   it "CP-RF-05 · el alta del tutor genera su código de un solo uso a siete días" do
     alta_de_alumno
     alumno_id = cuerpo["usuario"]["id"]

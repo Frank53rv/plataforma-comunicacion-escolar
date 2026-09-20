@@ -1,4 +1,4 @@
-# RF-43 Cambio obligatorio de credencial provisional · CU-02 flujo alternativo A ·
+# RF-43 Cambio obligatorio de credencial provisional · CU-02 ·
 # RN-08, RN-09
 # Prueba: CP-RF-43
 #
@@ -15,10 +15,11 @@ RSpec.describe "Cambio de la credencial provisional", type: :request do
            correo: "directivo@ejemplo.test", contrasena: "provisional-de-reposicion")
   end
 
-  # CP-RF-43 · «Primer acceso con credencial provisional → Token emitido; toda otra
-  # operación responde 403 hasta completar el cambio.»
+  # CP-RF-43 · RF-43 (Tabla 10): «El sistema debe exigir el cambio de la contraseña
+  # provisional en el primer acceso y no debe habilitar ninguna otra operación hasta
+  # que el cambio se complete.»
   describe "bloqueo hasta que el cambio se complete" do
-    it "emite el token en el primer acceso, conforme a CU-01 flujo alternativo A" do
+    it "emite el token en el primer acceso, conforme a RF-43" do
       post "/api/v1/sesiones",
            params: { correo: "directivo@ejemplo.test", contrasena: "provisional-de-reposicion" },
            as: :json

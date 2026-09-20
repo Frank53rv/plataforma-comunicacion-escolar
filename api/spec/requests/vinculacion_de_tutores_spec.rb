@@ -51,9 +51,9 @@ RSpec.describe "Vinculación de tutores a alumnos", type: :request do
     end
   end
 
-  # CU-05 flujo A · «un mismo tutor con varios hijos, aun en cursos distintos, opera
-  # con una sola cuenta y sin perfiles separados». RF-14 · «bajo una única cuenta».
-  describe "el tutor que ya existe · CU-05 flujo A" do
+  # RF-14 · un mismo tutor con varios hijos, aun en cursos distintos, opera con una
+  # sola cuenta y sin perfiles separados: «bajo una única cuenta».
+  describe "el tutor que ya existe" do
     it "se vincula a un segundo hijo de otro curso con la misma cuenta y sin código nuevo" do
       vincular_tutor("familia@ejemplo.test")
       tutor_id = cuerpo["usuario"]["id"]

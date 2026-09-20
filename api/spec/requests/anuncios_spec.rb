@@ -17,11 +17,11 @@ RSpec.describe "Publicación de anuncios", type: :request do
          headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-17 · «Publicación sobre un curso asignado y sobre uno ajeno. Anuncio sobre
-  # curso propio; luego sobre curso ajeno. El primero se publica; el segundo se rechaza
-  # con 403 y sin efectos parciales.»
+  # CP-RF-17 · RF-17 (Tabla 10): «El docente debe poder redactar y publicar anuncios
+  # dirigidos a los tutores y alumnos de los cursos que tiene asignados.» Sobre un
+  # curso ajeno se rechaza con 403 y sin efectos parciales (RN-16, Tabla 24 fila 403).
   describe "CP-RF-17 · publicación" do
-    it "publica el anuncio sobre un curso propio, conforme al flujo principal de CU-06" do
+    it "publica el anuncio sobre un curso propio, conforme a RF-17" do
       alumno = create(:usuario, :alumno)
       create(:alumno_curso, alumno: alumno, curso: curso_propio)
       tutor = create(:usuario, :tutor)

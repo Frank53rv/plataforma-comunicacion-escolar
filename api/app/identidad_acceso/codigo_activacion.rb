@@ -81,7 +81,7 @@ class CodigoActivacion < ApplicationRecord
     BCrypt::Password.new(codigo_hash) == secreto
   end
 
-  # CU-02 paso 3 · el código existe, no fue utilizado y no venció.
+  # RF-06 · el código existe, no fue utilizado y no venció.
   def vigente?
     usado_en.nil? && vence_en > Time.current
   end

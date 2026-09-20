@@ -16,9 +16,10 @@ RSpec.describe "Alta de docentes", type: :request do
     post "/api/v1/docentes", params: parametros, headers: cabecera_de(por), as: :json
   end
 
-  # CP-RF-03 · «Docente creado, vinculado como titular y con código de activación
-  # generado». La vinculación es POST /cursos/{id}/docentes, que la Tabla 27 asigna a
-  # RF-15; la aserción de titularidad se completa en esa rama.
+  # CP-RF-03 · RF-03 (Tabla 10): «El directivo debe poder registrar docentes y
+  # asignarlos a uno o varios cursos, indicando en la vinculación cuál de ellos es el
+  # titular.» La vinculación es POST /cursos/{id}/docentes (RF-15); la aserción de
+  # titularidad se completa en esa rama.
   describe "CP-RF-03 · alta y código" do
     it "crea al docente, en estado pendiente, y responde el recurso usuario" do
       dar_de_alta
@@ -41,7 +42,7 @@ RSpec.describe "Alta de docentes", type: :request do
       end
     end
 
-    it "el código devuelto activa la cuenta del docente (CU-04 paso 2 → CU-02)" do
+    it "el código devuelto activa la cuenta del docente (RF-05 → RF-06)" do
       dar_de_alta
       codigo = cuerpo["codigo_activacion"]["codigo"]
 

@@ -1,4 +1,4 @@
-# RF-44 Desvinculación y baja de docente · CU-04 flujo A y E1 · RN-11, RN-13, RN-14
+# RF-44 Desvinculación y baja de docente · CU-04 · RN-11, RN-13, RN-14
 # Prueba: CP-RF-44
 #
 # Tabla 43 · «Desvinculación de docente titular sin designar reemplazo · Docente titular
