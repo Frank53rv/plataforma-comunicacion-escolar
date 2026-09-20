@@ -52,5 +52,9 @@ Rails.application.routes.draw do
     get  "conversaciones",             to: "conversaciones#index"
     get  "conversaciones/:id/mensajes", to: "mensajes#index"
     post "conversaciones/:id/mensajes", to: "mensajes#crear"
+
+    # CU-13 · Configurar preferencias · RF-33
+    get "usuarios/me/preferencias", to: "preferencias#mostrar"
+    put "usuarios/me/preferencias", to: "preferencias#actualizar"
   end
 end

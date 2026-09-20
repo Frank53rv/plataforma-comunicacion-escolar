@@ -994,6 +994,63 @@
           }
         }
       ]
+    },
+    {
+      "name": "CU-13 · Configurar preferencias",
+      "item": [
+        {
+          "name": "Consultar el horario de disponibilidad y las preferencias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/usuarios/me/preferencias",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "usuarios",
+                "me",
+                "preferencias"
+              ]
+            },
+            "description": "RF-33 · los cuatro roles. Sin fila configurada, disponible las 24 horas y recibir_mensajes verdadero."
+          }
+        },
+        {
+          "name": "Configurar el horario de disponibilidad y las preferencias",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/usuarios/me/preferencias",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "usuarios",
+                "me",
+                "preferencias"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hora_inicio\": \"22:00\",\n  \"hora_fin\": \"07:00\",\n  \"recibir_mensajes\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "RF-33 · los cuatro roles. Los anuncios institucionales no están alcanzados por esta configuración (RN-18)."
+          }
+        }
+      ]
     }
   ]
 }
