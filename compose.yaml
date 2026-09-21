@@ -61,7 +61,14 @@ services:
       - "3000:3000"
 
   cliente:
-    build: ./cliente
+    build:
+      context: ./cliente
+      args:
+        VITE_FCM_API_KEY: ${VITE_FCM_API_KEY:-}
+        VITE_FCM_PROJECT_ID: ${VITE_FCM_PROJECT_ID:-}
+        VITE_FCM_SENDER_ID: ${VITE_FCM_SENDER_ID:-}
+        VITE_FCM_APP_ID: ${VITE_FCM_APP_ID:-}
+        VITE_VAPID_PUBLIC_KEY: ${VITE_VAPID_PUBLIC_KEY:-}
     depends_on:
       api:
         condition: service_started

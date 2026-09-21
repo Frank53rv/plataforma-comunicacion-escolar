@@ -28,7 +28,9 @@ def archivos(exts, *subdirs):
     for sd in subdirs:
         base = os.path.join(RAIZ, sd)
         for dp, dns, fns in os.walk(base):
-            dns[:] = [d for d in dns if d not in ('node_modules', 'tmp', '.git', 'coverage')]
+            # `dist` es el resultado de la construcción, no código fuente: recorrerlo hace
+            # que las compuertas inspeccionen un paquete minificado.
+            dns[:] = [d for d in dns if d not in ('node_modules', 'tmp', '.git', 'coverage', 'dist')]
             for fn in fns:
                 if fn.endswith(exts):
                     yield os.path.join(dp, fn)

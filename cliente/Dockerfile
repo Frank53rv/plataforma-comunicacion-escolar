@@ -5,6 +5,12 @@ WORKDIR /cliente
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+# Tabla 30 · valores de construcción del cliente: es estático, no lee el entorno al ejecutarse.
+ARG VITE_FCM_API_KEY
+ARG VITE_FCM_PROJECT_ID
+ARG VITE_FCM_SENDER_ID
+ARG VITE_FCM_APP_ID
+ARG VITE_VAPID_PUBLIC_KEY
 RUN npm run build
 
 FROM nginx:1.27-alpine

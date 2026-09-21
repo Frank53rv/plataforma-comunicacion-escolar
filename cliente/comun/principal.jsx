@@ -5,9 +5,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./estilos.css";
 import Aplicacion from "./Aplicacion.jsx";
+import { registrarServiceWorker } from "./registroServiceWorker.js";
 
 createRoot(document.getElementById("raiz")).render(
   <StrictMode>
     <Aplicacion />
   </StrictMode>,
 );
+
+registrarServiceWorker();

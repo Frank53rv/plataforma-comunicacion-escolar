@@ -36,7 +36,13 @@ if 'Exclude' in cfg or 'rubocop:disable' in ''.join(leer_texto(p) for p in archi
     R.falla('hay excepciones de RuboCop (Exclude o rubocop:disable): el Quality Spec no las admite')
 
 # --- cliente ---
-eslint = os.path.join(RAIZ, 'cliente', 'tmp', 'eslint.json')
+# El trato es el mismo que el del servidor: con el proyecto presente, la falta del informe
+# es una falla y no un aviso. Un aviso deja la compuerta en verde, de modo que borrar el
+# archivo hacía desaparecer la verificación del cliente en silencio.
+CLIENTE = os.path.join(RAIZ, 'cliente')
+hay_cliente = os.path.exists(os.path.join(CLIENTE, 'package.json'))
+
+eslint = os.path.join(CLIENTE, 'tmp', 'eslint.json')
 if os.path.exists(eslint):
     try:
         resultados = json.load(open(eslint, encoding='utf-8'))
@@ -44,9 +50,36 @@ if os.path.exists(eslint):
     except Exception as e:
         R.falla('cliente/tmp/eslint.json ilegible: %s' % e); R.cerrar()
     if errores:
-        R.falla('ESLint: %d hallazgos en el cliente' % errores)
+        conteo = [r['filePath'] for r in resultados if r.get('errorCount') or r.get('warningCount')]
+        R.falla('ESLint: %d hallazgos en %d archivos (p. ej. %s)'
+                % (errores, len(conteo), ', '.join(os.path.basename(f) for f in conteo[:3])))
     else:
         R.bien('ESLint sin hallazgos (%d archivos)' % len(resultados))
+elif hay_cliente:
+    R.falla('falta cliente/tmp/eslint.json · generalo con:  npm run lint:informe')
 else:
-    R.aviso('sin cliente/tmp/eslint.json · generalo con:  npx eslint . -f json -o tmp/eslint.json')
+    R.aviso('todavía no existe el cliente · la compuerta se activa con él')
+
+# El Quality Spec nombra «ESLint y Prettier»: eslint-config-prettier sólo apaga reglas de
+# formato, de modo que sin esto el formato no lo verifica nadie.
+formato = os.path.join(CLIENTE, 'tmp', 'prettier.txt')
+if os.path.exists(formato):
+    sin_formato = [l.strip() for l in leer_texto(formato).splitlines()
+                   if l.strip() and not l.startswith(('Checking', 'All matched', '[warn] Code style'))]
+    if sin_formato:
+        R.falla('Prettier: %d archivos sin formatear (p. ej. %s)'
+                % (len(sin_formato), ', '.join(s.replace('[warn] ', '') for s in sin_formato[:3])))
+    else:
+        R.bien('Prettier sin hallazgos')
+elif hay_cliente:
+    R.falla('falta cliente/tmp/prettier.txt · generalo con:  npm run formato:informe')
+
+# --- el cliente tampoco admite excepciones por archivo (D-14) ---
+if hay_cliente:
+    fuentes = archivos(('.js', '.jsx'), 'cliente')
+    con_excepcion = [f for f in fuentes if 'eslint-disable' in leer_texto(f)]
+    if con_excepcion:
+        R.falla('hay excepciones de ESLint (eslint-disable) en %d archivos: el Quality Spec no las admite'
+                % len(con_excepcion))
+
 R.cerrar()
