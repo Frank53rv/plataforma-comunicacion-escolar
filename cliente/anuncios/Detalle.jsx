@@ -12,10 +12,11 @@ import { Link, useLocation, useParams } from "react-router";
 import { mensajeDeError } from "../comun/api.js";
 import { useSesion } from "../comun/contextoSesion.js";
 import { formatearFechaHora } from "../comun/fechas.js";
+import AccionesDelAutor from "../paneles/docente/AccionesDelAutor.jsx";
 
 export default function Detalle() {
   const { id } = useParams();
-  const { panel, api } = useSesion();
+  const { panel, api, sesion } = useSesion();
   const autor = useLocation().state?.autor;
   const destinatario = panel.rol === "tutor" || panel.rol === "alumno";
   const [respuesta, setRespuesta] = useState(null);
@@ -71,9 +72,12 @@ export default function Detalle() {
   }
 
   const { version, cursos } = respuesta.anuncio;
+  const esAutor =
+    sesion?.usuario_id === respuesta.anuncio.autor_id && !eliminado;
   return (
     <article>
       {volver}
+      {esAutor && <AccionesDelAutor anuncio={respuesta.anuncio} />}
       {eliminado && (
         <p className="mb-3 rounded border border-slate-300 bg-slate-50 px-3 py-2 text-sm">
           Este anuncio fue eliminado.
