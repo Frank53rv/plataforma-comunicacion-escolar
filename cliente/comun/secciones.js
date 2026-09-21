@@ -11,6 +11,8 @@ import Conversacion from "../conversacion/Conversacion.jsx";
 import Conversaciones from "../conversacion/Conversaciones.jsx";
 import AniosLectivos from "../paneles/directivo/AniosLectivos.jsx";
 import Cursos from "../paneles/directivo/Cursos.jsx";
+import Docentes from "../paneles/directivo/Docentes.jsx";
+import Alumnos from "../paneles/comun/Alumnos.jsx";
 import Preferencias from "../preferencias/Preferencias.jsx";
 import Constancias from "../paneles/docente/Constancias.jsx";
 import ListadoDeConstancias from "../paneles/docente/ListadoDeConstancias.jsx";
@@ -47,6 +49,12 @@ export const SECCIONES = {
     elemento: AniosLectivos,
   },
   cursos: { etiqueta: "Cursos", ruta: "/cursos", elemento: Cursos },
+  docentes: { etiqueta: "Docentes", ruta: "/docentes", elemento: Docentes },
+  alumnos: {
+    etiqueta: "Alumnos y tutores",
+    ruta: "/alumnos",
+    elemento: Alumnos,
+  },
   constancias: {
     etiqueta: "Constancias",
     ruta: "/constancias",

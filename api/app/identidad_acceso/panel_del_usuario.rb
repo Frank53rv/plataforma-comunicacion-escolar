@@ -23,7 +23,10 @@ class PanelDelUsuario
     "anios_lectivos" => "anios_lectivos#index",
     "cursos" => "cursos#index",
     "docentes" => "docentes#crear",
-    "alumnos" => "alumnos#destruir"
+    "alumnos" => "alumnos#destruir",
+    # No es una sección de navegación sino una capacidad: la alta de alumnos y de tutores es del
+    # docente (Tabla 18), y el cliente sólo dibuja esos formularios si la interfaz la habilitó.
+    "altas_de_alumnos_y_tutores" => "alumnos#crear"
   }.freeze
 
   def self.para(usuario)
