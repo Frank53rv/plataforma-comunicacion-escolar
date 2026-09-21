@@ -114,7 +114,9 @@ class AnunciosController < ApplicationController
     por_pagina = [ por_pagina, 100 ].min
     sentido = params[:orden].to_s == "publicado_en:asc" ? "ASC" : "DESC"
 
-    relacion = filtrar(alcance_del_rol).order(Arel.sql(<<~SQL.squish))
+    # RF-20 · la eliminación es lógica: el anuncio eliminado conserva su registro y sus
+    # entregas, pero deja de presentarse en el historial. Su detalle sigue consultable.
+    relacion = filtrar(alcance_del_rol.where.not(estado: "eliminado")).order(Arel.sql(<<~SQL.squish))
       (SELECT av.publicado_en FROM anuncio_version av
         WHERE av.anuncio_id = anuncio.id ORDER BY av.numero_version DESC LIMIT 1) #{sentido}
     SQL

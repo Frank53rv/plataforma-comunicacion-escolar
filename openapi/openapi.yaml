@@ -1644,6 +1644,14 @@ components:
           type: array
           items: { type: string }
         anuncios_sin_leer: { type: integer }
+        cursos:
+          type: array
+          description: Cursos de la persona según su vínculo vigente, con que filtra su historial (RF-22).
+          items:
+            type: object
+            properties:
+              id: { type: string, format: uuid }
+              nombre: { type: string }
 
     EstadoPorCurso:
       type: object

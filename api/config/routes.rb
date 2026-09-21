@@ -41,6 +41,9 @@ Rails.application.routes.draw do
     get    "anuncios",     to: "anuncios#index"
     get    "anuncios/:id", to: "anuncios#mostrar"
 
+    # CU-09 · Consultar anuncios e historial · RF-40
+    get "paneles/me", to: "paneles#mostrar"
+
     # CU-11 · Consultar constancias de lectura · RF-23
     get "anuncios/:id/constancias", to: "anuncios#constancias"
 
