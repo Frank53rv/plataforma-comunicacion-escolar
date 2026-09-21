@@ -3,6 +3,7 @@
 // (WP7, módulo F) conforme al plan de la Tabla 47.
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router";
 import "./estilos.css";
 import Aplicacion from "./Aplicacion.jsx";
 import { registrarServiceWorker } from "./registroServiceWorker.js";

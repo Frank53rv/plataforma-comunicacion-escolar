@@ -689,6 +689,24 @@
       "name": "CU-09 · Consultar anuncios e historial",
       "item": [
         {
+          "name": "Obtener el panel del rol autenticado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/paneles/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "paneles",
+                "me"
+              ]
+            },
+            "description": "RF-40 · los cuatro roles. Responde rol, nombre, opciones_habilitadas (derivadas de los roles de la Tabla 18), anuncios_sin_leer y los cursos de la persona. La bandeja de anuncios es la primera opción de todos (RF-39)."
+          }
+        },
+        {
           "name": "Consultar el historial filtrado por fecha, curso y remitente",
           "request": {
             "method": "GET",
