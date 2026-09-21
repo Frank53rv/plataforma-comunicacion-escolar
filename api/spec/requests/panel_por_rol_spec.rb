@@ -39,7 +39,8 @@ RSpec.describe "Panel por rol", type: :request do
     it "el docente publica, consulta constancias, conversa y administra a sus alumnos" do
       expect(panel_de(docente)).to include(
         "rol" => "docente", "nombre" => "Ana",
-        "opciones_habilitadas" => %w[anuncios publicar_anuncio constancias conversaciones preferencias cursos alumnos]
+        "opciones_habilitadas" => %w[anuncios publicar_anuncio constancias conversaciones preferencias cursos alumnos
+                                     altas_de_alumnos_y_tutores]
       )
     end
 

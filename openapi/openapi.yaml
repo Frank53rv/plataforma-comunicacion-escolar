@@ -319,7 +319,7 @@ paths:
                     properties:
                       datos:
                         type: array
-                        items: { $ref: "#/components/schemas/Curso" }
+                        items: { $ref: "#/components/schemas/CursoConNomina" }
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
@@ -1483,6 +1483,44 @@ components:
         alumnos_vinculados:
           type: integer
           description: Cantidad de alumnos vinculados (Tabla 40, GET /cursos).
+
+    CursoConNomina:
+      description: >-
+        GET /cursos · el curso con su nómina sobre vinculaciones vigentes: docentes, y alumnos con
+        sus tutores. La Tabla 18 no tiene ninguna operación que lea personas y administrarlas exige
+        su identificador. Una persona dada de baja figura, con su estado, mientras su vinculación
+        esté vigente.
+      allOf:
+        - $ref: '#/components/schemas/Curso'
+        - type: object
+          properties:
+            docentes:
+              type: array
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/PersonaDeLaNomina'
+                  - type: object
+                    properties:
+                      es_titular: { type: boolean }
+            alumnos:
+              type: array
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/PersonaDeLaNomina'
+                  - type: object
+                    properties:
+                      tutores:
+                        type: array
+                        items: { $ref: '#/components/schemas/PersonaDeLaNomina' }
+
+    PersonaDeLaNomina:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        nombre: { type: string }
+        apellido: { type: string }
+        correo: { type: string }
+        estado: { type: string, enum: [pendiente, activo, dado_de_baja] }
 
     DocenteCurso:
       type: object

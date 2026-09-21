@@ -65,3 +65,32 @@ export const panelDe = (rol, extra = {}) => ({
   cursos: [],
   ...extra,
 });
+
+export const persona = (id, nombre, apellido, extra = {}) => ({
+  id,
+  nombre,
+  apellido,
+  correo: `${nombre.toLowerCase()}@ejemplo.test`,
+  estado: "activo",
+  ...extra,
+});
+
+export const cursoConNomina = (extra = {}) => ({
+  id: "c1",
+  anio_lectivo_id: "an1",
+  nombre: "Primero A",
+  turno: "mañana",
+  estado: "vigente",
+  alumnos_vinculados: 1,
+  docentes: [
+    persona("d1", "Ana", "Zárate", { es_titular: true }),
+    persona("d2", "Luis", "Acosta", { es_titular: false }),
+  ],
+  alumnos: [
+    {
+      ...persona("al1", "Beto", "Ramos"),
+      tutores: [persona("t1", "Marta", "Ramos")],
+    },
+  ],
+  ...extra,
+});

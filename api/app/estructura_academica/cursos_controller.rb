@@ -54,8 +54,11 @@ class CursosController < ApplicationController
 
     datos = relacion.offset((pagina - 1) * por_pagina).limit(por_pagina)
 
+    # La nómina de cada curso (NominaDeCursos): con ella el cliente conoce a las personas que
+    # administra sin que la Tabla 18 tenga una operación que las lea.
+    nomina = NominaDeCursos.para(datos.to_a)
     render json: {
-      datos: datos.map(&:recurso),
+      datos: datos.map { |curso| curso.recurso.merge(nomina.fetch(curso.id)) },
       total: relacion.count,
       pagina: pagina,
       por_pagina: por_pagina
