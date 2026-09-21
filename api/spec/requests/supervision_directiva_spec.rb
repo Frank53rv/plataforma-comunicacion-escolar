@@ -72,6 +72,33 @@ RSpec.describe "Supervisión directiva del estado de la comunicación", type: :r
     end
   end
 
+  # RNF-09 · con el conjunto de prueba la consulta tardaba entre 2,5 y 3,4 s porque hacía una
+  # consulta por anuncio: la cantidad de consultas no debe crecer con la de anuncios.
+  describe "consultas por lote" do
+    def contar_consultas
+      cantidad = 0
+      contador = ->(*, carga) { cantidad += 1 unless carga[:name] == "SCHEMA" || carga[:sql].match?(/\A\s*(BEGIN|COMMIT|SAVEPOINT|RELEASE)/i) }
+      ActiveSupport::Notifications.subscribed(contador, "sql.active_record") { yield }
+      cantidad
+    end
+
+    it "no lanza una consulta por anuncio, y el resultado es el mismo" do
+      alumno = create(:usuario, :alumno)
+      create(:alumno_curso, alumno: alumno, curso: curso_a)
+      create(:tutor_alumno, tutor: create(:usuario, :tutor), alumno: alumno)
+      publicar(cursos: [ curso_a.id ])
+      supervisar # calentamiento de cachés: no se cuenta
+
+      con_uno = contar_consultas { supervisar }
+      6.times { publicar(cursos: [ curso_a.id, curso_b.id ]) }
+      con_muchos = contar_consultas { supervisar }
+
+      expect(con_muchos).to eq(con_uno)
+      fila = cuerpo["datos"].find { |f| f["curso"]["id"] == curso_a.id }
+      expect(fila).to include("anuncios" => 7, "enviadas" => 14)
+    end
+  end
+
   describe "año lectivo de la consulta" do
     it "por omisión usa el año lectivo vigente" do
       supervisar
