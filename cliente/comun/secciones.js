@@ -9,6 +9,7 @@ import Bandeja from "../anuncios/Bandeja.jsx";
 import Detalle from "../anuncios/Detalle.jsx";
 import Conversacion from "../conversacion/Conversacion.jsx";
 import Conversaciones from "../conversacion/Conversaciones.jsx";
+import Preferencias from "../preferencias/Preferencias.jsx";
 import Constancias from "../paneles/docente/Constancias.jsx";
 import ListadoDeConstancias from "../paneles/docente/ListadoDeConstancias.jsx";
 import Publicar from "../paneles/docente/Publicar.jsx";
@@ -32,6 +33,11 @@ export const SECCIONES = {
     ruta: "/conversaciones",
     elemento: Conversaciones,
     subrutas: [{ ruta: "/conversaciones/:id", elemento: Conversacion }],
+  },
+  preferencias: {
+    etiqueta: "Horario de disponibilidad",
+    ruta: "/preferencias",
+    elemento: Preferencias,
   },
   constancias: {
     etiqueta: "Constancias",
