@@ -31,6 +31,29 @@ export function Campo({
   );
 }
 
+export function Selector({ etiqueta, valor, alCambiar, opciones }) {
+  const id = useId();
+  return (
+    <div className="mb-4">
+      <label htmlFor={id} className="block text-sm font-medium text-slate-700">
+        {etiqueta}
+      </label>
+      <select
+        id={id}
+        value={valor}
+        onChange={(evento) => alCambiar(evento.target.value)}
+        className="mt-1 block w-full rounded border border-slate-300 bg-white px-3 py-2 focus:outline-2 focus:outline-slate-900"
+      >
+        {opciones.map(({ valor: v, etiqueta: e }) => (
+          <option key={v} value={v}>
+            {e}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 export function Alerta({ mensaje }) {
   if (!mensaje) return null;
   return (

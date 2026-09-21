@@ -236,14 +236,17 @@ class AnunciosController < ApplicationController
   end
 
   # openapi/openapi.yaml · esquema AnuncioEnBandeja: id, titulo, publicado_en, autor (el
-  # recurso Usuario completo, no sólo su id) y leido (booleano). El directivo no es
+  # recurso Usuario completo, no sólo su id), leido (booleano) y anuncio_version_id, el
+  # identificador de la publicación vigente con que el cliente emite las vistas de RF-35
+  # agrupadas (POST /entregas/vistas). El directivo no es
   # destinatario de ninguno: su entrega propia no existe, y leido queda en falso.
   def fila_de_indice(anuncio)
     version = anuncio.version_vigente
     entrega_propia = version.entregas.find_by(destinatario_id: usuario_actual.id)
     {
-      "id" => anuncio.id, "titulo" => version.titulo, "publicado_en" => version.publicado_en,
-      "autor" => anuncio.autor.recurso, "leido" => entrega_propia&.leida_en.present?
+      "id" => anuncio.id, "anuncio_version_id" => version.id, "titulo" => version.titulo,
+      "publicado_en" => version.publicado_en, "autor" => anuncio.autor.recurso,
+      "leido" => entrega_propia&.leida_en.present?
     }
   end
 

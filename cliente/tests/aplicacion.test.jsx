@@ -322,3 +322,56 @@ describe("sesión", () => {
     expect(screen.getByText("Cargando…")).toBeInTheDocument();
   });
 });
+
+describe("CP-RF-39 · de la bandeja al detalle, dentro de la aplicación", () => {
+  it("abrir un anuncio de la bandeja lleva a su detalle y registra la lectura", async () => {
+    sesionGuardada();
+    const fila = {
+      id: "a1",
+      anuncio_version_id: "v1",
+      titulo: "Reunión de padres",
+      publicado_en: "2026-03-02T15:30:00Z",
+      autor: { id: "d1", nombre: "Ana", apellido: "Gómez", rol: "docente" },
+      leido: false,
+    };
+    const llamadas = simularApi({
+      "GET /paneles/me": [200, panelDe("tutor")],
+      "GET /anuncios?pagina=1&por_pagina=25": [
+        200,
+        { datos: [fila], total: 1, pagina: 1, por_pagina: 25 },
+      ],
+      "POST /entregas/acuses": [200, {}],
+      "GET /anuncios/a1": [
+        200,
+        {
+          id: "a1",
+          estado: "publicado",
+          version: {
+            id: "v1",
+            titulo: "Reunión de padres",
+            cuerpo: "Será el viernes.",
+            publicado_en: fila.publicado_en,
+          },
+          cursos: [{ id: "c1", nombre: "Primero A" }],
+          adjuntos: [],
+        },
+      ],
+      "POST /entregas/lecturas": [200, {}],
+    });
+    abrir("/");
+
+    fireEvent.click(
+      await screen.findByRole("link", { name: "Reunión de padres" }),
+    );
+
+    expect(
+      await screen.findByRole("heading", { name: "Reunión de padres" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Ana Gómez")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(llamadas.some((l) => l.clave === "POST /entregas/lecturas")).toBe(
+        true,
+      ),
+    );
+  });
+});

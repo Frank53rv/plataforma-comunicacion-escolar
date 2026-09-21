@@ -1,4 +1,4 @@
-// RF-40 Paneles diferenciados por rol · RF-41 Interfaz responsiva · CU-09 · RN-04, RN-15
+// RF-40 Paneles diferenciados por rol · CU-09 · RN-04, RN-15
 // Prueba: CP-RF-40
 //
 // RF-40 (Tabla 10) · «El cliente debe presentar paneles con las funciones correspondientes
@@ -96,7 +96,7 @@ describe("armazón", () => {
     expect(valor.cerrar).toHaveBeenCalled();
   });
 
-  it("en pantallas angostas el menú se abre y se cierra, y lo declara para los lectores de pantalla (RF-41)", () => {
+  it("en pantallas angostas el menú se abre y se cierra, y lo declara para los lectores de pantalla", () => {
     dibujar(panelDe("tutor", { opciones_habilitadas: ["anuncios"] }));
     const menu = screen.getByRole("button", { name: "Menú" });
 
