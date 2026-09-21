@@ -38,21 +38,39 @@ class SupervisionController < ApplicationController
   # de ESTE curso, la misma comunidad que RN-16 resuelve como destinatarios al
   # publicar: un anuncio dirigido a varios cursos aporta a cada uno el recuento de su
   # propia comunidad, no una única fila que uno de los cursos se atribuya entero.
+  # Las mismas cifras de antes, en dos consultas por curso en lugar de una por anuncio (RNF-09).
+  # Destinatarios: los alumnos con vinculación vigente al curso y los tutores vigentes de
+  # ellos. Versión vigente de cada anuncio: la de mayor número.
   def fila_de(curso)
-    anuncios = Anuncio.joins(:vinculaciones_curso).where(anuncio_curso: { curso_id: curso.id }).distinct
-    version_ids = anuncios.filter_map { |anuncio| anuncio.version_vigente&.id }
-
-    alumno_ids = AlumnoCurso.vigentes.where(curso_id: curso.id).pluck(:usuario_id)
-    tutor_ids = TutorAlumno.vigentes.where(alumno_id: alumno_ids).pluck(:tutor_id)
-    entregas = EntregaAnuncio.where(anuncio_version_id: version_ids, destinatario_id: alumno_ids + tutor_ids)
+    anuncios = Anuncio.joins(:vinculaciones_curso).where(anuncio_curso: { curso_id: curso.id }).distinct.count
+    conteos = Curso.connection.select_one(Curso.sanitize_sql([ <<~SQL.squish, { curso_id: curso.id } ]))
+      WITH alumnos AS (
+        SELECT usuario_id FROM alumno_curso WHERE curso_id = :curso_id AND vigente_hasta IS NULL
+      ), destinatarios AS (
+        SELECT usuario_id AS id FROM alumnos
+        UNION
+        SELECT tutor_id FROM tutor_alumno
+         WHERE vigente_hasta IS NULL AND alumno_id IN (SELECT usuario_id FROM alumnos)
+      ), versiones AS (
+        SELECT DISTINCT ON (v.anuncio_id) v.id
+          FROM anuncio_version v JOIN anuncio_curso ac ON ac.anuncio_id = v.anuncio_id
+         WHERE ac.curso_id = :curso_id
+         ORDER BY v.anuncio_id, v.numero_version DESC
+      )
+      SELECT COUNT(*) AS enviadas, COUNT(e.entregada_en) AS entregadas,
+             COUNT(e.vista_en) AS vistas, COUNT(e.leida_en) AS leidas
+        FROM entrega_anuncio e
+       WHERE e.anuncio_version_id IN (SELECT id FROM versiones)
+         AND e.destinatario_id IN (SELECT id FROM destinatarios)
+    SQL
 
     {
       "curso" => curso.recurso,
-      "anuncios" => anuncios.count,
-      "enviadas" => entregas.count,
-      "entregadas" => entregas.where.not(entregada_en: nil).count,
-      "vistas" => entregas.where.not(vista_en: nil).count,
-      "leidas" => entregas.where.not(leida_en: nil).count
+      "anuncios" => anuncios,
+      "enviadas" => conteos["enviadas"],
+      "entregadas" => conteos["entregadas"],
+      "vistas" => conteos["vistas"],
+      "leidas" => conteos["leidas"]
     }
   end
 end
