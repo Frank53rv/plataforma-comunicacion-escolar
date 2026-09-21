@@ -7,6 +7,7 @@
 // habilitó la administración de años lectivos en el panel de la persona; el 403 lo sigue
 // resolviendo el servidor. La nómina de cada curso es de la rama de personas.
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import { mensajeDeError } from "../../comun/api.js";
 import { useSesion } from "../../comun/contextoSesion.js";
 import { Alerta, Boton, Campo, Selector } from "../../comun/formularios.jsx";
@@ -26,6 +27,7 @@ function consultaDe(anioLectivo, pagina) {
 export default function Cursos() {
   const { api, panel } = useSesion();
   const administra = panel.opciones_habilitadas.includes("anios_lectivos");
+  const conCanal = panel.opciones_habilitadas.includes("conversaciones");
   const [anios, setAnios] = useState(null);
   const [filtro, setFiltro] = useState("");
   const [pagina, setPagina] = useState(1);
@@ -178,6 +180,16 @@ export default function Cursos() {
                       {`${curso.turno} · ${ESTADOS[curso.estado]} · ${curso.alumnos_vinculados} ${curso.alumnos_vinculados === 1 ? "alumno vinculado" : "alumnos vinculados"}`}
                     </p>
                   </div>
+                  {conCanal && (
+                    <Link
+                      to={`/cursos/${curso.id}/canal`}
+                      state={{ curso: curso.nombre }}
+                      aria-label={`Ir al canal grupal de «${curso.nombre}»`}
+                      className="rounded border border-slate-300 px-3 py-1 text-sm"
+                    >
+                      Canal grupal
+                    </Link>
+                  )}
                   {administra && (
                     <button
                       type="button"

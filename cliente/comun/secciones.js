@@ -1,5 +1,6 @@
-// RF-40 Paneles diferenciados por rol · CU-09 · RN-04, RN-15
-// Prueba: CP-RF-40
+// RF-40 Paneles diferenciados por rol · RF-42 Cobertura de flujos en interfaz · CU-09 · RN-04,
+// RN-15
+// Prueba: CP-RF-40 · CP-RF-42
 //
 // Cada opción que GET /paneles/me puede declarar, con su ruta y su pantalla. Una opción sin
 // pantalla registrada todavía no se dibuja: el panel del rol es la intersección entre lo que
@@ -8,6 +9,7 @@
 import Bandeja from "../anuncios/Bandeja.jsx";
 import Detalle from "../anuncios/Detalle.jsx";
 import Conversacion from "../conversacion/Conversacion.jsx";
+import CanalesDelCurso from "../conversacion/CanalesDelCurso.jsx";
 import Conversaciones from "../conversacion/Conversaciones.jsx";
 import AniosLectivos from "../paneles/directivo/AniosLectivos.jsx";
 import Cursos from "../paneles/directivo/Cursos.jsx";
@@ -37,7 +39,10 @@ export const SECCIONES = {
     etiqueta: "Canal grupal",
     ruta: "/conversaciones",
     elemento: Conversaciones,
-    subrutas: [{ ruta: "/conversaciones/:id", elemento: Conversacion }],
+    subrutas: [
+      { ruta: "/conversaciones/:id", elemento: Conversacion },
+      { ruta: "/cursos/:id/canal", elemento: CanalesDelCurso },
+    ],
   },
   preferencias: {
     etiqueta: "Horario de disponibilidad",
