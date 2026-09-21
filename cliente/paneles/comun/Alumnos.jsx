@@ -108,9 +108,11 @@ export default function Alumnos() {
   const darDeBaja = () =>
     ejecutar(
       async () => {
-        await api.delete(
-          `/${baja.tipo === "alumno" ? "alumnos" : "tutores"}/${baja.persona.id}`,
-        );
+        // Dos llamadas explícitas, no una ruta armada: cada operación de la Tabla 18 tiene su
+        // llamada a la vista (la comprobación de RF-42 lee el código).
+        if (baja.tipo === "alumno")
+          await api.delete(`/alumnos/${baja.persona.id}`);
+        else await api.delete(`/tutores/${baja.persona.id}`);
         recargar();
       },
       baja.tipo === "alumno" ? "Alumno dado de baja." : "Tutor dado de baja.",

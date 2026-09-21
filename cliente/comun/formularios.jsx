@@ -99,7 +99,7 @@ export function Boton({ children, ...resto }) {
 // Envoltorio de las pantallas previas a la sesión: ingreso, activación y sustitución.
 export function PantallaDeAcceso({ titulo, children }) {
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4 py-8">
+    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4 py-8 [overflow-wrap:anywhere]">
       <h1 className="mb-1 text-sm font-medium text-slate-600">
         Plataforma de comunicación escolar
       </h1>

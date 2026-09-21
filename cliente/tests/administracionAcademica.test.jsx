@@ -45,7 +45,7 @@ function dibujar(Pantalla, rol = "directivo") {
   const opciones =
     rol === "directivo"
       ? ["anuncios", "anios_lectivos", "cursos"]
-      : ["anuncios", "cursos"];
+      : ["anuncios", "conversaciones", "cursos"];
   const valor = {
     panel: panelDe(rol, { opciones_habilitadas: opciones }),
     sesion: {},
@@ -378,6 +378,27 @@ describe("CP-RF-12 · cursos", () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByLabelText("Filtrar por año lectivo"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("quien tiene canal grupal llega a él desde cada curso; el directivo, que no participa, no ve el enlace", async () => {
+    simularApi({ [CURSOS]: coleccion([curso(1)]) });
+    const { unmount } = dibujar(Cursos, "docente");
+    expect(
+      await screen.findByRole("link", {
+        name: "Ir al canal grupal de «Curso 1»",
+      }),
+    ).toHaveAttribute("href", "/cursos/c1/canal");
+    unmount();
+
+    simularApi({
+      [ANIOS]: coleccion([anio(2026)]),
+      [CURSOS]: coleccion([curso(1)]),
+    });
+    dibujar(Cursos);
+    await screen.findByText("Curso 1");
+    expect(
+      screen.queryByRole("link", { name: /canal grupal/ }),
     ).not.toBeInTheDocument();
   });
 
