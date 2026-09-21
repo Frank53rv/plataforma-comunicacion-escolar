@@ -199,7 +199,7 @@ export default function Alumnos() {
                     persona={alumno}
                     acciones={[
                       altas &&
-                        alumno.estado === "activo" && {
+                        alumno.estado !== "dado_de_baja" && {
                           texto: "Agregar tutor",
                           nombre: `Agregar un tutor a «${nombreDe(alumno)}»`,
                           alPulsar: () => setTutorDe(alumno.id),

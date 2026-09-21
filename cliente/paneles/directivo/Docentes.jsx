@@ -59,6 +59,17 @@ export default function Docentes() {
     }
   }
 
+  // El diálogo guarda identificadores, no copias: la nómina se recarga tras cada acción y una
+  // copia guardada al abrirlo quedaría desactualizada.
+  const vigenteDe = (estado) => {
+    const curso = cursos.find((c) => c.id === estado.cursoId);
+    return {
+      curso,
+      docente: curso.docentes.find((d) => d.id === estado.docenteId),
+      reemplazo: estado.reemplazo,
+    };
+  };
+
   const darDeAlta = (evento) => {
     evento.preventDefault();
     return ejecutar(async () => {
@@ -93,7 +104,7 @@ export default function Docentes() {
   };
 
   const desvincular = () => {
-    const { curso, docente, reemplazo } = desvinculando;
+    const { curso, docente, reemplazo } = vigenteDe(desvinculando);
     return ejecutar(async () => {
       await api.delete(
         `/cursos/${curso.id}/docentes/${docente.id}`,
@@ -279,7 +290,11 @@ export default function Docentes() {
                           className={boton}
                           aria-label={`Desvincular a «${nombreDe(docente)}»`}
                           onClick={() =>
-                            setDesvinculando({ curso, docente, reemplazo: "" })
+                            setDesvinculando({
+                              cursoId: curso.id,
+                              docenteId: docente.id,
+                              reemplazo: "",
+                            })
                           }
                         >
                           Desvincular
@@ -287,10 +302,12 @@ export default function Docentes() {
                       </span>
                     )}
                   </div>
-                  {desvinculando?.docente.id === docente.id &&
-                    desvinculando.curso.id === curso.id && (
+                  {desvinculando?.docenteId === docente.id &&
+                    desvinculando.cursoId === curso.id && (
                       <Desvinculacion
                         estado={desvinculando}
+                        curso={curso}
+                        docente={docente}
                         alCambiar={setDesvinculando}
                         ocupado={trabajando}
                         alConfirmar={desvincular}
@@ -306,8 +323,15 @@ export default function Docentes() {
   );
 }
 
-function Desvinculacion({ estado, alCambiar, ocupado, alConfirmar }) {
-  const { curso, docente, reemplazo } = estado;
+function Desvinculacion({
+  estado,
+  curso,
+  docente,
+  alCambiar,
+  ocupado,
+  alConfirmar,
+}) {
+  const { reemplazo } = estado;
   const otros = curso.docentes.filter(
     (d) => d.id !== docente.id && d.estado !== "dado_de_baja",
   );
