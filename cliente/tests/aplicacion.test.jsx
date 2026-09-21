@@ -110,7 +110,7 @@ describe("CP-RF-01 · ingreso", () => {
 
     expect(
       Object.keys(JSON.parse(sessionStorage.getItem("sesion"))).sort(),
-    ).toEqual(["credencial_provisional", "token", "vence_en"]);
+    ).toEqual(["credencial_provisional", "token", "usuario_id", "vence_en"]);
     expect(localStorage.length).toBe(0);
   });
 });
@@ -373,5 +373,91 @@ describe("CP-RF-39 · de la bandeja al detalle, dentro de la aplicación", () =>
         true,
       ),
     );
+  });
+});
+
+describe("CP-RF-40 · el panel del docente ofrece publicar y consultar constancias", () => {
+  const opciones = [
+    "anuncios",
+    "publicar_anuncio",
+    "constancias",
+    "preferencias",
+  ];
+
+  it("las presenta en la navegación, y sólo si la interfaz las habilitó", async () => {
+    sesionGuardada();
+    simularApi({
+      "GET /paneles/me": [
+        200,
+        panelDe("docente", { opciones_habilitadas: opciones }),
+      ],
+      "GET /anuncios?pagina=1&por_pagina=25": [
+        200,
+        { datos: [], total: 0, pagina: 1, por_pagina: 25 },
+      ],
+    });
+    abrir("/");
+
+    expect(
+      await screen.findByRole("link", { name: "Publicar un anuncio" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Constancias" }),
+    ).toBeInTheDocument();
+  });
+
+  it("un tutor, con el mismo cliente, no las ve: la interfaz no se las habilitó", async () => {
+    sesionGuardada();
+    simularApi({
+      "GET /paneles/me": [
+        200,
+        panelDe("tutor", {
+          opciones_habilitadas: ["anuncios", "preferencias"],
+        }),
+      ],
+      "GET /anuncios?pagina=1&por_pagina=25": [
+        200,
+        { datos: [], total: 0, pagina: 1, por_pagina: 25 },
+      ],
+      "POST /entregas/acuses": [200, {}],
+    });
+    abrir("/");
+    await screen.findByRole("link", { name: "Anuncios" });
+
+    expect(
+      screen.queryByRole("link", { name: "Publicar un anuncio" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "Constancias" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("publicar lleva al formulario", async () => {
+    sesionGuardada();
+    simularApi({
+      "GET /paneles/me": [
+        200,
+        panelDe("docente", {
+          opciones_habilitadas: opciones,
+          cursos: [{ id: "c1", nombre: "Primero A" }],
+        }),
+      ],
+      "GET /anuncios?pagina=1&por_pagina=25": [
+        200,
+        { datos: [], total: 0, pagina: 1, por_pagina: 25 },
+      ],
+    });
+    abrir("/");
+
+    fireEvent.click(
+      await screen.findByRole("link", { name: "Publicar un anuncio" }),
+    );
+
+    expect(
+      await screen.findByRole("heading", { name: "Publicar un anuncio" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("checkbox", { name: "Primero A" }),
+    ).toBeInTheDocument();
   });
 });

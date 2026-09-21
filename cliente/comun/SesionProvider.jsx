@@ -66,6 +66,9 @@ export default function SesionProvider({ children }) {
       token: respuesta.token,
       vence_en: respuesta.vence_en,
       credencial_provisional: respuesta.usuario.credencial_provisional,
+      // Sólo para presentar («Eliminar» y «Constancias» en los anuncios propios): el
+      // servidor responde 403 a quien no es el autor, sea cual sea lo que se dibuje.
+      usuario_id: respuesta.usuario.id,
     };
     guardar(nueva);
     setSesion(nueva);

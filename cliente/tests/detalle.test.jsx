@@ -4,7 +4,7 @@
 // CU-10 (Tabla 13) · «Los estados vista y leída quedan registrados con marca de tiempo, de
 // forma monótona e idempotente.» El cliente emite la lectura al abrir el detalle; que la
 // reemisión no altere la marca original es de la interfaz de programación (RF-36).
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import Detalle from "../anuncios/Detalle.jsx";
 import { crearApi } from "../comun/api.js";
@@ -31,9 +31,10 @@ const anuncio = (extra = {}) => ({
   ...extra,
 });
 
-function dibujar(rol = "tutor", estado) {
+function dibujar(rol = "tutor", estado, usuarioId = "otra-persona") {
   const valor = {
     panel: panelDe(rol),
+    sesion: { usuario_id: usuarioId },
     api: crearApi({ obtenerToken: () => "tok" }),
   };
   return render(
@@ -175,5 +176,122 @@ describe("CP-RF-36 · lectura al abrir el detalle", () => {
       await screen.findByRole("heading", { name: "Reunión de padres" }),
     ).toBeInTheDocument();
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+});
+
+describe("CP-RF-20 · eliminar un anuncio propio, con confirmación explícita (RNF-14)", () => {
+  const propio = () => dibujar("docente", undefined, "d1");
+
+  it("el autor ve las acciones: constancias y eliminar", async () => {
+    simularApi({ "GET /anuncios/a1": [200, anuncio()] });
+    propio();
+
+    expect(
+      await screen.findByRole("link", { name: "Constancias" }),
+    ).toHaveAttribute("href", "/anuncios/a1/constancias");
+    expect(
+      screen.getByRole("button", { name: "Eliminar anuncio" }),
+    ).toBeInTheDocument();
+  });
+
+  it("quien no es el autor no las ve, aunque sea docente", async () => {
+    simularApi({ "GET /anuncios/a1": [200, anuncio()] });
+    dibujar("docente", undefined, "otro-docente");
+    await screen.findByRole("heading", { name: "Reunión de padres" });
+
+    expect(
+      screen.queryByRole("button", { name: "Eliminar anuncio" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "Constancias" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("un anuncio ya eliminado no ofrece acciones", async () => {
+    simularApi({ "GET /anuncios/a1": [200, anuncio({ estado: "eliminado" })] });
+    propio();
+    await screen.findByText("Este anuncio fue eliminado.");
+
+    expect(
+      screen.queryByRole("button", { name: "Eliminar anuncio" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("eliminar pide confirmación antes de hacer nada, y cancelar la retira", async () => {
+    const llamadas = simularApi({ "GET /anuncios/a1": [200, anuncio()] });
+    propio();
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Eliminar anuncio" }),
+    );
+    expect(screen.getByRole("alertdialog")).toHaveTextContent(
+      "¿Eliminar este anuncio?",
+    );
+    expect(llamadas.some((l) => l.clave.startsWith("DELETE"))).toBe(false);
+
+    fireEvent.click(screen.getByRole("button", { name: "Cancelar" }));
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    expect(llamadas.some((l) => l.clave.startsWith("DELETE"))).toBe(false);
+  });
+
+  it("confirmada, elimina y vuelve a la bandeja", async () => {
+    const llamadas = simularApi({
+      "GET /anuncios/a1": [200, anuncio()],
+      "DELETE /anuncios/a1": [200, { id: "a1", estado: "eliminado" }],
+    });
+    propio();
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Eliminar anuncio" }),
+    );
+    fireEvent.click(
+      screen.getByRole("button", { name: "Confirmar eliminación" }),
+    );
+
+    expect(await screen.findByText("bandeja")).toBeInTheDocument();
+    expect(
+      llamadas.filter((l) => l.clave === "DELETE /anuncios/a1"),
+    ).toHaveLength(1);
+  });
+
+  it("si la interfaz lo rechaza (403), se informa y el anuncio sigue en su lugar", async () => {
+    simularApi({
+      "GET /anuncios/a1": [200, anuncio()],
+      "DELETE /anuncios/a1": [403, { status: 403, detail: "x" }],
+    });
+    propio();
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Eliminar anuncio" }),
+    );
+    fireEvent.click(
+      screen.getByRole("button", { name: "Confirmar eliminación" }),
+    );
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "El rol de esta cuenta no habilita esta operación.",
+    );
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Reunión de padres" }),
+    ).toBeInTheDocument();
+  });
+
+  it("mientras elimina no admite otra confirmación", async () => {
+    simularApi({ "GET /anuncios/a1": [200, anuncio()] });
+    propio();
+    await screen.findByRole("button", { name: "Eliminar anuncio" });
+    global.fetch = jest.fn(() => new Promise(() => {}));
+
+    fireEvent.click(screen.getByRole("button", { name: "Eliminar anuncio" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Confirmar eliminación" }),
+    );
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Confirmar eliminación" }),
+      ).toBeDisabled(),
+    );
   });
 });

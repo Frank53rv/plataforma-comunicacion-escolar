@@ -7,6 +7,9 @@
 // agrega ninguna opción por su cuenta (RNF-21).
 import Bandeja from "../anuncios/Bandeja.jsx";
 import Detalle from "../anuncios/Detalle.jsx";
+import Constancias from "../paneles/docente/Constancias.jsx";
+import ListadoDeConstancias from "../paneles/docente/ListadoDeConstancias.jsx";
+import Publicar from "../paneles/docente/Publicar.jsx";
 
 // Vocabulario cerrado del Quality Spec: anuncio, publicación, constancia, curso, año
 // lectivo, canal grupal, horario de disponibilidad.
@@ -16,6 +19,17 @@ export const SECCIONES = {
     ruta: "/",
     elemento: Bandeja,
     subrutas: [{ ruta: "/anuncios/:id", elemento: Detalle }],
+  },
+  publicar_anuncio: {
+    etiqueta: "Publicar un anuncio",
+    ruta: "/publicar",
+    elemento: Publicar,
+  },
+  constancias: {
+    etiqueta: "Constancias",
+    ruta: "/constancias",
+    elemento: ListadoDeConstancias,
+    subrutas: [{ ruta: "/anuncios/:id/constancias", elemento: Constancias }],
   },
 };
 

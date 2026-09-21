@@ -31,6 +31,24 @@ export function Campo({
   );
 }
 
+export function AreaDeTexto({ etiqueta, valor, alCambiar, filas = 6 }) {
+  const id = useId();
+  return (
+    <div className="mb-4">
+      <label htmlFor={id} className="block text-sm font-medium text-slate-700">
+        {etiqueta}
+      </label>
+      <textarea
+        id={id}
+        rows={filas}
+        value={valor}
+        onChange={(evento) => alCambiar(evento.target.value)}
+        className="mt-1 block w-full rounded border border-slate-300 px-3 py-2 focus:outline-2 focus:outline-slate-900"
+      />
+    </div>
+  );
+}
+
 export function Selector({ etiqueta, valor, alCambiar, opciones }) {
   const id = useId();
   return (
