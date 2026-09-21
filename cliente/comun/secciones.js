@@ -12,6 +12,7 @@ import Conversaciones from "../conversacion/Conversaciones.jsx";
 import AniosLectivos from "../paneles/directivo/AniosLectivos.jsx";
 import Cursos from "../paneles/directivo/Cursos.jsx";
 import Docentes from "../paneles/directivo/Docentes.jsx";
+import Supervision from "../paneles/directivo/Supervision.jsx";
 import Alumnos from "../paneles/comun/Alumnos.jsx";
 import Preferencias from "../preferencias/Preferencias.jsx";
 import Constancias from "../paneles/docente/Constancias.jsx";
@@ -54,6 +55,11 @@ export const SECCIONES = {
     etiqueta: "Alumnos y tutores",
     ruta: "/alumnos",
     elemento: Alumnos,
+  },
+  supervision: {
+    etiqueta: "Supervisión",
+    ruta: "/supervision",
+    elemento: Supervision,
   },
   constancias: {
     etiqueta: "Constancias",
