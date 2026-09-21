@@ -1,6 +1,5 @@
-// Punto de entrada del cliente web. Los paneles diferenciados por rol, la bandeja de
-// anuncios, la conversación y las preferencias se construyen en el incremento 5
-// (WP7, módulo F) conforme al plan de la Tabla 47.
+// Punto de entrada del cliente web. Fig. 13 · aplicación de página única: aquí se monta el
+// enrutador del navegador, que Aplicacion espera recibir de quien la monta.
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
@@ -10,7 +9,9 @@ import { registrarServiceWorker } from "./registroServiceWorker.js";
 
 createRoot(document.getElementById("raiz")).render(
   <StrictMode>
-    <Aplicacion />
+    <BrowserRouter>
+      <Aplicacion />
+    </BrowserRouter>
   </StrictMode>,
 );
 

@@ -234,6 +234,46 @@ describe("CP-RF-04 · alta de un alumno (docente)", () => {
   });
 });
 
+describe("CP-RF-14 · un alumno recién dado de alta admite tutores antes de activar su cuenta", () => {
+  it("un alumno pendiente de activación ofrece «Agregar tutor»", async () => {
+    const curso = cursoConNomina({
+      alumnos: [
+        {
+          ...persona("al2", "Pía", "Pendiente", { estado: "pendiente" }),
+          tutores: [],
+        },
+      ],
+    });
+    simularApi({ [CURSOS]: lista([curso]) });
+    dibujar();
+    await screen.findByRole("region", { name: "Primero A" });
+
+    expect(
+      screen.getByRole("button", {
+        name: "Agregar un tutor a «Pía Pendiente»",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("un alumno dado de baja no", async () => {
+    const curso = cursoConNomina({
+      alumnos: [
+        {
+          ...persona("al3", "Rosa", "Baja", { estado: "dado_de_baja" }),
+          tutores: [],
+        },
+      ],
+    });
+    simularApi({ [CURSOS]: lista([curso]) });
+    dibujar();
+    await screen.findByRole("region", { name: "Primero A" });
+
+    expect(
+      screen.queryByRole("button", { name: /Agregar un tutor/ }),
+    ).not.toBeInTheDocument();
+  });
+});
+
 describe("CP-RF-14 · agregar un tutor a un alumno (docente)", () => {
   const abrirFormulario = async (extra = {}) => {
     const llamadas = simularApi({

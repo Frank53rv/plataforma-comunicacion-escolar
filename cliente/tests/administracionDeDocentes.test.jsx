@@ -513,6 +513,58 @@ describe("CP-RF-44 · desvincular a un docente", () => {
   });
 });
 
+describe("CP-RF-44 · la desvinculación usa la nómina vigente, no una copia", () => {
+  it("el diálogo abierto se actualiza cuando la nómina cambia debajo", async () => {
+    const beto = persona("d5", "Beto", "Nuevo", { es_titular: false });
+    const otroCurso = cursoConNomina({
+      id: "c2",
+      nombre: "Segundo B",
+      docentes: [{ ...beto, es_titular: true }],
+    });
+    const solo = cursoConNomina({
+      docentes: [persona("d1", "Ana", "Zárate", { es_titular: true })],
+    });
+    const conBeto = cursoConNomina({
+      docentes: [persona("d1", "Ana", "Zárate", { es_titular: true }), beto],
+    });
+    let cursos = [solo, otroCurso];
+    simularApi({
+      [CURSOS]: () => lista(cursos),
+      "POST /cursos/c1/docentes": () => {
+        cursos = [conBeto, otroCurso];
+        return [
+          201,
+          { id: "v", usuario_id: "d5", curso_id: "c1", es_titular: false },
+        ];
+      },
+    });
+    dibujar();
+    await screen.findByRole("region", { name: "Primero A" });
+    fireEvent.click(
+      screen.getByRole("button", { name: "Desvincular a «Ana Zárate»" }),
+    );
+    expect(
+      screen.getByText(
+        "No hay otro docente en el curso para designar como titular.",
+      ),
+    ).toBeInTheDocument();
+
+    // Con el diálogo abierto se vincula a otro docente y la nómina se recarga.
+    fireEvent.change(screen.getByLabelText("Curso"), {
+      target: { value: "c1" },
+    });
+    fireEvent.change(screen.getByLabelText("Docente"), {
+      target: { value: "d5" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Vincular" }));
+
+    const selector = await screen.findByLabelText("Nuevo titular");
+    expect(
+      within(selector).getByRole("option", { name: "Beto Nuevo" }),
+    ).toBeInTheDocument();
+  });
+});
+
 describe("CP-RF-44 · dar de baja a un docente", () => {
   const desvincular = async () => {
     const llamadas = simularApi({
