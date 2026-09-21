@@ -6,11 +6,17 @@
 // la interfaz de programación habilita y lo que el cliente ya sabe presentar. El cliente no
 // agrega ninguna opción por su cuenta (RNF-21).
 import Bandeja from "../anuncios/Bandeja.jsx";
+import Detalle from "../anuncios/Detalle.jsx";
 
 // Vocabulario cerrado del Quality Spec: anuncio, publicación, constancia, curso, año
 // lectivo, canal grupal, horario de disponibilidad.
 export const SECCIONES = {
-  anuncios: { etiqueta: "Anuncios", ruta: "/", elemento: Bandeja },
+  anuncios: {
+    etiqueta: "Anuncios",
+    ruta: "/",
+    elemento: Bandeja,
+    subrutas: [{ ruta: "/anuncios/:id", elemento: Detalle }],
+  },
 };
 
 export const ETIQUETAS_DE_ROL = {

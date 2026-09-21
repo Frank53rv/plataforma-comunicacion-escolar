@@ -65,12 +65,15 @@ def leer_texto(p):
 # inicial del archivo hasta la línea «# Prueba: …» inclusive, tal como lo fijan los
 # ejemplos de CLAUDE.md §4 y los archivos ya integrados.
 def rf_realizados(texto):
+    # El encabezado es el bloque de comentarios inicial: `#` en Ruby y Python, `//` en el
+    # cliente. Con sólo `#`, todo el código del cliente quedaba invisible para las compuertas.
+    marcas = ('#', '//')
     encabezado = []
     for linea in texto.splitlines():
         recorte = linea.strip()
-        if recorte and not recorte.startswith('#'):
+        if recorte and not recorte.startswith(marcas):
             break
         encabezado.append(linea)
-        if re.match(r'#\s*Prueba:', recorte):
+        if re.match(r'(#|//)\s*Prueba:', recorte):
             break
     return set(re.findall(r'\bRF-\d\d\b', '\n'.join(encabezado)))

@@ -1,9 +1,11 @@
-// RF-40 Paneles diferenciados por rol · RF-41 Interfaz responsiva · CU-09 · RN-04, RN-15
+// RF-40 Paneles diferenciados por rol · CU-09 · RN-04, RN-15
 // Prueba: CP-RF-40
 //
 // Armazón único de los cuatro paneles: barra superior con la persona, su rol y el cierre de
 // sesión; navegación con las opciones que la interfaz de programación habilitó; contenido.
-// En 768 px o más la navegación es lateral; por debajo se recoge en un menú (RF-41).
+// En 768 px o más la navegación es lateral; por debajo se recoge en un menú. Que la interfaz
+// sea operable en los tres anchos de referencia se verifica en la rama de la interfaz
+// responsiva, no acá.
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { useSesion } from "./contextoSesion.js";

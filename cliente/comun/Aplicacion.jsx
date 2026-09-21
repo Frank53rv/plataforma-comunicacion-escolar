@@ -32,16 +32,18 @@ export default function Aplicacion() {
         <Route path="/credencial" element={<SustitucionDeCredencial />} />
         <Route element={<RutaProtegida />}>
           <Route element={<Armazon />}>
-            {Object.values(SECCIONES).map((seccion) => {
-              const Pantalla = seccion.elemento;
-              return (
-                <Route
-                  key={seccion.ruta}
-                  path={seccion.ruta}
-                  element={<Pantalla />}
-                />
-              );
-            })}
+            {Object.values(SECCIONES).flatMap((seccion) =>
+              [seccion, ...(seccion.subrutas ?? [])].map((pantalla) => {
+                const Pantalla = pantalla.elemento;
+                return (
+                  <Route
+                    key={pantalla.ruta}
+                    path={pantalla.ruta}
+                    element={<Pantalla />}
+                  />
+                );
+              }),
+            )}
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

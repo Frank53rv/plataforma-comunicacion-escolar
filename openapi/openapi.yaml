@@ -1555,6 +1555,10 @@ components:
       type: object
       properties:
         id: { type: string, format: uuid }
+        anuncio_version_id:
+          type: string
+          format: uuid
+          description: Publicación vigente del anuncio; es el identificador que POST /entregas/vistas recibe (RF-35).
         titulo: { type: string }
         publicado_en: { type: string, format: date-time }
         autor: { $ref: '#/components/schemas/Usuario' }
