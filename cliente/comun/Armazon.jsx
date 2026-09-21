@@ -1,5 +1,5 @@
-// RF-40 Paneles diferenciados por rol · CU-09 · RN-04, RN-15
-// Prueba: CP-RF-40
+// RF-40 Paneles diferenciados por rol · RF-41 Interfaz responsiva · CU-09 · RN-04, RN-15
+// Prueba: CP-RF-40 · CP-RF-41
 //
 // Armazón único de los cuatro paneles: barra superior con la persona, su rol y el cierre de
 // sesión; navegación con las opciones que la interfaz de programación habilitó; contenido.
@@ -28,7 +28,7 @@ export default function Armazon({ secciones = SECCIONES }) {
   );
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white text-slate-900 [overflow-wrap:anywhere]">
       <header className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 px-4 py-3">
         <p className="font-semibold">Plataforma de comunicación escolar</p>
         <div className="flex items-center gap-3 text-sm">
