@@ -7,6 +7,8 @@
 // agrega ninguna opción por su cuenta (RNF-21).
 import Bandeja from "../anuncios/Bandeja.jsx";
 import Detalle from "../anuncios/Detalle.jsx";
+import Conversacion from "../conversacion/Conversacion.jsx";
+import Conversaciones from "../conversacion/Conversaciones.jsx";
 import Constancias from "../paneles/docente/Constancias.jsx";
 import ListadoDeConstancias from "../paneles/docente/ListadoDeConstancias.jsx";
 import Publicar from "../paneles/docente/Publicar.jsx";
@@ -24,6 +26,12 @@ export const SECCIONES = {
     etiqueta: "Publicar un anuncio",
     ruta: "/publicar",
     elemento: Publicar,
+  },
+  conversaciones: {
+    etiqueta: "Canal grupal",
+    ruta: "/conversaciones",
+    elemento: Conversaciones,
+    subrutas: [{ ruta: "/conversaciones/:id", elemento: Conversacion }],
   },
   constancias: {
     etiqueta: "Constancias",
