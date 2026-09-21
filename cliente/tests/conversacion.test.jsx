@@ -166,10 +166,35 @@ describe("CP-RF-28 · historial del canal", () => {
     await screen.findByText("Primero");
     const lista = within(screen.getByRole("list", { name: "Mensajes" }));
     expect(lista.getAllByRole("listitem").map((li) => li.textContent)).toEqual([
-      expect.stringContaining("Ana GómezPropio"),
-      expect.stringContaining("Marta Ruiz"),
+      expect.stringContaining("PropioDocentePrimero"),
+      expect.stringContaining("Marta RuizSegundo"),
     ]);
     expect(screen.getByText("02/03/2026 12:01")).toBeInTheDocument();
+  });
+
+  it("distingue el mensaje propio del ajeno y señala al docente", async () => {
+    const docenteAjena = {
+      id: "dc",
+      nombre: "Lucía",
+      apellido: "Paz",
+      rol: "docente",
+    };
+    simularApi({
+      [HISTORIAL]: pagina([
+        msg("m1", "Mío", "2026-03-02T15:01:00Z", yo),
+        msg("m2", "De tutora", "2026-03-02T15:02:00Z"),
+        msg("m3", "De docente", "2026-03-02T15:03:00Z", docenteAjena),
+      ]),
+    });
+    dibujar("/conversaciones/k1", "tutor");
+
+    await screen.findByText("Mío");
+    const [propio, tutora, docente] = screen.getAllByRole("listitem");
+    expect(propio).toHaveClass("self-end");
+    expect(tutora).toHaveClass("self-start");
+    expect(within(tutora).queryByText("Docente")).not.toBeInTheDocument();
+    expect(within(docente).getByText("Docente")).toBeInTheDocument();
+    expect(within(docente).getByText("Lucía Paz")).toBeInTheDocument();
   });
 
   it("un canal sin mensajes invita a escribir el primero", async () => {

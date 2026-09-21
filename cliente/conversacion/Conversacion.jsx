@@ -166,21 +166,42 @@ function CanalAbierto({ id }) {
         <p className="text-slate-700">Todavía no hay mensajes.</p>
       )}
       {mensajes.length > 0 && (
-        <ul aria-label="Mensajes" className="mb-4 space-y-3">
+        <ul
+          aria-label="Mensajes"
+          className="mb-4 flex flex-col gap-2 rounded bg-slate-100 p-3"
+        >
           {mensajes.map((mensaje) => {
             const propio = mensaje.autor.id === sesion.usuario_id;
+            const docente = mensaje.autor.rol === "docente";
             return (
               <li
                 key={mensaje.id}
-                className={`max-w-prose rounded border px-3 py-2 ${propio ? "ml-auto border-slate-900 bg-slate-50" : "border-slate-200"}`}
+                className={`max-w-[80%] rounded-lg px-3 py-1.5 shadow-sm ${propio ? "self-end bg-emerald-100" : "self-start bg-white"}`}
               >
-                <p className="flex flex-wrap items-baseline gap-x-2 text-xs text-slate-600">
-                  <span className="font-medium text-slate-900">{`${mensaje.autor.nombre} ${mensaje.autor.apellido}`}</span>
-                  {propio && <span>Propio</span>}
-                  <span>{formatearFechaHora(mensaje.enviado_en)}</span>
-                </p>
-                <p className="whitespace-pre-wrap text-slate-900">
+                {(!propio || docente) && (
+                  <p className="flex flex-wrap items-baseline gap-x-2 text-xs font-semibold">
+                    {propio ? (
+                      <span className="sr-only">Propio</span>
+                    ) : (
+                      <span
+                        className={
+                          docente ? "text-indigo-700" : "text-slate-900"
+                        }
+                      >{`${mensaje.autor.nombre} ${mensaje.autor.apellido}`}</span>
+                    )}
+                    {docente && (
+                      <span className="rounded bg-indigo-100 px-1.5 text-[11px] text-indigo-800">
+                        Docente
+                      </span>
+                    )}
+                  </p>
+                )}
+                {propio && !docente && <span className="sr-only">Propio</span>}
+                <p className="whitespace-pre-wrap break-words text-slate-900">
                   {mensaje.cuerpo}
+                </p>
+                <p className="text-right text-[11px] text-slate-600">
+                  {formatearFechaHora(mensaje.enviado_en)}
                 </p>
               </li>
             );
