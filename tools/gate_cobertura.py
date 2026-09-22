@@ -19,7 +19,8 @@ def medir(nombre, ruta, leer, existe_el_proyecto, comando):
             R.aviso('todavía no existe %s · la compuerta se activa con él' % nombre)
         return
     try:
-        pct = leer(json.load(open(ruta, encoding='utf-8')))
+        with open(ruta, encoding='utf-8') as f:
+            pct = leer(json.load(f))
     except Exception as e:
         R.falla('%s ilegible: %s' % (ruta_relativa(ruta), e))
         return

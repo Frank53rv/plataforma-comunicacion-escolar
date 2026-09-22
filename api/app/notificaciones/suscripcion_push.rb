@@ -19,12 +19,18 @@ class SuscripcionPush < ApplicationRecord
 
   # Un mismo navegador identifica a una sola suscripción (UNIQUE token). Si la presenta
   # otra persona, el dispositivo es de quien la presenta ahora; si estaba inválida, el
-  # navegador vuelve a estar habilitado.
+  # navegador vuelve a estar habilitado. Idempotente contra concurrencia.
   def self.registrar!(usuario:, token:, navegador:)
-    suscripcion = find_or_initialize_by(token: token)
-    suscripcion.update!(usuario: usuario, navegador: navegador, estado: "vigente",
-                        invalidada_en: nil, creada_en: suscripcion.creada_en || Time.current)
-    suscripcion
+    creada_en = find_by(token: token)&.creada_en || Time.current
+    upsert({
+      token: token,
+      usuario_id: usuario.id,
+      navegador: navegador,
+      estado: "vigente",
+      invalidada_en: nil,
+      creada_en: creada_en
+    }, unique_by: :token, on_duplicate: :update)
+    find_by!(token: token)
   end
 
   # Figura 11 · invalidar(). Idempotente: no altera la marca de una ya inválida.

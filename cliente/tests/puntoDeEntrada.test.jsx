@@ -38,7 +38,7 @@ describe("punto de entrada de la aplicación", () => {
     ).toBeInTheDocument();
   });
 
-  it("registra el service worker, que no impide arrancar si el navegador no lo admite", async () => {
+  it("no impide arrancar si el navegador no admite service worker", async () => {
     await jest.isolateModulesAsync(async () => {
       await import("../comun/principal.jsx");
     });
