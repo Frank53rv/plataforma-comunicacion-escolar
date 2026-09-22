@@ -1,5 +1,5 @@
 {
-  "fuente": "Tabla 38",
+  "fuente": "Tabla 27 · TFG_ENTREGA_75paginas.docx",
   "total": 19,
   "entidades": [
     {
@@ -68,8 +68,8 @@
         "turno",
         "estado"
       ],
-      "columnas_texto": "id uuid · anio_lectivo_id uuid · nombre varchar(60) · turno turno_enum · estado estado_curso_enum",
-      "restricciones": "PK id · FK anio_lectivo_id · UNIQUE (anio_lectivo_id, nombre)",
+      "columnas_texto": "id uuid · anio_lectivo_id uuid · nombre varchar(60) · turno varchar(20) · estado estado_curso_enum",
+      "restricciones": "PK id · FK anio_lectivo_id · UNIQUE (anio_lectivo_id, nombre) · turno se construyó como varchar(20) con restricción de verificación y no como tipo enumerado, conforme a la decisión D-07.",
       "reglas": "RN-26"
     },
     {
@@ -164,7 +164,7 @@
         "ruta"
       ],
       "columnas_texto": "id uuid · anuncio_version_id uuid nulo · mensaje_id uuid nulo · nombre varchar(160) · tipo_mime varchar(80) · tamano integer · ruta varchar(255)",
-      "restricciones": "PK id · FK a anuncio_version y a mensaje · CHECK exactamente uno de los dos no nulo · CHECK tipo_mime igual a PDF · CHECK tamano hasta 5 MB",
+      "restricciones": "PK id · FK a anuncio_version y a mensaje · CHECK exactamente uno de los dos no nulo · CHECK tipo_mime igual a PDF · CHECK tamano hasta 5 MB · La clave foránea hacia mensaje está comprometida por esta tabla y no se encuentra declarada en la versión construida: se consigna como divergencia D-01 de la Tabla 38.",
       "reglas": "RN-33 · RF-30"
     },
     {
@@ -181,7 +181,7 @@
         "causa_fallo"
       ],
       "columnas_texto": "id uuid · anuncio_version_id uuid · destinatario_id uuid · canal canal_enum · enviada_en timestamptz · entregada_en timestamptz nulo · vista_en timestamptz nulo · leida_en timestamptz nulo · causa_fallo causa_enum nulo",
-      "restricciones": "PK id · FK anuncio_version_id y destinatario_id · UNIQUE (anuncio_version_id, destinatario_id) · índice sobre (destinatario_id, leida_en) · CHECK de monotonía entre las cuatro marcas",
+      "restricciones": "PK id · FK anuncio_version_id y destinatario_id · UNIQUE (anuncio_version_id, destinatario_id) · índice sobre (destinatario_id, leida_en) · CHECK de monotonía entre las cuatro marcas · La restricción de monotonía verifica únicamente que ninguna marca sea anterior al envío, y no el orden entre entregada, vista y leída: cubre la mitad del predicado comprometido (D-09).",
       "reglas": "RN-32 · RF-34 · RF-36"
     },
     {

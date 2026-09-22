@@ -1,11 +1,10 @@
 {
-  "fuente": "Tabla 27 · TFG v5.2",
+  "fuente": "Tabla 18 · TFG_ENTREGA_75paginas.docx",
   "total": 43,
   "endpoints": [
     {
       "metodo": "POST",
       "ruta": "/api/v1/sesiones",
-      "operacion": "Autenticar y emitir el token",
       "roles": [
         "Sin autenticar"
       ],
@@ -13,12 +12,12 @@
       "requisitos": [
         "RF-01"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/sesiones",
-      "operacion": "Cerrar la sesión activa",
       "roles": [
         "Directivo",
         "docente",
@@ -29,12 +28,12 @@
       "requisitos": [
         "RF-01"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/activaciones",
-      "operacion": "Canjear el código y definir la contraseña",
       "roles": [
         "Sin autenticar"
       ],
@@ -42,12 +41,12 @@
       "requisitos": [
         "RF-06"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/recuperaciones",
-      "operacion": "Restablecer el acceso mediante código regenerado",
       "roles": [
         "Sin autenticar"
       ],
@@ -55,12 +54,14 @@
       "requisitos": [
         "RF-08"
       ],
+      "requisitos_should": [
+        "RF-08"
+      ],
       "should": true
     },
     {
       "metodo": "PATCH",
       "ruta": "/api/v1/usuarios/me/contrasena",
-      "operacion": "Sustituir la credencial provisional",
       "roles": [
         "Directivo",
         "docente",
@@ -71,12 +72,12 @@
       "requisitos": [
         "RF-43"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/anios-lectivos",
-      "operacion": "Crear el año lectivo",
       "roles": [
         "Directivo"
       ],
@@ -84,12 +85,12 @@
       "requisitos": [
         "RF-11"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/anios-lectivos",
-      "operacion": "Consultar los años lectivos",
       "roles": [
         "Directivo"
       ],
@@ -97,12 +98,12 @@
       "requisitos": [
         "RF-11"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "PATCH",
       "ruta": "/api/v1/anios-lectivos/{id}",
-      "operacion": "Cerrar el año lectivo",
       "roles": [
         "Directivo"
       ],
@@ -110,12 +111,14 @@
       "requisitos": [
         "RF-16"
       ],
+      "requisitos_should": [
+        "RF-16"
+      ],
       "should": true
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/cursos",
-      "operacion": "Crear un curso del año lectivo vigente",
       "roles": [
         "Directivo"
       ],
@@ -123,12 +126,12 @@
       "requisitos": [
         "RF-12"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/cursos",
-      "operacion": "Consultar los cursos",
       "roles": [
         "Directivo",
         "docente"
@@ -137,12 +140,12 @@
       "requisitos": [
         "RF-12"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "PATCH",
       "ruta": "/api/v1/cursos/{id}",
-      "operacion": "Editar un curso",
       "roles": [
         "Directivo"
       ],
@@ -150,12 +153,12 @@
       "requisitos": [
         "RF-12"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/docentes",
-      "operacion": "Dar de alta a un docente y generar su código",
       "roles": [
         "Directivo"
       ],
@@ -164,12 +167,12 @@
         "RF-03",
         "RF-05"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/cursos/{id}/docentes",
-      "operacion": "Vincular un docente al curso con su atributo de titularidad",
       "roles": [
         "Directivo"
       ],
@@ -177,12 +180,12 @@
       "requisitos": [
         "RF-15"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/cursos/{id}/docentes/{usuarioId}",
-      "operacion": "Desvincular al docente designando otro titular",
       "roles": [
         "Directivo"
       ],
@@ -190,12 +193,12 @@
       "requisitos": [
         "RF-44"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/docentes/{id}",
-      "operacion": "Dar de baja lógica a un docente",
       "roles": [
         "Directivo"
       ],
@@ -203,12 +206,12 @@
       "requisitos": [
         "RF-44"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/usuarios/{id}/codigos-activacion",
-      "operacion": "Regenerar el código de activación",
       "roles": [
         "Directivo (docentes)",
         "docente (alumnos",
@@ -218,12 +221,12 @@
       "requisitos": [
         "RF-07"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/alumnos",
-      "operacion": "Dar de alta a un alumno y vincularlo a un curso",
       "roles": [
         "Docente"
       ],
@@ -233,12 +236,12 @@
         "RF-05",
         "RF-13"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/alumnos/{id}/tutores",
-      "operacion": "Vincular un tutor al alumno",
       "roles": [
         "Docente"
       ],
@@ -248,12 +251,12 @@
         "RF-05",
         "RF-14"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/alumnos/{id}",
-      "operacion": "Dar de baja lógica a un alumno",
       "roles": [
         "Directivo",
         "docente titular"
@@ -262,12 +265,12 @@
       "requisitos": [
         "RF-09"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/tutores/{id}",
-      "operacion": "Dar de baja lógica a un tutor",
       "roles": [
         "Directivo",
         "docente titular"
@@ -277,12 +280,12 @@
         "RF-09",
         "RF-10"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/anuncios",
-      "operacion": "Publicar un anuncio de forma inmediata o programada",
       "roles": [
         "Docente"
       ],
@@ -293,12 +296,14 @@
         "RF-21",
         "RF-31"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-18"
+      ],
+      "should": false
     },
     {
       "metodo": "PATCH",
       "ruta": "/api/v1/anuncios/{id}",
-      "operacion": "Editar el anuncio generando una versión nueva",
       "roles": [
         "Docente autor"
       ],
@@ -307,12 +312,14 @@
         "RF-19",
         "RF-21"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-19"
+      ],
+      "should": false
     },
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/anuncios/{id}",
-      "operacion": "Eliminar lógicamente el anuncio",
       "roles": [
         "Docente autor"
       ],
@@ -320,12 +327,12 @@
       "requisitos": [
         "RF-20"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/anuncios",
-      "operacion": "Consultar el historial filtrado por fecha, curso y remitente",
       "roles": [
         "Directivo",
         "docente",
@@ -337,12 +344,12 @@
         "RF-22",
         "RF-39"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/anuncios/{id}",
-      "operacion": "Consultar el detalle de un anuncio",
       "roles": [
         "Directivo",
         "docente",
@@ -353,12 +360,12 @@
       "requisitos": [
         "RF-22"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/anuncios/{id}/constancias",
-      "operacion": "Consultar el recuento de lecturas y la nómina de quienes no leyeron",
       "roles": [
         "Docente autor"
       ],
@@ -367,12 +374,14 @@
         "RF-23",
         "RF-38"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-38"
+      ],
+      "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/paneles/me",
-      "operacion": "Obtener el panel correspondiente al rol autenticado",
       "roles": [
         "Directivo",
         "docente",
@@ -383,12 +392,12 @@
       "requisitos": [
         "RF-40"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/supervision/cursos",
-      "operacion": "Consultar el estado agregado de entrega y lectura por curso",
       "roles": [
         "Directivo"
       ],
@@ -396,12 +405,12 @@
       "requisitos": [
         "RF-45"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/entregas/acuses",
-      "operacion": "Registrar el acuse de recepción emitido por el cliente",
       "roles": [
         "Tutor",
         "alumno"
@@ -410,12 +419,12 @@
       "requisitos": [
         "RF-34"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/entregas/vistas",
-      "operacion": "Registrar en lote los eventos de vista",
       "roles": [
         "Tutor",
         "alumno"
@@ -426,12 +435,12 @@
         "RF-35",
         "RF-36"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/entregas/lecturas",
-      "operacion": "Registrar el evento de lectura",
       "roles": [
         "Tutor",
         "alumno"
@@ -441,12 +450,12 @@
         "RF-34",
         "RF-36"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/cursos/{id}/conversaciones",
-      "operacion": "Obtener los canales del curso que corresponden al rol",
       "roles": [
         "Docente",
         "tutor",
@@ -459,12 +468,16 @@
         "RF-26",
         "RF-27"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-24",
+        "RF-26",
+        "RF-27"
+      ],
+      "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/conversaciones",
-      "operacion": "Consultar las conversaciones del usuario y sus mensajes no leídos",
       "roles": [
         "Docente",
         "tutor",
@@ -475,12 +488,14 @@
         "RF-25",
         "RF-47"
       ],
-      "should": true
+      "requisitos_should": [
+        "RF-47"
+      ],
+      "should": false
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/conversaciones/{id}/mensajes",
-      "operacion": "Consultar el historial paginado de la conversación",
       "roles": [
         "Participantes de la conversación"
       ],
@@ -489,12 +504,12 @@
         "RF-28",
         "RF-29"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/conversaciones/{id}/mensajes",
-      "operacion": "Emitir un mensaje en la conversación",
       "roles": [
         "Participantes de la conversación"
       ],
@@ -504,12 +519,12 @@
         "RF-29",
         "RF-32"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/conversaciones/{id}/adjuntos",
-      "operacion": "Adjuntar un archivo en formato PDF",
       "roles": [
         "Participantes de la conversación"
       ],
@@ -517,12 +532,14 @@
       "requisitos": [
         "RF-30"
       ],
+      "requisitos_should": [
+        "RF-30"
+      ],
       "should": true
     },
     {
       "metodo": "PUT",
       "ruta": "/api/v1/conversaciones/{id}/puntero-lectura",
-      "operacion": "Actualizar el puntero de lectura",
       "roles": [
         "Participantes de la conversación"
       ],
@@ -530,12 +547,14 @@
       "requisitos": [
         "RF-47"
       ],
+      "requisitos_should": [
+        "RF-47"
+      ],
       "should": true
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/supervision/conversaciones",
-      "operacion": "Acceder a las conversaciones del año lectivo vigente",
       "roles": [
         "Directivo"
       ],
@@ -543,12 +562,14 @@
       "requisitos": [
         "RF-46"
       ],
+      "requisitos_should": [
+        "RF-46"
+      ],
       "should": true
     },
     {
       "metodo": "GET",
       "ruta": "/api/v1/usuarios/me/preferencias",
-      "operacion": "Consultar el horario de disponibilidad y las preferencias",
       "roles": [
         "Directivo",
         "docente",
@@ -559,12 +580,12 @@
       "requisitos": [
         "RF-33"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "PUT",
       "ruta": "/api/v1/usuarios/me/preferencias",
-      "operacion": "Configurar el horario de disponibilidad y las preferencias",
       "roles": [
         "Directivo",
         "docente",
@@ -575,12 +596,12 @@
       "requisitos": [
         "RF-33"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "POST",
       "ruta": "/api/v1/suscripciones-push",
-      "operacion": "Registrar el identificador de destino del navegador",
       "roles": [
         "Directivo",
         "docente",
@@ -591,12 +612,12 @@
       "requisitos": [
         "RF-37"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "DELETE",
       "ruta": "/api/v1/suscripciones-push/{id}",
-      "operacion": "Invalidar un identificador de destino",
       "roles": [
         "Directivo",
         "docente",
@@ -607,12 +628,12 @@
       "requisitos": [
         "RF-37"
       ],
+      "requisitos_should": [],
       "should": false
     },
     {
       "metodo": "WSS",
       "ruta": "/cable",
-      "operacion": "Establecer el canal de tiempo real, autenticado con el mismo token",
       "roles": [
         "Docente",
         "tutor",
@@ -624,6 +645,7 @@
         "RF-29",
         "RF-32"
       ],
+      "requisitos_should": [],
       "should": false
     }
   ]

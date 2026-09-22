@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # Compuertas de integración de rama · punto 4.5 del documento de grado.
-# No hay integración continua: esta es la condición que la reemplaza (Quality Spec, Tabla 37).
+# No hay integración continua: esta es la condición que la reemplaza (Quality Spec, Tabla 26).
 set -u
 cd "$(dirname "$0")/.."
 echo
-echo "  VERIFICACIÓN DE FIDELIDAD AL DOCUMENTO — TFG v5.2"
+echo "  VERIFICACIÓN DE FIDELIDAD AL DOCUMENTO — edición vigente · 75 páginas"
 echo "  ================================================="
 echo
 rojo=0
-for g in contrato errores esquema alcance trazabilidad tiempo cobertura; do
+for g in contrato errores esquema alcance trazabilidad tiempo cobertura estilo; do
   python3 "tools/gate_${g}.py" || rojo=1
 done
 if [ "$rojo" -ne 0 ]; then
   echo "  RESULTADO: ROJO — la rama no se integra."
-  echo "  Corregí el código, o registrá la divergencia en specs/DECISIONES.md y actualizá el documento."
+  echo "  Corregí el código o actualizá el documento."
   exit 1
 fi
 echo "  RESULTADO: VERDE — la rama puede integrarse."

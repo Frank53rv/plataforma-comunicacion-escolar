@@ -1,8 +1,8 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
+<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 20 · Especificación resumida de los casos de uso
+# Tabla 13 · Especificación resumida de los casos de uso
 
 | Código | Caso de uso | Actor principal | Actores secundarios | Precondición | Postcondición | Requisitos que realiza |
 |---|---|---|---|---|---|---|
