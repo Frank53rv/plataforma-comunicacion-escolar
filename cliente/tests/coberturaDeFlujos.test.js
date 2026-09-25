@@ -124,7 +124,7 @@ const todas = new Set(inventario.endpoints.map(clave));
 
 describe("CP-RF-42 · cobertura de flujos ejecutables desde la interfaz", () => {
   it("lee las operaciones de la Tabla 18 y las llamadas del cliente, y ninguna de las dos lecturas está vacía", () => {
-    expect(inventario.endpoints).toHaveLength(43);
+    expect(inventario.endpoints).toHaveLength(42);
     expect(construidas).toHaveLength(37);
     expect(llamadasDelCliente.size).toBeGreaterThan(30);
   });
@@ -161,7 +161,6 @@ describe("CP-RF-42 · cobertura de flujos ejecutables desde la interfaz", () => 
     expect(fuera.sort()).toEqual(
       [
         "PATCH /anios-lectivos/{x}",
-        "PATCH /anuncios/{x}",
         "POST /conversaciones/{x}/adjuntos",
         "POST /recuperaciones",
         "PUT /conversaciones/{x}/puntero-lectura",

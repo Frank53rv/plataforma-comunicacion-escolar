@@ -12,7 +12,7 @@
 | Formato de intercambio | JSON en petición y respuesta. Nombres de campo en minúsculas con guion bajo, iguales a los del diccionario de la Tabla 14 | Tabla 26, nomenclatura del dominio |
 | Fechas y horas | Cadena conforme a ISO 8601 con desplazamiento explícito. El servidor almacena y responde en tiempo universal coordinado | RF-34 · RF-32 |
 | Paginación | Parámetros pagina y por_pagina, con veinticinco elementos por omisión y cien como máximo. La respuesta incluye total, pagina y por_pagina junto a los datos | RF-22 · RF-28 |
-| Ordenamiento | Parámetro orden con un campo y un sentido. El historial de anuncios y el de mensajes ordenan por fecha descendente por omisión | RF-22 · RNF-16 |
+| Ordenamiento | Parámetro orden con un campo y un sentido. El historial de anuncios y el de mensajes ordenan por fecha descendente por omisión; la colección de conversaciones del usuario, por nombre del curso | RF-22 · RNF-16 |
 | Filtros | Parámetros de consulta nombrados como el campo que filtran: curso_id, remitente_id, desde, hasta | RF-22 |
 | Respuesta de éxito | Objeto del recurso en las operaciones de un solo elemento; objeto con datos y paginación en las de colección. Sin envoltorio adicional | — |
 | Respuesta de error | Objeto conforme a RFC 9457 (Nottingham et al., 2023) con los miembros de la norma más codigo y regla, según el catálogo de la Tabla 24 | RF-37 · RNF-17 |

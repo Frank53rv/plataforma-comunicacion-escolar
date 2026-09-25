@@ -23,6 +23,10 @@ module Inventario
     "docente titular" => %w[docente],
     # «Directivo (docentes), docente (alumnos y tutores)»: la cadena de RN-07.
     "directivo (docentes)" => %w[directivo],
+    # «Directivo (todos los cursos), docente (cursos con vinculación vigente)»: el alcance
+    # sobre los cursos lo verifica la consulta de CU-09, no la matriz de roles.
+    "directivo (todos los cursos)" => %w[directivo],
+    "docente (cursos con vinculación vigente)" => %w[docente],
     "docente (alumnos" => %w[docente],
     "tutores)" => [],
     # «Participantes de la conversación»: la participación deriva de la vinculación con

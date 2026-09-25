@@ -13,5 +13,8 @@ module.exports = {
     "conversacion/**/*.{js,jsx}",
     "preferencias/**/*.{js,jsx}",
   ],
+  // RNF-20 · el umbral del 70 % se configura en la propia herramienta, de modo que la
+  // ejecución falla por debajo de ese valor, igual que SimpleCov en la interfaz.
+  coverageThreshold: { global: { lines: 70 } },
   moduleNameMapper: { "\\.css$": "<rootDir>/tests/estiloVacio.js" },
 };

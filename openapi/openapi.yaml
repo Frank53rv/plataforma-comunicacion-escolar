@@ -736,34 +736,6 @@ paths:
         in: path
         required: true
         schema: { type: string, format: uuid }
-    patch:
-      operationId: patch_anuncios_id
-      summary: Editar el anuncio generando una versión nueva
-      description: >-
-        CU-07 · RF-19, RF-21. Roles autorizados: Docente autor. · Should have, fuera del alcance comprometido: RF-19
-      tags: [CU-07]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                titulo:
-                  type: string
-                cuerpo:
-                  type: string
-      responses:
-        '200':
-          description: Operación completada
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/AnuncioPublicado" }
-        '401': { $ref: '#/components/responses/NoAutenticado' }
-        '403': { $ref: '#/components/responses/NoHabilitado' }
-        '404': { $ref: '#/components/responses/NoEncontrado' }
-        '422': { $ref: '#/components/responses/DatosInaceptables' }
-        '500': { $ref: '#/components/responses/ErrorInterno' }
     delete:
       operationId: delete_anuncios_id
       summary: Eliminar lógicamente el anuncio

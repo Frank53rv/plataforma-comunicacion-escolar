@@ -1,6 +1,6 @@
 {
   "fuente": "Tabla 18 · TFG_ENTREGA_75paginas.docx",
-  "total": 43,
+  "total": 42,
   "endpoints": [
     {
       "metodo": "POST",
@@ -133,8 +133,8 @@
       "metodo": "GET",
       "ruta": "/api/v1/cursos",
       "roles": [
-        "Directivo",
-        "docente"
+        "Directivo (todos los cursos)",
+        "docente (cursos con vinculación vigente)"
       ],
       "caso_uso": "CU-03, CU-09",
       "requisitos": [
@@ -298,22 +298,6 @@
       ],
       "requisitos_should": [
         "RF-18"
-      ],
-      "should": false
-    },
-    {
-      "metodo": "PATCH",
-      "ruta": "/api/v1/anuncios/{id}",
-      "roles": [
-        "Docente autor"
-      ],
-      "caso_uso": "CU-07",
-      "requisitos": [
-        "RF-19",
-        "RF-21"
-      ],
-      "requisitos_should": [
-        "RF-19"
       ],
       "should": false
     },

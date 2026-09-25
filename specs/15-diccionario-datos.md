@@ -20,7 +20,7 @@
 | adjunto | Archivo en formato PDF asociado a un anuncio o mensaje. |
 | entrega_anuncio | Constancia por persona y por publicación, con los cuatro estados. |
 | conversacion | Canal de mensajería asociado a un curso. |
-| participante | Vinculación entre un usuario y una conversación. |
+| participante | Vinculación entre un usuario y una conversación. La fila se registra al acceder a la conversación; incorporado_en es el inicio del día, en America/Asuncion, de la vinculación que hace participante al usuario —para el docente, su vinculación al curso; para el tutor, la más tardía entre su vinculación al alumno y la del alumno al curso—. La pertenencia (RN-23) se evalúa siempre contra las vinculaciones vigentes. |
 | mensaje | Unidad de comunicación dentro de una conversación. |
 | puntero_lectura | Última posición leída por un usuario en una conversación. |
 | suscripcion_push | Identificador de destino que el navegador de una persona entrega al registrarse para recibir notificaciones push. |
