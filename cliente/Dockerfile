@@ -1,4 +1,4 @@
-# Tabla 45 · Cliente web: React 19 construido con Vite 8 y servido por nginx.
+# Tabla 34 · Cliente web: React 19 construido con Vite 8 y servido por nginx.
 # Archivos estáticos, sin renderizado en el servidor.
 FROM node:22-slim AS construccion
 WORKDIR /cliente

@@ -1,4 +1,4 @@
-# Tabla 34 · ActionCable con adaptador Solid Cable, respaldado por la misma base de
+# Tabla 23 · ActionCable con adaptador Solid Cable, respaldado por la misma base de
 # datos y sin almacén en memoria adicional. Sin conexión propia: usa la principal.
 default: &default
   adapter: solid_cable

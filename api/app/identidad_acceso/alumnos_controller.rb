@@ -20,7 +20,7 @@ class AlumnosController < ApplicationController
 
     # RN-30 (Tabla 24, fila 409, CU-05 E2): se rechaza la vinculación de un alumno a un
     # segundo curso vigente dentro del mismo año lectivo. El alumno se identifica por su
-    # correo, que la Tabla 21 declara único; la regla se verifica antes que la unicidad
+    # correo, que la Tabla 14 declara único; la regla se verifica antes que la unicidad
     # del correo, para que el rechazo sea el de la regla y no el del dato repetido.
     existente = Usuario.find_by(correo: datos_de_persona[:correo], rol: "alumno")
     AlumnoCurso.verificar_pertenencia_unica!(alumno_id: existente.id, curso: curso) if existente

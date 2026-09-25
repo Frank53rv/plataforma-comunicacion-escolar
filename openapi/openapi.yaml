@@ -1,8 +1,8 @@
-# GENERADO desde specs/20-endpoints.json (Tabla 27), las convenciones de la Tabla 39
-# y las formas de la Tabla 40. RNF-17 · CP-RNF-17.
+# GENERADO desde specs/20-endpoints.json (Tabla 18), las convenciones de la Tabla 28
+# y las formas de la Tabla 29. RNF-17 · CP-RNF-17.
 #
 # La verificación consiste en contrastar las rutas del enrutador contra las de este
-# archivo y contra el inventario de la Tabla 27, con diferencia nula en los tres
+# archivo y contra el inventario de la Tabla 18, con diferencia nula en los tres
 # sentidos. La compuerta `contrato` de bin/verificar lo comprueba.
 openapi: 3.1.0
 info:
@@ -11,7 +11,7 @@ info:
   description: |
     Interfaz de programación del producto mínimo viable. Cuarenta y dos operaciones
     sobre HTTP más el canal de tiempo real, derivadas de los quince casos de uso de la
-    Tabla 20.
+    Tabla 13.
 
     El canal de tiempo real no figura entre las rutas de este archivo por no ser una
     operación HTTP: se establece en `WSS /cable`, presentando el mismo token de
@@ -20,7 +20,7 @@ info:
 
     Convenciones de la Tabla 39 aplicadas a la totalidad de las operaciones:
     identificador universal único en rutas y cuerpos; JSON en petición y respuesta con
-    nombres de campo iguales a los del diccionario de la Tabla 21; fechas conforme a
+    nombres de campo iguales a los del diccionario de la Tabla 14; fechas conforme a
     ISO 8601 con desplazamiento explícito, almacenadas y respondidas en tiempo
     universal coordinado; paginación con `pagina` y `por_pagina`, veinticinco por
     omisión y cien como máximo; cuerpo de petición de hasta 1 MB, salvo la carga de
@@ -34,7 +34,7 @@ servers:
     variables:
       host:
         default: localhost
-        description: Valor de APP_HOST (Tabla 41)
+        description: Valor de APP_HOST (Tabla 30)
 security:
   - portador: []
 paths:

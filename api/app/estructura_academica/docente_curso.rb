@@ -1,7 +1,7 @@
 # RF-15 Vinculación de docentes a cursos · CU-04 · RN-02, RN-13
 # Prueba: CP-RF-15
 #
-# Tabla 21 · «Vinculación entre un docente y un curso.» Un único titular vigente por
+# Tabla 14 · «Vinculación entre un docente y un curso.» Un único titular vigente por
 # curso. Par usuario-curso único entre los vigentes. Ambas restricciones las garantiza
 # el motor con los índices parciales de la Tabla 38; acá se verifican antes, para
 # rechazar con el estado del catálogo en lugar de con la violación del índice.

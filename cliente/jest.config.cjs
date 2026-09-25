@@ -1,4 +1,4 @@
-// Tabla 34 · Jest y React Testing Library para las pruebas de comportamiento de los
+// Tabla 23 · Jest y React Testing Library para las pruebas de comportamiento de los
 // componentes del cliente.
 module.exports = {
   testEnvironment: "jsdom",

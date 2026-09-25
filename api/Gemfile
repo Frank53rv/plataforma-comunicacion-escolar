@@ -34,7 +34,7 @@ gem "bootsnap", require: false
 # thruster no se incorpora: la Tabla 34 asigna la entrega de archivos estáticos y la
 # terminación de la conexión cifrada a nginx (Boundary 7).
 
-# CORS_ORIGENES de la Tabla 41 · orígenes autorizados a consumir la interfaz
+# CORS_ORIGENES de la Tabla 30 · orígenes autorizados a consumir la interfaz
 gem "rack-cors", "~> 3.0.0"
 
 group :development, :test do

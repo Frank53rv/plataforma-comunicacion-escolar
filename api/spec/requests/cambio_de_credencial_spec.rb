@@ -103,7 +103,7 @@ RSpec.describe "Cambio de la credencial provisional", type: :request do
       expect(response).to have_http_status(:unauthorized)
     end
 
-    # Tabla 42 · una prueba de autorización por cada uno de los cuatro roles.
+    # Tabla 26 · una prueba de autorización por cada uno de los cuatro roles.
     # RN-09 dice «toda credencial provisional», no sólo la del directivo.
     %w[directivo docente tutor alumno].each do |rol|
       it "admite a #{rol}, que la Tabla 27 declara autorizado" do
@@ -120,7 +120,7 @@ RSpec.describe "Cambio de la credencial provisional", type: :request do
 
   # RN-08 · «El sistema no dispone de recuperación autónoma de la cuenta directiva. Se
   # resuelve reponiendo la credencial provisional por variable de entorno.»
-  # Tabla 46, paso 5.
+  # Tabla 35, paso 5.
   describe "reposición de la cuenta directiva por variable de entorno · RN-08" do
     before do
       allow(ENV).to receive(:fetch).and_call_original

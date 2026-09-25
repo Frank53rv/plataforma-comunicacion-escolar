@@ -1,7 +1,7 @@
 // RF-31 Notificación de anuncios · CU-06, CU-14 · RN-18
 // Prueba: CP-RF-31
 //
-// Tabla 34 · el manifiesto y el service worker propios «hacen instalable el cliente,
+// Tabla 23 · el manifiesto y el service worker propios «hacen instalable el cliente,
 // condición de la recepción en iOS según el riesgo R-03». Se verifica que la instalación se
 // ofrezca cuando el navegador la admite, que iOS reciba la indicación de la vía manual, y
 // que instalada la aplicación el ofrecimiento desaparezca.

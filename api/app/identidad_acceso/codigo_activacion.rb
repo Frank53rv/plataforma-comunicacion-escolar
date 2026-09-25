@@ -2,7 +2,7 @@
 # RN-05, RN-07
 # Prueba: CP-RF-05 · CP-RF-07
 #
-# Tabla 21 · «Código de un solo uso para la activación de una cuenta o la recuperación
+# Tabla 14 · «Código de un solo uso para la activación de una cuenta o la recuperación
 # de acceso.» Único por usuario entre los vigentes. Vencimiento de siete días. Se
 # invalida al usarse.
 # Tabla 27 · nombre de tabla en singular.

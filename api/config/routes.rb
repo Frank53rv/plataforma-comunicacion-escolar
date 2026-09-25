@@ -1,4 +1,4 @@
-# Tabla 27 · Inventario de endpoints · RNF-17 · Boundary 4
+# Tabla 18 · Inventario de endpoints · RNF-17 · Boundary 4
 # Ninguna ruta fuera de las 43 que la tabla declara. El prefijo es el de la Tabla 39.
 # La compuerta `contrato` de bin/verificar contrasta este archivo contra el inventario
 # y contra openapi/openapi.yaml, con diferencia nula en los tres sentidos.

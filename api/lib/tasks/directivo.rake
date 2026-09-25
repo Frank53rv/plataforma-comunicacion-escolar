@@ -1,7 +1,7 @@
-# RF-43 · RN-08 · Tabla 46, paso 5
+# RF-43 · RN-08 · Tabla 35, paso 5
 # «Reponer la credencial provisional de la cuenta directiva por variable de entorno.»
 namespace :directivo do
-  desc "Repone la credencial provisional de la cuenta directiva (RN-08 · Tabla 41)"
+  desc "Repone la credencial provisional de la cuenta directiva (RN-08 · Tabla 30)"
   task reponer_credencial: :environment do
     directivo = CuentaDirectivaSemilla.reponer
     puts "Cuenta directiva repuesta: #{directivo.correo}"

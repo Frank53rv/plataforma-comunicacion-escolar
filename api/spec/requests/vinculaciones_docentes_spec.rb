@@ -85,7 +85,7 @@ RSpec.describe "Vinculación de docentes a cursos", type: :request do
   end
 
   describe "rechazos" do
-    # Tabla 21 · «Un único titular vigente por curso» · Tabla 38 · RN-13
+    # Tabla 14 · «Un único titular vigente por curso» · Tabla 38 · RN-13
     it "rechaza un segundo titular vigente con 409 y RN-13" do
       create(:docente_curso, curso: curso, es_titular: true)
 
@@ -96,7 +96,7 @@ RSpec.describe "Vinculación de docentes a cursos", type: :request do
       expect(curso.vinculaciones_docentes.vigentes.titulares.count).to eq(1)
     end
 
-    # Tabla 21 · «Par usuario-curso único entre los vigentes»
+    # Tabla 14 · «Par usuario-curso único entre los vigentes»
     it "rechaza la vinculación repetida con 422" do
       docente = create(:usuario, :docente)
       vincular(docente.id, es_titular: false)

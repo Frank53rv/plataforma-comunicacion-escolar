@@ -20,7 +20,7 @@ module Autorizacion
   end
 
   class_methods do
-    # Los roles son literalmente los de la columna «Roles autorizados» de la Tabla 27.
+    # Los roles son literalmente los de la columna «Roles autorizados» de la Tabla 18.
     # Alterarlos es una modificación del contrato y no una decisión del código
     # (Boundary 4).
     #

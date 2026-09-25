@@ -34,9 +34,9 @@ port ENV.fetch("PORT", 3000)
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
 
-# Tabla 45 · la interfaz corre en un solo contenedor, con ActionCable en el mismo
+# Tabla 34 · la interfaz corre en un solo contenedor, con ActionCable en el mismo
 # proceso. El supervisor de Solid Queue corre también dentro de Puma: no se agrega un
-# contenedor ni una variable de entorno que la Tabla 41 no enumere.
+# contenedor ni una variable de entorno que la Tabla 30 no enumere.
 plugin :solid_queue
 
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.

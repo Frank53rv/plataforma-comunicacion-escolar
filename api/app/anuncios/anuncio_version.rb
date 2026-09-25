@@ -1,7 +1,7 @@
 # RF-17 Publicación de anuncios · CU-06 · RN-16, RN-17
 # Prueba: CP-RF-17
 #
-# Tabla 21 · «Contenido de un anuncio en un momento dado.» El versionado por edición es
+# Tabla 14 · «Contenido de un anuncio en un momento dado.» El versionado por edición es
 # RF-19 (Should have): esta entrega sólo produce la versión 1, la que CU-06 crea al
 # publicar.
 class AnuncioVersion < ApplicationRecord

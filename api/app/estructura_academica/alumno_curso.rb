@@ -2,7 +2,7 @@
 # cursos · CU-05 · RN-03, RN-07, RN-30
 # Prueba: CP-RF-04 · CP-RF-07 · CP-RF-13
 #
-# Tabla 21 · «Vinculación entre un alumno y un curso.» Un alumno pertenece a un solo
+# Tabla 14 · «Vinculación entre un alumno y un curso.» Un alumno pertenece a un solo
 # curso vigente por año lectivo (RN-30), verificado en la capa de negocio conforme a la
 # nota de la Tabla 38.
 # Tabla 27 · nombre de tabla en singular.

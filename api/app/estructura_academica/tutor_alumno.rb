@@ -2,7 +2,7 @@
 # a alumnos · CU-05 · RN-03, RN-07, RN-29
 # Prueba: CP-RF-04 · CP-RF-07 · CP-RF-14
 #
-# Tabla 21 · «Vinculación entre un tutor y un alumno.» Hasta dos tutores vigentes por
+# Tabla 14 · «Vinculación entre un tutor y un alumno.» Hasta dos tutores vigentes por
 # alumno (RN-29), verificado en la capa de negocio conforme a la nota de la Tabla 38.
 # Tabla 27 · nombre de tabla en singular.
 class TutorAlumno < ApplicationRecord

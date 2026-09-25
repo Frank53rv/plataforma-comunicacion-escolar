@@ -3,8 +3,8 @@
 #
 # RN-08 · «El sistema no dispone de recuperación autónoma de la cuenta directiva. Se
 # resuelve reponiendo la credencial provisional por variable de entorno.»
-# Tabla 41 · DIRECTIVO_CORREO y DIRECTIVO_CREDENCIAL_PROVISIONAL.
-# Tabla 46, paso 5 · la reposición es una tarea de mantenimiento, no una operación de
+# Tabla 30 · DIRECTIVO_CORREO y DIRECTIVO_CREDENCIAL_PROVISIONAL.
+# Tabla 35, paso 5 · la reposición es una tarea de mantenimiento, no una operación de
 # la interfaz: crear una ruta para ella sería una ruta fuera de las 43 (Boundary 4).
 class CuentaDirectivaSemilla
   def self.reponer

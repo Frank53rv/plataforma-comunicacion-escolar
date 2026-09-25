@@ -2,7 +2,7 @@
 # historial de anuncios · CU-06, CU-08, CU-09 · RN-14, RN-16, RN-17, RN-20, RN-22
 # Prueba: CP-RF-17 · CP-RF-20 · CP-RF-22
 #
-# Tabla 21 · «Comunicación institucional que el docente dirige a los cursos que dicta.»
+# Tabla 14 · «Comunicación institucional que el docente dirige a los cursos que dicta.»
 # Tabla 27 · nombre de tabla en singular. `programado_para` y el estado
 # `programado` pertenecen a RF-18 (Should have): esta entrega sólo produce los estados
 # `publicado` y `eliminado`, la publicación inmediata que semantica-temporal.md fija

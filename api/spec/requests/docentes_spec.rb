@@ -71,7 +71,7 @@ RSpec.describe "Alta de docentes", type: :request do
       expect(Usuario.docente.count).to eq(0)
     end
 
-    # Tabla 21 · «Correo único». RN-04 · quien cumple dos funciones opera con dos
+    # Tabla 14 · «Correo único». RN-04 · quien cumple dos funciones opera con dos
     # cuentas separadas, de modo que el correo no puede reutilizarse.
     it "rechaza un correo ya registrado, sin distinguir mayúsculas" do
       create(:usuario, :tutor, correo: "docente.nuevo@ejemplo.test")
@@ -83,7 +83,7 @@ RSpec.describe "Alta de docentes", type: :request do
     end
   end
 
-  # RN-02 · «El directivo … da de alta a los docentes». Tabla 42 · autorización por
+  # RN-02 · «El directivo … da de alta a los docentes». Tabla 26 · autorización por
   # los cuatro roles.
   describe "autorización" do
     it "admite al directivo" do

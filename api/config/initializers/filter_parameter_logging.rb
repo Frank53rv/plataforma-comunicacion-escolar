@@ -5,7 +5,7 @@
 # See the ActiveSupport::ParameterFilter documentation for supported notations and behaviors.
 Rails.application.config.filter_parameters += [
   :passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc,
-  # Los nombres de campo son los del diccionario de la Tabla 21, en castellano, y los
+  # Los nombres de campo son los del diccionario de la Tabla 14, en castellano, y los
   # filtros por omisión del framework no los reconocen. RNF-03 y el punto 1.7: ninguna
   # contraseña, código de activación ni dato personal —correo, nombre, apellido, muchos
   # de ellos de menores— queda en claro en la bitácora.

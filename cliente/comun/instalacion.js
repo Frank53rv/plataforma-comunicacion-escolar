@@ -1,7 +1,7 @@
 // RF-31 Notificación de anuncios · CU-06, CU-14 · RN-18
 // Prueba: CP-RF-31
 //
-// Tabla 34 · el service worker y el manifiesto son propios y «hacen instalable el cliente,
+// Tabla 23 · el service worker y el manifiesto son propios y «hacen instalable el cliente,
 // condición de la recepción en iOS según el riesgo R-03»: ese navegador sólo entrega el
 // aviso push cuando la aplicación está añadida a la pantalla de inicio. Acá se reconoce si
 // ya lo está y por qué vía puede instalarse, sin decidir nada: el navegador ofrece la

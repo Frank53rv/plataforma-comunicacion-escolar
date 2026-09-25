@@ -14,7 +14,7 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
     #  Solo el rol habilitado obtiene respuesta; los tres restantes, 403.»
     #
     # El controlador es anónimo: no incorpora ninguna ruta al enrutador, de modo que el
-    # inventario de la Tabla 27 permanece intacto (Boundary 4).
+    # inventario de la Tabla 18 permanece intacto (Boundary 4).
     controller(ApplicationController) do
       autoriza :dato_academico, roles: %w[directivo]
       autoriza :sin_declarar_roles, roles: []
@@ -143,7 +143,7 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
   end
 
   # Boundary 4 · «no alterar los roles autorizados de una operación».
-  describe "los roles declarados en el código reproducen la Tabla 27" do
+  describe "los roles declarados en el código reproducen la Tabla 18" do
     it "coincide operación por operación" do
       divergencias = Inventario.construidas.filter_map do |e|
         controlador = "#{e['controlador'].camelize}Controller".constantize
