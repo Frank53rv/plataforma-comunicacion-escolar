@@ -16,6 +16,9 @@
 #   :transitorio         el servicio no está disponible, o el envío no pudo intentarse
 #                        (incluida una credencial de servicio propia inutilizable, que no
 #                        es de ninguna suscripción): se reintenta desde la cola.
+
+require "net/http"
+
 class ClienteFcm
   Resultado = Struct.new(:estado, :codigo, keyword_init: true)
 
