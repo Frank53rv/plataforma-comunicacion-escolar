@@ -5,7 +5,13 @@
 // condición de la recepción en iOS según el riesgo R-03». Se verifica que la instalación se
 // ofrezca cuando el navegador la admite, que iOS reciba la indicación de la vía manual, y
 // que instalada la aplicación el ofrecimiento desaparezca.
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import BotonDeInstalacion from "../comun/BotonDeInstalacion.jsx";
 import { esIOS, estaInstalada } from "../comun/instalacion.js";
 
@@ -28,7 +34,8 @@ function ofrecer() {
   return suceso;
 }
 
-const boton = () => screen.queryByRole("button", { name: "Instalar aplicación" });
+const boton = () =>
+  screen.queryByRole("button", { name: "Instalar aplicación" });
 
 describe("ofrecimiento de instalación del cliente", () => {
   let restaurar = () => {};
