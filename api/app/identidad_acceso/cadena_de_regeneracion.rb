@@ -6,7 +6,7 @@
 # RN-08 · la cuenta directiva no tiene instancia superior dentro del sistema: su código
 # no lo regenera nadie, se repone por variable de entorno.
 #
-# La Tabla 27 declara los roles de la operación como «Directivo (docentes), docente
+# La Tabla 18 declara los roles de la operación como «Directivo (docentes), docente
 # (alumnos y tutores)». El rol habilita la operación; esta cadena decide sobre quién.
 class CadenaDeRegeneracion
   class << self

@@ -58,7 +58,7 @@ RSpec.describe "Pertenencia única a curso", type: :request do
   end
 
   # El correo de otra persona con otro rol no es el de un alumno: sigue siendo un dato
-  # repetido (Tabla 21, correo único; RN-04, un rol por persona).
+  # repetido (Tabla 14, correo único; RN-04, un rol por persona).
   it "el correo de una persona con otro rol responde 422 y no 409" do
     create(:usuario, :tutor, correo: "alumno@ejemplo.test")
 

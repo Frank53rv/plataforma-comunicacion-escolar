@@ -15,7 +15,7 @@
 | GET /api/v1/anios-lectivos | Directivo | CU-03 | RF-11 |
 | PATCH /api/v1/anios-lectivos/{id} | Directivo | CU-03 | RF-16 (Should) |
 | POST /api/v1/cursos | Directivo | CU-03 | RF-12 |
-| GET /api/v1/cursos | Directivo, docente | CU-03, CU-09 | RF-12 |
+| GET /api/v1/cursos | Directivo (todos los cursos), docente (cursos con vinculación vigente) | CU-03, CU-09 | RF-12 |
 | PATCH /api/v1/cursos/{id} | Directivo | CU-03 | RF-12 |
 | POST /api/v1/docentes | Directivo | CU-04 | RF-03, RF-05 |
 | POST /api/v1/cursos/{id}/docentes | Directivo | CU-04 | RF-15 |
@@ -27,7 +27,6 @@
 | DELETE /api/v1/alumnos/{id} | Directivo, docente titular | CU-05 | RF-09 |
 | DELETE /api/v1/tutores/{id} | Directivo, docente titular | CU-05 | RF-09, RF-10 |
 | POST /api/v1/anuncios | Docente | CU-06 | RF-17, RF-18 (Should), RF-21, RF-31 |
-| PATCH /api/v1/anuncios/{id} | Docente autor | CU-07 | RF-19 (Should), RF-21 |
 | DELETE /api/v1/anuncios/{id} | Docente autor | CU-08 | RF-20 |
 | GET /api/v1/anuncios | Directivo, docente, tutor, alumno | CU-09 | RF-22, RF-39 |
 | GET /api/v1/anuncios/{id} | Directivo, docente, tutor, alumno | CU-09 | RF-22 |
@@ -50,4 +49,4 @@
 | DELETE /api/v1/suscripciones-push/{id} | Directivo, docente, tutor, alumno | CU-14 | RF-37 |
 | WSS /cable | Docente, tutor, alumno | CU-12 | RF-25, RF-29, RF-32 |
 
-> Nota. Cuarenta y dos operaciones sobre HTTP más el canal de tiempo real, derivadas de los quince casos de uso de la Tabla 13. La columna de roles autorizados es el insumo directo de RNF-01: la matriz de pruebas de autorización de la Etapa 4 se construye como el producto de esta columna por los cuatro roles, de modo que cada operación se prueba tanto con el rol habilitado como con los no habilitados.
+> Nota. Cuarenta y una operaciones sobre HTTP más el canal de tiempo real, derivadas de los quince casos de uso de la Tabla 13. CU-07 no dispone de operación propia: se realiza como eliminación del anuncio (CU-08) seguida de una publicación nueva (CU-06). La columna de roles autorizados es el insumo directo de RNF-01: la matriz de pruebas de autorización de la Etapa 4 se construye como el producto de esta columna por los cuatro roles, de modo que cada operación se prueba tanto con el rol habilitado como con los no habilitados.

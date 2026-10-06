@@ -63,7 +63,7 @@ class TutoresDeAlumnoController < ApplicationController
 
   # RF-14 · un mismo tutor con varios hijos, aun en cursos distintos, opera con una
   # sola cuenta y sin perfiles separados. Se lo identifica por su correo, único según
-  # la Tabla 21. El correo de una persona con otro rol no es el de un tutor (RN-04) y
+  # la Tabla 14. El correo de una persona con otro rol no es el de un tutor (RN-04) y
   # sigue siendo un dato repetido.
   def tutor_existente(correo, alumno)
     persona = Usuario.find_by(correo: correo)
@@ -73,7 +73,7 @@ class TutoresDeAlumnoController < ApplicationController
       raise ErrorDeDominio::DatosInaceptables.new(detalle: "El correo indicado no puede vincularse como tutor.")
     end
 
-    # Tabla 21 · «Par único entre los vigentes»
+    # Tabla 14 · «Par único entre los vigentes»
     if TutorAlumno.vigentes.exists?(tutor_id: persona.id, alumno_id: alumno.id)
       raise ErrorDeDominio::DatosInaceptables.new(detalle: "El tutor ya está vinculado a este alumno.")
     end

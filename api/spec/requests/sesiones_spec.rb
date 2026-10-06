@@ -170,7 +170,7 @@ RSpec.describe "Sesiones", type: :request do
     end
   end
 
-  # Tabla 42 · una prueba de autorización por cada uno de los cuatro roles
+  # Tabla 26 · una prueba de autorización por cada uno de los cuatro roles
   describe "autorización de DELETE /api/v1/sesiones · insumo de CP-RNF-01" do
     %w[directivo docente tutor alumno].each do |rol|
       it "admite a #{rol}, que la Tabla 27 declara autorizado" do

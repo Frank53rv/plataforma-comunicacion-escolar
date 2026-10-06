@@ -1,15 +1,15 @@
-# Tabla 45 · Matriz de infraestructura. Tres unidades de ejecución propias; el túnel de
+# Tabla 34 · Matriz de infraestructura. Tres unidades de ejecución propias; el túnel de
 # exposición corre como proceso auxiliar junto a esta composición y el servicio de
 # notificaciones push es el único componente externo.
 # RNF-19 · el entorno completo se levanta desde el repositorio sin edición manual de
-# ningún archivo: los valores propios de la instalación vienen de .env (Tabla 41).
+# ningún archivo: los valores propios de la instalación vienen de .env (Tabla 30).
 
 name: plataforma-comunicacion-escolar
 
 services:
   db:
     image: postgres:18
-    # Tabla 41 · las credenciales del motor son las de DATABASE_URL y ninguna otra: el
+    # Tabla 30 · las credenciales del motor son las de DATABASE_URL y ninguna otra: el
     # contenedor las toma de esa misma cadena, de modo que no hace falta una variable
     # que la tabla no enumere ni queda una credencial escrita en este archivo.
     env_file: .env
@@ -30,7 +30,7 @@ services:
       timeout: 5s
       retries: 20
     # Sin puertos hacia el equipo: la base sólo es alcanzable desde la red privada de la
-    # composición. La Tabla 45 no la expone.
+    # composición. La Tabla 34 no la expone.
 
   api:
     build: ./api
@@ -43,7 +43,7 @@ services:
       # que el entorno dependiera de su historia y no del repositorio (RNF-19).
       - ./api:/api
       # El paquete normativo, de sólo lectura: la suite contrasta la matriz de
-      # autorización contra la columna de roles de la Tabla 27 (RNF-01) y no contra
+      # autorización contra la columna de roles de la Tabla 18 (RNF-01) y no contra
       # una lista escrita a mano.
       - ./specs:/specs:ro
     depends_on:

@@ -1,7 +1,7 @@
 # RF-01 Autenticación de usuarios · CU-01 · RN-04, RN-11, RN-15
 # Prueba: CP-RF-01 · CP-RNF-03
 #
-# Tabla 21 · «Persona con acceso al sistema, bajo un único rol.»
+# Tabla 14 · «Persona con acceso al sistema, bajo un único rol.»
 # Tabla 27 · nombre de tabla en singular.
 class Usuario < ApplicationRecord
   self.table_name = "usuario"

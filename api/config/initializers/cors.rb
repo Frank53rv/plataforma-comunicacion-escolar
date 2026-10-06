@@ -1,4 +1,4 @@
-# Tabla 41 · CORS_ORIGENES: orígenes autorizados a consumir la interfaz desde el
+# Tabla 30 · CORS_ORIGENES: orígenes autorizados a consumir la interfaz desde el
 # navegador. RNF-06 y RNF-21: ninguna decisión de autorización se resuelve acá; esto
 # sólo delimita desde qué origen el cliente puede emitir la petición.
 Rails.application.config.middleware.insert_before 0, Rack::Cors do

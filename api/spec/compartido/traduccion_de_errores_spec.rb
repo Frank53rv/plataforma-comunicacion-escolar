@@ -4,7 +4,7 @@
 # «codigo» y «regla».
 #
 # El controlador es anónimo: no incorpora ninguna ruta al enrutador, de modo que el
-# inventario de la Tabla 27 permanece intacto (Boundary 4).
+# inventario de la Tabla 18 permanece intacto (Boundary 4).
 #
 # Prueba: CP-RNF-17
 require "rails_helper"

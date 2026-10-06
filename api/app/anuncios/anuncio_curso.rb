@@ -1,7 +1,7 @@
 # RF-17 Publicación de anuncios · CU-06 · RN-16
 # Prueba: CP-RF-17
 #
-# Tabla 21 · «Curso al que se dirige un anuncio.»
+# Tabla 14 · «Curso al que se dirige un anuncio.»
 class AnuncioCurso < ApplicationRecord
   self.table_name = "anuncio_curso"
 

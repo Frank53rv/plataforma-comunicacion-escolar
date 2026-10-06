@@ -131,7 +131,7 @@ RSpec.describe "Alta de alumnos y tutores", type: :request do
     end
   end
 
-  # Tabla 27 · ambas operaciones: sólo docente
+  # Tabla 18 · ambas operaciones: sólo docente
   describe "autorización" do
     %w[directivo tutor alumno].each do |rol|
       it "rechaza a #{rol} con 403" do

@@ -44,7 +44,7 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  # Tabla 34 · la cola va sobre la misma base de datos: el adaptador lo fija
+  # Tabla 23 · la cola va sobre la misma base de datos: el adaptador lo fija
   # config/application.rb y no se declara una conexión separada.
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

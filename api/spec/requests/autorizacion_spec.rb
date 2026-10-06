@@ -14,7 +14,7 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
     #  Solo el rol habilitado obtiene respuesta; los tres restantes, 403.»
     #
     # El controlador es anónimo: no incorpora ninguna ruta al enrutador, de modo que el
-    # inventario de la Tabla 27 permanece intacto (Boundary 4).
+    # inventario de la Tabla 18 permanece intacto (Boundary 4).
     controller(ApplicationController) do
       autoriza :dato_academico, roles: %w[directivo]
       autoriza :sin_declarar_roles, roles: []
@@ -102,11 +102,11 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
     end
   end
 
-  # CP-RNF-01 · «Las 37 operaciones Must have por los cuatro roles: 148 casos. Sin token,
+  # CP-RNF-01 · «Las 36 operaciones HTTP Must have por los cuatro roles: 144 casos. Sin token,
   # 401 en el 100 %; con rol no autorizado, 403 en el 100 %.»
   #
   # La matriz se construye sobre las operaciones EFECTIVAMENTE expuestas en el enrutador
-  # y crece con cada rama. Recorre la columna de roles de la Tabla 27 y no una lista
+  # y crece con cada rama. Recorre la columna de roles de la Tabla 18 y no una lista
   # escrita a mano, de modo que no pueda divergir del inventario.
   describe "matriz de autorización · CP-RNF-01" do
     let(:construidas) { Inventario.construidas }
@@ -143,7 +143,7 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
   end
 
   # Boundary 4 · «no alterar los roles autorizados de una operación».
-  describe "los roles declarados en el código reproducen la Tabla 27" do
+  describe "los roles declarados en el código reproducen la Tabla 18" do
     it "coincide operación por operación" do
       divergencias = Inventario.construidas.filter_map do |e|
         controlador = "#{e['controlador'].camelize}Controller".constantize

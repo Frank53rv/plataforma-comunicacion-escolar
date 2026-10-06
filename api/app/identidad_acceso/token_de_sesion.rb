@@ -3,7 +3,7 @@
 #
 # RNF-02 · «El token es firmado y verificable sin estado, con vencimiento no superior a
 # 24 horas. Todo token expirado o alterado es rechazado.»
-# Tabla 34 · JSON Web Token (RFC 7519). Tabla 41 · JWT_SECRET_KEY y JWT_EXPIRACION_HORAS.
+# Tabla 23 · JSON Web Token (RFC 7519). Tabla 30 · JWT_SECRET_KEY y JWT_EXPIRACION_HORAS.
 class TokenDeSesion
   ALGORITMO = "HS256".freeze
 
@@ -41,7 +41,7 @@ class TokenDeSesion
 
     def clave
       ENV.fetch("JWT_SECRET_KEY") do
-        raise KeyError, "falta JWT_SECRET_KEY (Tabla 41)"
+        raise KeyError, "falta JWT_SECRET_KEY (Tabla 30)"
       end
     end
 

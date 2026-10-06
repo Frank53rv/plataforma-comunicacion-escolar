@@ -159,7 +159,7 @@
     {
       "codigo": "RF-21",
       "titulo": "Resolución de destinatarios",
-      "descripcion": "El sistema debe resolver el conjunto de destinatarios en cada publicación efectiva —inicial o de reemplazo— y no en el momento de la redacción. Las personas incorporadas al curso con posterioridad no reciben publicaciones anteriores.",
+      "descripcion": "El sistema debe resolver el conjunto de destinatarios en cada publicación efectiva —inicial o de reemplazo, entendida como la publicación nueva que sigue a la eliminación de un anuncio— y no en el momento de la redacción. Las personas incorporadas al curso con posterioridad no reciben publicaciones anteriores.",
       "complejidad": "Media",
       "moscow": "M"
     },

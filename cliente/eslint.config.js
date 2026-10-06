@@ -8,7 +8,9 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import prettier from "eslint-config-prettier";
 
 export default [
-  { ignores: ["dist", "tmp", "node_modules"] },
+  // Artefactos, no código fuente: la construcción, el informe de cobertura que deja la
+  // compuerta homónima y las dependencias.
+  { ignores: ["dist", "tmp", "coverage", "node_modules"] },
   {
     files: ["**/*.{js,jsx}"],
     languageOptions: {

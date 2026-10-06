@@ -8,6 +8,7 @@
 // responsiva, no acá.
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router";
+import BotonDeInstalacion from "./BotonDeInstalacion.jsx";
 import { useSesion } from "./contextoSesion.js";
 import { ETIQUETAS_DE_ROL, SECCIONES } from "./secciones.js";
 
@@ -35,6 +36,7 @@ export default function Armazon({ secciones = SECCIONES }) {
           <span>
             {panel.nombre} · {ETIQUETAS_DE_ROL[panel.rol]}
           </span>
+          <BotonDeInstalacion />
           <button
             type="button"
             onClick={cerrar}

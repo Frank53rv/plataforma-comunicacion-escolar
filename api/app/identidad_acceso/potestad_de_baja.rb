@@ -6,7 +6,7 @@
 #
 # El curso del alumno es aquel en que tiene su vinculación vigente. El del tutor, el de
 # los alumnos a los que está vinculado: el tutor no pertenece a un curso sino a sus
-# alumnos (Tabla 21, tutor_alumno).
+# alumnos (Tabla 14, tutor_alumno).
 class PotestadDeBaja
   class << self
     def permite?(quien:, persona:)

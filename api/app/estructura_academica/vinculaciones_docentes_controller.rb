@@ -27,7 +27,7 @@ class VinculacionesDocentesController < ApplicationController
       )
     end
 
-    # Tabla 21 · «Un único titular vigente por curso». La Tabla 38 atribuye ese índice a
+    # Tabla 14 · «Un único titular vigente por curso». La Tabla 38 atribuye ese índice a
     # RN-13, que es la regla que mantiene la titularidad siempre definida: se rechaza con
     # 409 y la regla consignada, como la Tabla 35 manda para el conflicto con una regla.
     if parametros[:es_titular] && curso.vinculaciones_docentes.vigentes.titulares.exists?

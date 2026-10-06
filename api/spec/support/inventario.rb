@@ -1,4 +1,4 @@
-# Tabla 27 · Inventario de endpoints. La columna «Roles autorizados» es el insumo
+# Tabla 18 · Inventario de endpoints. La columna «Roles autorizados» es el insumo
 # directo de RNF-01: «la matriz de pruebas de autorización se construye como el producto
 # de esta columna por los cuatro roles».
 #
@@ -23,10 +23,14 @@ module Inventario
     "docente titular" => %w[docente],
     # «Directivo (docentes), docente (alumnos y tutores)»: la cadena de RN-07.
     "directivo (docentes)" => %w[directivo],
+    # «Directivo (todos los cursos), docente (cursos con vinculación vigente)»: el alcance
+    # sobre los cursos lo verifica la consulta de CU-09, no la matriz de roles.
+    "directivo (todos los cursos)" => %w[directivo],
+    "docente (cursos con vinculación vigente)" => %w[docente],
     "docente (alumnos" => %w[docente],
     "tutores)" => [],
     # «Participantes de la conversación»: la participación deriva de la vinculación con
-    # el curso (Tabla 21, entidad participante). El directivo no es participante; su
+    # el curso (Tabla 14, entidad participante). El directivo no es participante; su
     # acceso de supervisión es un requisito Should have, fuera del alcance comprometido.
     "participantes de la conversación" => %w[docente tutor alumno]
   }.freeze
@@ -41,7 +45,7 @@ module Inventario
     @operaciones ||= JSON.parse(PAQUETE.join("20-endpoints.json").read)["endpoints"]
   end
 
-  # Roles de los cuatro que la Tabla 27 habilita para la operación.
+  # Roles de los cuatro que la Tabla 18 habilita para la operación.
   def roles_de(endpoint)
     valores = endpoint["roles"].map { |r| EQUIVALENCIAS.fetch(r.strip.downcase) }
     return :sin_autenticar if valores.include?(:sin_autenticar)
@@ -49,7 +53,7 @@ module Inventario
     valores.flatten.uniq
   end
 
-  # Operaciones de la Tabla 27 que ya están expuestas en el enrutador.
+  # Operaciones de la Tabla 18 que ya están expuestas en el enrutador.
   def construidas
     operaciones.reject { |e| e["metodo"] == "WSS" }.filter_map do |e|
       ruta = e["ruta"]

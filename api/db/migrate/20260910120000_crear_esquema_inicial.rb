@@ -1,5 +1,5 @@
 # Tabla 38 · Esquema físico: tipos, claves e índices · Boundary 3
-# Las diecinueve entidades de la Tabla 21, sin agregar ni suprimir ninguna.
+# Las diecinueve entidades de la Tabla 14, sin agregar ni suprimir ninguna.
 # Nombres en singular. turno como varchar(20).
 # Las restricciones que no admiten expresión declarativa se verifican en la capa de negocio.
 class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
@@ -13,7 +13,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     create_enum :estado_anio_enum,         %w[vigente cerrado]
     create_enum :estado_curso_enum,        %w[vigente archivado]
     create_enum :estado_anuncio_enum,      %w[borrador programado publicado archivado eliminado]
-    # Tabla 21 · «grupal de tutores, grupal de alumnos o privada»
+    # Tabla 14 · «grupal de tutores, grupal de alumnos o privada»
     create_enum :tipo_conversacion_enum,   %w[grupal_de_tutores grupal_de_alumnos privada]
     create_enum :estado_conversacion_enum, %w[activa solo_lectura]
     create_enum :canal_enum,               %w[push aplicacion]

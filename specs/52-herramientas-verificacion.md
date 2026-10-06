@@ -2,16 +2,18 @@
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 40 · Modificaciones en las herramientas de verificación
+# Tabla 40 · Herramientas de verificación del documento contra el código
 
-| Herramienta | Modificación aplicada | Decisión | Escenario de medición | Incremento |
-|---|---|---|---|---|
-| Extractor de especificaciones | Se incorpora un campo nuevo al inventario de operaciones y se regenera el archivo de endpoints. | D-05 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
-| Compuerta de esquema | Las restricciones de verificación dejan de contarse como columnas. | D-05 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
-| Compuerta de estructura | Las rutas se resuelven contra api/ conforme a la ubicación real de los módulos. | D-06 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
-| Compuerta de esquema, excepción | Se exceptúan las tablas del prefijo solid_, que la versión construida no crea. | D-08 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
-| Compuerta de semántica temporal | Deja de inspeccionar el directorio de migraciones. | D-05 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
-| Compuerta de contrato | El contraste pasa a ser de tres sentidos: enrutador, archivo OpenAPI e inventario de la Tabla 18. | RNF-17 | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
-| Compuerta adicional prevista | Se proyecta una octava compuerta y la actualización del archivo de instrucciones del repositorio y de su documento de presentación. A la fecha de esta entrega no está incorporada: el repositorio mantiene las siete y así lo declara su archivo de instrucciones. | D-14 · pendiente | Las 37 operaciones Must have de la Tabla 18 por los cuatro roles, con el habilitado y con los no habilitados: 148 casos, conforme a CP-RNF-01. Quedan fuera las 5 operaciones cuyos requisitos son todos Should have, que no se construyen | 6 |
+| Herramienta | Qué verifica | Requisito |
+|---|---|---|
+| Extractor de especificaciones | Extrae las tablas de este documento a specs/, incluido el inventario de operaciones de la Tabla 18, que las compuertas leen como fuente. | RNF-17 · RNF-22 |
+| Compuerta de contrato | Contrasta en tres sentidos el enrutador, el archivo OpenAPI y el inventario de la Tabla 18, con diferencia nula. | RNF-17 |
+| Compuerta de errores | Contrasta los estados de error del contrato con el catálogo de la Tabla 24. | RNF-17 |
+| Compuerta de esquema | Contrasta las migraciones con el esquema físico de la Tabla 27, sin contar las restricciones de verificación como columnas; exceptúa las tablas solid_queue_* y solid_cable_* que crean la cola y el canal. | Tabla 27 |
+| Compuerta de alcance | Lee el encabezado de cada archivo —comentarios # o //— hasta la línea Prueba: y rechaza el código de requisitos Should have. | Tabla 25 |
+| Compuerta de trazabilidad | Lee el mismo encabezado y exige, para cada requisito Must have, código, prueba y rama. | RNF-22 |
+| Compuerta de tiempo | Recorre el código y las migraciones contra la semántica temporal del punto 4.2. | RF-32 · RF-34 |
+| Compuerta de cobertura | Mide la cobertura de líneas de la interfaz y del cliente con el umbral del 70 %. | RNF-20 |
+| Compuerta de estilo | Exige RuboCop, ESLint y Prettier sin hallazgos ni excepciones por archivo; falla si falta el informe. | Tabla 26 |
 
-> Nota. Las compuertas son el instrumento con el que se verifica, antes de cada integración, que el código realiza lo que las tablas de este documento comprometen. Su modificación se registra aquí porque altera el alcance de esa verificación y, por lo tanto, el valor probatorio de la matriz de la Tabla 15.
+> Nota. Las compuertas son el instrumento con el que se verifica, antes de cada integración, que el código realiza lo que las tablas de este documento comprometen. La autorización por rol no es una compuerta: la contrasta la matriz de pruebas CP-RNF-01.

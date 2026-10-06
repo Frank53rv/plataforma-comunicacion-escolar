@@ -43,7 +43,7 @@ module Api
       g.orm :active_record, primary_key_type: :uuid
     end
 
-    # Tabla 34 · cola de trabajos sobre la misma base de datos
+    # Tabla 23 · cola de trabajos sobre la misma base de datos
     config.active_job.queue_adapter = :solid_queue
 
     config.api_only = true
