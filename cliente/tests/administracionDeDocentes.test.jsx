@@ -20,9 +20,21 @@ import Docentes from "../paneles/directivo/Docentes.jsx";
 import { cursoConNomina, panelDe, persona, simularApi } from "./ayudas.js";
 
 const CURSOS = "GET /cursos?pagina=1&por_pagina=100";
-const lista = (cursos) => [
+// El directivo recibe además la nómina de docentes de la institución. Cuando la prueba no la
+// fija, se deriva de los cursos: el caso en que todo docente está vinculado a alguno.
+const lista = (cursos, docentes) => [
   200,
-  { datos: cursos, total: cursos.length, pagina: 1, por_pagina: 100 },
+  {
+    datos: cursos,
+    total: cursos.length,
+    pagina: 1,
+    por_pagina: 100,
+    docentes_de_la_institucion: docentes ?? [
+      ...new Map(
+        cursos.flatMap((c) => c.docentes).map((d) => [d.id, d]),
+      ).values(),
+    ],
+  },
 ];
 const codigo = (extra = {}) => ({
   id: "cod1",
@@ -168,15 +180,15 @@ describe("CP-RF-03 · alta de un docente", () => {
   });
 
   it("el docente recién dado de alta queda disponible para vincularlo a un curso", async () => {
+    const nora = persona("d9", "Nora", "Nueva", { estado: "pendiente" });
+    let dadoDeAlta = false;
     simularApi({
-      [CURSOS]: lista([cursoConNomina({ docentes: [] })]),
-      "POST /docentes": [
-        201,
-        {
-          usuario: persona("d9", "Nora", "Nueva", { estado: "pendiente" }),
-          codigo_activacion: codigo(),
-        },
-      ],
+      [CURSOS]: () =>
+        lista([cursoConNomina({ docentes: [] })], dadoDeAlta ? [nora] : []),
+      "POST /docentes": () => {
+        dadoDeAlta = true;
+        return [201, { usuario: nora, codigo_activacion: codigo() }];
+      },
     });
     dibujar();
     await screen.findByText("Sin docentes vinculados.");
@@ -186,10 +198,13 @@ describe("CP-RF-03 · alta de un docente", () => {
     fireEvent.click(screen.getByRole("button", { name: "Dar de alta" }));
     await screen.findByText(/Código de activación de Nora/);
 
-    const opciones = within(screen.getByLabelText("Docente"))
-      .getAllByRole("option")
-      .map((o) => o.textContent);
-    expect(opciones).toContain("Nora Nueva");
+    await waitFor(() =>
+      expect(
+        within(screen.getByLabelText("Docente"))
+          .getAllByRole("option")
+          .map((o) => o.textContent),
+      ).toContain("Nora Nueva"),
+    );
   });
 
   it("un correo ya registrado lo informa la interfaz y se presenta", async () => {
@@ -254,6 +269,32 @@ describe("CP-RF-15 · vincular un docente a un curso", () => {
       .getAllByRole("option")
       .map((o) => o.textContent);
     expect(opciones).toEqual(["Elegir…", "Pablo Otro"]);
+  });
+
+  // El origen del selector es la nómina de la institución, no la de los cursos: un docente sin
+  // vinculación no figura en ninguna nómina de curso y sin ella quedaría imposible de vincular.
+  it("ofrece a los docentes que todavía no tienen ningún curso", async () => {
+    simularApi({
+      [CURSOS]: lista(
+        [
+          cursoConNomina({
+            docentes: [persona("d1", "Ana", "Zárate", { es_titular: true })],
+          }),
+        ],
+        [persona("d1", "Ana", "Zárate"), persona("d7", "Eva", "Benítez")],
+      ),
+    });
+    dibujar();
+    await screen.findByRole("region", { name: "Primero A" });
+
+    fireEvent.change(screen.getByLabelText("Curso"), {
+      target: { value: "c1" },
+    });
+
+    const opciones = within(screen.getByLabelText("Docente"))
+      .getAllByRole("option")
+      .map((o) => o.textContent);
+    expect(opciones).toEqual(["Elegir…", "Eva Benítez"]);
   });
 
   it("vincula a un docente como titular y recarga la nómina", async () => {

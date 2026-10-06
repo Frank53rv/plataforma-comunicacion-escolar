@@ -101,6 +101,44 @@ RSpec.describe "Nómina de los cursos en GET /cursos", type: :request do
     expect(fila).to include("docentes" => [], "alumnos" => [])
   end
 
+  # RF-15 · vincular un docente a un curso exige su identificador, y un docente sin vinculación
+  # vigente no figura en la nómina de ningún curso: sin esta lista quedaría fuera del alcance
+  # del directivo apenas recarga la página.
+  describe "la nómina de docentes de la institución" do
+    def nomina_de_docentes(por)
+      get "/api/v1/cursos", headers: cabecera_de(por), as: :json
+      cuerpo["docentes_de_la_institucion"]
+    end
+
+    it "el directivo la recibe completa, incluso quien no tiene vinculación a ningún curso" do
+      suelto = create(:usuario, :docente, nombre: "Eva", apellido: "Benítez")
+
+      expect(nomina_de_docentes(directivo).pluck("id")).to eq([ auxiliar.id, suelto.id, titular.id ])
+    end
+
+    it "no incluye a quien no es docente" do
+      expect(nomina_de_docentes(directivo).pluck("id")).not_to include(directivo.id, alumno.id, tutor.id)
+    end
+
+    it "no expone datos internos: sólo identificación, nombre, correo y estado" do
+      expect(nomina_de_docentes(directivo).first.keys).to contain_exactly("id", "nombre", "apellido", "correo", "estado")
+    end
+
+    it "el docente dado de baja figura marcado, y la interfaz decide si lo ofrece" do
+      auxiliar.update!(estado: "dado_de_baja")
+
+      marcado = nomina_de_docentes(directivo).find { |d| d["id"] == auxiliar.id }
+
+      expect(marcado["estado"]).to eq("dado_de_baja")
+    end
+
+    it "el docente no la recibe: la Tabla 18 no lo habilita a vincular docentes" do
+      get "/api/v1/cursos", headers: cabecera_de(titular), as: :json
+
+      expect(cuerpo).not_to have_key("docentes_de_la_institucion")
+    end
+  end
+
   # RNF-09 · las consultas no crecen con la cantidad de alumnos: se resuelven por lotes.
   it "no lanza una consulta por alumno ni por tutor" do
     def contar_consultas

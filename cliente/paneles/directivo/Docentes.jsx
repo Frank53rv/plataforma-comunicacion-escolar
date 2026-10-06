@@ -5,10 +5,10 @@
 // TC-03, TC-04 y TC-05 (Tabla 17) · dar de alta a un docente y asignarlo a un curso como
 // titular, regenerar su código de activación, y desvincularlo designando otro titular en el
 // mismo acto. RN-13 · un curso tiene un titular vigente: lo que la interfaz de programación
-// rechaza se presenta con su regla. Desvincular y dar de baja piden confirmación (RNF-14). Una
-// persona sin vinculaciones no figura en ninguna nómina: por eso, tras desvincular a un docente
-// se ofrece dar de baja su cuenta en el momento, y un docente recién dado de alta queda a mano
-// para vincularlo.
+// rechaza se presenta con su regla. Desvincular y dar de baja piden confirmación (RNF-14). El
+// selector de docentes se arma con la nómina de la institución que GET /cursos devuelve al
+// directivo, de modo que también ofrece a quien todavía no tiene curso; tras desvincular a un
+// docente se ofrece dar de baja su cuenta en el momento.
 import { useState } from "react";
 import { mensajeDeError } from "../../comun/api.js";
 import CodigoDeActivacion from "../../comun/CodigoDeActivacion.jsx";
@@ -26,12 +26,12 @@ const porApellido = (a, b) =>
 export default function Docentes() {
   const {
     cursos,
+    docentes,
     error: errorDeCarga,
     cargando,
     recargar,
   } = useCursosConNomina();
   const [alta, setAlta] = useState({ nombre: "", apellido: "", correo: "" });
-  const [nuevos, setNuevos] = useState([]);
   const [vinculo, setVinculo] = useState({
     curso: "",
     docente: "",
@@ -74,15 +74,12 @@ export default function Docentes() {
     evento.preventDefault();
     return ejecutar(async () => {
       const respuesta = await api.post("/docentes", alta);
-      setNuevos((previos) => [
-        ...previos,
-        { ...respuesta.usuario, es_titular: false },
-      ]);
       setCodigo({
         para: nombreDe(respuesta.usuario),
         codigo: respuesta.codigo_activacion,
       });
       setAlta({ nombre: "", apellido: "", correo: "" });
+      recargar();
     }, "Docente dado de alta.");
   };
 
@@ -134,11 +131,7 @@ export default function Docentes() {
   if (cargando) return <p role="status">Cargando…</p>;
 
   const cursoElegido = cursos.find((c) => c.id === vinculo.curso);
-  const conocidos = new Map();
-  [...cursos.flatMap((c) => c.docentes), ...nuevos].forEach((d) =>
-    conocidos.set(d.id, d),
-  );
-  const candidatos = [...conocidos.values()]
+  const candidatos = docentes
     .filter(
       (d) =>
         d.estado !== "dado_de_baja" &&
