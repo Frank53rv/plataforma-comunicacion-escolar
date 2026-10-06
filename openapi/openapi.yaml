@@ -320,6 +320,13 @@ paths:
                       datos:
                         type: array
                         items: { $ref: "#/components/schemas/CursoConNomina" }
+                      docentes_de_la_institucion:
+                        description: >-
+                          Sólo para el directivo · RF-15. La totalidad de los docentes, tengan o
+                          no vinculación vigente: la nómina de cada curso sólo alcanza a quien ya
+                          está vinculado, y vincular a un docente exige su identificador.
+                        type: array
+                        items: { $ref: '#/components/schemas/PersonaDeLaNomina' }
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '500': { $ref: '#/components/responses/ErrorInterno' }

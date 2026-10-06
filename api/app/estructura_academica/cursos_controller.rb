@@ -57,12 +57,15 @@ class CursosController < ApplicationController
     # La nómina de cada curso (NominaDeCursos): con ella el cliente conoce a las personas que
     # administra sin que la Tabla 18 tenga una operación que las lea.
     nomina = NominaDeCursos.para(datos.to_a)
-    render json: {
+    cuerpo = {
       datos: datos.map { |curso| curso.recurso.merge(nomina.fetch(curso.id)) },
       total: relacion.count,
       pagina: pagina,
       por_pagina: por_pagina
-    }, status: :ok
+    }
+    cuerpo[:docentes_de_la_institucion] = docentes_de_la_institucion if usuario_actual.rol == "directivo"
+
+    render json: cuerpo, status: :ok
   end
 
   private
@@ -77,6 +80,15 @@ class CursosController < ApplicationController
     end
 
     p.to_h.symbolize_keys
+  end
+
+  # RF-15 · la totalidad de los docentes, tengan o no vinculación vigente. La nómina de cada
+  # curso sólo alcanza a quien ya está vinculado, de modo que un docente dado de alta y aún sin
+  # curso no figuraría en ninguna parte y no habría manera de vincularlo. Sólo el directivo la
+  # recibe: es el único rol que la Tabla 18 habilita a vincular docentes.
+  def docentes_de_la_institucion
+    Usuario.docente.order(:apellido, :nombre)
+           .map { |docente| docente.slice(:id, :nombre, :apellido, :correo, :estado) }
   end
 
   # El directivo ve la totalidad de los cursos; el docente, únicamente aquellos a
