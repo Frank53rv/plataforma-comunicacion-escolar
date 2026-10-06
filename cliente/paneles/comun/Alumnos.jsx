@@ -10,6 +10,8 @@
 // en el panel de la persona o, para la baja del docente, si la nómina lo muestra titular del
 // curso; el 403 lo sigue resolviendo el servidor. RN-12 · un tutor con algún alumno activo no
 // se da de baja: el rechazo se presenta con su regla. Las bajas piden confirmación (RNF-14).
+// Un tutor suele tener más de un hijo en la institución: el formulario ofrece elegirlo entre
+// los que ya figuran en la nómina de los cursos, en lugar de volver a tipear sus datos.
 import { useState } from "react";
 import { mensajeDeError } from "../../comun/api.js";
 import CodigoDeActivacion from "../../comun/CodigoDeActivacion.jsx";
@@ -38,6 +40,7 @@ export default function Alumnos() {
   const [alumnoNuevo, setAlumnoNuevo] = useState({ ...VACIA, curso_id: "" });
   const [tutorDe, setTutorDe] = useState(null);
   const [tutorNuevo, setTutorNuevo] = useState(VACIA);
+  const [tutorElegido, setTutorElegido] = useState("");
   const [codigo, setCodigo] = useState(null);
   const [mensaje, setMensaje] = useState(null);
   const [error, setError] = useState(null);
@@ -58,6 +61,35 @@ export default function Alumnos() {
     }
   }
 
+  // Los tutores que ya figuran en la nómina de los cursos del docente, sin repetir a quien
+  // tutela a más de un alumno. Es cuanto el cliente conoce: la Tabla 18 no tiene ninguna
+  // operación que lea personas, y el alcance de la nómina es el de sus cursos (RN-03, RN-07).
+  function tutoresConocidos() {
+    const porId = new Map(
+      cursos
+        .flatMap((curso) => curso.alumnos)
+        .flatMap((alumno) => alumno.tutores)
+        .filter((tutor) => tutor.estado !== "dado_de_baja")
+        .map((tutor) => [tutor.id, tutor]),
+    );
+    return [...porId.values()].sort((a, b) =>
+      `${a.apellido} ${a.nombre}`.localeCompare(`${b.apellido} ${b.nombre}`),
+    );
+  }
+
+  function candidatosATutor(alumno) {
+    return tutoresConocidos().filter(
+      (tutor) => !alumno.tutores.some((propio) => propio.id === tutor.id),
+    );
+  }
+
+  function datosDelTutor(id) {
+    const { nombre, apellido, correo } = tutoresConocidos().find(
+      (tutor) => tutor.id === id,
+    );
+    return { nombre, apellido, correo };
+  }
+
   const darDeAltaAlAlumno = (evento) => {
     evento.preventDefault();
     if (!alumnoNuevo.curso_id) {
@@ -75,12 +107,21 @@ export default function Alumnos() {
     }, "Alumno dado de alta.");
   };
 
+  // El tutor elegido se envía con los mismos campos que el nuevo: la Tabla 29 fija nombre,
+  // apellido y correo, y es por el correo que la interfaz de programación reconoce la cuenta
+  // existente y la vincula sin emitir código.
+  const abrirTutorDe = (alumnoId) => {
+    setTutorDe(alumnoId);
+    setTutorElegido("");
+    setTutorNuevo(VACIA);
+  };
+
   const vincularTutor = (evento) => {
     evento.preventDefault();
     return ejecutar(async () => {
       const respuesta = await api.post(
         `/alumnos/${tutorDe}/tutores`,
-        tutorNuevo,
+        tutorElegido ? datosDelTutor(tutorElegido) : tutorNuevo,
       );
       if (respuesta.codigo_activacion)
         setCodigo({
@@ -93,6 +134,7 @@ export default function Alumnos() {
         );
       setTutorDe(null);
       setTutorNuevo(VACIA);
+      setTutorElegido("");
       recargar();
     });
   };
@@ -202,7 +244,7 @@ export default function Alumnos() {
                         alumno.estado !== "dado_de_baja" && {
                           texto: "Agregar tutor",
                           nombre: `Agregar un tutor a «${nombreDe(alumno)}»`,
-                          alPulsar: () => setTutorDe(alumno.id),
+                          alPulsar: () => abrirTutorDe(alumno.id),
                         },
                       ...accionesComunes(alumno, "alumno"),
                     ]}
@@ -220,28 +262,46 @@ export default function Alumnos() {
                       onSubmit={vincularTutor}
                       className="mt-3 max-w-md rounded border border-slate-200 p-3"
                     >
-                      <Campo
-                        etiqueta="Nombre del tutor"
-                        valor={tutorNuevo.nombre}
-                        alCambiar={(nombre) =>
-                          setTutorNuevo({ ...tutorNuevo, nombre })
-                        }
-                      />
-                      <Campo
-                        etiqueta="Apellido del tutor"
-                        valor={tutorNuevo.apellido}
-                        alCambiar={(apellido) =>
-                          setTutorNuevo({ ...tutorNuevo, apellido })
-                        }
-                      />
-                      <Campo
-                        etiqueta="Correo del tutor"
-                        tipo="email"
-                        valor={tutorNuevo.correo}
-                        alCambiar={(correo) =>
-                          setTutorNuevo({ ...tutorNuevo, correo })
-                        }
-                      />
+                      {candidatosATutor(alumno).length > 0 && (
+                        <Selector
+                          etiqueta="Tutor"
+                          valor={tutorElegido}
+                          opciones={[
+                            { valor: "", etiqueta: "Nuevo tutor…" },
+                            ...candidatosATutor(alumno).map((t) => ({
+                              valor: t.id,
+                              etiqueta: nombreDe(t),
+                            })),
+                          ]}
+                          alCambiar={setTutorElegido}
+                        />
+                      )}
+                      {!tutorElegido && (
+                        <>
+                          <Campo
+                            etiqueta="Nombre del tutor"
+                            valor={tutorNuevo.nombre}
+                            alCambiar={(nombre) =>
+                              setTutorNuevo({ ...tutorNuevo, nombre })
+                            }
+                          />
+                          <Campo
+                            etiqueta="Apellido del tutor"
+                            valor={tutorNuevo.apellido}
+                            alCambiar={(apellido) =>
+                              setTutorNuevo({ ...tutorNuevo, apellido })
+                            }
+                          />
+                          <Campo
+                            etiqueta="Correo del tutor"
+                            tipo="email"
+                            valor={tutorNuevo.correo}
+                            alCambiar={(correo) =>
+                              setTutorNuevo({ ...tutorNuevo, correo })
+                            }
+                          />
+                        </>
+                      )}
                       <div className="flex gap-3">
                         <div className="w-40">
                           <Boton disabled={trabajando}>Vincular tutor</Boton>
@@ -249,7 +309,7 @@ export default function Alumnos() {
                         <button
                           type="button"
                           className={BOTON}
-                          onClick={() => setTutorDe(null)}
+                          onClick={() => abrirTutorDe(null)}
                         >
                           Cancelar
                         </button>
