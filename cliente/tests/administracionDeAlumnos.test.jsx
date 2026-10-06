@@ -364,6 +364,100 @@ describe("CP-RF-14 · agregar un tutor a un alumno (docente)", () => {
   });
 });
 
+// Un mismo tutor suele tener más de un hijo en la institución. La nómina de los cursos ya trae
+// a los tutores de sus alumnos, de modo que el docente puede elegirlo en lugar de volver a
+// tipear sus datos. La operación es la misma: nombre, apellido y correo (Tabla 29), y la
+// interfaz de programación lo vincula sin emitir código porque la cuenta ya está activa.
+describe("CP-RF-14 · elegir un tutor ya registrado", () => {
+  const conDosAlumnos = () =>
+    cursoConNomina({
+      alumnos: [
+        {
+          ...persona("al1", "Beto", "Ramos"),
+          tutores: [persona("t1", "Marta", "Ramos")],
+        },
+        { ...persona("al2", "Sara", "Ramos"), tutores: [] },
+      ],
+    });
+
+  const abrirPara = async (nombre, extra = {}) => {
+    const llamadas = simularApi({
+      [CURSOS]: lista([conDosAlumnos()]),
+      ...extra,
+    });
+    dibujar();
+    await screen.findByRole("region", { name: "Primero A" });
+    fireEvent.click(
+      screen.getByRole("button", { name: `Agregar un tutor a «${nombre}»` }),
+    );
+    return llamadas;
+  };
+
+  it("ofrece a los tutores de sus cursos y vincula al elegido sin volver a tipear sus datos", async () => {
+    const llamadas = await abrirPara("Sara Ramos", {
+      "POST /alumnos/al2/tutores": [
+        201,
+        {
+          usuario: persona("t1", "Marta", "Ramos"),
+          tutor_alumno: {},
+          codigo_activacion: null,
+        },
+      ],
+    });
+
+    expect(
+      within(screen.getByLabelText("Tutor"))
+        .getAllByRole("option")
+        .map((o) => o.textContent),
+    ).toEqual(["Nuevo tutor…", "Marta Ramos"]);
+
+    escribir("Tutor", "t1");
+    expect(screen.queryByLabelText("Nombre del tutor")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Vincular tutor" }));
+
+    expect(
+      await screen.findByText(
+        "El tutor ya tenía cuenta: quedó vinculado, sin código nuevo.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      llamadas.find((l) => l.clave === "POST /alumnos/al2/tutores").cuerpo,
+    ).toEqual({
+      nombre: "Marta",
+      apellido: "Ramos",
+      correo: "marta@ejemplo.test",
+    });
+  });
+
+  it("no ofrece a quien ya es tutor de ese alumno, y pide los datos del nuevo", async () => {
+    await abrirPara("Beto Ramos");
+
+    expect(screen.queryByLabelText("Tutor")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Nombre del tutor")).toBeInTheDocument();
+  });
+
+  it("volver a «Nuevo tutor…» pide otra vez los datos", async () => {
+    await abrirPara("Sara Ramos");
+
+    escribir("Tutor", "t1");
+    escribir("Tutor", "");
+
+    expect(screen.getByLabelText("Nombre del tutor")).toHaveValue("");
+  });
+
+  it("no arrastra la elección de un alumno al formulario de otro", async () => {
+    await abrirPara("Sara Ramos");
+    escribir("Tutor", "t1");
+
+    fireEvent.click(screen.getByRole("button", { name: "Cancelar" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Agregar un tutor a «Beto Ramos»" }),
+    );
+
+    expect(screen.getByLabelText("Nombre del tutor")).toBeInTheDocument();
+  });
+});
+
 describe("CP-RF-09 · dar de baja a un alumno", () => {
   it("el directivo lo da de baja, con confirmación", async () => {
     const llamadas = simularApi({
