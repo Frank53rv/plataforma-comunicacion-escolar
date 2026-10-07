@@ -54,6 +54,15 @@ export default function Bandeja() {
   const [remitentes, setRemitentes] = useState(() => new Map());
 
   const consulta = consultaDe(aplicados, pagina);
+  const conFiltros = Object.values(aplicados).some(Boolean);
+  const puedePublicar = panel.opciones_habilitadas.includes("publicar_anuncio");
+  const orientacion = conFiltros
+    ? "Probar con otros filtros muestra más anuncios."
+    : puedePublicar
+      ? "Los anuncios que publiques aparecerán acá."
+      : destinatario
+        ? "Los anuncios que publiquen los docentes de tu curso aparecerán acá."
+        : "Los anuncios que publiquen los docentes aparecerán acá.";
 
   useEffect(() => {
     let vigente = true;
@@ -176,9 +185,18 @@ export default function Bandeja() {
       )}
       {!cargando && <Alerta mensaje={respuesta.error} />}
       {!cargando && respuesta.datos?.length === 0 && (
-        <p className="rounded-2xl bg-white p-4 text-slate-700 shadow-sm">
-          No hay anuncios para los filtros elegidos.
-        </p>
+        <div className="space-y-2 rounded-2xl bg-white p-4 text-slate-700 shadow-sm">
+          <p>No hay anuncios para los filtros elegidos.</p>
+          <p>{orientacion}</p>
+          {puedePublicar && !conFiltros && (
+            <Link
+              to="/publicar"
+              className="inline-block rounded-full bg-rol-700 px-4 py-2 font-medium text-white hover:bg-rol-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700"
+            >
+              Publicar un anuncio
+            </Link>
+          )}
+        </div>
       )}
       {!cargando && respuesta.datos?.length > 0 && (
         <ul className="divide-y divide-slate-200 overflow-hidden rounded-2xl bg-white shadow-sm">
