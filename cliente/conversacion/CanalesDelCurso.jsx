@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router";
 import { mensajeDeError } from "../comun/api.js";
 import { useSesion } from "../comun/contextoSesion.js";
+import { Alerta } from "../comun/formularios.jsx";
+import Iniciales from "../comun/Iniciales.jsx";
 
 const ESTADOS = { activa: "Activo", solo_lectura: "Sólo lectura" };
 
@@ -38,36 +40,32 @@ export default function CanalesDelCurso() {
   if (respuesta?.id !== id) return <p role="status">Cargando…</p>;
 
   return (
-    <section>
+    <section className="mx-auto max-w-3xl">
       <h2 className="mb-4 text-xl font-semibold text-slate-900">
         {nombre ? `Canal grupal · ${nombre}` : "Canal grupal"}
       </h2>
-      {respuesta.error && (
-        <p
-          role="alert"
-          className="rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-        >
-          {respuesta.error}
-        </p>
-      )}
+      <Alerta mensaje={respuesta.error} />
       {respuesta.canales?.length === 0 && (
-        <p className="text-slate-700">
+        <p className="rounded-2xl bg-white p-4 text-slate-700 shadow-sm">
           Este curso no tiene un canal grupal para esta cuenta.
         </p>
       )}
-      <ul className="divide-y divide-slate-200 empty:hidden">
+      <ul className="space-y-3 empty:hidden">
         {respuesta.canales?.map((canal) => (
           <li
             key={canal.id}
-            className="flex flex-wrap items-baseline gap-x-4 py-3"
+            className="flex flex-wrap items-center gap-3 rounded-2xl bg-white p-4 shadow-sm"
           >
-            <span className="text-sm text-slate-700">
+            <Iniciales nombre={nombre ?? "Canal grupal"} semilla={id} />
+            <span
+              className={`rounded-full px-2 py-0.5 text-sm font-medium ${canal.estado === "activa" ? "bg-emerald-50 text-emerald-800" : "bg-slate-100 text-slate-700"}`}
+            >
               {ESTADOS[canal.estado]}
             </span>
             <Link
               to={`/conversaciones/${canal.id}`}
               state={{ curso: nombre }}
-              className="font-medium text-slate-900 underline"
+              className="ml-auto rounded-full bg-emerald-700 px-4 py-2 font-medium text-white hover:bg-emerald-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
             >
               Abrir el canal grupal
             </Link>
