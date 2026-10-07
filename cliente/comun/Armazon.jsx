@@ -48,21 +48,8 @@ export default function Armazon({ secciones = SECCIONES }) {
           Plataforma de comunicación escolar
         </p>
         <div className="flex flex-wrap items-center gap-3 text-sm">
-          <span className="sr-only">
+          <span className="rounded-full border border-rol-200 bg-rol-100 px-3 py-1 font-medium text-rol-800">
             {panel.nombre} · {rolEtiqueta}
-          </span>
-          <span
-            className="flex items-center gap-2"
-            data-nombre={panel.nombre}
-            data-rol={rolEtiqueta}
-          >
-            <span className="nombre-visual" aria-hidden="true" />·{" "}
-            <span
-              className="chip-visual"
-              aria-hidden="true"
-              data-testid="chip-visual"
-              data-rol={rolEtiqueta}
-            />
           </span>
           <BotonDeInstalacion />
           <button

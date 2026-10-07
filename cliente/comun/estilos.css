@@ -72,13 +72,3 @@
   --color-rol-700: #be123c;
   --color-rol-800: #9f1239;
 }
-
-/* Visual elements for role display (RF-40) */
-.nombre-visual::before {
-  content: attr(data-nombre);
-}
-
-.chip-visual::before {
-  content: attr(data-rol);
-  @apply rounded-full bg-rol-100 px-2 py-0.5 text-xs font-medium text-rol-800;
-}

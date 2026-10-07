@@ -2,11 +2,12 @@
 // Prueba: CP-RF-40
 //
 // Ícono decorativo por rol: escudo=directivo, libro=docente, casa=tutor, birrete=alumno.
-// Trazo currentColor, 24×24, aria-hidden. Sin dependencias externas.
+// El atributo data-icono nombra la forma de cada rol. Trazo currentColor, 24×24, aria-hidden. Sin dependencias externas.
 export default function IconoDeRol({ rol, className = "size-5" }) {
   const iconos = {
     directivo: (
       <svg
+        data-icono="escudo"
         aria-hidden="true"
         data-testid="icono-rol"
         viewBox="0 0 24 24"
@@ -22,6 +23,7 @@ export default function IconoDeRol({ rol, className = "size-5" }) {
     ),
     docente: (
       <svg
+        data-icono="libro"
         aria-hidden="true"
         data-testid="icono-rol"
         viewBox="0 0 24 24"
@@ -38,6 +40,7 @@ export default function IconoDeRol({ rol, className = "size-5" }) {
     ),
     tutor: (
       <svg
+        data-icono="casa"
         aria-hidden="true"
         data-testid="icono-rol"
         viewBox="0 0 24 24"
@@ -54,6 +57,7 @@ export default function IconoDeRol({ rol, className = "size-5" }) {
     ),
     alumno: (
       <svg
+        data-icono="birrete"
         aria-hidden="true"
         data-testid="icono-rol"
         viewBox="0 0 24 24"
@@ -64,8 +68,8 @@ export default function IconoDeRol({ rol, className = "size-5" }) {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-        <circle cx="12" cy="10" r="3" />
+        <path d="M2 9l10-5 10 5-10 5-10-5z" />
+        <path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5M22 9v6" />
       </svg>
     ),
   };

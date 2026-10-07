@@ -51,21 +51,21 @@ const ROLES = [
 describe("CP-RF-40 · identidad visual por rol", () => {
   it.each(ROLES)(
     "el armazón del rol %s declara data-rol, muestra chip e ícono",
-    ({ rol, etiqueta }) => {
+    ({ rol, etiqueta, icono: icono_ }) => {
       dibujar(panelDe(rol, { opciones_habilitadas: ["anuncios"] }));
 
       const root = screen.getByTestId("armazon-root");
       expect(root).toHaveAttribute("data-rol", rol);
 
-      const chipVisual = screen.getByTestId("chip-visual");
-      expect(chipVisual).toHaveClass("chip-visual");
-      expect(chipVisual).toHaveAttribute("aria-hidden", "true");
-      expect(chipVisual).toHaveAttribute("data-rol", etiqueta);
+      const chip = screen.getByText(`Ana · ${etiqueta}`);
+      expect(chip).toHaveClass("bg-rol-100", "text-rol-800");
+      expect(chip).not.toHaveAttribute("aria-hidden");
 
       const iconos = screen.getAllByTestId("icono-rol");
       expect(iconos.length).toBeGreaterThanOrEqual(1);
       iconos.forEach((icono) => {
         expect(icono).toHaveAttribute("aria-hidden", "true");
+        expect(icono).toHaveAttribute("data-icono", icono_);
       });
     },
   );
