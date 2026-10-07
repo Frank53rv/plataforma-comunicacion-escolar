@@ -56,7 +56,7 @@ export default function Conversaciones() {
             >
               <Iniciales
                 nombre={curso ?? "Canal grupal"}
-                semilla={canal.curso_id ?? canal.id}
+                semilla={curso ?? canal.id}
               />
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline justify-between gap-2">

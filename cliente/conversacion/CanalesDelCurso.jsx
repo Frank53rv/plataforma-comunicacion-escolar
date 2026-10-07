@@ -56,7 +56,10 @@ export default function CanalesDelCurso() {
             key={canal.id}
             className="flex flex-wrap items-center gap-3 rounded-2xl bg-white p-4 shadow-sm"
           >
-            <Iniciales nombre={nombre ?? "Canal grupal"} semilla={id} />
+            <Iniciales
+              nombre={nombre ?? "Canal grupal"}
+              semilla={nombre ?? id}
+            />
             <span
               className={`rounded-full px-2 py-0.5 text-sm font-medium ${canal.estado === "activa" ? "bg-emerald-50 text-emerald-800" : "bg-slate-100 text-slate-700"}`}
             >
