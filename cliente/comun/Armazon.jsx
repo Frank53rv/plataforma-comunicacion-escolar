@@ -13,7 +13,11 @@ import { NavLink, Outlet, useMatch } from "react-router";
 import BotonDeInstalacion from "./BotonDeInstalacion.jsx";
 import IconoDeRol from "./IconoDeRol.jsx";
 import { useSesion } from "./contextoSesion.js";
-import { ETIQUETAS_DE_ROL, SECCIONES } from "./secciones.js";
+import {
+  DESTINOS_A_LA_VISTA,
+  ETIQUETAS_DE_ROL,
+  SECCIONES,
+} from "./secciones.js";
 
 export default function Armazon({ secciones = SECCIONES }) {
   const { panel, errorPanel, cerrar } = useSesion();
@@ -32,6 +36,11 @@ export default function Armazon({ secciones = SECCIONES }) {
     (opcion) => secciones[opcion],
   );
   const ocultoEnCanal = enCanal ? "max-lg:hidden" : "";
+  const diarios = (DESTINOS_A_LA_VISTA[panel.rol] ?? opciones).filter(
+    (opcion) => opciones.includes(opcion),
+  );
+  const aLaVista = diarios.length > 0 ? diarios : opciones;
+  const hayDesborde = aLaVista.length < opciones.length;
   const rolEtiqueta = ETIQUETAS_DE_ROL[panel.rol];
 
   return (
@@ -64,13 +73,42 @@ export default function Armazon({ secciones = SECCIONES }) {
       <div className="flex min-h-0 flex-1 flex-col md:flex-row">
         <nav
           aria-label="Secciones"
-          className={`shrink-0 border-b border-slate-200 bg-white p-2 md:w-56 md:overflow-y-auto md:border-r md:border-b-0 ${ocultoEnCanal}`}
+          className={`relative shrink-0 border-slate-200 bg-white p-2 max-md:order-last max-md:flex max-md:items-center max-md:gap-2 max-md:border-t md:w-56 md:overflow-y-auto md:border-r ${ocultoEnCanal}`}
         >
+          <ul
+            className={
+              abierto
+                ? "max-md:absolute max-md:inset-x-0 max-md:bottom-full max-md:z-10 max-md:max-h-[60dvh] max-md:space-y-1 max-md:overflow-y-auto max-md:border-t max-md:border-slate-200 max-md:bg-white max-md:p-2 max-md:shadow-lg md:space-y-1"
+                : "flex min-w-0 flex-1 gap-1 md:block md:space-y-1"
+            }
+          >
+            {opciones.map((opcion) => (
+              <li
+                key={opcion}
+                className={
+                  abierto
+                    ? ""
+                    : `min-w-0 max-md:flex-1 ${aLaVista.includes(opcion) ? "" : "max-md:hidden"}`
+                }
+              >
+                <NavLink
+                  to={secciones[opcion].ruta}
+                  end={secciones[opcion].ruta === "/"}
+                  onClick={() => setAbierto(false)}
+                  className={({ isActive }) =>
+                    `block rounded-full px-4 py-2 focus-visible:outline-2 focus-visible:outline-rol-700 ${abierto ? "" : "max-md:px-1 max-md:text-center max-md:text-sm max-md:leading-tight"} ${isActive ? "bg-rol-50 font-semibold text-rol-800" : "text-slate-700 hover:bg-slate-100"}`
+                  }
+                >
+                  {secciones[opcion].etiqueta}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
           <button
             type="button"
             aria-expanded={abierto}
             onClick={() => setAbierto(!abierto)}
-            className="flex items-center gap-2 rounded-full border border-slate-500 px-3 py-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700 md:hidden"
+            className={`flex shrink-0 items-center gap-2 rounded-full border border-slate-500 px-3 py-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700 md:hidden ${hayDesborde ? "" : "hidden"}`}
           >
             <svg
               aria-hidden="true"
@@ -84,24 +122,6 @@ export default function Armazon({ secciones = SECCIONES }) {
             </svg>
             Menú
           </button>
-          <ul
-            className={`${abierto ? "mt-2 block" : "hidden"} max-h-[60dvh] space-y-1 overflow-y-auto md:mt-0 md:block md:max-h-none md:overflow-visible`}
-          >
-            {opciones.map((opcion) => (
-              <li key={opcion}>
-                <NavLink
-                  to={secciones[opcion].ruta}
-                  end={secciones[opcion].ruta === "/"}
-                  onClick={() => setAbierto(false)}
-                  className={({ isActive }) =>
-                    `block rounded-full px-4 py-2 focus-visible:outline-2 focus-visible:outline-rol-700 ${isActive ? "bg-rol-50 font-semibold text-rol-800" : "text-slate-700 hover:bg-slate-100"}`
-                  }
-                >
-                  {secciones[opcion].etiqueta}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
         </nav>
         <main
           className={`min-w-0 flex-1 min-h-0 overflow-x-hidden overflow-y-auto ${enCanal ? "" : "p-4 md:p-6"}`}
