@@ -105,7 +105,7 @@ export default function Publicar() {
             </p>
           )}
           {panel.cursos.map((curso) => (
-            <label key={curso.id} className="mt-1 flex items-center gap-2">
+            <label key={curso.id} className="flex min-h-11 items-center gap-3">
               <input
                 type="checkbox"
                 checked={formulario.cursos.includes(curso.id)}
@@ -115,7 +115,7 @@ export default function Publicar() {
             </label>
           ))}
         </fieldset>
-        <div className="w-40">
+        <div className="w-full sm:w-40">
           <Boton disabled={enviando || panel.cursos.length === 0}>
             Publicar
           </Boton>

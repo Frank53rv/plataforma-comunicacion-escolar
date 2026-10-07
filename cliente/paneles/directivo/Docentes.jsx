@@ -216,7 +216,7 @@ export default function Docentes() {
             ]}
             alCambiar={(docente) => setVinculo({ ...vinculo, docente })}
           />
-          <label className="mb-4 flex items-center gap-2">
+          <label className="mb-4 flex min-h-11 items-center gap-3">
             <input
               type="checkbox"
               checked={vinculo.titular}

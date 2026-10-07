@@ -54,7 +54,7 @@ describe("CP-RF-40 · identidad visual por rol", () => {
     ({ rol, etiqueta, icono: icono_ }) => {
       dibujar(panelDe(rol, { opciones_habilitadas: ["anuncios"] }));
 
-      const root = screen.getByTestId("armazon-root");
+      const root = screen.getByRole("main").parentElement.parentElement;
       expect(root).toHaveAttribute("data-rol", rol);
 
       const chip = screen.getByText(`Ana · ${etiqueta}`);
@@ -135,7 +135,7 @@ describe("CP-RF-40 · identidad visual por rol", () => {
   it("no queda ninguna clase emerald fija en el armazón", () => {
     dibujar(panelDe("tutor", { opciones_habilitadas: ["anuncios"] }));
 
-    const root = screen.getByTestId("armazon-root");
+    const root = screen.getByRole("main").parentElement.parentElement;
     const html = root.innerHTML;
     expect(html).not.toMatch(/emerald-/);
   });

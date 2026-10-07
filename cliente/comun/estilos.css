@@ -72,3 +72,13 @@
   --color-rol-700: #be123c;
   --color-rol-800: #9f1239;
 }
+
+/* RF-41 · las casillas de verificación tienen un tamaño cómodo para el dedo y el color del rol. */
+@layer base {
+  input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    accent-color: var(--color-rol-700);
+  }
+}

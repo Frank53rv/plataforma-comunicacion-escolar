@@ -29,7 +29,7 @@ export function Campo({
         value={valor}
         autoComplete={autoComplete}
         onChange={(evento) => alCambiar(evento.target.value)}
-        className="mt-1 block w-full rounded-lg border border-slate-500 bg-white px-3 py-2 text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-rol-700"
+        className="mt-1 block min-h-11 w-full rounded-lg border border-slate-500 bg-white px-2 py-2 text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-rol-700 sm:px-3"
       />
     </div>
   );
@@ -110,7 +110,7 @@ export function Boton({ children, ...resto }) {
   return (
     <button
       type="submit"
-      className="w-full rounded-full bg-rol-700 px-4 py-2 font-medium text-white hover:bg-rol-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700 disabled:opacity-50"
+      className="min-h-11 w-full rounded-full bg-rol-700 px-4 py-2 font-medium text-white hover:bg-rol-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700 disabled:opacity-50"
       {...resto}
     >
       {children}

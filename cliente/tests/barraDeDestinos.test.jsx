@@ -153,4 +153,43 @@ describe("CP-RF-41 · barra inferior de destinos", () => {
 
     expect(navegacion()).toHaveClass("max-md:order-last");
   });
+
+  it("Escape cierra la hoja de «Menú»", () => {
+    dibujar("docente", DOCENTE);
+    fireEvent.click(menu());
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(menu()).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("tocar fuera de la hoja la cierra", () => {
+    dibujar("docente", DOCENTE);
+    fireEvent.click(menu());
+
+    fireEvent.click(document.querySelector(".fixed.inset-0"));
+
+    expect(menu()).toHaveAttribute("aria-expanded", "false");
+    expect(document.querySelector(".fixed.inset-0")).toBeNull();
+  });
+
+  it("cada destino lleva un ícono decorativo y su nombre escrito", () => {
+    dibujar("directivo", DIRECTIVO);
+
+    todos().forEach((enlace) => {
+      expect(enlace.querySelector("svg")).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
+      expect(enlace.textContent).not.toBe("");
+    });
+  });
+
+  it("«Cerrar sesión» conserva su nombre aunque en el teléfono se vea como ícono", () => {
+    dibujar("alumno", ["anuncios", "preferencias"]);
+
+    expect(
+      screen.getByRole("button", { name: "Cerrar sesión" }),
+    ).toBeInTheDocument();
+  });
 });

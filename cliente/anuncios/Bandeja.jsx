@@ -138,7 +138,7 @@ export default function Bandeja() {
       <form
         onSubmit={filtrar}
         aria-label="Filtrar el historial"
-        className="mb-6 grid gap-x-4 rounded-2xl bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-4"
+        className="mb-6 grid grid-cols-2 gap-x-2 rounded-2xl bg-white p-3 shadow-sm sm:gap-x-4 sm:p-4 lg:grid-cols-4"
       >
         <Selector
           etiqueta="Curso"
@@ -164,14 +164,14 @@ export default function Bandeja() {
           valor={formulario.hasta}
           alCambiar={(hasta) => setFormulario({ ...formulario, hasta })}
         />
-        <div className="flex gap-3 sm:col-span-2 lg:col-span-4">
-          <div className="w-40">
+        <div className="col-span-2 flex gap-3 lg:col-span-4">
+          <div className="flex-1 sm:w-40 sm:flex-none">
             <Boton>Filtrar</Boton>
           </div>
           <button
             type="button"
             onClick={limpiar}
-            className="rounded-full border border-slate-500 px-4 py-2 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700"
+            className="min-h-11 flex-1 rounded-full sm:flex-none border border-slate-500 px-4 py-2 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700"
           >
             Limpiar
           </button>

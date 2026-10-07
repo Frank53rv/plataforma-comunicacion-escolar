@@ -89,7 +89,7 @@ export default function Preferencias() {
             alCambiar={(v) => cambiar("hora_fin", v)}
           />
         </div>
-        <label className="mb-4 flex items-center gap-2">
+        <label className="mb-4 flex min-h-11 items-center gap-3">
           <input
             type="checkbox"
             checked={formulario.recibir_mensajes}
@@ -99,7 +99,7 @@ export default function Preferencias() {
           />
           Recibir avisos de mensajes
         </label>
-        <div className="w-40">
+        <div className="w-full sm:w-40">
           <Boton disabled={guardando}>Guardar</Boton>
         </div>
         {guardado && (
