@@ -61,14 +61,14 @@ export default function CanalesDelCurso() {
               semilla={nombre ?? id}
             />
             <span
-              className={`rounded-full px-2 py-0.5 text-sm font-medium ${canal.estado === "activa" ? "bg-emerald-50 text-emerald-800" : "bg-slate-100 text-slate-700"}`}
+              className={`rounded-full px-2 py-0.5 text-sm font-medium ${canal.estado === "activa" ? "bg-rol-50 text-rol-800" : "bg-slate-100 text-slate-700"}`}
             >
               {ESTADOS[canal.estado]}
             </span>
             <Link
               to={`/conversaciones/${canal.id}`}
               state={{ curso: nombre }}
-              className="ml-auto rounded-full bg-emerald-700 px-4 py-2 font-medium text-white hover:bg-emerald-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
+              className="ml-auto rounded-full bg-rol-700 px-4 py-2 font-medium text-white hover:bg-rol-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700"
             >
               Abrir el canal grupal
             </Link>

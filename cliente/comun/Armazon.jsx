@@ -11,6 +11,7 @@
 import { useState } from "react";
 import { NavLink, Outlet, useMatch } from "react-router";
 import BotonDeInstalacion from "./BotonDeInstalacion.jsx";
+import IconoDeRol from "./IconoDeRol.jsx";
 import { useSesion } from "./contextoSesion.js";
 import { ETIQUETAS_DE_ROL, SECCIONES } from "./secciones.js";
 
@@ -31,31 +32,43 @@ export default function Armazon({ secciones = SECCIONES }) {
     (opcion) => secciones[opcion],
   );
   const ocultoEnCanal = enCanal ? "max-lg:hidden" : "";
+  const rolEtiqueta = ETIQUETAS_DE_ROL[panel.rol];
 
   return (
-    <div className="flex h-dvh flex-col bg-stone-50 text-slate-900 [overflow-wrap:anywhere]">
+    <div
+      data-testid="armazon-root"
+      data-rol={panel.rol}
+      className="flex h-dvh flex-col bg-stone-50 text-slate-900 [overflow-wrap:anywhere]"
+    >
       <header
         className={`flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 bg-white px-4 py-2 ${ocultoEnCanal}`}
       >
-        <p className="flex items-center gap-2 font-semibold text-emerald-800">
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            className="size-6 fill-emerald-700"
-          >
-            <path d="M12 3C6.5 3 2 6.9 2 11.6c0 2.5 1.3 4.8 3.4 6.4L4.6 21l3.6-1.8c1.2.4 2.5.6 3.8.6 5.5 0 10-3.9 10-8.6S17.5 3 12 3Z" />
-          </svg>
+        <p className="flex items-center gap-2 font-semibold text-rol-800">
+          <IconoDeRol rol={panel.rol} className="size-6" />
           Plataforma de comunicación escolar
         </p>
         <div className="flex flex-wrap items-center gap-3 text-sm">
-          <span>
-            {panel.nombre} · {ETIQUETAS_DE_ROL[panel.rol]}
+          <span className="sr-only">
+            {panel.nombre} · {rolEtiqueta}
+          </span>
+          <span
+            className="flex items-center gap-2"
+            data-nombre={panel.nombre}
+            data-rol={rolEtiqueta}
+          >
+            <span className="nombre-visual" aria-hidden="true" />·{" "}
+            <span
+              className="chip-visual"
+              aria-hidden="true"
+              data-testid="chip-visual"
+              data-rol={rolEtiqueta}
+            />
           </span>
           <BotonDeInstalacion />
           <button
             type="button"
             onClick={cerrar}
-            className="rounded-full border border-slate-500 px-3 py-1 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
+            className="rounded-full border border-slate-500 px-3 py-1 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700"
           >
             Cerrar sesión
           </button>
@@ -70,7 +83,7 @@ export default function Armazon({ secciones = SECCIONES }) {
             type="button"
             aria-expanded={abierto}
             onClick={() => setAbierto(!abierto)}
-            className="flex items-center gap-2 rounded-full border border-slate-500 px-3 py-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 md:hidden"
+            className="flex items-center gap-2 rounded-full border border-slate-500 px-3 py-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700 md:hidden"
           >
             <svg
               aria-hidden="true"
@@ -94,7 +107,7 @@ export default function Armazon({ secciones = SECCIONES }) {
                   end={secciones[opcion].ruta === "/"}
                   onClick={() => setAbierto(false)}
                   className={({ isActive }) =>
-                    `block rounded-full px-4 py-2 focus-visible:outline-2 focus-visible:outline-emerald-700 ${isActive ? "bg-emerald-50 font-semibold text-emerald-800" : "text-slate-700 hover:bg-slate-100"}`
+                    `block rounded-full px-4 py-2 focus-visible:outline-2 focus-visible:outline-rol-700 ${isActive ? "bg-rol-50 font-semibold text-rol-800" : "text-slate-700 hover:bg-slate-100"}`
                   }
                 >
                   {secciones[opcion].etiqueta}

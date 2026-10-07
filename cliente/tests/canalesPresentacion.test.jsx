@@ -109,6 +109,6 @@ describe("CP-RF-25 · el canal de un curso como tarjeta", () => {
     expect(await screen.findByText("Activo")).toHaveClass("rounded-full");
     expect(
       screen.getByRole("link", { name: "Abrir el canal grupal" }),
-    ).toHaveClass("bg-emerald-700");
+    ).toHaveClass("bg-rol-700");
   });
 });

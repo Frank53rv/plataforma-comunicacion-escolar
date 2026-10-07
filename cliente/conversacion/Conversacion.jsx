@@ -177,7 +177,7 @@ function CanalAbierto({ id }) {
       <div className="flex shrink-0 items-center gap-2 border-b border-slate-200 bg-white px-2 py-2">
         <Link
           to="/conversaciones"
-          className="rounded-full p-2 text-slate-700 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-emerald-700"
+          className="rounded-full p-2 text-slate-700 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-rol-700"
         >
           <svg
             aria-hidden="true"
@@ -221,7 +221,7 @@ function CanalAbierto({ id }) {
           <button
             type="button"
             onClick={cargarAnteriores}
-            className="mx-auto mb-3 block rounded-full bg-white px-3 py-1 text-sm text-slate-800 shadow-sm hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-emerald-700"
+            className="mx-auto mb-3 block rounded-full bg-white px-3 py-1 text-sm text-slate-800 shadow-sm hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-rol-700"
           >
             Ver mensajes anteriores
           </button>
@@ -254,7 +254,7 @@ function CanalAbierto({ id }) {
                       <span aria-hidden="true" className="w-8 shrink-0" />
                     ))}
                   <div
-                    className={`relative min-w-0 rounded-2xl px-3 py-1.5 shadow-sm ${propio ? "bg-emerald-100" : "bg-white"} ${inicio && propio ? "rounded-tr-none before:absolute before:top-0 before:-right-2 before:border-t-[10px] before:border-r-[10px] before:border-t-emerald-100 before:border-r-transparent" : ""} ${inicio && !propio ? "rounded-tl-none before:absolute before:top-0 before:-left-2 before:border-t-[10px] before:border-l-[10px] before:border-t-white before:border-l-transparent" : ""}`}
+                    className={`relative min-w-0 rounded-2xl px-3 py-1.5 shadow-sm ${propio ? "bg-rol-100" : "bg-white"} ${inicio && propio ? "rounded-tr-none before:absolute before:top-0 before:-right-2 before:border-t-[10px] before:border-r-[10px] before:border-t-rol-100 before:border-r-transparent" : ""} ${inicio && !propio ? "rounded-tl-none before:absolute before:top-0 before:-left-2 before:border-t-[10px] before:border-l-[10px] before:border-t-white before:border-l-transparent" : ""}`}
                   >
                     {(!propio || docente) && (
                       <p
@@ -313,7 +313,7 @@ function CanalAbierto({ id }) {
           type="submit"
           disabled={enviando}
           aria-label="Enviar"
-          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-white hover:bg-emerald-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 disabled:opacity-50"
+          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-rol-700 text-white hover:bg-rol-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700 disabled:opacity-50"
         >
           <svg
             aria-hidden="true"

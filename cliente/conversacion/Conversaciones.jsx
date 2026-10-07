@@ -63,7 +63,7 @@ export default function Conversaciones() {
                   <Link
                     to={`/conversaciones/${canal.id}`}
                     state={{ curso }}
-                    className="line-clamp-1 min-w-0 break-words font-semibold text-slate-900 after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-emerald-700"
+                    className="line-clamp-1 min-w-0 break-words font-semibold text-slate-900 after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-rol-700"
                   >
                     {titulo}
                   </Link>

@@ -50,7 +50,7 @@ export default function Detalle() {
   const volver = (
     <Link
       to="/"
-      className="mb-4 inline-flex items-center gap-1 rounded-full py-1 pr-3 pl-1 text-sm text-emerald-800 hover:bg-emerald-50 focus-visible:outline-2 focus-visible:outline-emerald-700"
+      className="mb-4 inline-flex items-center gap-1 rounded-full py-1 pr-3 pl-1 text-sm text-rol-800 hover:bg-rol-50 focus-visible:outline-2 focus-visible:outline-rol-700"
     >
       <svg
         aria-hidden="true"
