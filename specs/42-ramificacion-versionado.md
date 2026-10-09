@@ -1,4 +1,4 @@
-<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
+<!-- GENERADO desde Proyecto de grado entrega final.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
@@ -14,4 +14,4 @@
 | Versión menor | Incorporación de un requisito funcional completo | Requisito con su caso de prueba aprobado |
 | Versión parche | Corrección sin cambio de contrato | Caso de prueba aprobado |
 
-> Nota. El nombre de la rama incorpora el código del requisito de la Tabla 10 por una razón que excede la prolijidad: convierte el historial del repositorio en evidencia directa de la matriz de trazabilidad, de modo que la verificación de RNF-22 en la Etapa 4 pueda contrastar cada requisito Must have contra la rama que lo construyó y el caso de prueba que lo aprobó. Los archivos de especificación que gobiernan la asistencia de inteligencia artificial —el Context, el Boundary y el Quality Spec de este punto— se versionan junto con el código, en una carpeta propia, para que toda modificación de los límites quede fechada y atribuida. El incremento 5, cliente web, se ejecutó en once ramas —dos de cimientos y nueve de pantallas— y no en una por requisito: el módulo F tiene cuatro requisitos y una sola rama de RF-42 habría concentrado ocho pantallas.
+> Nota. El nombre de la rama incorpora el código del requisito de la Tabla 10 por una razón que excede la prolijidad: convierte el historial del repositorio en evidencia directa de la matriz de trazabilidad, de modo que la verificación de RNF-22 en la Etapa 4 pueda contrastar cada requisito Must have contra la rama que lo construyó y el caso de prueba que lo aprobó. Los archivos de especificación que gobiernan la asistencia de inteligencia artificial —el Context, el Boundary y el Quality Spec de este punto— se versionan junto con el código, en una carpeta propia, para que toda modificación de los límites quede fechada y atribuida. El incremento 5, cliente web, se ejecutó en doce ramas —dos de cimientos, nueve de pantallas y una de presentación— y no en una por requisito: el módulo F tiene cuatro requisitos y una sola rama de RF-42 habría concentrado ocho pantallas.

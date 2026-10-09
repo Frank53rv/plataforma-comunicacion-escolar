@@ -1,4 +1,4 @@
-<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
+<!-- GENERADO desde Proyecto de grado entrega final.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
@@ -12,7 +12,7 @@
 | anio_lectivo | id uuid · anio smallint · estado estado_anio_enum · abierto_en timestamptz · cerrado_en timestamptz nulo | PK id · UNIQUE (anio) · UNIQUE parcial sobre estado donde estado es vigente | RN-31 |
 | curso | id uuid · anio_lectivo_id uuid · nombre varchar(60) · turno varchar(20) · estado estado_curso_enum | PK id · FK anio_lectivo_id · UNIQUE (anio_lectivo_id, nombre) | RN-26 |
 | docente_curso | id uuid · usuario_id uuid · curso_id uuid · es_titular boolean · vigente_desde date · vigente_hasta date nulo | PK id · FK usuario_id y curso_id · UNIQUE parcial (curso_id) donde es_titular y vigente_hasta es nulo · UNIQUE parcial (usuario_id, curso_id) donde vigente_hasta es nulo | RN-13 · RF-15 |
-| alumno_curso | id uuid · usuario_id uuid · curso_id uuid · vigente_desde date · vigente_hasta date nulo | PK id · FK usuario_id y curso_id · un solo curso vigente por año lectivo, verificado en la capa de negocio | RN-30 |
+| alumno_curso | id uuid · usuario_id uuid · curso_id uuid · vigente_desde date · vigente_hasta date nulo | PK id · FK usuario_id y curso_id · UNIQUE parcial (usuario_id, curso_id) donde vigente_hasta es nulo · un solo curso vigente por año lectivo, verificado en la capa de negocio | RN-30 |
 | tutor_alumno | id uuid · tutor_id uuid · alumno_id uuid · vigente_desde date · vigente_hasta date nulo | PK id · FK tutor_id y alumno_id a usuario · UNIQUE parcial (tutor_id, alumno_id) donde vigente_hasta es nulo · límite de dos vigentes por alumno, verificado en la capa de negocio | RN-29 · RN-12 |
 | anuncio | id uuid · autor_id uuid · estado estado_anuncio_enum · programado_para timestamptz nulo · creado_en timestamptz · eliminado_en timestamptz nulo · eliminado_por uuid nulo | PK id · FK autor_id y eliminado_por a usuario · índice sobre (autor_id, estado) · índice parcial sobre programado_para donde estado es programado | RN-16 · RN-20 · RF-18 |
 | anuncio_curso | id uuid · anuncio_id uuid · curso_id uuid | PK id · FK anuncio_id y curso_id · UNIQUE (anuncio_id, curso_id) | RN-19 |

@@ -1,4 +1,4 @@
-<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
+<!-- GENERADO desde Proyecto de grado entrega final.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 

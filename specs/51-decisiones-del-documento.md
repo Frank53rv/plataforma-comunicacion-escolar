@@ -1,8 +1,8 @@
-<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
+<!-- GENERADO desde Proyecto de grado entrega final.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 39 · Decisiones adoptadas donde el documento no determinaba la cuestión
+# Tabla 38 · Decisiones de detalle adoptadas en la construcción
 
 | Materia | Decisión adoptada | Fundamento y dónde queda registrada |
 |---|---|---|
@@ -14,4 +14,4 @@
 | Identificadores y valores enumerados | Los valores del campo de código de error, los títulos y el tipo about:blank del cuerpo de error; los nombres indisponibilidad_del_servicio_push, grupal_de_tutores y pendiente; los valores de causa_fallo del tipo enumerado causa_enum —indisponibilidad_del_servicio_push, ausencia_de_acuse_del_cliente, falta_de_soporte_del_navegador y credencial_invalida—; el valor verdadero por omisión de recibir_mensajes; y la obligatoriedad de las restantes columnas. | RFC 9457 fija la forma del cuerpo pero no los identificadores. Los nombres reproducen el vocabulario cerrado de la Tabla 14. |
 | Nombres de campo y códigos de respuesta del contrato | Los campos derivados destinatarios_resueltos, leido, no_leidos y total_destinatarios, y la elección entre 200 y 201 en cada operación. | Los fija el archivo OpenAPI, que es el instrumento de verificación de RNF-17. |
 
-> Nota. Ninguna de estas decisiones contradice el documento: todas recaen sobre puntos que el documento no determinaba.
+> Nota. Ninguna de estas decisiones contradice el documento: todas recaen sobre aspectos que las tablas anteriores no determinan.

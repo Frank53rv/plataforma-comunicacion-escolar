@@ -1,4 +1,4 @@
-<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
+<!-- GENERADO desde Proyecto de grado entrega final.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
@@ -11,6 +11,6 @@
 | Base de datos | PostgreSQL 18 | Único almacén: datos de negocio, cola de trabajos en segundo plano y mecanismo de publicación y suscripción | Contenedor propio, con volumen persistente |
 | Exposición | Cloudflare Tunnel | Nombre de dominio y certificado válido hacia internet, sin abrir puertos del equipo | Proceso auxiliar junto a la composición |
 | Servicio de notificaciones push | Firebase Cloud Messaging | Entrega de avisos al navegador del destinatario, incluso con la aplicación cerrada | Servicio de terceros. Único componente externo |
-| Dispositivo del usuario | Navegador con service worker | Presentación de la interfaz y recepción de los avisos push | Equipo de escritorio o dispositivo móvil del usuario |
+| Dispositivo del usuario | Navegador con service worker y manifiesto propios | Presentación de la interfaz y recepción de los avisos push. El manifiesto declara íconos SVG y PNG de 192 y 512 píxeles, y uno enmascarable de 512. La barra superior ofrece «Instalar aplicación» mediante el ofrecimiento del navegador; en el iPhone, donde el navegador no ofrece la instalación, el mismo control explica la vía de Safari —Compartir y «Agregar a pantalla de inicio»— y, desde otros navegadores, pide abrir la página en Safari. El documento de entrada declara el ícono y la pantalla completa para iOS. Instalada la aplicación, el control desaparece | Equipo de escritorio o dispositivo móvil del usuario |
 
 > Nota. Las tres primeras filas son las unidades de ejecución propias que la Figura 16 representa con el estereotipo de entorno de ejecución; la quinta es el nodo externo. La orquestación de los tres contenedores se realiza con una única definición de composición, que es lo que hace verificable la reproducibilidad comprometida en RNF-19 y ejecutable el caso CP-RNF-19.

@@ -1,4 +1,4 @@
-<!-- GENERADO desde TFG_ENTREGA_75paginas.docx, edición vigente. NO EDITAR A MANO.
+<!-- GENERADO desde Proyecto de grado entrega final.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
@@ -15,7 +15,7 @@
 | GET /anios-lectivos | sin parámetros | colección de anio_lectivo |
 | PATCH /anios-lectivos/{id} | estado igual a cerrado | recurso anio_lectivo con cerrado_en |
 | POST /cursos | anio_lectivo_id, nombre, turno | recurso curso |
-| GET /cursos | anio_lectivo_id opcional, estado opcional | colección de curso; cada curso trae docentes, con es_titular, y alumnos con sus tutores, con id, nombre, apellido, correo y estado, sobre vinculaciones vigentes. El directivo recibe todos los cursos; el docente, sólo aquellos con vinculación vigente |
+| GET /cursos | anio_lectivo_id opcional, estado opcional | colección de curso; cada curso trae docentes, con es_titular, y alumnos con sus tutores, con id, nombre, apellido, correo y estado, sobre vinculaciones vigentes. El directivo recibe todos los cursos; el docente, sólo aquellos con vinculación vigente. El directivo recibe además docentes_de_la_institucion: la totalidad de los docentes, con los mismos campos, tengan o no vinculación vigente |
 | PATCH /cursos/{id} | nombre, turno | recurso curso |
 | POST /docentes | nombre, apellido, correo | recurso usuario y codigo_activacion con vence_en y el código en claro, devuelto una sola vez |
 | POST /cursos/{id}/docentes | usuario_id, es_titular | recurso docente_curso |
