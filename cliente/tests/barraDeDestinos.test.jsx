@@ -193,3 +193,70 @@ describe("CP-RF-41 · barra inferior de destinos", () => {
     ).toBeInTheDocument();
   });
 });
+
+const perfil = () => screen.getByRole("button", { name: /^Perfil:/ });
+const contenidoDelPerfil = () => document.getElementById("perfil");
+
+describe("CP-RF-41 · perfil en la cabecera del teléfono", () => {
+  it.each([
+    ["directivo", "Directivo", "escudo"],
+    ["docente", "Docente", "libro"],
+    ["tutor", "Tutor", "casa"],
+    ["alumno", "Alumno", "birrete"],
+  ])(
+    "el botón de perfil del %s se reconoce por el ícono del rol y nombra persona y rol",
+    (rol, etiqueta, icono) => {
+      dibujar(rol, ["anuncios"]);
+
+      expect(perfil()).toHaveAccessibleName(`Perfil: Ana · ${etiqueta}`);
+      expect(perfil()).toHaveClass("md:hidden", "bg-rol-100", "text-rol-800");
+      expect(
+        perfil().querySelector("[data-testid='icono-rol']"),
+      ).toHaveAttribute("data-icono", icono);
+    },
+  );
+
+  it("cerrado, el nombre, la instalación y el cierre de sesión no se ven en el teléfono", () => {
+    dibujar("tutor", ["anuncios"]);
+
+    expect(perfil()).toHaveAttribute("aria-expanded", "false");
+    expect(contenidoDelPerfil()).toHaveClass("max-md:hidden");
+    expect(contenidoDelPerfil()).toContainElement(
+      screen.getByRole("button", { name: "Cerrar sesión" }),
+    );
+  });
+
+  it("abierto, despliega el nombre con el rol y el cierre de sesión", () => {
+    dibujar("tutor", ["anuncios"]);
+
+    fireEvent.click(perfil());
+
+    expect(perfil()).toHaveAttribute("aria-expanded", "true");
+    expect(contenidoDelPerfil()).not.toHaveClass("max-md:hidden");
+    expect(contenidoDelPerfil()).toHaveTextContent("Ana · Tutor");
+  });
+
+  it("Escape y tocar fuera cierran el perfil", () => {
+    dibujar("tutor", ["anuncios"]);
+
+    fireEvent.click(perfil());
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(perfil()).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(perfil());
+    fireEvent.click(document.querySelector(".fixed.inset-0"));
+    expect(perfil()).toHaveAttribute("aria-expanded", "false");
+    expect(document.querySelector(".fixed.inset-0")).toBeNull();
+  });
+
+  it("abrir el perfil cierra la hoja de «Menú» y al revés", () => {
+    dibujar("docente", DOCENTE);
+
+    fireEvent.click(menu());
+    fireEvent.click(perfil());
+    expect(menu()).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(menu());
+    expect(perfil()).toHaveAttribute("aria-expanded", "false");
+  });
+});

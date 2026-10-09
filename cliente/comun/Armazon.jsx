@@ -6,7 +6,9 @@
 // Ocupa el alto de la ventana y sólo desplaza el contenido. En 768 px o más la navegación es
 // lateral. Por debajo es una barra inferior con los destinos de uso diario del rol, cada uno
 // con su ícono y su nombre; el resto se ofrece en una hoja que abre «Menú» y que se cierra con
-// el mismo botón, con Escape o tocando fuera de ella. La cabecera se reduce a una fila. Dentro
+// el mismo botón, con Escape o tocando fuera de ella. La cabecera se reduce a una fila: el
+// botón de perfil muestra sólo el ícono del rol y despliega el nombre con el rol, la
+// instalación y el cierre de sesión, y se cierra igual que la hoja de «Menú». Dentro
 // de un canal grupal, por debajo del ancho grande, cabecera y navegación se ocultan con un
 // punto de corte para que el canal ocupe la pantalla: siguen en el documento y el canal ofrece
 // la vuelta.
@@ -28,16 +30,19 @@ const FOCO =
 export default function Armazon({ secciones = SECCIONES }) {
   const { panel, errorPanel, cerrar } = useSesion();
   const [abierto, setAbierto] = useState(false);
+  const [perfil, setPerfil] = useState(false);
   const enCanal = useMatch("/conversaciones/:id") !== null;
 
   useEffect(() => {
-    if (!abierto) return undefined;
+    if (!abierto && !perfil) return undefined;
     const alPresionar = (evento) => {
-      if (evento.key === "Escape") setAbierto(false);
+      if (evento.key !== "Escape") return;
+      setAbierto(false);
+      setPerfil(false);
     };
     document.addEventListener("keydown", alPresionar);
     return () => document.removeEventListener("keydown", alPresionar);
-  }, [abierto]);
+  }, [abierto, perfil]);
 
   if (!panel) {
     return (
@@ -64,26 +69,49 @@ export default function Armazon({ secciones = SECCIONES }) {
       className="flex h-dvh flex-col bg-stone-50 text-slate-900 [overflow-wrap:anywhere]"
     >
       <header
-        className={`flex items-center justify-between gap-2 border-b border-slate-200 bg-white px-4 py-2 ${ocultoEnCanal}`}
+        className={`relative flex items-center justify-between gap-2 border-b border-slate-200 bg-white px-4 py-2 ${ocultoEnCanal}`}
       >
         <p className="flex min-w-0 items-center gap-2 font-semibold text-rol-800">
-          <IconoDeRol rol={panel.rol} className="size-7 shrink-0" />
-          <span className="max-md:sr-only">
+          <IconoDeRol rol={panel.rol} className="size-7 shrink-0 max-md:hidden" />
+          <span className="truncate max-md:text-sm">
             Plataforma de comunicación escolar
           </span>
         </p>
-        <div className="flex min-w-0 flex-wrap items-center justify-end gap-2 text-sm">
-          <span className="rounded-full border border-rol-200 bg-rol-100 px-3 py-1 font-medium text-rol-800">
+        <button
+          type="button"
+          aria-label={`Perfil: ${panel.nombre} · ${rolEtiqueta}`}
+          aria-expanded={perfil}
+          aria-controls="perfil"
+          onClick={() => {
+            setPerfil(!perfil);
+            setAbierto(false);
+          }}
+          className={`flex size-11 shrink-0 items-center justify-center rounded-full border border-rol-200 bg-rol-100 text-rol-800 md:hidden ${FOCO}`}
+        >
+          <IconoDeRol rol={panel.rol} className="size-6" />
+        </button>
+        {perfil && (
+          <div
+            aria-hidden="true"
+            onClick={() => setPerfil(false)}
+            className="fixed inset-0 z-30 md:hidden"
+          />
+        )}
+        <div
+          id="perfil"
+          className={`flex min-w-0 items-center justify-end gap-2 text-sm ${perfil ? "max-md:absolute max-md:top-full max-md:right-2 max-md:z-40 max-md:mt-1 max-md:w-64 max-md:flex-col max-md:items-stretch max-md:rounded-2xl max-md:border max-md:border-slate-200 max-md:bg-white max-md:p-3 max-md:shadow-lg" : "max-md:hidden"}`}
+        >
+          <span className="rounded-full border border-rol-200 bg-rol-100 px-3 py-1 font-medium text-rol-800 max-md:py-2 max-md:text-center">
             {panel.nombre} · {rolEtiqueta}
           </span>
           <BotonDeInstalacion />
           <button
             type="button"
             onClick={cerrar}
-            className={`flex min-h-9 items-center rounded-full border border-slate-500 px-3 py-1 hover:bg-slate-100 max-sm:min-w-9 max-sm:px-2 ${FOCO}`}
+            className={`flex min-h-9 items-center gap-2 rounded-full border border-slate-500 px-3 py-1 hover:bg-slate-100 max-md:min-h-11 ${FOCO}`}
           >
-            <IconoDeSeccion seccion="salir" className="size-5 sm:hidden" />
-            <span className="max-sm:sr-only">Cerrar sesión</span>
+            <IconoDeSeccion seccion="salir" className="size-5 md:hidden" />
+            Cerrar sesión
           </button>
         </div>
       </header>
@@ -132,7 +160,10 @@ export default function Armazon({ secciones = SECCIONES }) {
           <button
             type="button"
             aria-expanded={abierto}
-            onClick={() => setAbierto(!abierto)}
+            onClick={() => {
+              setAbierto(!abierto);
+              setPerfil(false);
+            }}
             className={`flex min-h-14 shrink-0 flex-col items-center justify-start gap-1 rounded-2xl px-3 pt-2 pb-1 text-xs text-slate-700 hover:bg-slate-100 md:hidden ${abierto ? "ml-auto bg-slate-100" : ""} ${FOCO} ${hayDesborde ? "" : "hidden"}`}
           >
             <IconoDeSeccion seccion={abierto ? "cerrar" : "menu"} />
