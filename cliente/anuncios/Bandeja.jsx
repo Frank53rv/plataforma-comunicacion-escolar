@@ -1,17 +1,19 @@
 // RF-39 Bandeja de anuncios como vista de entrada · RF-22 Consulta del historial · RF-34 ·
-// RF-35 · CU-09, CU-10 · RN-15, RN-32
-// Prueba: CP-RF-39 · CP-RF-22 · CP-RF-34 · CP-RF-35
+// RF-35 · RF-37 · CU-09, CU-10, CU-14 · RN-15, RN-32
+// Prueba: CP-RF-39 · CP-RF-22 · CP-RF-34 · CP-RF-35 · CP-RF-37
 //
 // RF-39 · vista inicial de los cuatro paneles. RF-22 · filtra por fecha, curso y remitente;
 // los cursos salen del panel de la persona y los remitentes de los autores que el historial
-// ya devolvió. RNF-16 · un anuncio anterior se localiza en tres pasos: la bandeja, el filtro
+// ya devolvió. RF-37 · con la aplicación abierta, el anuncio publicado llega sin depender
+// del aviso push: la bandeja vuelve a consultar cada treinta segundos mientras se ve, al
+// volver a verse y cuando el service worker recibe un aviso. RNF-16 · un anuncio anterior se localiza en tres pasos: la bandeja, el filtro
 // y el detalle.
 // Fig. 9 · el acuse lo emite el cliente al presentar el aviso dentro de la aplicación; RF-35
 // · las vistas de lo que entra al área visible se emiten agrupadas. Sólo tutores y alumnos
 // son destinatarios de un anuncio (Tabla 4): a quien no lo es no le corresponde ninguna
 // entrega y no se emite nada. Es presentación, no autorización: la interfaz de programación
 // resuelve quién puede qué.
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { mensajeDeError } from "../comun/api.js";
 import { useSesion } from "../comun/contextoSesion.js";
@@ -26,6 +28,7 @@ import Paginacion from "../comun/Paginacion.jsx";
 import { useAcumuladorDeVistas } from "./useAcumuladorDeVistas.js";
 
 const POR_PAGINA = 25;
+const CADA = 30_000;
 const SIN_FILTROS = { curso: "", remitente: "", desde: "", hasta: "" };
 
 function consultaDe(filtros, pagina) {
@@ -52,6 +55,8 @@ export default function Bandeja() {
   const [pagina, setPagina] = useState(1);
   const [respuesta, setRespuesta] = useState(null);
   const [remitentes, setRemitentes] = useState(() => new Map());
+  const [vuelta, setVuelta] = useState(0);
+  const acusadas = useRef(new Set());
 
   const consulta = consultaDe(aplicados, pagina);
   const conFiltros = Object.values(aplicados).some(Boolean);
@@ -63,6 +68,21 @@ export default function Bandeja() {
       : destinatario
         ? "Los anuncios que publiquen los docentes de tu curso aparecerán acá."
         : "Los anuncios que publiquen los docentes aparecerán acá.";
+
+  useEffect(() => {
+    const ponerAlDia = () => {
+      if (document.visibilityState === "visible") setVuelta((n) => n + 1);
+    };
+    const reloj = setInterval(ponerAlDia, CADA);
+    const trabajador = navigator.serviceWorker;
+    document.addEventListener("visibilitychange", ponerAlDia);
+    trabajador?.addEventListener("message", ponerAlDia);
+    return () => {
+      clearInterval(reloj);
+      document.removeEventListener("visibilitychange", ponerAlDia);
+      trabajador?.removeEventListener("message", ponerAlDia);
+    };
+  }, []);
 
   useEffect(() => {
     let vigente = true;
@@ -86,18 +106,22 @@ export default function Bandeja() {
     return () => {
       vigente = false;
     };
-  }, [api, consulta]);
+  }, [api, consulta, vuelta]);
 
   // Fig. 9 · presentar el aviso dentro de la aplicación es lo que dispara el acuse.
   useEffect(() => {
     if (!destinatario || !respuesta?.datos) return;
     const sinLeer = respuesta.datos
       .filter((fila) => !fila.leido)
-      .map((fila) => fila.anuncio_version_id);
-    if (sinLeer.length > 0)
-      api
-        .post("/entregas/acuses", { anuncio_version_ids: sinLeer })
-        .catch(() => {});
+      .map((fila) => fila.anuncio_version_id)
+      .filter((version) => !acusadas.current.has(version));
+    if (sinLeer.length === 0) return;
+    sinLeer.forEach((version) => acusadas.current.add(version));
+    api
+      .post("/entregas/acuses", { anuncio_version_ids: sinLeer })
+      .catch(() =>
+        sinLeer.forEach((version) => acusadas.current.delete(version)),
+      );
   }, [api, destinatario, respuesta]);
 
   const emitirVistas = useCallback(
