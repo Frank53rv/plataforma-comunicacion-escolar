@@ -74,7 +74,7 @@ class AnunciosController < ApplicationController
       end
     end
 
-    # RF-31 · encola el envío push de cada notificación (sin construir).
+    # RF-31 · encola el envío push de cada notificación.
     entregas.each { |entrega| NotificacionAnuncioJob.perform_later(entrega.id) }
 
     render json: anuncio.recurso(destinatarios_resueltos: entregas.size), status: :created

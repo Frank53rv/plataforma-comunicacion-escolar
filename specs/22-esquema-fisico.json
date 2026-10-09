@@ -1,5 +1,5 @@
 {
-  "fuente": "Tabla 27 · TFG_ENTREGA_75paginas.docx",
+  "fuente": "Tabla 27 · Proyecto de grado entrega final.docx",
   "total": 19,
   "entidades": [
     {
@@ -96,7 +96,7 @@
         "vigente_hasta"
       ],
       "columnas_texto": "id uuid · usuario_id uuid · curso_id uuid · vigente_desde date · vigente_hasta date nulo",
-      "restricciones": "PK id · FK usuario_id y curso_id · un solo curso vigente por año lectivo, verificado en la capa de negocio",
+      "restricciones": "PK id · FK usuario_id y curso_id · UNIQUE parcial (usuario_id, curso_id) donde vigente_hasta es nulo · un solo curso vigente por año lectivo, verificado en la capa de negocio",
       "reglas": "RN-30"
     },
     {

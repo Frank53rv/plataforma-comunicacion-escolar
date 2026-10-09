@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Extrae el contenido normativo del documento de grado a artefactos legibles por máquina.
 
-Fuente única: la edición vigente de 75 páginas (`TFG_ENTREGA_75paginas.docx`), con su
+Fuente única: la edición final (`Proyecto de grado entrega final.docx`), con su
 numeración propia. No hay ningún otro documento normativo: el paquete generado no
 enuncia narrativa de casos de uso ni un catálogo individual de casos de prueba, porque
 la edición vigente sólo trae el resumen por caso de uso (Tabla 13) y el resumen por
@@ -15,7 +15,7 @@ from docx.text.paragraph import Paragraph
 OUT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DOC_VIGENTE = os.environ.get('TFG_DOCX',
-                             os.path.join(OUT, 'documento', 'TFG_ENTREGA_75paginas.docx'))
+                             os.path.join(OUT, 'documento', 'Proyecto de grado entrega final.docx'))
 
 
 def leer_docx(ruta):
@@ -127,9 +127,8 @@ PLAN = [
     # Registro del punto 5.5, propio de la edición vigente: no existía en la v5.2.
     (36, 'specs/45-plan-incrementos.md'),
     (37, 'specs/46-protocolo-medicion.md'),
-    (38, 'specs/50-divergencias.md'),
-    (39, 'specs/51-decisiones-del-documento.md'),
-    (40, 'specs/52-herramientas-verificacion.md'),
+    (38, 'specs/51-decisiones-del-documento.md'),
+    (39, 'specs/52-herramientas-verificacion.md'),
 ]
 for num, fn in PLAN:
     written.append(dump_tabla(num, fn))

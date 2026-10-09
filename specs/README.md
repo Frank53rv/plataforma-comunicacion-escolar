@@ -4,7 +4,7 @@ Extracción literal del documento de grado *«API REST de un colegio para una pl
 comunicación escolar con notificaciones inteligentes»*.
 
 **Fuente única.** Este paquete proviene íntegramente de la edición vigente,
-`documento/TFG_ENTREGA_75paginas.docx` (75 páginas, 40 tablas, 18 figuras): es la guía
+`documento/Proyecto de grado entrega final.docx` (39 tablas, 18 figuras): es la guía
 definitiva y gobierna la totalidad de las tablas, con su numeración propia. No hay ningún
 otro documento normativo.
 
@@ -25,11 +25,11 @@ código y documento queda imposibilitada por construcción y no por disciplina.
 | `13-casos-uso-resumen.md` | Tabla 13 | 15 CU: actor, precondición, postcondición |
 | `15-diccionario-datos.md` | Tabla 14 | 19 entidades con atributos y restricciones |
 | `16-trazabilidad.md` / `.json` | Tabla 15 | 69 filas: requisito → regla → CU → módulo → CP-RF-nn/CP-RNF-nn |
-| `20-endpoints.md` / `.json` | Tabla 18 | 43 operaciones con método, ruta, roles y CU |
+| `20-endpoints.md` / `.json` | Tabla 18 | 42 operaciones —41 sobre HTTP y el canal de tiempo real— con método, ruta, roles y CU |
 | `21-errores.md` / `.json` | Tabla 24 | Catálogo cerrado de 9 estados |
 | `22-esquema-fisico.md` / `.json` | Tabla 27 | Tipos, claves, índices y restricciones |
 | `23-convenciones-api.md` | Tabla 28 | Prefijo, paginación, fechas, forma del error |
-| `24-formas-peticion-respuesta.md` | Tabla 29 | Petición y respuesta de las 43 operaciones |
+| `24-formas-peticion-respuesta.md` | Tabla 29 | Petición y respuesta de las 42 operaciones |
 | `25-semantica-temporal.md` | edición vigente, punto 4.2, prosa | Zona horaria de interpretación; almacenamiento en tiempo universal |
 | `30-casos-prueba.md` | Tabla 32 | Resumen por grupo, con criterio de aprobación y umbral global |
 | `31-tareas-criticas.md` | Tabla 17 | Tareas críticas por rol (RNF-13, RNF-15, RNF-18) |
@@ -40,9 +40,8 @@ código y documento queda imposibilitada por construcción y no por disciplina.
 | `44-despliegue.md` | Tabla 35 | Procedimiento del entorno de demostración |
 | `45-plan-incrementos.md` | Tabla 36 | Plan de incrementos del producto mínimo viable |
 | `46-protocolo-medicion.md` | Tabla 37 | Protocolo de medición de los requisitos no funcionales |
-| `50-divergencias.md` | Tabla 38 | Divergencias entre el documento y la versión construida |
-| `51-decisiones-del-documento.md` | Tabla 39 | Decisiones que el documento mismo registra donde no determinaba la cuestión |
-| `52-herramientas-verificacion.md` | Tabla 40 | Modificaciones aplicadas a las herramientas de verificación |
+| `51-decisiones-del-documento.md` | Tabla 38 | Decisiones de detalle adoptadas en la construcción |
+| `52-herramientas-verificacion.md` | Tabla 39 | Herramientas de verificación del documento contra el código |
 | `DECISIONES.md` | — | Huecos detectados por esta asistencia y su resolución, con fecha (registro propio, distinto de `51-decisiones-del-documento.md`) |
 
 ## Cómo se usa
