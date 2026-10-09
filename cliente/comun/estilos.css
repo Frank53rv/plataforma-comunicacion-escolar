@@ -1,3 +1,84 @@
 /* Tabla 23 · Tailwind CSS 4.3, clases utilitarias orientadas al diseño responsivo en
    los tres anchos de referencia de RF-41 y RNF-18. */
 @import "tailwindcss";
+
+@theme {
+  /* Tokens de color por rol (RF-40 · CU-09) */
+  /* Defecto = esmeralda (tutor) */
+  --color-rol-50: #ecfdf5;
+  --color-rol-100: #d1fae5;
+  --color-rol-200: #a7f3d0;
+  --color-rol-700: #047857;
+  --color-rol-800: #065f46;
+
+  /* Directivo = azul */
+  --color-directivo-50: #eff6ff;
+  --color-directivo-100: #dbeafe;
+  --color-directivo-200: #bfdbfe;
+  --color-directivo-700: #1d4ed8;
+  --color-directivo-800: #1e40af;
+
+  /* Docente = ámbar */
+  --color-docente-50: #fffbeb;
+  --color-docente-100: #fef3c7;
+  --color-docente-200: #fde68a;
+  --color-docente-700: #b45309;
+  --color-docente-800: #92400e;
+
+  /* Tutor = esmeralda (igual que defecto) */
+  --color-tutor-50: #ecfdf5;
+  --color-tutor-100: #d1fae5;
+  --color-tutor-200: #a7f3d0;
+  --color-tutor-700: #047857;
+  --color-tutor-800: #065f46;
+
+  /* Alumno = rosa */
+  --color-alumno-50: #fff1f2;
+  --color-alumno-100: #ffe4e6;
+  --color-alumno-200: #fecdd3;
+  --color-alumno-700: #be123c;
+  --color-alumno-800: #9f1239;
+}
+
+/* Sobrescritura de tokens por rol mediante data-rol en la raíz del armazón */
+[data-rol="directivo"] {
+  --color-rol-50: #eff6ff;
+  --color-rol-100: #dbeafe;
+  --color-rol-200: #bfdbfe;
+  --color-rol-700: #1d4ed8;
+  --color-rol-800: #1e40af;
+}
+
+[data-rol="docente"] {
+  --color-rol-50: #fffbeb;
+  --color-rol-100: #fef3c7;
+  --color-rol-200: #fde68a;
+  --color-rol-700: #b45309;
+  --color-rol-800: #92400e;
+}
+
+[data-rol="tutor"] {
+  --color-rol-50: #ecfdf5;
+  --color-rol-100: #d1fae5;
+  --color-rol-200: #a7f3d0;
+  --color-rol-700: #047857;
+  --color-rol-800: #065f46;
+}
+
+[data-rol="alumno"] {
+  --color-rol-50: #fff1f2;
+  --color-rol-100: #ffe4e6;
+  --color-rol-200: #fecdd3;
+  --color-rol-700: #be123c;
+  --color-rol-800: #9f1239;
+}
+
+/* RF-41 · las casillas de verificación tienen un tamaño cómodo para el dedo y el color del rol. */
+@layer base {
+  input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    accent-color: var(--color-rol-700);
+  }
+}

@@ -34,3 +34,15 @@ export function escucharInstalacion(
     ventana.removeEventListener("appinstalled", alInstalar);
   };
 }
+
+// En el iPhone, «Agregar a pantalla de inicio» está siempre en Safari; el navegador interno de
+// otras aplicaciones no lo tiene, y los demás navegadores no lo tienen en todas las versiones.
+// Safari se reconoce porque declara «Safari/» y ninguna marca de otro navegador o aplicación.
+const OTROS_EN_IOS =
+  /CriOS|FxiOS|EdgiOS|OPiOS|GSA\/|FBAN|FBAV|Instagram|Line\//;
+
+export function navegadorDeIOS(agente = globalThis.navigator?.userAgent ?? "") {
+  return /Safari\//.test(agente) && !OTROS_EN_IOS.test(agente)
+    ? "safari"
+    : "otro";
+}

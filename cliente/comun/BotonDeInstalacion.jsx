@@ -6,7 +6,18 @@
 // admita; instalada la aplicación, desaparece. En iOS no hay ofrecimiento que invocar —
 // Safari no emite `beforeinstallprompt`—, así que se indica la vía del menú de compartir.
 import { useEffect, useState } from "react";
-import { esIOS, escucharInstalacion, estaInstalada } from "./instalacion.js";
+import {
+  esIOS,
+  escucharInstalacion,
+  estaInstalada,
+  navegadorDeIOS,
+} from "./instalacion.js";
+
+const GUIAS = {
+  safari:
+    "Para instalarla, tocá Compartir (el cuadrado con la flecha hacia arriba), deslizá hacia abajo y elegí «Agregar a pantalla de inicio». Si no aparece, tocá «Editar acciones» al final de la lista y agregala.",
+  otro: "Para instalarla, abrí esta página en Safari: tocá Compartir y elegí «Agregar a pantalla de inicio». Desde otros navegadores o desde el navegador de otra aplicación puede no estar esa opción.",
+};
 
 export default function BotonDeInstalacion() {
   const [oferta, setOferta] = useState(null);
@@ -36,18 +47,29 @@ export default function BotonDeInstalacion() {
         type="button"
         onClick={instalar}
         aria-expanded={oferta ? undefined : guia}
-        className="rounded border border-slate-300 px-3 py-1"
+        className="flex min-h-9 items-center gap-1 rounded-full border border-slate-500 px-3 py-1 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700 max-sm:min-w-9 max-sm:px-2"
       >
-        Instalar aplicación
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className="size-5 shrink-0 sm:hidden"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />
+        </svg>
+        <span className="max-sm:sr-only">Instalar aplicación</span>
       </button>
       {guia && (
         <p
           role="status"
-          className="absolute right-0 z-10 mt-1 w-64 rounded border border-slate-200 bg-white p-3 text-slate-700 shadow"
+          className="absolute right-0 z-40 mt-2 w-72 max-w-[calc(100vw-2rem)] rounded-2xl border border-slate-200 bg-white p-4 text-slate-700 shadow-lg"
         >
-          Para instalarla, abrí el menú Compartir del navegador y elegí «Agregar
-          a pantalla de inicio». Sin instalarla, los avisos se presentan dentro
-          de la aplicación.
+          {GUIAS[navegadorDeIOS()]} Sin instalarla, los avisos se presentan
+          dentro de la aplicación.
         </p>
       )}
     </div>

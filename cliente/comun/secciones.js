@@ -80,3 +80,11 @@ export const ETIQUETAS_DE_ROL = {
   tutor: "Tutor",
   alumno: "Alumno",
 };
+
+// Destinos de uso diario de cada rol: en pantallas angostas son los de la barra inferior y el
+// resto queda bajo «Menú». Un rol que no figura acá los ve todos a la vista. Es sólo
+// presentación: el cliente reparte lo que la interfaz habilitó, nunca agrega una opción.
+export const DESTINOS_A_LA_VISTA = {
+  directivo: ["anuncios", "supervision", "cursos"],
+  docente: ["anuncios", "publicar_anuncio", "conversaciones"],
+};

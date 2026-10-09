@@ -20,7 +20,8 @@ import {
   instanteDeFinDeDia,
   instanteDeInicioDeDia,
 } from "../comun/fechas.js";
-import { Boton, Campo, Selector } from "../comun/formularios.jsx";
+import { Alerta, Boton, Campo, Selector } from "../comun/formularios.jsx";
+import Iniciales from "../comun/Iniciales.jsx";
 import Paginacion from "../comun/Paginacion.jsx";
 import { useAcumuladorDeVistas } from "./useAcumuladorDeVistas.js";
 
@@ -53,6 +54,15 @@ export default function Bandeja() {
   const [remitentes, setRemitentes] = useState(() => new Map());
 
   const consulta = consultaDe(aplicados, pagina);
+  const conFiltros = Object.values(aplicados).some(Boolean);
+  const puedePublicar = panel.opciones_habilitadas.includes("publicar_anuncio");
+  const orientacion = conFiltros
+    ? "Probar con otros filtros muestra más anuncios."
+    : puedePublicar
+      ? "Los anuncios que publiques aparecerán acá."
+      : destinatario
+        ? "Los anuncios que publiquen los docentes de tu curso aparecerán acá."
+        : "Los anuncios que publiquen los docentes aparecerán acá.";
 
   useEffect(() => {
     let vigente = true;
@@ -122,13 +132,13 @@ export default function Bandeja() {
   ];
 
   return (
-    <section>
+    <section className="mx-auto max-w-4xl">
       <h2 className="mb-4 text-xl font-semibold text-slate-900">Anuncios</h2>
 
       <form
         onSubmit={filtrar}
         aria-label="Filtrar el historial"
-        className="mb-6 grid gap-x-4 sm:grid-cols-2 lg:grid-cols-4"
+        className="mb-6 grid grid-cols-2 gap-x-2 rounded-2xl bg-white p-3 shadow-sm sm:gap-x-4 sm:p-4 lg:grid-cols-4"
       >
         <Selector
           etiqueta="Curso"
@@ -154,14 +164,14 @@ export default function Bandeja() {
           valor={formulario.hasta}
           alCambiar={(hasta) => setFormulario({ ...formulario, hasta })}
         />
-        <div className="flex gap-3 sm:col-span-2 lg:col-span-4">
-          <div className="w-40">
+        <div className="col-span-2 flex gap-3 lg:col-span-4">
+          <div className="flex-1 sm:w-40 sm:flex-none">
             <Boton>Filtrar</Boton>
           </div>
           <button
             type="button"
             onClick={limpiar}
-            className="rounded border border-slate-300 px-4 py-2"
+            className="min-h-11 flex-1 rounded-full sm:flex-none border border-slate-500 px-4 py-2 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700"
           >
             Limpiar
           </button>
@@ -173,50 +183,61 @@ export default function Bandeja() {
           Cargando…
         </p>
       )}
-      {!cargando && respuesta.error && (
-        <p
-          role="alert"
-          className="rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-        >
-          {respuesta.error}
-        </p>
-      )}
+      {!cargando && <Alerta mensaje={respuesta.error} />}
       {!cargando && respuesta.datos?.length === 0 && (
-        <p className="text-slate-700">
-          No hay anuncios para los filtros elegidos.
-        </p>
+        <div className="space-y-2 rounded-2xl bg-white p-4 text-slate-700 shadow-sm">
+          <p>No hay anuncios para los filtros elegidos.</p>
+          <p>{orientacion}</p>
+          {puedePublicar && !conFiltros && (
+            <Link
+              to="/publicar"
+              className="inline-block rounded-full bg-rol-700 px-4 py-2 font-medium text-white hover:bg-rol-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rol-700"
+            >
+              Publicar un anuncio
+            </Link>
+          )}
+        </div>
       )}
       {!cargando && respuesta.datos?.length > 0 && (
-        <ul className="divide-y divide-slate-200 border-y border-slate-200">
-          {respuesta.datos.map((fila) => (
-            <li
-              key={fila.id}
-              ref={(nodo) => {
-                if (destinatario)
-                  acumulador.observar(nodo, fila.anuncio_version_id);
-              }}
-              className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-3"
-            >
-              <div className="min-w-0">
-                <Link
-                  to={`/anuncios/${fila.id}`}
-                  state={{ autor: fila.autor }}
-                  className="font-medium text-slate-900 underline"
-                >
-                  {fila.titulo}
-                </Link>
-                <p className="text-sm text-slate-600">
-                  <span>{nombreDe(fila.autor)}</span> ·{" "}
-                  <span>{formatearFechaHora(fila.publicado_en)}</span>
-                </p>
-              </div>
-              {destinatario && !fila.leido && (
-                <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-medium text-white">
-                  Sin leer
-                </span>
-              )}
-            </li>
-          ))}
+        <ul className="divide-y divide-slate-200 overflow-hidden rounded-2xl bg-white shadow-sm">
+          {respuesta.datos.map((fila) => {
+            const sinLeer = destinatario && !fila.leido;
+            return (
+              <li
+                key={fila.id}
+                ref={(nodo) => {
+                  if (destinatario)
+                    acumulador.observar(nodo, fila.anuncio_version_id);
+                }}
+                className="relative flex min-h-16 items-center gap-3 px-3 py-3 hover:bg-stone-50"
+              >
+                <Iniciales
+                  nombre={nombreDe(fila.autor)}
+                  semilla={fila.autor.id}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <Link
+                      to={`/anuncios/${fila.id}`}
+                      state={{ autor: fila.autor }}
+                      className={`line-clamp-2 break-words text-slate-900 after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-rol-700 ${sinLeer ? "font-semibold" : "font-normal"}`}
+                    >
+                      {fila.titulo}
+                    </Link>
+                    {sinLeer && (
+                      <span className="shrink-0 rounded-full bg-emerald-700 px-2 py-0.5 text-xs font-semibold text-white">
+                        Sin leer
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-slate-600">
+                    <span>{nombreDe(fila.autor)}</span> ·{" "}
+                    <span>{formatearFechaHora(fila.publicado_en)}</span>
+                  </p>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
       {!cargando && respuesta.datos && (

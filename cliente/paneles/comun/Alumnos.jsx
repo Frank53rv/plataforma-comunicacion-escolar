@@ -303,7 +303,7 @@ export default function Alumnos() {
                         </>
                       )}
                       <div className="flex gap-3">
-                        <div className="w-40">
+                        <div className="w-full sm:w-40">
                           <Boton disabled={trabajando}>Vincular tutor</Boton>
                         </div>
                         <button
