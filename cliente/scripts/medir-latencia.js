@@ -13,7 +13,7 @@
 // corren en el mismo equipo, de modo que comparten reloj.
 //
 // Uso:  node scripts/medir-latencia.js --emisor correo --receptores correo1,correo2,…
-//         [--base http://localhost:8080] [--mensajes 50] [--contrasena …]
+//         [--base http://localhost:8090] [--mensajes 50] [--contrasena …]
 const argumentos = Object.fromEntries(
   process.argv
     .slice(2)
@@ -26,7 +26,7 @@ const argumentos = Object.fromEntries(
     }),
 );
 
-const BASE = argumentos.base || "http://localhost:8080";
+const BASE = argumentos.base || "http://localhost:8090";
 const MENSAJES = Number(argumentos.mensajes || 50);
 const CONTRASENA = argumentos.contrasena || "prueba-2026";
 const UMBRAL_MS = 2000;

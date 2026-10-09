@@ -11,7 +11,7 @@
 // de datos_de_prueba:cargar.
 //
 // Uso:  node scripts/medir-consultas.js --docente correo --tutor correo --directivo correo
-//         [--base http://localhost:8080] [--repeticiones 100] [--contrasena …]
+//         [--base http://localhost:8090] [--repeticiones 100] [--contrasena …]
 const argumentos = Object.fromEntries(
   process.argv
     .slice(2)
@@ -23,7 +23,7 @@ const argumentos = Object.fromEntries(
       return [clave, valor.join(" ")];
     }),
 );
-const BASE = argumentos.base || "http://localhost:8080";
+const BASE = argumentos.base || "http://localhost:8090";
 const REPETICIONES = Number(argumentos.repeticiones || 100);
 const CONTRASENA = argumentos.contrasena || "prueba-2026";
 const UMBRAL_MS = 1500;

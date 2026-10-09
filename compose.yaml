@@ -78,7 +78,7 @@ services:
       timeout: 5s
       retries: 12
     ports:
-      - "8080:80"
+      - "8090:80"
 
 volumes:
   datos_postgres:
