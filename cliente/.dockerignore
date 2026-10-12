@@ -1,0 +1,7 @@
+# RNF-19 · la construcción debe depender del package-lock.json y no del disco de quien
+# construye. Sin este archivo, el `COPY . .` del Dockerfile copia el node_modules del host
+# encima del que produjo `npm ci` y lo anula.
+node_modules
+dist
+tmp
+coverage

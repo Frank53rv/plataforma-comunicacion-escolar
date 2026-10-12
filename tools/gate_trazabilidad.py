@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 """Compuerta TRAZABILIDAD · RNF-22 · CP-RNF-22
 Cada requisito Must have con código citado en el código, prueba CP-RF-nn presente y rama
-feature/RF-nn en el historial. Es la Tabla 22 verificada contra el repositorio.
+feature/RF-nn en el historial. Es la Tabla 15 verificada contra el repositorio.
 """
 import os, re, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _comun import *
 
-R = Reporte('trazabilidad', 'RNF-22 · CP-RNF-22 · Tabla 22')
+R = Reporte('trazabilidad', 'RNF-22 · CP-RNF-22 · Tabla 15')
 rf = cargar('10-requisitos-funcionales.json')['requisitos']
 must = [x for x in rf if x['moscow'] == 'M']
-cps = {c['codigo'] for c in cargar('30-casos-prueba.json')['casos']}
+# La Tabla 15 trae, fila por fila, el CP-RF-nn de cada requisito: es la propia fuente del
+# código y no un catálogo aparte.
+cps = {f['caso_prueba'] for f in cargar('16-trazabilidad.json')['filas']}
 
 src, tst = set(), set()
-for p in archivos(('.rb', '.jsx', '.js', '.ts', '.tsx'), 'app', 'lib', 'cliente'):
-    src |= set(re.findall(r'\bRF-\d\d\b', leer_texto(p)))
-for p in archivos(('.rb', '.js', '.jsx', '.ts', '.tsx'), 'spec', 'test'):
+for p in archivos(('.rb', '.jsx', '.js', '.ts', '.tsx'), *CODIGO_API, 'cliente'):
+    src |= rf_realizados(leer_texto(p))
+for p in archivos(('.rb', '.js', '.jsx', '.ts', '.tsx'), 'api/spec', 'cliente/tests'):
     t = leer_texto(p)
     tst |= set(re.findall(r'\bCP-RF-\d\d\b', t))
 

@@ -1,8 +1,8 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
+<!-- GENERADO desde Proyecto de grado entrega final.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 19 · Matriz de reglas de negocio
+# Tabla 12 · Matriz de reglas de negocio
 
 | Código | Regla de negocio | Descripción | Prioridad |
 |---|---|---|---|

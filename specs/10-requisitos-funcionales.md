@@ -1,8 +1,8 @@
-<!-- GENERADO desde TFG_entrega_5_Etapa4_v52.docx. NO EDITAR A MANO.
+<!-- GENERADO desde Proyecto de grado entrega final.docx, edición vigente. NO EDITAR A MANO.
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 17 · Matriz de requisitos funcionales
+# Tabla 10 · Matriz de requisitos funcionales
 
 | Código | Requisito funcional | Descripción | Compl. | Prior. |
 |---|---|---|---|---|
@@ -31,7 +31,7 @@
 | RF-18 | Programación de la hora de envío | El docente debe poder fijar una fecha y hora futuras de publicación. En ausencia de programación, el anuncio se publica al confirmarse. | Media | S |
 | RF-19 | Edición con versionado | La edición de un anuncio debe generar una versión nueva, resolver nuevamente los destinatarios, volver a notificarlos e invalidar los acuses de la versión anterior a efectos del contador vigente, conservando los registros históricos. | Alta | S |
 | RF-20 | Borrado lógico de anuncios | El docente debe poder eliminar un anuncio propio. La eliminación es lógica, deja registro de autor y fecha, y conserva las filas de entrega asociadas. | Baja | M |
-| RF-21 | Resolución de destinatarios | El sistema debe resolver el conjunto de destinatarios en cada publicación efectiva —inicial o de reemplazo— y no en el momento de la redacción. Las personas incorporadas al curso con posterioridad no reciben publicaciones anteriores. | Media | M |
+| RF-21 | Resolución de destinatarios | El sistema debe resolver el conjunto de destinatarios en cada publicación efectiva —inicial o de reemplazo, entendida como la publicación nueva que sigue a la eliminación de un anuncio— y no en el momento de la redacción. Las personas incorporadas al curso con posterioridad no reciben publicaciones anteriores. | Media | M |
 | RF-22 | Consulta del historial de anuncios | Todo usuario debe poder recuperar los anuncios que le corresponden, filtrando por fecha, curso y remitente. | Media | M |
 | RF-23 | Panel de constancias del docente | El docente debe poder consultar, por anuncio, la cantidad de destinatarios que registraron lectura sobre el total y la nómina de quienes no lo hicieron. | Media | M |
 | RF-45 | Consulta directiva del estado de la comunicación | El directivo debe poder consultar los anuncios de la totalidad de los cursos del año lectivo vigente y el estado agregado de entrega y lectura por curso. | Media | M |
@@ -60,4 +60,4 @@
 | RF-41 | Interfaz responsiva | El cliente debe ser operable desde navegador en dispositivos de escritorio y móviles, en los anchos de referencia de 360 px, 768 px y 1280 px. | Media | M |
 | RF-42 | Cobertura de flujos en interfaz | La totalidad de los flujos comprometidos debe poder ejecutarse desde el cliente web, sin recurrir a herramientas de composición de peticiones. | Media | M |
 
-> Nota. Prioridad MoSCoW: M Must have, S Should have, C Could have, W Won't have. El conjunto comprende 36 requisitos Must have y 11 Should have. La clasificación de RF-08, RF-19, RF-24, RF-26 y RF-27 como Should have responde a un criterio explícito: cada uno replica un mecanismo que otro requisito Must have ya demuestra —la regeneración de códigos en el caso de RF-08, y el canal de tiempo real de RF-25 en el caso de los tres requisitos de conversación—, de modo que su implementación no aporta evidencia adicional sobre el objeto de estudio. Mientras RF-19 permanezca en Should have, la corrección de un anuncio se resuelve como eliminación lógica y publicación nueva, con su propio conjunto de constancias, de modo que ningún acuse queda atribuido a un contenido que el destinatario no leyó. La estimación de esfuerzo de la Etapa 2 determina cuáles de los requisitos Should have se incorporan efectivamente.
+> Nota. Prioridad MoSCoW: M Must have, S Should have, C Could have, W Won't have. El conjunto comprende 36 requisitos Must have y 11 Should have.

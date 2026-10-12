@@ -3,3 +3,19 @@ coverage/
 node_modules/
 .env
 *.log
+__pycache__/
+*.pyc
+
+# Fuera del repositorio: sólo código, specs/ y herramientas de verificación
+/README.md
+/api/README.md
+/CLAUDE.md
+/docs/
+/documento/
+/openapi/POSTMAN_README.md
+/cliente/dist/
+/.claude/
+/TESTING_GUIDE.md
+/VALIDACION_FINAL.md
+/test_api_complete.py
+/test_endpoints.sh
