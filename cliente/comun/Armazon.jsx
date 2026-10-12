@@ -72,7 +72,10 @@ export default function Armazon({ secciones = SECCIONES }) {
         className={`relative flex items-center justify-between gap-2 border-b border-slate-200 bg-white px-4 py-2 ${ocultoEnCanal}`}
       >
         <p className="flex min-w-0 items-center gap-2 font-semibold text-rol-800">
-          <IconoDeRol rol={panel.rol} className="size-7 shrink-0 max-md:hidden" />
+          <IconoDeRol
+            rol={panel.rol}
+            className="size-7 shrink-0 max-md:hidden"
+          />
           <span className="truncate max-md:text-sm">
             Plataforma de comunicación escolar
           </span>
