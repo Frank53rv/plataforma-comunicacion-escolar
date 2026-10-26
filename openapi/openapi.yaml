@@ -9,7 +9,7 @@ info:
   title: API REST de un colegio para una plataforma de comunicación escolar
   version: 1.0.0
   description: |
-    Interfaz de programación del producto mínimo viable. Cuarenta y dos operaciones
+    Interfaz de programación del producto mínimo viable. Cuarenta y una operaciones
     sobre HTTP más el canal de tiempo real, derivadas de los quince casos de uso de la
     Tabla 13.
 
@@ -181,7 +181,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anio*]
+              required: [anio]
               properties:
                 anio:
                   type: integer
@@ -268,7 +268,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anio_lectivo_id*, nombre, turno]
+              required: [anio_lectivo_id, nombre, turno]
               properties:
                 anio_lectivo_id:
                   type: string
@@ -413,7 +413,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [usuario_id*, es_titular*]
+              required: [usuario_id, es_titular]
               properties:
                 usuario_id:
                   type: string
@@ -429,6 +429,11 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '404': { $ref: '#/components/responses/NoEncontrado' }
+        '409':
+          description: conflicto con una regla del dominio, con su código (RN-13)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
         '422': { $ref: '#/components/responses/DatosInaceptables' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /cursos/{id}/docentes/{usuarioId}:
@@ -494,6 +499,11 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '404': { $ref: '#/components/responses/NoEncontrado' }
+        '409':
+          description: el docente conserva alguna vinculación vigente (RN-13)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /usuarios/{id}/codigos-activacion:
     parameters:
@@ -516,6 +526,7 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '404': { $ref: '#/components/responses/NoEncontrado' }
+        '422': { $ref: '#/components/responses/DatosInaceptables' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /alumnos:
     post:
@@ -530,7 +541,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [nombre, apellido, correo, curso_id*]
+              required: [nombre, apellido, correo, curso_id]
               properties:
                 nombre:
                   type: string
@@ -660,7 +671,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [titulo, cuerpo, cursos*]
+              required: [titulo, cuerpo, cursos]
               properties:
                 titulo:
                   type: string
@@ -863,7 +874,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anuncio_version_ids*]
+              required: [anuncio_version_ids]
               properties:
                 anuncio_version_ids:
                   type: array
@@ -891,7 +902,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anuncio_version_ids*]
+              required: [anuncio_version_ids]
               properties:
                 anuncio_version_ids:
                   type: array
@@ -919,7 +930,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anuncio_version_id*]
+              required: [anuncio_version_id]
               properties:
                 anuncio_version_id:
                   type: string
@@ -932,6 +943,7 @@ paths:
               schema: { $ref: "#/components/schemas/EntregaAnuncio" }
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
+        '404': { $ref: '#/components/responses/NoEncontrado' }
         '422': { $ref: '#/components/responses/DatosInaceptables' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /cursos/{id}/conversaciones:
@@ -1131,7 +1143,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [ultimo_mensaje_id*]
+              required: [ultimo_mensaje_id]
               properties:
                 ultimo_mensaje_id:
                   type: string
@@ -1211,7 +1223,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [hora_inicio*, hora_fin*, recibir_mensajes*]
+              required: [hora_inicio, hora_fin, recibir_mensajes]
               properties:
                 hora_inicio:
                   type: string
