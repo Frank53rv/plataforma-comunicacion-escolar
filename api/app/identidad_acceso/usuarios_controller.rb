@@ -19,6 +19,13 @@ class UsuariosController < ApplicationController
       )
     end
 
+    # RF-43 · RN-09 · cambiar la contraseña provisional es elegir otra.
+    if parametros[:contrasena_nueva] == parametros[:contrasena_actual]
+      raise ErrorDeDominio::DatosInaceptables.new(
+        regla: "RN-09", detalle: "La contraseña nueva debe ser distinta de la actual."
+      )
+    end
+
     usuario_actual.update!(
       contrasena: parametros[:contrasena_nueva],
       credencial_provisional: false

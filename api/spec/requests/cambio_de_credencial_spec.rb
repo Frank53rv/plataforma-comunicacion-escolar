@@ -89,6 +89,18 @@ RSpec.describe "Cambio de la credencial provisional", type: :request do
       expect(directivo.reload.credencial_provisional).to be(true)
     end
 
+    # RF-43 · RN-09 · «exigir el cambio de la contraseña provisional»: repetirla no la cambia.
+    it "rechaza con 422 y RN-09 una contraseña nueva igual a la provisional" do
+      patch "/api/v1/usuarios/me/contrasena",
+            params: { contrasena_actual: "provisional-de-reposicion",
+                      contrasena_nueva: "provisional-de-reposicion" },
+            headers: cabecera_de(directivo), as: :json
+
+      expect(response).to have_http_status(:unprocessable_content)
+      expect(cuerpo["regla"]).to eq("RN-09")
+      expect(directivo.reload.credencial_provisional).to be(true)
+    end
+
     it "rechaza con 422 la petición sin los campos de la Tabla 40" do
       patch "/api/v1/usuarios/me/contrasena", params: {},
             headers: cabecera_de(directivo), as: :json
