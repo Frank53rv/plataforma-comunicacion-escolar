@@ -108,10 +108,8 @@ class AnunciosController < ApplicationController
   # anuncios… ordena por fecha descendente por omisión»; admite `orden=publicado_en:asc`
   # para invertirlo.
   def index
-    pagina = [ params[:pagina].to_i, 1 ].max
-    por_pagina = params[:por_pagina].to_i
-    por_pagina = 25 if por_pagina <= 0
-    por_pagina = [ por_pagina, 100 ].min
+    pagina = pagina_pedida
+    por_pagina = por_pagina_pedido
     sentido = params[:orden].to_s == "publicado_en:asc" ? "ASC" : "DESC"
 
     # RF-20 · la eliminación es lógica: el anuncio eliminado conserva su registro y sus
@@ -148,10 +146,8 @@ class AnunciosController < ApplicationController
       )
     end
 
-    pagina = [ params[:pagina].to_i, 1 ].max
-    por_pagina = params[:por_pagina].to_i
-    por_pagina = 25 if por_pagina <= 0
-    por_pagina = [ por_pagina, 100 ].min
+    pagina = pagina_pedida
+    por_pagina = por_pagina_pedido
 
     # openapi/openapi.yaml · esquema Constancias: «sin_lectura» devuelve el nombre del
     # alumno, no el de cada tutor por separado. Un tutor que no leyó no aparece acá: su

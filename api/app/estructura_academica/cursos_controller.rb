@@ -42,10 +42,8 @@ class CursosController < ApplicationController
 
   # Tabla 28 · colección paginada: datos, total, pagina y por_pagina.
   def index
-    pagina = [ params[:pagina].to_i, 1 ].max
-    por_pagina = params[:por_pagina].to_i
-    por_pagina = 25 if por_pagina <= 0
-    por_pagina = [ por_pagina, 100 ].min
+    pagina = pagina_pedida
+    por_pagina = por_pagina_pedido
 
     relacion = alcance_del_rol
     relacion = relacion.where(anio_lectivo_id: params[:anio_lectivo_id]) if params[:anio_lectivo_id].present?
