@@ -16,6 +16,7 @@ class CursosController < ApplicationController
   # RF-12 · crea, dentro del año lectivo vigente, los cursos con su nombre y su turno.
   def crear
     anio_lectivo = AnioLectivo.find(parametros[:anio_lectivo_id])
+    Curso.verificar_anio_vigente!(anio_lectivo)
     Curso.verificar_nombre_disponible!(anio_lectivo_id: anio_lectivo.id, nombre: parametros[:nombre])
 
     curso = Curso.create!(anio_lectivo: anio_lectivo, nombre: parametros[:nombre],
@@ -27,6 +28,7 @@ class CursosController < ApplicationController
   # RF-12 · edita los cursos existentes mientras el año lectivo permanezca vigente.
   def actualizar
     curso = Curso.find(params[:id])
+    Curso.verificar_anio_vigente!(curso.anio_lectivo)
     cambios = params.permit(:nombre, :turno).to_h.symbolize_keys
 
     if cambios[:nombre].present?

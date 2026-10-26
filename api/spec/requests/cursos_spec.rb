@@ -56,9 +56,31 @@ RSpec.describe "Administración de cursos", type: :request do
       crear_curso(nombre: "1º A")
       otro_anio = create(:anio_lectivo, anio: anio_lectivo.anio + 1, estado: "cerrado")
 
-      crear_curso(anio_lectivo_id: otro_anio.id, nombre: "1º A")
+      expect { Curso.verificar_nombre_disponible!(anio_lectivo_id: otro_anio.id, nombre: "1º A") }
+        .not_to raise_error
+    end
 
-      expect(response).to have_http_status(:created)
+    # RF-12 (Tabla 10) · «crear y editar cursos dentro del año lectivo vigente»; RN-26 · los
+    # cursos de un año cerrado quedan archivados en solo lectura.
+    it "rechaza con 409 y RN-26 crear un curso en un año lectivo cerrado" do
+      cerrado = create(:anio_lectivo, anio: anio_lectivo.anio - 1, estado: "cerrado")
+
+      crear_curso(anio_lectivo_id: cerrado.id)
+
+      expect(response).to have_http_status(:conflict)
+      expect(cuerpo["regla"]).to eq("RN-26")
+      expect(Curso.where(anio_lectivo_id: cerrado.id)).to be_empty
+    end
+
+    it "rechaza con 409 y RN-26 editar un curso de un año lectivo cerrado" do
+      cerrado = create(:anio_lectivo, anio: anio_lectivo.anio - 1, estado: "cerrado")
+      curso = create(:curso, anio_lectivo: cerrado, nombre: "1º A", turno: "mañana")
+
+      editar_curso(curso, nombre: "1º B")
+
+      expect(response).to have_http_status(:conflict)
+      expect(cuerpo["regla"]).to eq("RN-26")
+      expect(curso.reload.nombre).to eq("1º A")
     end
 
     it "edita nombre y turno mientras el año lectivo permanece vigente, conforme a RF-12" do
