@@ -43,6 +43,9 @@ const mios = (n) => ({
 const alumno = (n) => ({
   alumno: { id: `al${n}`, nombre: `Alumno${n}`, apellido: "Pérez" },
 });
+const tutor = (n) => ({
+  tutor: { id: `tu${n}`, nombre: `Tutor${n}`, apellido: "Pérez" },
+});
 
 describe("CP-RF-23 · los anuncios propios, para llegar a su constancia", () => {
   it("lista sólo los anuncios publicados por la persona, con el filtro remitente de la interfaz", async () => {
@@ -127,7 +130,7 @@ describe("CP-RF-23 · constancia de un anuncio", () => {
         {
           total_destinatarios: 8,
           con_lectura_registrada: 5,
-          sin_lectura: [alumno(1), alumno(2), alumno(3)],
+          sin_lectura: [alumno(1), tutor(1), alumno(3)],
           total: 3,
           pagina: 1,
           por_pagina: 25,
@@ -140,10 +143,16 @@ describe("CP-RF-23 · constancia de un anuncio", () => {
       await screen.findByText("5 de 8 destinatarios registraron lectura."),
     ).toBeInTheDocument();
     const nomina = within(
-      screen.getByRole("list", { name: "Alumnos sin lectura registrada" }),
+      screen.getByRole("list", {
+        name: "Destinatarios sin lectura registrada",
+      }),
     );
     expect(nomina.getAllByRole("listitem").map((li) => li.textContent)).toEqual(
-      ["Alumno1 Pérez", "Alumno2 Pérez", "Alumno3 Pérez"],
+      [
+        "Alumno1 Pérez (alumno)",
+        "Tutor1 Pérez (tutor)",
+        "Alumno3 Pérez (alumno)",
+      ],
     );
   });
 
@@ -167,11 +176,13 @@ describe("CP-RF-23 · constancia de un anuncio", () => {
       await screen.findByText("Todos los destinatarios registraron lectura."),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("list", { name: "Alumnos sin lectura registrada" }),
+      screen.queryByRole("list", {
+        name: "Destinatarios sin lectura registrada",
+      }),
     ).not.toBeInTheDocument();
   });
 
-  it("si los alumnos leyeron pero algún tutor no, lo distingue de «todos leyeron»", async () => {
+  it("si no quedan destinatarios en la nómina, no la presenta vacía", async () => {
     simularApi({
       "GET /anuncios/a1/constancias?pagina=1&por_pagina=25": [
         200,
@@ -188,7 +199,7 @@ describe("CP-RF-23 · constancia de un anuncio", () => {
     dibujar("/anuncios/a1/constancias");
 
     expect(
-      await screen.findByText("No hay alumnos sin lectura registrada."),
+      await screen.findByText("No hay destinatarios sin lectura registrada."),
     ).toBeInTheDocument();
   });
 
@@ -238,11 +249,13 @@ describe("CP-RF-23 · constancia de un anuncio", () => {
       ],
     });
     dibujar("/anuncios/a1/constancias");
-    await screen.findByText("Alumno1 Pérez");
+    await screen.findByText("Alumno1 Pérez (alumno)");
 
     fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
 
-    expect(await screen.findByText("Alumno26 Pérez")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Alumno26 Pérez (alumno)"),
+    ).toBeInTheDocument();
   });
 
   it("la constancia de un anuncio ajeno responde 403 y se presenta como tal (CU-11 E1)", async () => {

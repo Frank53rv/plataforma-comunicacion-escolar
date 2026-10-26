@@ -2,8 +2,7 @@
 // Prueba: CP-RF-23
 //
 // RN-21 · «El docente ve, por anuncio, cuántos leyeron sobre el total y la nómina de quiénes
-// no.» La nómina es de alumnos: la interfaz de programación no devuelve a cada tutor por
-// separado. RF-38 (familia alcanzada) es Should have: no se presenta. Un anuncio que no es
+// no.» La nómina lista a todo destinatario sin lectura, alumno o tutor. RF-38 (familia alcanzada) es Should have: no se presenta. Un anuncio que no es
 // del docente responde 403 (CU-11 E1) y se presenta como tal.
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
@@ -76,25 +75,28 @@ export default function Constancias() {
       {sinLectura.length > 0 ? (
         <>
           <h3 className="mb-2 font-medium text-slate-900">
-            Alumnos sin lectura registrada
+            Sin lectura registrada
           </h3>
           <ul
-            aria-label="Alumnos sin lectura registrada"
+            aria-label="Destinatarios sin lectura registrada"
             className="divide-y divide-slate-200 border-y border-slate-200"
           >
-            {sinLectura.map(({ alumno }) => (
-              <li
-                key={alumno.id}
-                className="py-2"
-              >{`${alumno.nombre} ${alumno.apellido}`}</li>
-            ))}
+            {sinLectura.map((fila) => {
+              const [rol, persona] = Object.entries(fila)[0];
+              return (
+                <li
+                  key={persona.id}
+                  className="py-2"
+                >{`${persona.nombre} ${persona.apellido} (${rol})`}</li>
+              );
+            })}
           </ul>
         </>
       ) : (
         <p className="text-slate-700">
           {leyeron >= total
             ? "Todos los destinatarios registraron lectura."
-            : "No hay alumnos sin lectura registrada."}
+            : "No hay destinatarios sin lectura registrada."}
         </p>
       )}
       <Paginacion
