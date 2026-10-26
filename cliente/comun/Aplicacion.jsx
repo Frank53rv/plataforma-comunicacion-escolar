@@ -23,6 +23,15 @@ function RutaProtegida() {
   return <Outlet />;
 }
 
+// RF-40 · una pantalla se abre sólo si la interfaz de programación habilitó su sección para
+// el rol; una dirección ajena lleva a la bandeja. Dentro del armazón el panel ya cargó.
+function RutaHabilitada({ opcion, children }) {
+  const { panel } = useSesion();
+  if (!panel.opciones_habilitadas.includes(opcion))
+    return <Navigate to="/" replace />;
+  return children;
+}
+
 export default function Aplicacion() {
   return (
     <SesionProvider>
@@ -32,14 +41,18 @@ export default function Aplicacion() {
         <Route path="/credencial" element={<SustitucionDeCredencial />} />
         <Route element={<RutaProtegida />}>
           <Route element={<Armazon />}>
-            {Object.values(SECCIONES).flatMap((seccion) =>
+            {Object.entries(SECCIONES).flatMap(([opcion, seccion]) =>
               [seccion, ...(seccion.subrutas ?? [])].map((pantalla) => {
                 const Pantalla = pantalla.elemento;
                 return (
                   <Route
                     key={pantalla.ruta}
                     path={pantalla.ruta}
-                    element={<Pantalla />}
+                    element={
+                      <RutaHabilitada opcion={opcion}>
+                        <Pantalla />
+                      </RutaHabilitada>
+                    }
                   />
                 );
               }),
