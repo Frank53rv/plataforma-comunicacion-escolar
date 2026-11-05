@@ -1,8 +1,8 @@
 # RF-13 Vinculación de alumnos a cursos · CU-05 E2 · RN-30
 # Prueba: CP-RF-13
 #
-# Tabla 43 · «Vinculación de un alumno a un segundo curso vigente · Alumno ya vinculado y
-# otro curso del mismo año · Rechazo 409 con RN-30.»
+# Tabla 34 · Vinculación de un alumno a un segundo curso vigente · Alumno ya vinculado y
+# otro curso del mismo año · Rechazo 409 con RN-30.
 require "rails_helper"
 
 RSpec.describe "Pertenencia única a curso", type: :request do
@@ -58,7 +58,7 @@ RSpec.describe "Pertenencia única a curso", type: :request do
   end
 
   # El correo de otra persona con otro rol no es el de un alumno: sigue siendo un dato
-  # repetido (Tabla 14, correo único; RN-04, un rol por persona).
+  # repetido (Tabla 29, UNIQUE (correo); RN-04, un rol por persona).
   it "el correo de una persona con otro rol responde 422 y no 409" do
     create(:usuario, :tutor, correo: "alumno@ejemplo.test")
 

@@ -2,7 +2,7 @@
 // Prueba: CP-RF-40 · CP-RF-01
 //
 // RNF-21 · el cliente no decide nada: pide y presenta. Este es el único punto de acceso HTTP.
-// Tabla 24 · los nueve estados del catálogo tienen presentación y ninguno revela detalle
+// Tabla 26 · los nueve estados del catálogo tienen presentación y ninguno revela detalle
 // interno de la interfaz de programación.
 import { crearApi, ErrorDeApi, mensajeDeError } from "../comun/api.js";
 
@@ -145,7 +145,7 @@ describe("cliente HTTP", () => {
   });
 });
 
-describe("presentación de los errores del catálogo (Tabla 24)", () => {
+describe("presentación de los errores del catálogo (Tabla 26)", () => {
   const de = (estado, extra = {}) =>
     mensajeDeError(new ErrorDeApi({ estado, ...extra }));
 

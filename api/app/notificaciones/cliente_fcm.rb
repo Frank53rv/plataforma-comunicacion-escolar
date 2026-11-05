@@ -3,8 +3,8 @@
 #
 # Es el cliente de push que usan las notificaciones de anuncios y de mensajes, del
 # módulo E.
-# Tabla 23 · Firebase Cloud Messaging, nivel gratuito: «único componente externo».
-# Tabla 30 · FCM_PROJECT_ID y FCM_CREDENCIAL_JSON (credencial de servicio).
+# Tabla 25 · Firebase Cloud Messaging, nivel gratuito: «único componente externo».
+# Tabla 32 · FCM_PROJECT_ID y FCM_CREDENCIAL_JSON (credencial de servicio).
 # Habla con la API HTTP v1 de FCM: canjea una aserción RS256 firmada con la credencial de
 # servicio por un token de acceso y envía con él. Sin dependencias fuera de las que el
 # proyecto ya tiene (`jwt` y la biblioteca estándar).

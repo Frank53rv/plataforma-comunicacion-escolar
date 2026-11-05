@@ -1,4 +1,4 @@
-# Tabla 34 · Interfaz de programación: Ruby on Rails 8.1 en modo interfaz, con
+# Tabla 36 · Interfaz de programación: Ruby on Rails 8.1 en modo interfaz, con
 # ActionCable en el mismo proceso. Contenedor propio.
 FROM ruby:4.0-slim
 

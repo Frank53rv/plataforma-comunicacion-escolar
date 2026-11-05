@@ -1,7 +1,7 @@
 // RF-31 Notificación de anuncios · CU-06, CU-14 · RN-18
 // Prueba: CP-RF-31
 //
-// Tabla 23 · la instalación del cliente es la condición de la recepción del aviso push en
+// Tabla 25 · la instalación del cliente es la condición de la recepción del aviso push en
 // iOS (riesgo R-03). El botón la ofrece desde la barra del armazón —en el teléfono, dentro
 // del perfil— mientras el navegador la admita; instalada la aplicación, desaparece. En iOS
 // no hay ofrecimiento que invocar —Safari no emite `beforeinstallprompt`—, así que se

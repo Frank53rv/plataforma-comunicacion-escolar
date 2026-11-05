@@ -70,7 +70,7 @@ RSpec.describe "Persistencia e historial de mensajes", type: :request do
     end
   end
 
-  describe "forma y orden · openapi.yaml, Tabla 28" do
+  describe "forma y orden · openapi.yaml, Tabla 30" do
     it "responde cada mensaje con conversacion_id, autor completo, cuerpo y enviado_en" do
       emitir(por: tutor, texto: "Consulta")
 

@@ -19,7 +19,7 @@ RSpec.describe "Publicación de anuncios", type: :request do
 
   # CP-RF-17 · RF-17 (Tabla 10): «El docente debe poder redactar y publicar anuncios
   # dirigidos a los tutores y alumnos de los cursos que tiene asignados.» Sobre un
-  # curso ajeno se rechaza con 403 y sin efectos parciales (RN-16, Tabla 24 fila 403).
+  # curso ajeno se rechaza con 403 y sin efectos parciales (RN-16, Tabla 26 fila 403).
   describe "CP-RF-17 · publicación" do
     it "publica el anuncio sobre un curso propio, conforme a RF-17" do
       alumno = create(:usuario, :alumno)

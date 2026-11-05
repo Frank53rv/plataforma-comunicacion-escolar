@@ -2,14 +2,14 @@
 # RN-05, RN-10, RN-11, RN-30
 # Prueba: CP-RF-04 · CP-RF-05 · CP-RF-13 · CP-RF-09
 #
-# Tabla 27 · POST /api/v1/alumnos · docente · «Dar de alta a un alumno y vincularlo a
+# Tabla 18 · POST /api/v1/alumnos · docente · «Dar de alta a un alumno y vincularlo a
 # un curso».
-# Tabla 40 · petición: nombre, apellido, correo, curso_id. Respuesta: recurso usuario,
+# Tabla 31 · petición: nombre, apellido, correo, curso_id. Respuesta: recurso usuario,
 # alumno_curso y codigo_activacion, con el código en claro una sola vez.
 class AlumnosController < ApplicationController
   # RN-03 · «El docente da de alta a los alumnos y tutores de sus cursos.»
   autoriza :crear, roles: %w[docente]
-  # Tabla 27 · DELETE /alumnos/{id}: «Directivo, docente titular». La titularidad la
+  # Tabla 18 · DELETE /alumnos/{id}: «Directivo, docente titular». La titularidad la
   # decide PotestadDeBaja (RN-10).
   autoriza :destruir, roles: %w[directivo docente]
 
@@ -18,9 +18,9 @@ class AlumnosController < ApplicationController
   def crear
     curso = curso_del_docente
 
-    # RN-30 (Tabla 24, fila 409, CU-05 E2): se rechaza la vinculación de un alumno a un
+    # RN-30 (Tabla 26, fila 409, CU-05 E2): se rechaza la vinculación de un alumno a un
     # segundo curso vigente dentro del mismo año lectivo. El alumno se identifica por su
-    # correo, que la Tabla 14 declara único; la regla se verifica antes que la unicidad
+    # correo, que la Tabla 29 declara único; la regla se verifica antes que la unicidad
     # del correo, para que el rechazo sea el de la regla y no el del dato repetido.
     existente = Usuario.find_by(correo: datos_de_persona[:correo], rol: "alumno")
     AlumnoCurso.verificar_pertenencia_unica!(alumno_id: existente.id, curso: curso) if existente
@@ -41,7 +41,7 @@ class AlumnosController < ApplicationController
     }, status: :created
   end
 
-  # RF-09 · Tabla 40 · sin cuerpo → recurso usuario con estado dado de baja.
+  # RF-09 · Tabla 31 · sin cuerpo → recurso usuario con estado dado de baja.
   def destruir
     alumno = Usuario.alumno.find(params[:id])
 
@@ -50,7 +50,7 @@ class AlumnosController < ApplicationController
 
   private
 
-  # CU-05 precondición · «el docente está vinculado al curso». La Tabla 35 pone «docente
+  # CU-05 precondición · «el docente está vinculado al curso». La Tabla 26 pone «docente
   # no vinculado al curso» en la fila del 403. Un curso inexistente tampoco es suyo.
   def curso_del_docente
     curso_id = params.require(:curso_id)

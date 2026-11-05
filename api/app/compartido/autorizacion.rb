@@ -50,7 +50,7 @@ module Autorizacion
     declarados = declaracion[:roles]
     return if declarados == SIN_AUTENTICAR
 
-    # El orden importa y lo fija la Tabla 35: 401 cuando el token falta o no vale;
+    # El orden importa y lo fija la Tabla 26: 401 cuando el token falta o no vale;
     # 403 cuando está autenticado pero no habilitado.
     exigir_autenticacion
     exigir_credencial_definitiva unless declaracion[:con_credencial_provisional]
@@ -67,7 +67,7 @@ module Autorizacion
 
   # RF-43 · «no debe habilitar ninguna otra operación hasta que el cambio se complete».
   # La lectura es literal: la única operación habilitada es la que sustituye la propia
-  # credencial. El estado es el que la Tabla 35 asigna a «credencial provisional sin
+  # credencial. El estado es el que la Tabla 26 asigna a «credencial provisional sin
   # cambiar» en la fila del 403.
   def exigir_credencial_definitiva
     return unless usuario_actual.credencial_provisional?

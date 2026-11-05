@@ -1,7 +1,7 @@
 # RF-06 Activación de cuenta · CU-02 · RN-05, RN-06
 # Prueba: CP-RF-06
 #
-# Tabla 27 · POST /api/v1/activaciones · sin autenticar.
+# Tabla 18 · POST /api/v1/activaciones · sin autenticar.
 # RN-06 · «La persona activa su cuenta con el código y define su propia contraseña; el
 # código se invalida al usarse.»
 class ActivacionesController < ApplicationController
@@ -16,7 +16,7 @@ class ActivacionesController < ApplicationController
 
     usuario = codigo.usuario
 
-    # RN-11 · la baja revoca el acceso y el canje no puede restituirlo. La Tabla 35 pone
+    # RN-11 · la baja revoca el acceso y el canje no puede restituirlo. La Tabla 26 pone
     # «cuenta dada de baja» en la fila del 401.
     if usuario.estado_dado_de_baja?
       raise ErrorDeDominio::NoAutenticado.new(

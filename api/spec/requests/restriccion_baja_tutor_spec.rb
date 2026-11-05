@@ -1,8 +1,8 @@
 # RF-10 Restricción de baja de tutor vinculado · CU-05 E3 · RN-12
 # Prueba: CP-RF-10
 #
-# Tabla 43 · «Baja de tutor que mantiene un alumno activo · Tutor vinculado a un alumno
-# activo · Rechazo 409 con la regla RN-12 consignada.»
+# Tabla 34 · Baja de tutor que mantiene un alumno activo · Tutor vinculado a un alumno
+# activo · Rechazo 409 con la regla RN-12 consignada.
 require "rails_helper"
 
 RSpec.describe "Restricción de baja de tutor vinculado", type: :request do

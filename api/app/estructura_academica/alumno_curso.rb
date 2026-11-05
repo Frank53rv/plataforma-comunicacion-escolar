@@ -4,8 +4,8 @@
 #
 # Tabla 14 · «Vinculación entre un alumno y un curso.» Un alumno pertenece a un solo
 # curso vigente por año lectivo (RN-30), verificado en la capa de negocio conforme a la
-# nota de la Tabla 38.
-# Tabla 27 · nombre de tabla en singular.
+# nota de la Tabla 29.
+# Tabla 29 · nombre de tabla en singular.
 class AlumnoCurso < ApplicationRecord
   self.table_name = "alumno_curso"
 
@@ -15,7 +15,7 @@ class AlumnoCurso < ApplicationRecord
   scope :vigentes, -> { where(vigente_hasta: nil) }
 
   # RN-30 · «Un alumno pertenece a un solo curso vigente dentro de un mismo año
-  # lectivo.» La nota de la Tabla 38 la manda a la capa de negocio porque el año se
+  # lectivo.» La nota de la Tabla 29 la manda a la capa de negocio porque el año se
   # deriva por la vinculación y no admite un índice declarativo. CU-05 E2 · 409.
   def self.verificar_pertenencia_unica!(alumno_id:, curso:)
     en_el_mismo_anio = vigentes.joins(:curso)

@@ -2,7 +2,7 @@
 // Prueba: CP-RNF-08
 //
 // RNF-08 (Tabla 11) · «La entrega de un mensaje al destinatario conectado se produce en
-// menos de dos segundos en condiciones de prueba controladas.» Tabla 37 · instrumento:
+// menos de dos segundos en condiciones de prueba controladas.» Tabla 39 · instrumento:
 // «registro de marcas de tiempo del cliente y del servidor»; escenario: «conversación sobre
 // el entorno de demostración bajo carga nominal».
 //

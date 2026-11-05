@@ -3,7 +3,7 @@
 #
 # Tabla 18 · POST /api/v1/cursos y PATCH /api/v1/cursos/{id} · directivo.
 # Tabla 18 · GET /api/v1/cursos · directivo, docente; el docente ve sólo sus cursos.
-# Tabla 29 · POST: anio_lectivo_id, nombre, turno. PATCH: nombre, turno.
+# Tabla 31 · POST: anio_lectivo_id, nombre, turno. PATCH: nombre, turno.
 require "rails_helper"
 
 RSpec.describe "Administración de cursos", type: :request do
@@ -30,7 +30,7 @@ RSpec.describe "Administración de cursos", type: :request do
 
   # CP-RF-12 · RF-12 (Tabla 10): «El directivo debe poder crear y editar cursos dentro
   # del año lectivo vigente.» Un nombre repetido en el mismo año se rechaza con 409
-  # (RN-26, Tabla 24 fila 409).
+  # (RN-26, Tabla 26 fila 409).
   describe "CP-RF-12 · creación y edición" do
     it "crea el curso dentro del año lectivo, conforme a RF-12" do
       crear_curso(nombre: "1º A", turno: "mañana")
@@ -100,7 +100,7 @@ RSpec.describe "Administración de cursos", type: :request do
   end
 
   describe "GET /api/v1/cursos" do
-    it "responde la colección con la cantidad de alumnos vinculados, forma de la Tabla 28" do
+    it "responde la colección con la cantidad de alumnos vinculados, forma de la Tabla 30" do
       curso = create(:curso, anio_lectivo: anio_lectivo)
       create_list(:alumno_curso, 2, curso: curso)
       create(:alumno_curso, curso: curso, vigente_hasta: Date.current)

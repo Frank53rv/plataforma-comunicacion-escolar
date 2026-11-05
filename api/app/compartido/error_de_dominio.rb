@@ -1,18 +1,18 @@
-# Tabla 35 · Catálogo de errores de la interfaz de programación · Boundary 6
+# Tabla 26 · Catálogo de errores de la interfaz de programación · Boundary 6
 # El catálogo es cerrado: ningún rechazo de la interfaz emite un estado que la tabla
-# no contemple. Cada excepción de este archivo corresponde a una fila de la Tabla 35, y
+# no contemple. Cada excepción de este archivo corresponde a una fila de la Tabla 26, y
 # el flujo que cita en su comentario es el de la columna «Flujos» de esa misma tabla.
 #
 # Prueba: CP-RNF-17
 class ErrorDeDominio < StandardError
-  # Los nueve estados de la Tabla 35 y ninguno más.
+  # Los nueve estados de la Tabla 26 y ninguno más.
   CATALOGO = [ 401, 403, 404, 409, 410, 413, 415, 422, 500 ].freeze
 
   attr_reader :estado, :codigo, :regla, :detalle
 
   def initialize(estado:, codigo:, detalle:, regla: nil)
     unless CATALOGO.include?(estado)
-      raise ArgumentError, "el estado #{estado} no pertenece al catálogo de la Tabla 35"
+      raise ArgumentError, "el estado #{estado} no pertenece al catálogo de la Tabla 26"
     end
 
     @estado  = estado

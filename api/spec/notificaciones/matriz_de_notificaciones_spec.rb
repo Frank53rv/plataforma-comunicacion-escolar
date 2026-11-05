@@ -2,7 +2,7 @@
 # Prueba: CP-RF-31 · CP-RF-32
 #
 # Objetivo específico 3 (Etapa 1) · «verificando el 100 % de combinaciones de evento y rol
-# de la Tabla 4». Tabla 36, incremento 4 · «verificación del motor de notificaciones sobre
+# de la Tabla 4». Tabla 38, incremento 4 · «verificación del motor de notificaciones sobre
 # las combinaciones de evento y rol de la Tabla 4; la correspondiente a la edición de un
 # anuncio se verifica solo si RF-19 llega a incorporarse». Tres eventos por cuatro roles:
 # doce combinaciones. Cada una recorre el motor completo —publicación o emisión, cola,

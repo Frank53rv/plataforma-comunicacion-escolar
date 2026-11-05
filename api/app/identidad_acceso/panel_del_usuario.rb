@@ -2,8 +2,8 @@
 # Prueba: CP-RF-40
 #
 # RF-40 (Tabla 10) · paneles «con las funciones correspondientes al rol… sin exponer
-# opciones ajenas a él». Tabla 29 · GET /paneles/me → «rol, nombre, opciones habilitadas y
-# cantidad de anuncios sin leer».
+# opciones ajenas a él». Tabla 31 · GET /paneles/me → «rol, nombre, opciones_habilitadas,
+# anuncios_sin_leer y cursos con id y nombre según el vínculo vigente».
 #
 # Las opciones se DERIVAN de lo que cada controlador declara con `autoriza`, que son
 # literalmente los roles de la Tabla 18: el panel no es una segunda lista de permisos, y si

@@ -1,9 +1,11 @@
 # RF-37 Degradación ante fallo de entrega · CU-14 · RNF-07, RN-27
 # Prueba: CP-RF-37
 #
-# Tabla 14 · «Registro técnico de un fallo de envío.» Tabla 27 · índice sobre
+# Tabla 14 · «Registro técnico de cada intento de envío fallido, con la causa informada por
+# el servicio de notificaciones.» Tabla 29 · índice sobre
 # ocurrido_en, para la purga. RNF-07 · «La bitácora técnica de fallos de envío —causa,
-# código de error del proveedor y token invalidado—, doce meses.»
+# código de error del proveedor y token invalidado— se conserva doce meses y se purga al
+# vencer ese plazo.»
 class BitacoraEnvio < ApplicationRecord
   self.table_name = "bitacora_envio"
 

@@ -2,7 +2,7 @@
 // Prueba: CP-RF-25 · CP-RF-29
 //
 // Tabla 18 · GET /cursos/{id}/conversaciones · «las conversaciones del curso visibles para el
-// rol, con tipo y estado» (Tabla 29). Es la entrada al canal desde un curso. La colección la
+// rol, con tipo y estado» (Tabla 31). Es la entrada al canal desde un curso. La colección la
 // decide la interfaz de programación: el alumno la recibe vacía (el canal de RF-25 es de
 // docentes y tutores) y quien no está vinculado al curso, un 403 que se presenta como tal
 // (RF-29). RF-26 y RF-27 (conversaciones privadas) son Should have: no se ofrecen.

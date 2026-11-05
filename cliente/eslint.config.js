@@ -1,4 +1,4 @@
-// Quality Spec, Tabla 37 · «ESLint y Prettier con la configuración recomendada para la
+// Quality Spec, Tabla 28 · «ESLint y Prettier con la configuración recomendada para la
 // biblioteca de interfaz». Es la configuración que el propio Vite propone para React,
 // más la desactivación de las reglas de formato que resuelve Prettier.
 import js from "@eslint/js";

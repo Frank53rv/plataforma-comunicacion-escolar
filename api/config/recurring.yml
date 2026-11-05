@@ -9,7 +9,7 @@
 #     priority: 2
 #     schedule: at 5am every day
 
-# RNF-07 · la bitácora de fallos de envío se conserva doce meses (Tabla 30,
+# RNF-07 · la bitácora de fallos de envío se conserva doce meses (Tabla 32,
 # RETENCION_BITACORA_MESES). La composición corre en development y la instalación en
 # production: la purga se declara en los dos.
 development:

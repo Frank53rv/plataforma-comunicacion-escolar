@@ -1,4 +1,4 @@
-# Tabla 38 · Esquema físico: tipos, claves e índices · Boundary 3
+# Tabla 29 · Esquema físico: tipos, claves e índices · Boundary 3
 # Las diecinueve entidades de la Tabla 14, sin agregar ni suprimir ninguna.
 # Nombres en singular. turno como varchar(20).
 # Las restricciones que no admiten expresión declarativa se verifican en la capa de negocio.
@@ -6,14 +6,14 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
   def change
     enable_extension "citext"
 
-    # Tabla 38, nota · los tipos enumerados se declaran en el motor y no como texto
+    # Tabla 29, nota · los tipos enumerados se declaran en el motor y no como texto
     # libre, de modo que el conjunto de valores admisibles quede en el esquema.
     create_enum :rol_enum,                 %w[directivo docente tutor alumno]
     create_enum :estado_usuario_enum,      %w[pendiente activo dado_de_baja]
     create_enum :estado_anio_enum,         %w[vigente cerrado]
     create_enum :estado_curso_enum,        %w[vigente archivado]
     create_enum :estado_anuncio_enum,      %w[borrador programado publicado archivado eliminado]
-    # Tabla 14 · «grupal de tutores, grupal de alumnos o privada»
+    # Tabla 29 · columna tipo de conversacion. Tabla 40 · el nombre grupal_de_tutores.
     create_enum :tipo_conversacion_enum,   %w[grupal_de_tutores grupal_de_alumnos privada]
     create_enum :estado_conversacion_enum, %w[activa solo_lectura]
     create_enum :canal_enum,               %w[push aplicacion]
@@ -113,7 +113,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     add_foreign_key :alumno_curso, :usuario, column: :usuario_id
     add_foreign_key :alumno_curso, :curso,   column: :curso_id
     # La unicidad por año lectivo derivado se resuelve en la capa de negocio conforme a
-    # la nota de la Tabla 38, con CP-RF-13 como verificación.
+    # la nota de la Tabla 29, con CP-RF-13 como verificación.
     add_index :alumno_curso, %i[usuario_id curso_id], unique: true,
               where: "vigente_hasta IS NULL",
               name: "idx_alumno_curso_unico_vigente"
@@ -128,7 +128,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     add_foreign_key :tutor_alumno, :usuario, column: :tutor_id
     add_foreign_key :tutor_alumno, :usuario, column: :alumno_id
     # El límite de dos tutores vigentes por alumno se verifica en la capa de negocio
-    # conforme a la nota de la Tabla 38, con CP-RF-14 como verificación.
+    # conforme a la nota de la Tabla 29, con CP-RF-14 como verificación.
     add_index :tutor_alumno, %i[tutor_id alumno_id], unique: true,
               where: "vigente_hasta IS NULL",
               name: "idx_tutor_alumno_unico_vigente"
@@ -253,7 +253,7 @@ class CrearEsquemaInicial < ActiveRecord::Migration[8.1]
     add_foreign_key :puntero_lectura, :usuario,      column: :usuario_id
     add_foreign_key :puntero_lectura, :mensaje,      column: :ultimo_mensaje_id
 
-    # Tabla 38 · adjunto: «FK a anuncio_version y a mensaje». La segunda se declara acá
+    # Tabla 29 · adjunto: «FK a anuncio_version y a mensaje». La segunda se declara acá
     # porque la tabla mensaje se crea después que adjunto.
     add_foreign_key :adjunto, :mensaje, column: :mensaje_id
     add_index :puntero_lectura, %i[conversacion_id usuario_id], unique: true

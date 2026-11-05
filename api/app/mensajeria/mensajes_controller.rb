@@ -4,9 +4,9 @@
 #
 # Tabla 18 · GET y POST /api/v1/conversaciones/{id}/mensajes · participantes de la
 # conversación · «Consultar el historial paginado» y «Emitir un mensaje».
-# Tabla 29 · GET: pagina, por_pagina, desde, hasta y remitente_id → colección de mensaje
+# Tabla 31 · GET: pagina, por_pagina, desde, hasta y remitente_id → colección de mensaje
 # con autor y enviado_en. POST: cuerpo → recurso mensaje.
-# openapi/openapi.yaml · esquema Mensaje. Tabla 28 · orden por fecha descendente por
+# openapi/openapi.yaml · esquema Mensaje. Tabla 30 · orden por fecha descendente por
 # omisión, invertible con `orden=enviado_en:asc`.
 # Los adjuntos son RF-30, Should have (Tabla 10): el cuerpo sólo admite `cuerpo`.
 class MensajesController < ApplicationController

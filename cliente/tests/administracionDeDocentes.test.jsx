@@ -5,7 +5,7 @@
 // TC-03, TC-04 y TC-05 (Tabla 17) · dar de alta a un docente y asignarlo a un curso como
 // titular, regenerar su código de activación, y desvincularlo designando otro titular en el
 // mismo acto. RN-13 · un curso tiene un titular vigente. RNF-14 · toda acción destructiva pide
-// confirmación explícita. El código de activación se muestra una sola vez (Tabla 29, RN-06).
+// confirmación explícita. El código de activación se muestra una sola vez (Tabla 31, RN-06).
 import {
   fireEvent,
   render,

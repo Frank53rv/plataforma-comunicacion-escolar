@@ -1,5 +1,5 @@
 // Ayudas de prueba: una interfaz de programación simulada, por método y ruta.
-// Ninguna prueba hace una llamada real (Tabla 23 · Jest y React Testing Library).
+// Ninguna prueba hace una llamada real (Tabla 25 · Jest y React Testing Library).
 export function respuesta(estado, cuerpo) {
   return {
     ok: estado >= 200 && estado < 300,

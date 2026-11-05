@@ -1,9 +1,9 @@
 # RF-01 Autenticación de usuarios · CU-01 · RN-09, RN-11, RN-15
 # Pruebas: CP-RF-01 · CP-RNF-02 · CP-RNF-03
 #
-# Tabla 27 · POST /api/v1/sesiones (sin autenticar) y DELETE /api/v1/sesiones
+# Tabla 18 · POST /api/v1/sesiones (sin autenticar) y DELETE /api/v1/sesiones
 # (directivo, docente, tutor, alumno).
-# Tabla 40 · petición: correo, contrasena. Respuesta: token, vence_en, usuario con id,
+# Tabla 31 · petición: correo, contrasena. Respuesta: token, vence_en, usuario con id,
 # nombre, apellido, rol y credencial_provisional.
 require "rails_helper"
 
@@ -55,7 +55,7 @@ RSpec.describe "Sesiones", type: :request do
       expect(cuerpo["detail"]).not_to match(/correo|contrase|usuario|exist/i)
     end
 
-    # CU-01 E2 (Tabla 24, fila 401) · RN-11: la baja revoca el acceso y conserva el historial
+    # CU-01 E2 (Tabla 26, fila 401) · RN-11: la baja revoca el acceso y conserva el historial
     it "rechaza a la cuenta dada de baja y conserva su historial" do
       baja = create(:usuario, :tutor, :dado_de_baja,
                     correo: "baja@ejemplo.test", contrasena: "clave-correcta-123")
@@ -92,7 +92,7 @@ RSpec.describe "Sesiones", type: :request do
       expect(response).to have_http_status(:unauthorized)
     end
 
-    it "rechaza la petición sin los campos que la Tabla 40 declara" do
+    it "rechaza la petición sin los campos que la Tabla 31 declara" do
       post "/api/v1/sesiones", params: {}, as: :json
 
       expect(response).to have_http_status(:unprocessable_content)
@@ -170,17 +170,17 @@ RSpec.describe "Sesiones", type: :request do
     end
   end
 
-  # Tabla 26 · una prueba de autorización por cada uno de los cuatro roles
+  # Tabla 28 · una prueba de autorización por cada uno de los cuatro roles
   describe "autorización de DELETE /api/v1/sesiones · insumo de CP-RNF-01" do
     %w[directivo docente tutor alumno].each do |rol|
-      it "admite a #{rol}, que la Tabla 27 declara autorizado" do
+      it "admite a #{rol}, que la Tabla 18 declara autorizado" do
         delete "/api/v1/sesiones", headers: cabecera_de(create(:usuario, rol: rol))
 
         expect(response).to have_http_status(:no_content)
       end
     end
 
-    it "rechaza sin token con 401, conforme a la Tabla 35" do
+    it "rechaza sin token con 401, conforme a la Tabla 26" do
       delete "/api/v1/sesiones"
 
       expect(response).to have_http_status(:unauthorized)

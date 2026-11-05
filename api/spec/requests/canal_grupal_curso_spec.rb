@@ -147,7 +147,7 @@ RSpec.describe "Canal grupal del curso", type: :request do
       expect(cuerpo["datos"]).to be_empty
     end
 
-    it "pagina con pagina y por_pagina (Tabla 28)" do
+    it "pagina con pagina y por_pagina (Tabla 30)" do
       3.times { |n| create(:docente_curso, docente: docente, curso: create(:curso, nombre: "C#{n}")) }
 
       conversaciones(por: docente, pagina: 2, por_pagina: 2)

@@ -1,8 +1,8 @@
 # RF-03 Alta de docentes y asignación a cursos · CU-04 · RN-01, RN-02, RN-05
 # Prueba: CP-RF-03 (alta y código; la vinculación como titular se verifica con RF-15)
 #
-# Tabla 27 · POST /api/v1/docentes · directivo.
-# Tabla 40 · petición: nombre, apellido, correo. Respuesta: recurso usuario y
+# Tabla 18 · POST /api/v1/docentes · directivo.
+# Tabla 31 · petición: nombre, apellido, correo. Respuesta: recurso usuario y
 # codigo_activacion con vence_en, y el código en claro una sola vez.
 require "rails_helper"
 
@@ -62,7 +62,7 @@ RSpec.describe "Alta de docentes", type: :request do
   end
 
   describe "validaciones de forma · 422" do
-    it "rechaza la petición sin alguno de los tres campos de la Tabla 40" do
+    it "rechaza la petición sin alguno de los tres campos de la Tabla 31" do
       %i[nombre apellido correo].each do |faltante|
         dar_de_alta(datos.except(faltante))
 
@@ -71,7 +71,7 @@ RSpec.describe "Alta de docentes", type: :request do
       expect(Usuario.docente.count).to eq(0)
     end
 
-    # Tabla 14 · «Correo único». RN-04 · quien cumple dos funciones opera con dos
+    # Tabla 29 · «UNIQUE (correo)». RN-04 · quien cumple dos funciones opera con dos
     # cuentas separadas, de modo que el correo no puede reutilizarse.
     it "rechaza un correo ya registrado, sin distinguir mayúsculas" do
       create(:usuario, :tutor, correo: "docente.nuevo@ejemplo.test")
@@ -83,7 +83,7 @@ RSpec.describe "Alta de docentes", type: :request do
     end
   end
 
-  # RN-02 · «El directivo … da de alta a los docentes». Tabla 26 · autorización por
+  # RN-02 · «El directivo … da de alta a los docentes». Tabla 28 · autorización por
   # los cuatro roles.
   describe "autorización" do
     it "admite al directivo" do

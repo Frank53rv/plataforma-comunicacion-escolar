@@ -1,7 +1,7 @@
 // RF-40 Paneles diferenciados por rol · RF-42 · CU-09 · RN-04
 // Prueba: CP-RF-40 · CP-RF-42
 //
-// Tabla 26 · «Vocabulario de la interfaz de usuario · Vocabulario cerrado: anuncio,
+// Tabla 28 · «Vocabulario de la interfaz de usuario · Vocabulario cerrado: anuncio,
 // publicación, constancia, acuse, curso, año lectivo, código de activación, canal grupal y
 // horario de disponibilidad. Se prohíben los sinónimos.» El parecido visual con otras
 // aplicaciones no se traslada a las cadenas: se lee el código del cliente, sin comentarios, y
@@ -37,7 +37,7 @@ const codigo = CARPETAS.flatMap((c) => archivos(path.join(RAIZ, c))).map(
   }),
 );
 
-describe("CP-RF-40 · vocabulario cerrado de la interfaz (Tabla 26)", () => {
+describe("CP-RF-40 · vocabulario cerrado de la interfaz (Tabla 28)", () => {
   it("lee el código del cliente", () => {
     expect(codigo.length).toBeGreaterThan(30);
   });

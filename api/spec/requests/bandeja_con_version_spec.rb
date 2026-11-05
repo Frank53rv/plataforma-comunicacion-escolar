@@ -4,9 +4,9 @@ require "rails_helper"
 
 # RF-35 (Tabla 10) · «El cliente debe acumular los identificadores de los anuncios que
 # ingresan al área visible y emitirlos agrupados en una sola petición.» POST /entregas/vistas
-# toma `anuncio_version_ids` (Tabla 29): para que el cliente pueda emitir el lote sin pedir
+# toma `anuncio_version_ids` (Tabla 31): para que el cliente pueda emitir el lote sin pedir
 # el detalle de cada anuncio, cada fila de la bandeja lleva el identificador de la
-# publicación vigente. La Tabla 29 describe la fila sin enumerar identificadores.
+# publicación vigente. La Tabla 31 describe la fila sin enumerar identificadores.
 RSpec.describe "La bandeja identifica la publicación de cada anuncio", type: :request do
   def cuerpo = JSON.parse(response.body)
 

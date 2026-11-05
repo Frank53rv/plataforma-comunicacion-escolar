@@ -9,7 +9,7 @@ module Autenticacion
 
   private
 
-  # Tabla 39 · encabezado de autorización con el esquema de portador.
+  # Tabla 30 · encabezado de autorización con el esquema de portador.
   def usuario_actual
     @usuario_actual ||= begin
       carga = TokenDeSesion.verificar(token_presentado)

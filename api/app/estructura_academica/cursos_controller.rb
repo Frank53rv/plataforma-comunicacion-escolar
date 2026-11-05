@@ -5,7 +5,7 @@
 # editar cursos dentro del año lectivo vigente».
 # Tabla 18 · GET /api/v1/cursos · directivo, docente · el docente ve únicamente
 # sus propios cursos, igual que en el resto de sus operaciones (RN-03, RN-07).
-# Tabla 29 · POST: anio_lectivo_id, nombre, turno → recurso curso. PATCH: nombre, turno
+# Tabla 31 · POST: anio_lectivo_id, nombre, turno → recurso curso. PATCH: nombre, turno
 # → recurso curso. GET: anio_lectivo_id y estado opcionales → colección paginada.
 class CursosController < ApplicationController
   # RN-02 · «El directivo crea el año lectivo y los cursos…»
@@ -40,7 +40,7 @@ class CursosController < ApplicationController
     render json: curso.recurso, status: :ok
   end
 
-  # Tabla 28 · colección paginada: datos, total, pagina y por_pagina.
+  # Tabla 30 · colección paginada: datos, total, pagina y por_pagina.
   def index
     pagina = [ params[:pagina].to_i, 1 ].max
     por_pagina = params[:por_pagina].to_i

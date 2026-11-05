@@ -1,7 +1,7 @@
 # RF-25 Canal grupal del curso · RF-29 Restricción de participación · CU-12 · RN-23
 # Prueba: CP-RF-25 · CP-RF-29
 #
-# Tabla 14 · «Canal de mensajería asociado a un curso.» Tabla 27 · tipo
+# Tabla 14 · «Canal de mensajería asociado a un curso.» Tabla 29 · tipo
 # tipo_conversacion_enum y estado estado_conversacion_enum; UNIQUE parcial (curso_id,
 # tipo) para los tipos grupales. Figura 12 · Conversacion 1 — 1..* Participante,
 # 1 — 0..* Mensaje.
@@ -44,7 +44,7 @@ class Conversacion < ApplicationRecord
     end
   end
 
-  # CU-12 E1 · Tabla 24 · 403 a quien no está vinculado al curso.
+  # CU-12 E1 · Tabla 26 · 403 a quien no está vinculado al curso.
   def self.verificar_vinculacion_al_curso!(usuario, curso_id)
     return if vinculado_al_curso?(usuario, curso_id)
 
@@ -53,7 +53,7 @@ class Conversacion < ApplicationRecord
     )
   end
 
-  # CU-12 E1 · Tabla 24 · 404 si la conversación no existe; 403, «participación en
+  # CU-12 E1 · Tabla 26 · 404 si la conversación no existe; 403, «participación en
   # conversación ajena», si existe y quien pide no la integra.
   def self.de_participante!(id, usuario)
     conversacion = find(id)

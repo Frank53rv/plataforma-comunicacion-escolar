@@ -366,7 +366,7 @@ describe("CP-RF-14 · agregar un tutor a un alumno (docente)", () => {
 
 // Un mismo tutor suele tener más de un hijo en la institución. La nómina de los cursos ya trae
 // a los tutores de sus alumnos, de modo que el docente puede elegirlo en lugar de volver a
-// tipear sus datos. La operación es la misma: nombre, apellido y correo (Tabla 29), y la
+// tipear sus datos. La operación es la misma: nombre, apellido y correo (Tabla 31), y la
 // interfaz de programación lo vincula sin emitir código porque la cuenta ya está activa.
 describe("CP-RF-14 · elegir un tutor ya registrado", () => {
   const conDosAlumnos = () =>

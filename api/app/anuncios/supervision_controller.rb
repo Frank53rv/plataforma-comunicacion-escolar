@@ -4,13 +4,13 @@
 # Tabla 18 · GET /api/v1/supervision/cursos · directivo · «Consultar los anuncios de
 # todos los cursos del año lectivo vigente y el estado agregado de entrega y lectura por
 # curso».
-# Tabla 29 · anio_lectivo_id (opcional, por omisión el año lectivo vigente) → por curso:
+# Tabla 31 · anio_lectivo_id (opcional, por omisión el año lectivo vigente) → por curso:
 # cantidad de anuncios, enviadas, entregadas, vistas y leídas.
 # GET /api/v1/supervision/conversaciones es RF-46 (Should have): no se construye acá.
 # openapi/openapi.yaml · esquema EstadoPorCurso: «curso» es el recurso Curso completo
 # (no «curso_id») y el conteo de anuncios se llama «anuncios» (no
 # «cantidad_de_anuncios»). La respuesta envuelve `datos` con total/pagina/por_pagina
-# conforme a specs/23-convenciones-api.md (Tabla 28): sin parámetros de paginación
+# conforme a specs/23-convenciones-api.md (Tabla 30): sin parámetros de paginación
 # declarados para esta operación, se informa todo en una sola página.
 class SupervisionController < ApplicationController
   # RN-22 · «El directivo accede a los anuncios de todos los cursos del año lectivo

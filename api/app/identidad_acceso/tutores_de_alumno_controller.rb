@@ -1,8 +1,8 @@
 # RF-04 Alta de alumnos y tutores · RF-05 · RF-14 · CU-05 · RN-01, RN-03, RN-05, RN-29
 # Prueba: CP-RF-04 · CP-RF-05 · CP-RF-14
 #
-# Tabla 27 · POST /api/v1/alumnos/{id}/tutores · docente · «Vincular un tutor al alumno».
-# Tabla 40 · petición: nombre, apellido, correo. Respuesta: recurso usuario, tutor_alumno
+# Tabla 18 · POST /api/v1/alumnos/{id}/tutores · docente · «Vincular un tutor al alumno».
+# Tabla 31 · petición: nombre, apellido, correo. Respuesta: recurso usuario, tutor_alumno
 # y codigo_activacion, con el código en claro una sola vez.
 class TutoresDeAlumnoController < ApplicationController
   # RN-03 · «El docente da de alta a los alumnos y tutores de sus cursos.»
@@ -43,7 +43,7 @@ class TutoresDeAlumnoController < ApplicationController
 
   # CU-05 (Tabla 13) precondición: el docente está vinculado al curso del alumno. El
   # alumno inexistente, o ajeno a sus cursos, no es suyo: 403 como en la fila de la
-  # Tabla 24.
+  # Tabla 26.
   def alumno_de_sus_cursos
     alumno = Usuario.find_by(id: params[:id], rol: "alumno")
     unless alumno && usuario_actual.alumnos_de_sus_cursos.exists?(usuario_id: alumno.id)
@@ -63,7 +63,7 @@ class TutoresDeAlumnoController < ApplicationController
 
   # RF-14 · un mismo tutor con varios hijos, aun en cursos distintos, opera con una
   # sola cuenta y sin perfiles separados. Se lo identifica por su correo, único según
-  # la Tabla 14. El correo de una persona con otro rol no es el de un tutor (RN-04) y
+  # la Tabla 29. El correo de una persona con otro rol no es el de un tutor (RN-04) y
   # sigue siendo un dato repetido.
   def tutor_existente(correo, alumno)
     persona = Usuario.find_by(correo: correo)
@@ -73,7 +73,7 @@ class TutoresDeAlumnoController < ApplicationController
       raise ErrorDeDominio::DatosInaceptables.new(detalle: "El correo indicado no puede vincularse como tutor.")
     end
 
-    # Tabla 14 · «Par único entre los vigentes»
+    # Tabla 29 · «UNIQUE parcial (tutor_id, alumno_id) donde vigente_hasta es nulo»
     if TutorAlumno.vigentes.exists?(tutor_id: persona.id, alumno_id: alumno.id)
       raise ErrorDeDominio::DatosInaceptables.new(detalle: "El tutor ya está vinculado a este alumno.")
     end

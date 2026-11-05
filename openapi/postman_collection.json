@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Plataforma de Comunicación Escolar · API v1",
-    "description": "Colección de validación de la interfaz de programación (RNF-17 · CP-RNF-17).\n\nContiene las operaciones de la Tabla 18 que el enrutador expone hoy, agrupadas por caso de uso, con los cuerpos y parámetros que cada operación admite. Se amplía con cada módulo que se construye.\n\nConvenciones de la Tabla 28: identificadores UUID en rutas y cuerpos; JSON con los nombres de campo del diccionario de la Tabla 14; fechas ISO 8601 en tiempo universal coordinado; colecciones paginadas con `pagina` y `por_pagina` (25 por omisión, 100 como máximo), respondidas con `datos`, `total`, `pagina` y `por_pagina`.\n\nLos errores responden `application/problem+json` con uno de los nueve estados de la Tabla 24.",
+    "description": "Colección de validación de la interfaz de programación (RNF-17 · CP-RNF-17).\n\nContiene las operaciones de la Tabla 18 que el enrutador expone hoy, agrupadas por caso de uso, con los cuerpos y parámetros que cada operación admite. Se amplía con cada módulo que se construye.\n\nConvenciones de la Tabla 30: identificadores UUID en rutas y cuerpos; JSON con los nombres de campo del diccionario de la Tabla 14; fechas ISO 8601 en tiempo universal coordinado; colecciones paginadas con `pagina` y `por_pagina` (25 por omisión, 100 como máximo), respondidas con `datos`, `total`, `pagina` y `por_pagina`.\n\nLos errores responden `application/problem+json` con uno de los nueve estados de la Tabla 26.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {

@@ -3,7 +3,7 @@
 # Prueba: CP-RF-12 · CP-RF-15 · CP-RF-25
 #
 # Tabla 14 · «Unidad académica dentro de un año lectivo.» Nombre único dentro del año.
-# Tabla 27 · nombre de tabla en singular. turno varchar(20). UNIQUE (anio_lectivo_id,
+# Tabla 29 · nombre de tabla en singular. turno varchar(20). UNIQUE (anio_lectivo_id,
 # nombre) atribuido a RN-26.
 class Curso < ApplicationRecord
   self.table_name = "curso"
@@ -21,13 +21,13 @@ class Curso < ApplicationRecord
   # transacción del alta, cualquiera sea la vía por la que el curso se crea.
   after_create :abrir_canal_grupal
 
-  # Tabla 27 · nombre varchar(60) · turno varchar(20)
+  # Tabla 29 · nombre varchar(60) · turno varchar(20)
   validates :nombre, :turno, presence: true
   validates :nombre, length: { maximum: 60 }
   validates :turno, length: { maximum: 20 }
 
-  # CU-03 E2 (Tabla 24, fila 409): se rechaza el nombre de curso repetido dentro del
-  # mismo año lectivo. Tabla 27 atribuye el índice único (anio_lectivo_id, nombre) a
+  # CU-03 E2 (Tabla 26, fila 409): se rechaza el nombre de curso repetido dentro del
+  # mismo año lectivo. Tabla 29 atribuye el índice único (anio_lectivo_id, nombre) a
   # RN-26: se verifica acá para rechazar con 409 y la regla consignada, antes de la
   # violación del índice.
   def self.verificar_nombre_disponible!(anio_lectivo_id:, nombre:, excepto_id: nil)
@@ -41,7 +41,7 @@ class Curso < ApplicationRecord
     )
   end
 
-  # Tabla 40 · «colección de curso con la cantidad de alumnos vinculados» (GET /cursos).
+  # GET /cursos · `alumnos_vinculados`, la cantidad de alumnos vinculados, según openapi/openapi.yaml.
   def recurso
     slice(:id, :anio_lectivo_id, :nombre, :turno, :estado)
       .merge("alumnos_vinculados" => alumnos_vinculados_curso.vigentes.count)

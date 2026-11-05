@@ -1,6 +1,6 @@
-# Quality Spec, Tabla 37 · «Un único manejador central que traduce toda excepción al
-# formato de la Tabla 35. Ningún controlador emite un cuerpo de error propio.»
-# Tabla 39 · respuesta de error conforme a RFC 9457 con los miembros de la norma más
+# Quality Spec, Tabla 28 · «Un único manejador central que traduce toda excepción al
+# formato de la Tabla 26. Ningún controlador emite un cuerpo de error propio.»
+# Tabla 30 · respuesta de error conforme a RFC 9457 con los miembros de la norma más
 # «codigo» y «regla».
 #
 # El controlador es anónimo: no incorpora ninguna ruta al enrutador, de modo que el
@@ -35,7 +35,7 @@ RSpec.describe ApplicationController, type: :controller do
 
   def cuerpo = JSON.parse(response.body)
 
-  it "traduce el rechazo por rol o vinculación al 403 de la Tabla 35" do
+  it "traduce el rechazo por rol o vinculación al 403 de la Tabla 26" do
     get :no_habilitado
 
     expect(response).to have_http_status(403)
@@ -45,7 +45,7 @@ RSpec.describe ApplicationController, type: :controller do
     expect(cuerpo).to have_key("instance")
   end
 
-  it "consigna el código de la regla en el 409, como la Tabla 35 exige" do
+  it "consigna el código de la regla en el 409, como la Tabla 26 exige" do
     get :conflicto
 
     expect(response).to have_http_status(409)
