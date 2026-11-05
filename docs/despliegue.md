@@ -219,17 +219,15 @@ constituye un fallo del sistema (punto 1.6).
 docker compose exec api bin/rails routes > api/tmp/rutas.txt
 ./bin/verificar
 npx newman run openapi/postman_collection.json -e openapi/postman_environment.json
-npx newman run docs/registro-qa/postman/plataforma_pruebas.postman_collection.json \
-  -e docs/registro-qa/postman/plataforma_local.postman_environment.json \
-  --env-var "directivo_correo=<correo>" --env-var "directivo_contrasena=<contraseña vigente>"
 ```
 
 **Verificación:** diferencia nula entre enrutador, archivo OpenAPI e inventario de la
 Tabla 18, conforme a CP-RNF-17. La compuerta `contrato` contrasta los tres sentidos.
 
-`openapi/postman_collection.json` recorre las 36 operaciones construidas, sin aserciones: sirve
-para explorar la interfaz desde Postman. La colección de `docs/registro-qa/postman/` encadena
-los identificadores y afirma estados, cuerpos de error y la matriz de autorización.
+La colección recorre las 36 operaciones construidas, encadena los identificadores y afirma
+estados, cuerpos de error y la matriz de autorización. Requiere el conjunto de prueba del paso 4,
+porque autentica con su cuenta directiva. Cada corrida deja datos propios en la base: se ejecuta
+sobre el entorno de demostración, no sobre datos que se quieran conservar.
 
 ---
 
