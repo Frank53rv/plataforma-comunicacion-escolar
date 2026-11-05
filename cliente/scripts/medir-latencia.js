@@ -12,6 +12,9 @@
 // persistió el mensaje, `enviado_en` (marca del servidor). El emisor y los receptores
 // corren en el mismo equipo, de modo que comparten reloj.
 //
+// Con cuarenta receptores abiertos a la vez es también el script de apertura concurrente de
+// conexiones que la Tabla 39 asigna a RNF-10.
+//
 // Uso:  node scripts/medir-latencia.js --emisor correo --receptores correo1,correo2,…
 //         [--base http://localhost:8090] [--mensajes 50] [--contrasena …]
 const argumentos = Object.fromEntries(
