@@ -4,15 +4,15 @@
 
 
 =============================== Coverage summary ===============================
-Statements   : 99.12% ( 1134/1144 )
-Branches     : 96.61% ( 656/679 )
-Functions    : 98.71% ( 384/389 )
-Lines        : 99.51% ( 1036/1041 )
+Statements   : 99.12% ( 1139/1149 )
+Branches     : 96.62% ( 658/681 )
+Functions    : 98.71% ( 385/390 )
+Lines        : 99.52% ( 1041/1046 )
 ================================================================================
 
-Test Suites: 36 passed, 36 total
-Tests:       428 passed, 428 total
+Test Suites: 37 passed, 37 total
+Tests:       435 passed, 435 total
 Snapshots:   0 total
-Time:        12.154 s
+Time:        10.345 s
 Ran all test suites.
 Test results written to: tmp/jest.json

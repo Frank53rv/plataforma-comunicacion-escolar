@@ -1,4 +1,4 @@
-# bin/verificar sobre 61c68ec (develop con las correcciones de hoy) · 2026-11-05T13:45:54+00:00
+# bin/verificar sobre c958a97, código final · 2026-11-05T14:47:15+00:00
 
   VERIFICACIÓN DE FIDELIDAD AL DOCUMENTO — edición final
   =================================================
@@ -42,14 +42,14 @@
 
   COBERTURA  ·  RNF-20 · CP-RNF-20 · ≥ 70 %
   -----------------------------------------
-    OK    la interfaz: cobertura de líneas 98.90 % (umbral 70 %)
-    OK    el cliente: cobertura de líneas 99.51 % (umbral 70 %)
+    OK    la interfaz: cobertura de líneas 98.72 % (umbral 70 %)
+    OK    el cliente: cobertura de líneas 99.52 % (umbral 70 %)
     => VERDE
 
   ESTILO  ·  Quality Spec · Tabla 28 · RuboCop y ESLint
   -----------------------------------------------------
-    OK    RuboCop sin hallazgos (145 archivos inspeccionados)
-    OK    ESLint sin hallazgos (89 archivos)
+    OK    RuboCop sin hallazgos (147 archivos inspeccionados)
+    OK    ESLint sin hallazgos (90 archivos)
     OK    Prettier sin hallazgos
     => VERDE
 

@@ -1,0 +1,40 @@
+# CP-RNF-06 · transporte cifrado · paso 6 de la Tabla 37, código final · 2026-11-05T14:25:57+00:00
+# Dominio asignado al túnel efímero: quilt-routers-frank-compute.trycloudflare.com
+
+$ curl -sSI https://quilt-routers-frank-compute.trycloudflare.com/api/v1/paneles/me
+HTTP/2 401 
+content-type: application/problem+json; charset=utf-8
+server: cloudflare
+curl exit=0 (0: el certificado validó)
+
+Certificado presentado:
+  SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519 / id-ecPublicKey
+  subject: CN=trycloudflare.com
+  expire date: Jan  3 21:58:20 2027 GMT
+  subjectAltName: host "quilt-routers-frank-compute.trycloudflare.com" matched cert's "*.trycloudflare.com"
+  issuer: C=US; O=Google Trust Services; CN=WE1
+  SSL certificate verify ok.
+
+$ curl -sSI http://quilt-routers-frank-compute.trycloudflare.com/api/v1/paneles/me
+HTTP/1.1 301 Moved Permanently
+Location: https://quilt-routers-frank-compute.trycloudflare.com/api/v1/paneles/me
+Server: cloudflare
+
+Texto plano CON token válido de una cuenta ficticia (el token no se transcribe):
+GET http://…/api/v1/paneles/me → estado=301 bytes=169
+¿el cuerpo trae datos de la cuenta? 0 coincidencias
+GET http://…/ → estado=301
+GET http://…/cable → estado=301
+
+Por HTTPS, la misma petición con el mismo token:
+GET https://…/api/v1/paneles/me → estado=200 bytes=313
+claves: ['anuncios_sin_leer', 'cursos', 'nombre', 'opciones_habilitadas', 'rol']
+
+Puertos publicados hacia el equipo:
+api: 127.0.0.1:3000->3000/tcp
+cliente: 127.0.0.1:8090->80/tcp
+db: 5432/tcp
+
+Cuerpo de más de 1 MB por HTTPS (1,2 MB):
+{"type":"about:blank","title":"Carga demasiado grande","status":413,"detail":"El cuerpo de la petición supera 1 MB.","codigo":"carga_demasiado_grande"}
+estado=413 tipo=application/problem+json
