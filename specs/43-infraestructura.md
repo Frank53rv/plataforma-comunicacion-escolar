@@ -2,7 +2,7 @@
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 34 · Matriz de infraestructura del sistema
+# Tabla 36 · Matriz de infraestructura del sistema
 
 | Componente | Tecnología | Función | Entorno de ejecución |
 |---|---|---|---|

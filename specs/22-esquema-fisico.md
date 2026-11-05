@@ -2,7 +2,7 @@
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 27 · Esquema físico: tipos, claves e índices
+# Tabla 29 · Esquema físico: tipos, claves e índices
 
 | Entidad | Columnas y tipos | Claves, índices y restricciones | Regla que realiza |
 |---|---|---|---|

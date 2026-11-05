@@ -2,7 +2,7 @@
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 23 · Selección tecnológica definitiva y justificación por capa
+# Tabla 25 · Selección tecnológica definitiva y justificación por capa
 
 | Capa | Tecnología y versión | Por qué esta elección | Requisito que la sostiene |
 |---|---|---|---|
@@ -15,18 +15,18 @@
 | Servidor de archivos estáticos | nginx | Entrega los archivos producidos por la construcción del cliente y reenvía /api/v1/ y /cable a la interfaz. El cifrado termina en el túnel | RNF-06 · RNF-19 |
 | Autenticación y cifrado | JSON Web Token (RFC 7519; IETF, 2015) · bcrypt | Token firmado verificable sin estado en cada petición, incluida la del canal de tiempo real, y derivación no reversible de contraseñas | RF-01 · RNF-02 · RNF-03 |
 | Notificaciones push | Firebase Cloud Messaging, nivel gratuito | Único componente externo. Entrega a navegadores con la aplicación cerrada. Su indisponibilidad no impide operar, conforme a RNF-11. El cliente del servidor usa Net::HTTP y la gema jwt, sin dependencia adicional | RF-31 · RF-32 |
-| Notificaciones push en el cliente | SDK de Firebase (firebase/messaging) | Obtiene el token de suscripción del navegador. Sin las variables del cliente de la Tabla 30 no registra suscripción y los avisos se presentan dentro de la aplicación | RF-31 · RF-37 |
+| Notificaciones push en el cliente | SDK de Firebase (firebase/messaging) | Obtiene el token de suscripción del navegador. Sin las variables del cliente de la Tabla 32 no registra suscripción y los avisos se presentan dentro de la aplicación | RF-31 · RF-37 |
 | Canal de tiempo real en el cliente | @rails/actioncable | Conexión WSS con el mismo token de la interfaz para la conversación del curso | RF-25 · RNF-08 |
 | Service worker y manifiesto | Propios, sin biblioteca de aplicación web progresiva | Reciben el aviso push con la aplicación cerrada y hacen instalable el cliente, condición de la recepción en iOS según el riesgo R-03 | RF-31 · RNF-11 |
 | Contenerización y orquestación | Docker con Docker Compose | Levanta el entorno completo desde el repositorio sin edición manual de archivos | RNF-19 |
 | Pruebas | RSpec · Jest y React Testing Library · SimpleCov | Pruebas de unidad e integración del servidor y de comportamiento de los componentes del cliente, con medición de cobertura de líneas: SimpleCov en la interfaz y Jest en el cliente | RNF-20 · RNF-22 |
 | Documentación y validación de la interfaz | OpenAPI · Postman | Contrato legible por máquina y colección de validación ejecutable | RNF-17 |
-| Control de versiones | Git · GitHub, repositorio privado | Historial de commits, ramas y merges como evidencia de autoría y frecuencia de trabajo | Template, punto 5.2 |
+| Control de versiones | Git · GitHub | Historial de commits, ramas y merges como evidencia de autoría y frecuencia de trabajo | Template, punto 5.2 |
 | Exposición del entorno | Cloudflare Tunnel | Expone el entorno de demostración sobre HTTPS con certificado válido, condición del push web y de la verificación del transporte cifrado | RNF-06 · RNF-19 |
 | Dependencias complementarias del servidor | rack-cors · factory_bot_rails · json (serie 2) · bootsnap · debug · bundler-audit | Las tres primeras sostienen el control de origen cruzado, las factorías de prueba y la fijación de la serie del serializador. Las tres últimas provienen de la plantilla por defecto del framework; bundler-audit audita las dependencias. | RNF-06 · RNF-20 · RNF-22 |
 | Dependencias complementarias del cliente | Babel · jest-environment-jsdom · jest-dom · complementos de ESLint · globals · Prettier | Cadena de transformación y entorno de prueba del cliente, exigidos por la ejecución de Jest y de React Testing Library ya comprometidos. | RNF-20 · RNF-22 |
 | Imágenes base de los contenedores | nginx:1.27-alpine · node:22-slim | Fijan la versión de las dos imágenes que la composición construye. | RNF-19 |
-| Componentes de la plantilla del framework no incorporados | solid_cache · thruster · brakeman · active_storage · action_mailer | No se incorporan por no tener requisito que los sostenga, conforme al límite 7 del Boundary Spec de la Tabla 25: no se incorpora componente sin requisito. brakeman es el análisis estático; la auditoría de dependencias la realiza bundler-audit. | Tabla 25, límite 7 |
-| Montajes y red de la composición | Carpeta specs/ montada dentro del contenedor · puerto de la base de datos sin publicar hacia el equipo anfitrión | El montaje de specs/ permite que las compuertas de verificación lean las especificaciones desde dentro del contenedor. La base de datos sólo es alcanzable desde la red privada de la composición. | RNF-19 · Tabla 25, límite 7 |
+| Componentes de la plantilla del framework no incorporados | solid_cache · thruster · brakeman · active_storage · action_mailer | No se incorporan por no tener requisito que los sostenga, conforme al límite 7 del Boundary Spec de la Tabla 27: no se incorpora componente sin requisito. brakeman es el análisis estático; la auditoría de dependencias la realiza bundler-audit. | Tabla 27, límite 7 |
+| Montajes y red de la composición | Carpeta specs/ montada dentro del contenedor · puerto de la base de datos sin publicar hacia el equipo anfitrión | El montaje de specs/ permite que las compuertas de verificación lean las especificaciones desde dentro del contenedor. La base de datos sólo es alcanzable desde la red privada de la composición. | RNF-19 · Tabla 27, límite 7 |
 
 > Nota. Las versiones se expresan por serie mayor y menor, y se actualizan únicamente dentro de la serie de parches durante la ejecución. La verificación contra la publicación oficial de cada producto se realizó al fijar el stack preliminar del punto 1.8 y se repitió al fijar estas versiones como definitivas. La caché de aplicación no figura en esta tabla porque el producto mínimo viable no compromete ninguna: si la medición de CP-RNF-09 lo justificara, se incorporaría el componente nativo sobre la resolución de destinatarios, sin agregar infraestructura.

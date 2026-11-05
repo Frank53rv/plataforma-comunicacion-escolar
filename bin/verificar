@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Compuertas de integración de rama · punto 4.5 del documento de grado.
-# No hay integración continua: esta es la condición que la reemplaza (Quality Spec, Tabla 26).
+# No hay integración continua: esta es la condición que la reemplaza (Quality Spec, Tabla 28).
 set -u
 cd "$(dirname "$0")/.."
 echo
