@@ -67,6 +67,20 @@ RSpec.describe "Notificación de anuncios", type: :request do
     end
   end
 
+  # RN-11 · la baja de una cuenta revoca su acceso: tampoco recibe avisos push.
+  describe "CP-RF-09 · destinatario con la cuenta dada de baja" do
+    it "no le envía el aviso, pero sí a quien conserva su cuenta" do
+      create(:suscripcion_push, usuario: alumno, token: "token-alumno")
+      create(:suscripcion_push, usuario: tutor, token: "token-tutor")
+      alumno.update!(estado: "dado_de_baja")
+
+      perform_enqueued_jobs { publicar }
+
+      expect(cliente).not_to have_received(:enviar).with(hash_including(token: "token-alumno"))
+      expect(cliente).to have_received(:enviar).with(hash_including(token: "token-tutor"))
+    end
+  end
+
   # RN-18 · «Los anuncios ignoran el horario de disponibilidad y las preferencias del
   # destinatario: son comunicación institucional.»
   describe "RN-18 · independencia del horario y de las preferencias" do
