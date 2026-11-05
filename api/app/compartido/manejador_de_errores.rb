@@ -28,6 +28,8 @@ module ManejadorDeErrores
 
   included do
     rescue_from StandardError,                     with: :responder_error_interno
+    # Las subclases de StatementInvalid que siguen más abajo tienen su propio manejador.
+    rescue_from ActiveRecord::StatementInvalid,    with: :responder_error_de_sentencia
     rescue_from ErrorDeDominio,                    with: :responder_error_de_dominio
     rescue_from ActiveRecord::RecordNotFound,      with: :responder_no_encontrado
     rescue_from ActiveRecord::RecordInvalid,       with: :responder_datos_inaceptables
@@ -39,7 +41,28 @@ module ManejadorDeErrores
     # inaceptable (422), no un «fallo no previsto» (500).
     rescue_from ActiveRecord::ValueTooLong,        with: :responder_datos_inaceptables
     rescue_from ActionController::ParameterMissing, with: :responder_datos_inaceptables
+    # Un cuerpo que no es JSON válido o un valor que el motor no admite como dato (un
+    # número fuera de rango, un texto que no es un valor del enum) no es un fallo no previsto.
+    rescue_from ActionDispatch::Http::Parameters::ParseError, with: :responder_datos_inaceptables
+    rescue_from ActionController::BadRequest,      with: :responder_datos_inaceptables
   end
+
+  # Cuerpo de error conforme a RFC 9457 con «codigo» y «regla»; lo emite el controlador y
+  # también la aplicación de excepciones, para lo que no llega a un controlador.
+  def self.cuerpo(estado:, codigo:, detalle:, instancia:, regla: nil)
+    cuerpo = {
+      type: "about:blank",
+      title: TITULOS.fetch(estado),
+      status: estado,
+      detail: detalle,
+      instance: instancia,
+      codigo: codigo
+    }
+    cuerpo[:regla] = regla if regla.present?
+    cuerpo
+  end
+
+  ERRORES_DE_DATO_DEL_MOTOR = [ PG::InvalidTextRepresentation, PG::NumericValueOutOfRange ].freeze
 
   private
 
@@ -56,6 +79,12 @@ module ManejadorDeErrores
     responder_error_de_dominio(ErrorDeDominio::DatosInaceptables.new)
   end
 
+  def responder_error_de_sentencia(error)
+    return responder_datos_inaceptables(error) if ERRORES_DE_DATO_DEL_MOTOR.any? { |clase| error.cause.is_a?(clase) }
+
+    responder_error_interno(error)
+  end
+
   # 500 · Fallo no previsto, registrado en la bitácora sin exponer detalle interno
   def responder_error_interno(error)
     Rails.logger.error("#{error.class}: #{error.message}")
@@ -66,15 +95,8 @@ module ManejadorDeErrores
   end
 
   def responder(estado:, codigo:, detalle:, regla: nil)
-    cuerpo = {
-      type: "about:blank",
-      title: TITULOS.fetch(estado),
-      status: estado,
-      detail: detalle,
-      instance: request.path,
-      codigo: codigo
-    }
-    cuerpo[:regla] = regla if regla.present?
+    cuerpo = ManejadorDeErrores.cuerpo(estado: estado, codigo: codigo, detalle: detalle,
+                                       instancia: request.path, regla: regla)
 
     render json: cuerpo, status: estado, content_type: TIPO_CONTENIDO
   end

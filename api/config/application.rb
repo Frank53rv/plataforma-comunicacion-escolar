@@ -22,6 +22,10 @@ module Api
   class Application < Rails::Application
     config.load_defaults 8.1
 
+    # Boundary 6 · todo error, también el que no llega a un controlador, sale con el
+    # cuerpo del catálogo y sin trazas.
+    config.exceptions_app = ->(entorno) { ErrorFueraDelControlador.call(entorno) }
+
     config.autoload_lib(ignore: %w[assets tasks])
 
     # Los cinco módulos funcionales y el componente transversal son carpetas

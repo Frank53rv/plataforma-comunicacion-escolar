@@ -28,10 +28,8 @@ class ConversacionesController < ApplicationController
 
   # Tabla 30 · colección paginada, ordenada por nombre del curso.
   def index
-    pagina = [ params[:pagina].to_i, 1 ].max
-    por_pagina = params[:por_pagina].to_i
-    por_pagina = 25 if por_pagina <= 0
-    por_pagina = [ por_pagina, 100 ].min
+    pagina = pagina_pedida
+    por_pagina = por_pagina_pedido
 
     relacion = Conversacion.del_usuario(usuario_actual).joins(:curso)
                            .order("curso.nombre ASC, conversacion.id ASC")
