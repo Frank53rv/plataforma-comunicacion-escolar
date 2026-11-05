@@ -24,7 +24,7 @@ info:
     ISO 8601 con desplazamiento explícito, almacenadas y respondidas en tiempo
     universal coordinado; paginación con `pagina` y `por_pagina`, veinticinco por
     omisión y cien como máximo; cuerpo de petición de hasta 1 MB, salvo la carga de
-    adjuntos, limitada a 5 MB por archivo.
+    adjuntos, limitada a 5 MB por archivo. Lo que excede ese tamaño responde 413.
 
     El catálogo de errores es cerrado: ninguna operación emite un estado fuera de los
     nueve de la Tabla 26.
