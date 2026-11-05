@@ -10,7 +10,7 @@ aceptación de **CP-RNF-19**.
 
 ## Requisitos previos
 
-El equipo de desarrollo es el de la Tabla 36: Windows con el subsistema para Linux en su
+El equipo de desarrollo es el de la Tabla 23: Windows con el subsistema para Linux en su
 versión 2. Conforme al punto 4.3, el motor de contenedores y la herramienta de
 composición se instalan **dentro de la distribución del subsistema** y no mediante la
 aplicación de escritorio, para evitar una capa adicional de virtualización sobre un

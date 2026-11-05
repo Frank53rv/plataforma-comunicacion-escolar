@@ -145,10 +145,10 @@ quién lo eliminó, cuándo, y las constancias que ya se habían registrado.
    pulsar **Ver constancia** en el que interese. También se llega desde el anuncio, con el
    botón **Constancias**.
 2. La constancia indica cuántos destinatarios registraron lectura sobre el total, y lista
-   los **alumnos sin lectura registrada**.
+   los **destinatarios sin lectura registrada**, alumnos o tutores.
 
-Tutores y alumnos no ven la constancia de nadie más. La lista es de alumnos: no distingue a
-cada tutor por separado.
+Tutores y alumnos no ven la constancia de nadie más. La lista nombra a cada persona con su
+rol, alumno o tutor.
 
 ## Conversar en el canal grupal (docente y tutor)
 
