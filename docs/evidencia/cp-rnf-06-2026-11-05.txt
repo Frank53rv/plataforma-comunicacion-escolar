@@ -1,0 +1,68 @@
+# CP-RNF-06 · transporte cifrado · paso 6 de la Tabla 37 · 2026-11-05T13:25:30+00:00
+# Dominio asignado al túnel efímero: hwy-celebrity-kernel-statutes.trycloudflare.com
+
+$ curl -sSI https://hwy-celebrity-kernel-statutes.trycloudflare.com/api/v1/paneles/me
+HTTP/2 401 
+date: Thu, 05 Nov 2026 13:25:31 GMT
+content-type: application/problem+json; charset=utf-8
+content-length: 0
+cf-ray: a55c2f535f8e1168-ASU
+cf-cache-status: DYNAMIC
+cache-control: no-cache
+server: cloudflare
+vary: Origin
+x-robots-tag: none
+x-robots-tag: none
+referrer-policy: strict-origin-when-cross-origin
+server-timing: start_processing.action_controller;dur=0.07, rescue_from_callback.action_controller;dur=0.04, process_action.action_controller;dur=2.74
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-request-id: ae094043-ea61-4028-a39c-321d7979ff5f
+x-runtime: 0.011328
+x-xss-protection: 0
+
+curl exit=0 (0: el certificado validó contra el almacén de autoridades del sistema)
+
+Certificado presentado:
+  SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519 / id-ecPublicKey
+  subject: CN=trycloudflare.com
+  start date: Oct  5 20:58:33 2026 GMT
+  expire date: Jan  3 21:58:20 2027 GMT
+  subjectAltName: host "hwy-celebrity-kernel-statutes.trycloudflare.com" matched cert's "*.trycloudflare.com"
+  issuer: C=US; O=Google Trust Services; CN=WE1
+  SSL certificate verify ok.
+
+$ curl -sSI http://hwy-celebrity-kernel-statutes.trycloudflare.com/api/v1/paneles/me
+HTTP/1.1 401 Unauthorized
+Date: Thu, 05 Nov 2026 13:25:31 GMT
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+CF-Ray: a55c2f599c721161-ASU
+CF-Cache-Status: DYNAMIC
+Cache-Control: no-cache
+Server: cloudflare
+Vary: Origin
+referrer-policy: strict-origin-when-cross-origin
+server-timing: start_processing.action_controller;dur=0.04, rescue_from_callback.action_controller;dur=0.03, process_action.action_controller;dur=3.28
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-request-id: 1f40e394-d4db-42de-a0d9-23aa1488559f
+x-runtime: 0.011094
+x-xss-protection: 0
+
+curl exit=0
+
+Petición en texto plano, siguiendo el cuerpo (¿sirve datos?):
+$ curl -sS -o /dev/null -w 'estado=%{http_code} bytes=%{size_download} destino=%{redirect_url}' http://hwy-celebrity-kernel-statutes.trycloudflare.com/api/v1/paneles/me
+estado=401 bytes=154 destino=
+
+Petición en texto plano CON token válido de una cuenta ficticia (el token no se transcribe):
+$ curl -sS -H 'Authorization: Bearer ***' -o /dev/null -w 'estado=%{http_code} bytes=%{size_download} destino=%{redirect_url} esquema=%{scheme}' http://hwy-celebrity-kernel-statutes.trycloudflare.com/api/v1/paneles/me
+estado=200 bytes=313 destino= esquema=HTTP
+claves de la respuesta servida en texto plano: ['anuncios_sin_leer', 'cursos', 'nombre', 'opciones_habilitadas', 'rol']
+
+La misma petición por HTTPS:
+estado=200 bytes=313 esquema=HTTPS

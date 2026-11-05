@@ -1,0 +1,902 @@
+[
+ {
+  "ancho": 320,
+  "rol": "directivo",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "directivo",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "directivo",
+  "ruta": "/supervision",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "directivo",
+  "ruta": "/anios-lectivos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "directivo",
+  "ruta": "/cursos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "directivo",
+  "ruta": "/docentes",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "directivo",
+  "ruta": "/alumnos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/publicar",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/constancias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/conversaciones",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/conversaciones/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/cursos/{id}/canal",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/cursos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/alumnos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/anuncios/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "docente",
+  "ruta": "/anuncios/{id}/constancias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "tutor",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "tutor",
+  "ruta": "/conversaciones",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "tutor",
+  "ruta": "/conversaciones/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "tutor",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "tutor",
+  "ruta": "/anuncios/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "alumno",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 320,
+  "rol": "alumno",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "directivo",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "directivo",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "directivo",
+  "ruta": "/supervision",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "directivo",
+  "ruta": "/anios-lectivos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "directivo",
+  "ruta": "/cursos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "directivo",
+  "ruta": "/docentes",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "directivo",
+  "ruta": "/alumnos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/publicar",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/constancias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/conversaciones",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/conversaciones/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/cursos/{id}/canal",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/cursos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/alumnos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/anuncios/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "docente",
+  "ruta": "/anuncios/{id}/constancias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "tutor",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "tutor",
+  "ruta": "/conversaciones",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "tutor",
+  "ruta": "/conversaciones/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "tutor",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "tutor",
+  "ruta": "/anuncios/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "alumno",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 360,
+  "rol": "alumno",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "directivo",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "directivo",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "directivo",
+  "ruta": "/supervision",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "directivo",
+  "ruta": "/anios-lectivos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "directivo",
+  "ruta": "/cursos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "directivo",
+  "ruta": "/docentes",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "directivo",
+  "ruta": "/alumnos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/publicar",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/constancias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/conversaciones",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/conversaciones/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/cursos/{id}/canal",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/cursos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/alumnos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/anuncios/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "docente",
+  "ruta": "/anuncios/{id}/constancias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "tutor",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "tutor",
+  "ruta": "/conversaciones",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "tutor",
+  "ruta": "/conversaciones/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "tutor",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "tutor",
+  "ruta": "/anuncios/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "alumno",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 768,
+  "rol": "alumno",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "directivo",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "directivo",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "directivo",
+  "ruta": "/supervision",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "directivo",
+  "ruta": "/anios-lectivos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "directivo",
+  "ruta": "/cursos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "directivo",
+  "ruta": "/docentes",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "directivo",
+  "ruta": "/alumnos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/publicar",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/constancias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/conversaciones",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/conversaciones/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/cursos/{id}/canal",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/cursos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/alumnos",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/anuncios/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "docente",
+  "ruta": "/anuncios/{id}/constancias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "tutor",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "tutor",
+  "ruta": "/conversaciones",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "tutor",
+  "ruta": "/conversaciones/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "tutor",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "tutor",
+  "ruta": "/anuncios/{id}",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "alumno",
+  "ruta": "/",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ },
+ {
+  "ancho": 1280,
+  "rol": "alumno",
+  "ruta": "/preferencias",
+  "desborde": 0,
+  "peor": null,
+  "vacia": false,
+  "errores": []
+ }
+]

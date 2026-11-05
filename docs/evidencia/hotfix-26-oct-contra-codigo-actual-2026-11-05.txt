@@ -1,0 +1,43 @@
+# Pruebas de los hotfix del 26-oct-2026 ejecutadas contra el código actual · 2026-11-05T13:39:43+00:00
+# Código: fd4f2dd (develop con las correcciones de CP-RNF-19 y CP-RNF-06).
+# Por rama: se toman sólo sus archivos de prueba, se ejecutan y se restauran; no se integra nada.
+# docker compose exec -e RAILS_ENV=test api bundle exec rspec <archivos> · npx jest <archivos>
+
+CP-RF-09-aviso-no-sale-a-cuentas-de-baja | 1 archivo(s) | 9 examples, 1 failure
+rspec ./spec/requests/notificacion_de_anuncios_spec.rb:72 # Notificación de anuncios CP-RF-09 · destinatario con la cuenta dada de baja no
+CP-RF-12-cursos-en-anio-vigente | 1 archivo(s) | 23 examples, 2 failures
+rspec ./spec/requests/cursos_spec.rb:75 # Administración de cursos CP-RF-12 · creación y edición rechaza con 409 y RN-26 editar un curso
+rspec ./spec/requests/cursos_spec.rb:65 # Administración de cursos CP-RF-12 · creación y edición rechaza con 409 y RN-26 crear un curso 
+CP-RF-20-aviso-de-anuncio-eliminado | 1 archivo(s) | 10 examples, 2 failures
+rspec ./spec/requests/notificacion_de_anuncios_spec.rb:85 # Notificación de anuncios CP-RF-20 · anuncio eliminado antes de que el aviso sa
+rspec ./spec/requests/notificacion_de_anuncios_spec.rb:73 # Notificación de anuncios CP-RF-20 · anuncio eliminado antes de que el aviso sa
+CP-RF-23-constancias-incluyen-tutores | 1 archivo(s) | 11 examples, 1 failure
+rspec ./spec/requests/panel_de_constancias_spec.rb:47 # Panel de constancias del docente CP-RF-23 · constancias lista también a los tutore
+CP-RF-29-canal-revalida-autorizacion | 1 archivo(s) | 19 examples, 4 failures
+rspec ./spec/channels/conversacion_channel_spec.rb:104 # ConversacionChannel CP-RF-29 · autorización vigente tras la suscripción no persi
+rspec ./spec/channels/conversacion_channel_spec.rb:115 # ConversacionChannel CP-RF-29 · autorización vigente tras la suscripción no persi
+rspec ./spec/channels/conversacion_channel_spec.rb:136 # ConversacionChannel CP-RF-29 · autorización vigente tras la suscripción sigue en
+rspec ./spec/channels/conversacion_channel_spec.rb:125 # ConversacionChannel CP-RF-29 · autorización vigente tras la suscripción deja de 
+CP-RF-43-credencial-nueva-distinta | 1 archivo(s) | 15 examples, 1 failure
+rspec ./spec/requests/cambio_de_credencial_spec.rb:93 # Cambio de la credencial provisional PATCH /api/v1/usuarios/me/contrasena rechaza con
+CP-RNF-12-fechas-con-zona | 1 archivo(s) | 20 examples, 12 failures
+rspec './spec/compartido/tipos_de_fecha_spec.rb[1:13]' # Tipos de fecha del esquema físico entrega_anuncio: ninguna marca de tiempo carece 
+rspec './spec/compartido/tipos_de_fecha_spec.rb[1:15]' # Tipos de fecha del esquema físico participante: ninguna marca de tiempo carece de 
+rspec ./spec/compartido/tipos_de_fecha_spec.rb:25 # Tipos de fecha del esquema físico las entidades tienen marcas de tiempo con zona
+rspec './spec/compartido/tipos_de_fecha_spec.rb[1:16]' # Tipos de fecha del esquema físico mensaje: ninguna marca de tiempo carece de zona
+rspec './spec/compartido/tipos_de_fecha_spec.rb[1:18]' # Tipos de fecha del esquema físico suscripcion_push: ninguna marca de tiempo carece
+rspec './spec/compartido/tipos_de_fecha_spec.rb[1:9]' # Tipos de fecha del esquema físico anuncio: ninguna marca de tiempo carece de zona
+CP-RNF-17-errores-dentro-del-catalogo | 1 archivo(s) | 6 examples, 6 failures
+rspec ./spec/requests/errores_del_catalogo_spec.rb:51 # Respuestas de error dentro del catálogo CP-RNF-17 · rutas fuera del inventario una
+rspec ./spec/requests/errores_del_catalogo_spec.rb:39 # Respuestas de error dentro del catálogo CP-RNF-17 · datos inaceptables un byte nul
+rspec ./spec/requests/errores_del_catalogo_spec.rb:28 # Respuestas de error dentro del catálogo CP-RNF-17 · datos inaceptables una página
+rspec ./spec/requests/errores_del_catalogo_spec.rb:34 # Respuestas de error dentro del catálogo CP-RNF-17 · datos inaceptables un JSON mal
+rspec ./spec/requests/errores_del_catalogo_spec.rb:23 # Respuestas de error dentro del catálogo CP-RNF-17 · datos inaceptables un estado d
+rspec ./spec/requests/errores_del_catalogo_spec.rb:44 # Respuestas de error dentro del catálogo CP-RNF-17 · datos inaceptables una consult
+CP-RF-40-rutas-del-cliente-por-rol | 1 archivo(s) | Tests:       6 failed, 1 passed, 7 total
+  ● CP-RF-40 · direcciones de otro rol › el tutor que escribe /anios-lectivos vuelve a su bandeja
+  ● CP-RF-40 · direcciones de otro rol › el tutor que escribe /anuncios/a1/constancias vuelve a su bandeja
+  ● CP-RF-40 · direcciones de otro rol › el tutor que escribe /constancias vuelve a su bandeja
+  ● CP-RF-40 · direcciones de otro rol › el tutor que escribe /docentes vuelve a su bandeja
+  ● CP-RF-40 · direcciones de otro rol › el tutor que escribe /publicar vuelve a su bandeja
+  ● CP-RF-40 · direcciones de otro rol › el tutor que escribe /supervision vuelve a su bandeja

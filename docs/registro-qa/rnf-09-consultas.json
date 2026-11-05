@@ -1,0 +1,79 @@
+{
+  "repeticiones": 100,
+  "umbral_p95_ms": 1500,
+  "resultados": [
+    {
+      "consulta": "Historial de anuncios · tutor",
+      "ruta": "/anuncios?pagina=1&por_pagina=25",
+      "minimo": 228,
+      "p50": 242,
+      "p95": 296,
+      "maximo": 450,
+      "cumple": true
+    },
+    {
+      "consulta": "Historial de anuncios · docente",
+      "ruta": "/anuncios?pagina=1&por_pagina=25",
+      "minimo": 216,
+      "p50": 248,
+      "p95": 287,
+      "maximo": 312,
+      "cumple": true
+    },
+    {
+      "consulta": "Historial de anuncios · directivo",
+      "ruta": "/anuncios?pagina=1&por_pagina=25",
+      "minimo": 216,
+      "p50": 232,
+      "p95": 257,
+      "maximo": 315,
+      "cumple": true
+    },
+    {
+      "consulta": "Historial filtrado por fecha · tutor",
+      "ruta": "/anuncios?desde=2026-04-01T00:00:00Z&hasta=2026-06-30T23:59:59Z&pagina=1&por_pagina=25",
+      "minimo": 226,
+      "p50": 237,
+      "p95": 287,
+      "maximo": 319,
+      "cumple": true
+    },
+    {
+      "consulta": "Detalle de un anuncio · tutor",
+      "ruta": "/anuncios/ea2c7c23-e8bf-48d7-86f3-aab21db673f5",
+      "minimo": 29,
+      "p50": 31,
+      "p95": 34,
+      "maximo": 37,
+      "cumple": true
+    },
+    {
+      "consulta": "Constancias de un anuncio · docente",
+      "ruta": "/anuncios/ea2c7c23-e8bf-48d7-86f3-aab21db673f5/constancias?pagina=1&por_pagina=25",
+      "minimo": 25,
+      "p50": 27,
+      "p95": 30,
+      "maximo": 39,
+      "cumple": true
+    },
+    {
+      "consulta": "Conversaciones del usuario · docente",
+      "ruta": "/conversaciones?pagina=1&por_pagina=25",
+      "minimo": 51,
+      "p50": 54,
+      "p95": 60,
+      "maximo": 68,
+      "cumple": true
+    },
+    {
+      "consulta": "Historial de mensajes · docente",
+      "ruta": "/conversaciones/b44237a8-9c3e-4caf-8898-af15d60613a5/mensajes?pagina=1&por_pagina=25",
+      "minimo": 38,
+      "p50": 40,
+      "p95": 44,
+      "maximo": 47,
+      "cumple": true
+    }
+  ],
+  "cumple_rnf_09": true
+}

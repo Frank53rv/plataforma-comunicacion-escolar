@@ -1,0 +1,43 @@
+import { chromium } from "playwright-core";
+import fs from "node:fs";
+const BASE = "http://localhost:8090";
+const cuentas = JSON.parse(fs.readFileSync("cuentas.json", "utf8"));
+const ses = async (rol) => (await fetch(`${BASE}/api/v1/sesiones`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ correo: cuentas[rol], contrasena: "prueba-2026" }) })).json();
+const b = await chromium.launch();
+const s = await ses("tutor");
+const c = await b.newContext({ viewport: { width: 360, height: 700 } });
+await c.addInitScript(([tok, exp, id]) => sessionStorage.setItem("sesion", JSON.stringify({ token: tok, vence_en: exp, credencial_provisional: false, usuario_id: id })), [s.token, s.vence_en, s.usuario.id]);
+const p = await c.newPage();
+const lotes = [];
+p.on("request", (r) => {
+  if (r.method() === "POST" && /\/entregas\/(vistas|acuses)$/.test(r.url())) lotes.push({ t: Date.now(), op: r.url().split("/").pop(), n: JSON.parse(r.postData()).anuncio_version_ids.length });
+});
+const t0 = Date.now();
+await p.goto(BASE + "/", { waitUntil: "networkidle" });
+await p.waitForTimeout(2500);
+const filas = await p.locator("ul li").count();
+const primero = lotes.filter((l) => l.op === "vistas").slice();
+console.log(`bandeja: ${filas} filas en una pantalla de 700px de alto`);
+console.log(`tras cargar y esperar 2,5 s → acuses: ${lotes.filter((l) => l.op === "acuses").map((l) => l.n)} · vistas: ${primero.map((l) => l.n)} (una sola petición con sólo lo visible)`);
+await p.mouse.wheel(0, 100000);
+await p.waitForTimeout(2500);
+const total = lotes.filter((l) => l.op === "vistas");
+console.log(`tras bajar hasta el final → peticiones de vistas: ${total.length} · tamaños ${total.map((l) => l.n)} · suma ${total.reduce((a, l) => a + l.n, 0)} de ${filas} filas`);
+const repetidas = total.length;
+await p.mouse.wheel(0, -100000);
+await p.waitForTimeout(2500);
+console.log(`al volver arriba no se repite lo ya emitido → peticiones de vistas: ${lotes.filter((l) => l.op === "vistas").length} (antes ${repetidas})`);
+await c.close();
+
+// el corte de palabras largas era necesario: sin él, desborda
+const d = await ses("docente");
+const dc = await b.newContext({ viewport: { width: 320, height: 800 } });
+await dc.addInitScript(([tok, exp, id]) => sessionStorage.setItem("sesion", JSON.stringify({ token: tok, vence_en: exp, credencial_provisional: false, usuario_id: id })), [d.token, d.vence_en, d.usuario.id]);
+const conv = (await (await fetch(`${BASE}/api/v1/conversaciones?pagina=1&por_pagina=25`, { headers: { Authorization: `Bearer ${d.token}` } })).json()).datos[0];
+const q = await dc.newPage();
+await q.goto(`${BASE}/conversaciones/${conv.id}`, { waitUntil: "networkidle" });
+const con = await q.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+await q.addStyleTag({ content: "* { overflow-wrap: normal !important; }" });
+const sin = await q.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+console.log(`corte de palabras largas a 320px → con la regla: ${con}px · sin la regla: ${sin}px (debe ser > 0)`);
+await b.close();
