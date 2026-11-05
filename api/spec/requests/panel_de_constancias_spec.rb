@@ -44,17 +44,24 @@ RSpec.describe "Panel de constancias del docente", type: :request do
       expect(cuerpo).to include("total" => 1, "pagina" => 1, "por_pagina" => 25)
     end
 
-    it "no incluye a los tutores en la nómina: sin_lectura es por alumno (openapi Constancias)" do
-      alumno = create(:usuario, :alumno)
+    it "lista también a los tutores que no leyeron, con la clave de su rol, y la nómina cuadra con el total" do
+      alumno = create(:usuario, :alumno, nombre: "Ana", apellido: "Aguilar")
       create(:alumno_curso, alumno: alumno, curso: curso)
-      tutor = create(:usuario, :tutor)
-      create(:tutor_alumno, tutor: tutor, alumno: alumno)
+      lector = create(:usuario, :tutor, nombre: "Luis", apellido: "Lopez")
+      no_lector = create(:usuario, :tutor, nombre: "Nora", apellido: "Nunez")
+      [ lector, no_lector ].each { |tutor| create(:tutor_alumno, tutor: tutor, alumno: alumno) }
       publicar(cursos: [ curso.id ])
+      EntregaAnuncio.find_by(destinatario_id: lector.id).update!(leida_en: Time.current)
 
       constancias(cuerpo["id"])
 
-      expect(cuerpo["total_destinatarios"]).to eq(2)
-      expect(cuerpo["sin_lectura"].map { |fila| fila["alumno"]["id"] }).to contain_exactly(alumno.id)
+      expect(cuerpo["total_destinatarios"]).to eq(3)
+      expect(cuerpo["con_lectura_registrada"]).to eq(1)
+      expect(cuerpo["sin_lectura"]).to eq([
+        { "alumno" => { "id" => alumno.id, "nombre" => "Ana", "apellido" => "Aguilar" } },
+        { "tutor" => { "id" => no_lector.id, "nombre" => "Nora", "apellido" => "Nunez" } }
+      ])
+      expect(cuerpo["total"]).to eq(cuerpo["total_destinatarios"] - cuerpo["con_lectura_registrada"])
     end
 
     it "rechaza con 403 la consulta de un anuncio del que no es autor (CU-11 E1)" do

@@ -1613,8 +1613,8 @@ components:
       type: object
       description: >-
         RN-21 · el docente ve cuántos leyeron sobre el total y la nómina de quiénes no.
-        La nómina devuelve el nombre del alumno y el estado de lectura de su familia,
-        pero no el de cada tutor por separado (nota de la Tabla 31).
+        La nómina lista a todo destinatario sin lectura, alumno o tutor: cada elemento
+        lleva la clave de su rol.
       properties:
         total_destinatarios: { type: integer }
         con_lectura_registrada: { type: integer }
@@ -1629,11 +1629,12 @@ components:
                   id: { type: string, format: uuid }
                   nombre: { type: string }
                   apellido: { type: string }
-              familia_alcanzada:
-                type: boolean
-                description: >-
-                  RF-38 · derivado: al menos uno de los tutores del alumno registró
-                  lectura de la publicación vigente. Should have.
+              tutor:
+                type: object
+                properties:
+                  id: { type: string, format: uuid }
+                  nombre: { type: string }
+                  apellido: { type: string }
 
     EntregaAnuncio:
       type: object

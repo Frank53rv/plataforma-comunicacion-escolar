@@ -153,21 +153,18 @@ class AnunciosController < ApplicationController
     por_pagina = 25 if por_pagina <= 0
     por_pagina = [ por_pagina, 100 ].min
 
-    # openapi/openapi.yaml · esquema Constancias: «sin_lectura» devuelve el nombre del
-    # alumno, no el de cada tutor por separado. Un tutor que no leyó no aparece acá: su
-    # familia figura por el lado del alumno, con RF-38 (familia_alcanzada, Should have)
-    # todavía sin construir.
+    # RF-23 · la nómina lista a todo destinatario sin lectura, alumno o tutor: cada fila lleva
+    # la clave de su rol. La familia alcanzada depende de RF-38, Should have.
     entregas = anuncio.version_vigente.entregas
-    alumnos_sin_leer = Usuario.alumno
-                              .where(id: entregas.where(leida_en: nil).select(:destinatario_id))
-                              .order(:apellido, :nombre)
-    pagina_actual = alumnos_sin_leer.offset((pagina - 1) * por_pagina).limit(por_pagina)
+    sin_leer = Usuario.where(id: entregas.where(leida_en: nil).select(:destinatario_id))
+                      .order(:apellido, :nombre, :id)
+    pagina_actual = sin_leer.offset((pagina - 1) * por_pagina).limit(por_pagina)
 
     render json: {
       total_destinatarios: entregas.count,
       con_lectura_registrada: entregas.where.not(leida_en: nil).count,
-      sin_lectura: pagina_actual.map { |alumno| { "alumno" => alumno.slice(:id, :nombre, :apellido) } },
-      total: alumnos_sin_leer.count, pagina: pagina, por_pagina: por_pagina
+      sin_lectura: pagina_actual.map { |persona| { persona.rol => persona.slice(:id, :nombre, :apellido) } },
+      total: sin_leer.count, pagina: pagina, por_pagina: por_pagina
     }, status: :ok
   end
 
