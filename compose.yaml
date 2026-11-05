@@ -57,8 +57,9 @@ services:
       timeout: 5s
       retries: 12
       start_period: 30s
+    # RNF-06 · sólo el propio equipo llega en texto plano; hacia afuera se expone el túnel.
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
 
   cliente:
     build:
@@ -77,8 +78,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 12
+    # El túnel se conecta a este puerto desde el mismo equipo.
     ports:
-      - "8090:80"
+      - "127.0.0.1:8090:80"
 
 volumes:
   datos_postgres:
