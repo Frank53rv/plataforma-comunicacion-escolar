@@ -83,6 +83,66 @@ RSpec.describe ConversacionChannel, type: :channel do
     end
   end
 
+  # CP-RF-29 · RN-23 · la pertenencia se evalúa siempre contra las vinculaciones vigentes:
+  # quien deja de estar vinculado, o cuya cuenta se da de baja (RN-11), ya no emite ni
+  # recibe por una suscripción que abrió antes.
+  describe "CP-RF-29 · autorización vigente tras la suscripción" do
+    let(:cierres) { [] }
+
+    def suscribir(usuario)
+      cierres_registrados = cierres
+      stub_connection usuario_actual: usuario
+      connection.define_singleton_method(:close) { |**opciones| cierres_registrados << opciones }
+      subscribe(conversacion_id: canal.id)
+      expect(subscription).to be_confirmed
+    end
+
+    def desvincular_al_docente
+      DocenteCurso.find_by!(docente: docente).update!(vigente_hasta: Time.current.to_date)
+    end
+
+    it "no persiste ni difunde lo que emite un docente desvinculado y cierra su conexión" do
+      suscribir(docente)
+      desvincular_al_docente
+
+      expect { perform :emitir, cuerpo: "Ya no debería salir" }.not_to have_broadcasted_to(canal)
+
+      expect(Mensaje.count).to eq(0)
+      expect(subscription.streams).to be_empty
+      expect(cierres).to eq([ { reason: "unauthorized", reconnect: false } ])
+    end
+
+    it "no persiste lo que emite un tutor cuya cuenta se dio de baja" do
+      suscribir(tutor)
+      tutor.update!(estado: "dado_de_baja")
+
+      perform :emitir, cuerpo: "Cuenta dada de baja"
+
+      expect(Mensaje.count).to eq(0)
+      expect(cierres.size).to eq(1)
+    end
+
+    it "deja de entregarle los mensajes difundidos a quien ya no está vinculado" do
+      suscribir(docente)
+      desvincular_al_docente
+
+      subscription.send(:difundir, { "cuerpo" => "Ajeno" })
+
+      expect(transmissions).to be_empty
+      expect(subscription.streams).to be_empty
+      expect(cierres.size).to eq(1)
+    end
+
+    it "sigue entregando los mensajes difundidos a quien conserva su vinculación" do
+      suscribir(docente)
+
+      subscription.send(:difundir, { "cuerpo" => "Para el docente" })
+
+      expect(transmissions).to eq([ { "cuerpo" => "Para el docente" } ])
+      expect(cierres).to be_empty
+    end
+  end
+
   # CP-RF-28 · Figura 8 · el mensaje emitido por el canal se persiste, se difunde a los
   # conectados y encola su notificación, igual que por la vía HTTP.
   describe "CP-RF-28 · emisión por el canal" do

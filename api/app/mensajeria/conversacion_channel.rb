@@ -13,13 +13,32 @@ class ConversacionChannel < ApplicationCable::Channel
 
     conversacion.sincronizar_participantes!
     @conversacion = conversacion
-    stream_for conversacion
+    stream_for conversacion, &method(:difundir)
   end
 
   # Figura 8 · «emitir mensaje» por el canal. Un cuerpo vacío no se persiste.
   def emitir(datos)
+    return revocar unless autorizado?
     return if datos["cuerpo"].blank?
 
-    EmisionDeMensaje.emitir(conversacion: @conversacion, autor: usuario_actual, cuerpo: datos["cuerpo"])
+    EmisionDeMensaje.emitir(conversacion: @conversacion, autor: @usuario, cuerpo: datos["cuerpo"])
+  end
+
+  private
+
+  def difundir(mensaje)
+    autorizado? ? transmit(mensaje) : revocar
+  end
+
+  # RN-23 · RN-11 · la pertenencia se evalúa contra las vinculaciones vigentes y el estado de
+  # la cuenta en cada mensaje, no sólo al suscribirse.
+  def autorizado?
+    @usuario = Usuario.find_by(id: usuario_actual.id)
+    @usuario&.puede_autenticarse? && @conversacion.participa?(@usuario)
+  end
+
+  def revocar
+    stop_all_streams
+    connection.close(reason: "unauthorized", reconnect: false)
   end
 end
