@@ -1,15 +1,15 @@
-# Tabla 34 · Matriz de infraestructura. Tres unidades de ejecución propias; el túnel de
+# Tabla 36 · Matriz de infraestructura. Tres unidades de ejecución propias; el túnel de
 # exposición corre como proceso auxiliar junto a esta composición y el servicio de
 # notificaciones push es el único componente externo.
 # RNF-19 · el entorno completo se levanta desde el repositorio sin edición manual de
-# ningún archivo: los valores propios de la instalación vienen de .env (Tabla 30).
+# ningún archivo: los valores propios de la instalación vienen de .env (Tabla 32).
 
 name: plataforma-comunicacion-escolar
 
 services:
   db:
     image: postgres:18
-    # Tabla 30 · las credenciales del motor son las de DATABASE_URL y ninguna otra: el
+    # Tabla 32 · las credenciales del motor son las de DATABASE_URL y ninguna otra: el
     # contenedor las toma de esa misma cadena, de modo que no hace falta una variable
     # que la tabla no enumere ni queda una credencial escrita en este archivo.
     env_file: .env
@@ -30,7 +30,7 @@ services:
       timeout: 5s
       retries: 20
     # Sin puertos hacia el equipo: la base sólo es alcanzable desde la red privada de la
-    # composición. La Tabla 34 no la expone.
+    # composición. La Tabla 36 no la expone.
 
   api:
     build: ./api
@@ -51,7 +51,7 @@ services:
         condition: service_healthy
     healthcheck:
       # Boundary 4 · sin ruta de salud propia: se comprueba con una operación del
-      # inventario, que sin token debe responder 401 (Tabla 35).
+      # inventario, que sin token debe responder 401 (Tabla 26).
       test: ["CMD-SHELL", "test \"$$(curl -s -o /dev/null -w '%{http_code}' -X DELETE http://127.0.0.1:3000/api/v1/sesiones)\" = 401"]
       interval: 10s
       timeout: 5s

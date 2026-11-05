@@ -113,7 +113,7 @@ end
 RSpec.describe ApplicationCable::Connection, type: :channel do
   let(:docente) { create(:usuario, :docente) }
 
-  # Tabla 29 · WSS /cable · token en el parámetro de conexión.
+  # Tabla 31 · WSS /cable · token en el parámetro de conexión.
   it "identifica al usuario por el token de la interfaz" do
     connect "/cable?token=#{TokenDeSesion.emitir(docente)[:token]}"
 

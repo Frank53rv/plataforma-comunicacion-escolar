@@ -1,8 +1,8 @@
 # RF-05 Generación de código de activación · CU-02, CU-05 · RN-01, RN-05
 # Prueba: CP-RF-05
 #
-# Tabla 43 · «Generación del código al registrar a una persona · Alta de un tutor ·
-# Código de un solo uso, con vencimiento a siete días, asociado a esa persona.»
+# Tabla 34 · Generación del código al registrar a una persona · Alta de un tutor ·
+# Código de un solo uso, con vencimiento a siete días, asociado a esa persona.
 require "rails_helper"
 
 RSpec.describe "Generación del código de activación", type: :model do
@@ -47,7 +47,7 @@ RSpec.describe "Generación del código de activación", type: :model do
     end
   end
 
-  # Nota de la Tabla 40 · «la entidad almacena su derivación y no el valor, del mismo
+  # Nota de la Tabla 31 · «la entidad almacena su derivación y no el valor, del mismo
   # modo que la contraseña, conforme a RN-06 y RNF-03».
   describe "resguardo del código" do
     it "almacena la derivación bcrypt y nunca el valor en claro" do
@@ -64,7 +64,7 @@ RSpec.describe "Generación del código de activación", type: :model do
     it "la representación ordinaria no incluye el código" do
       alta = alta_de_un_tutor
 
-      # Tabla 40 · «codigo_activacion con vence_en»
+      # Tabla 31 · «codigo_activacion con vence_en»
       expect(alta.codigo_activacion.representacion.keys).to eq([ :vence_en ])
     end
   end

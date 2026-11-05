@@ -2,8 +2,8 @@
 # RN-12
 # Prueba: CP-RF-09 · CP-RF-10
 #
-# Tabla 27 · DELETE /api/v1/tutores/{id} · «Directivo, docente titular».
-# Tabla 40 · sin cuerpo → recurso usuario con estado dado de baja.
+# Tabla 18 · DELETE /api/v1/tutores/{id} · «Directivo, docente titular».
+# Tabla 31 · sin cuerpo → recurso usuario con estado dado de baja.
 class TutoresController < ApplicationController
   # La titularidad la decide PotestadDeBaja (RN-10).
   autoriza :destruir, roles: %w[directivo docente]

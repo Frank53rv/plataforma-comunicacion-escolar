@@ -1,8 +1,8 @@
 # RF-37 Degradación ante fallo de entrega · CU-14 · RNF-11
 # Prueba: CP-RF-37
 #
-# Tabla 14 · «Identificador de destino del navegador de un usuario para el servicio de
-# notificaciones push.» Tabla 27 · UNIQUE (token); índice parcial sobre usuario_id donde
+# Tabla 14 · «Identificador de destino que el navegador de una persona entrega al registrarse
+# para recibir notificaciones push.» Tabla 29 · UNIQUE (token); índice parcial sobre usuario_id donde
 # el estado es vigente. Figura 11 · SuscripcionPush: estado, creadaEn, invalidadaEn,
 # invalidar().
 class SuscripcionPush < ApplicationRecord

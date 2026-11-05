@@ -1,11 +1,11 @@
-# Conjunto de datos de prueba · RNF-09 · Tabla 35, paso 4 · Boundary 8
+# Conjunto de datos de prueba · RNF-09 · Tabla 37, paso 4 · Boundary 8
 # Prueba: CP-RNF-09
 #
 # RNF-09 (Tabla 11) · el tiempo de respuesta de las consultas se mide «sobre un conjunto de
 # prueba equivalente a dos años lectivos del curso piloto: un año cerrado y uno vigente, 184
 # cuentas, 400 anuncios, 36.000 filas de entrega, 16.000 mensajes en cuatro conversaciones y
 # 2.000 registros de bitácora de envío».
-# Tabla 35, paso 4 · «cargar el archivo de datos de prueba», con «el volumen declarado en
+# Tabla 37, paso 4 · «cargar el archivo de datos de prueba», con «el volumen declarado en
 # RNF-09».
 # Boundary 8 · «Ningún dato real de personas o de la institución»: nombres combinados de
 # listas ficticias y correos bajo un dominio reservado para pruebas.

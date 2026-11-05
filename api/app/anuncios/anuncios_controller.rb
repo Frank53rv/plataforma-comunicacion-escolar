@@ -10,7 +10,7 @@
 # alumno · «Consultar el historial de anuncios que corresponde al rol». GET
 # /api/v1/anuncios/{id}/constancias · docente autor · «Consultar el recuento de
 # lecturas y la nómina de quienes no leyeron».
-# Tabla 29 · titulo, cuerpo, cursos (lista de ids) → recurso anuncio. DELETE: sin cuerpo
+# Tabla 31 · titulo, cuerpo, cursos (lista de ids) → recurso anuncio. DELETE: sin cuerpo
 # → recurso anuncio con eliminado_en y eliminado_por. GET índice: curso_id,
 # remitente_id, desde, hasta, pagina, por_pagina → colección con titulo, publicado_en,
 # autor (recurso completo) y leido de quien consulta. GET detalle: sin parámetros →
@@ -18,7 +18,7 @@
 # GET constancias: pagina, por_pagina → total de destinatarios, cantidad con lectura
 # registrada y nómina paginada de alumnos sin lectura registrada.
 # openapi/openapi.yaml (esquemas AnuncioEnBandeja, AnuncioDetalle, Constancias) y la
-# Tabla 28 (paginación con total/pagina/por_pagina y orden por fecha descendente por
+# Tabla 30 (paginación con total/pagina/por_pagina y orden por fecha descendente por
 # omisión) fijan estas formas.
 # RF-38 (familia alcanzada), Should have (Tabla 10): la respuesta de constancias no
 # incluye ese indicador.
@@ -86,7 +86,7 @@ class AnunciosController < ApplicationController
   def destruir
     anuncio = Anuncio.find(params[:id])
 
-    # CU-08 E1 (Tabla 24, fila 403): rechaza la eliminación de un anuncio del que el
+    # CU-08 E1 (Tabla 26, fila 403): rechaza la eliminación de un anuncio del que el
     # docente no es autor.
     unless anuncio.autor_id == usuario_actual.id
       raise ErrorDeDominio::NoHabilitado.new(
@@ -104,8 +104,8 @@ class AnunciosController < ApplicationController
   end
 
   # CU-09 (Tabla 13): filtra y devuelve únicamente los anuncios que corresponden al
-  # rol y a las vinculaciones vigentes de quien consulta. Tabla 28 · «el historial de
-  # anuncios… ordena por fecha descendente por omisión»; admite `orden=publicado_en:asc`
+  # rol y a las vinculaciones vigentes de quien consulta. Tabla 30 · «El historial de
+  # anuncios y el de mensajes ordenan por fecha descendente por omisión»; admite `orden=publicado_en:asc`
   # para invertirlo.
   def index
     pagina = [ params[:pagina].to_i, 1 ].max
@@ -128,7 +128,7 @@ class AnunciosController < ApplicationController
     }, status: :ok
   end
 
-  # CU-09 (Tabla 13). E1 (Tabla 24, fila 404): un anuncio ajeno a las vinculaciones de
+  # CU-09 (Tabla 13). E1 (Tabla 26, fila 404): un anuncio ajeno a las vinculaciones de
   # quien consulta responde 404, con independencia de lo que el cliente presente.
   def mostrar
     anuncio = alcance_del_rol.find_by(id: params[:id])
@@ -138,7 +138,7 @@ class AnunciosController < ApplicationController
   end
 
   # RN-21 · recuento de lecturas sobre la publicación vigente y nómina paginada de
-  # quienes no leyeron. E1 (Tabla 24, fila 403) si el docente no es autor. La familia
+  # quienes no leyeron. E1 (Tabla 26, fila 403) si el docente no es autor. La familia
   # alcanzada depende de RF-38, Should have: no se calcula acá.
   def constancias
     anuncio = Anuncio.find(params[:id])
@@ -177,7 +177,7 @@ class AnunciosController < ApplicationController
   # operación se rechaza sin efectos parciales. Se verifica antes de escribir nada, y no
   # dentro de la transacción, para que el rechazo no dependa de una reversión. Un curso
   # inexistente se trata igual que uno ajeno (403 y no 404), para no revelar su
-  # existencia, conforme a la fila del 403 de la Tabla 24.
+  # existencia, conforme a la fila del 403 de la Tabla 26.
   def verificar_vinculacion!(cursos_ids)
     return if cursos_ids.all? { |curso_id| usuario_actual.dicta_curso?(curso_id) }
 

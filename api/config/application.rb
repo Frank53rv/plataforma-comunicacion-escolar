@@ -29,7 +29,7 @@ module Api
     # notificaciones y compartido—, de modo que toda unidad de código se remonte a su fila
     # de la Tabla 15 y de la Figura 18. El framework toma cada carpeta de app/ como raíz de
     # carga, por lo que no imponen espacio de nombres y los identificadores reproducen el
-    # diccionario de la Tabla 14 (Quality Spec, Tabla 26): no hace falta declararlas.
+    # diccionario de la Tabla 14 (Quality Spec, Tabla 28): no hace falta declararlas.
 
     # Punto 4.2, semántica temporal · la zona de interpretación es una sola y el
     # almacenamiento permanece en tiempo universal coordinado. No se declara una zona
@@ -37,13 +37,13 @@ module Api
     config.time_zone = "America/Asuncion"
     config.active_record.default_timezone = :utc
 
-    # Tabla 39 · identificador universal único en las rutas y en los cuerpos.
+    # Tabla 30 · identificador universal único en las rutas y en los cuerpos.
     # No se exponen enteros secuenciales (RN-15).
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
 
-    # Tabla 23 · cola de trabajos sobre la misma base de datos
+    # Tabla 25 · cola de trabajos sobre la misma base de datos
     config.active_job.queue_adapter = :solid_queue
 
     config.api_only = true

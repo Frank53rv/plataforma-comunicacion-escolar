@@ -2,11 +2,11 @@
 # CU-04 · RN-02, RN-13, RN-14
 # Prueba: CP-RF-15 · CP-RF-03 · CP-RF-44
 #
-# Tabla 27 · POST /api/v1/cursos/{id}/docentes · directivo · «Vincular un docente al
+# Tabla 18 · POST /api/v1/cursos/{id}/docentes · directivo · «Vincular un docente al
 # curso con su atributo de titularidad».
-# Tabla 27 · DELETE /api/v1/cursos/{id}/docentes/{usuarioId} · directivo · «Desvincular
+# Tabla 18 · DELETE /api/v1/cursos/{id}/docentes/{usuarioId} · directivo · «Desvincular
 # al docente designando otro titular».
-# Tabla 40 · POST: usuario_id, es_titular → recurso docente_curso. DELETE:
+# Tabla 31 · POST: usuario_id, es_titular → recurso docente_curso. DELETE:
 # titular_reemplazo_id, obligatorio si el desvinculado es titular → recurso
 # docente_curso con vigente_hasta.
 class VinculacionesDocentesController < ApplicationController
@@ -27,9 +27,9 @@ class VinculacionesDocentesController < ApplicationController
       )
     end
 
-    # Tabla 14 · «Un único titular vigente por curso». La Tabla 38 atribuye ese índice a
+    # Tabla 29 · «UNIQUE parcial (curso_id) donde es_titular y vigente_hasta es nulo». Atribuye ese índice a
     # RN-13, que es la regla que mantiene la titularidad siempre definida: se rechaza con
-    # 409 y la regla consignada, como la Tabla 35 manda para el conflicto con una regla.
+    # 409 y la regla consignada, como la Tabla 26 manda para el conflicto con una regla.
     if parametros[:es_titular] && curso.vinculaciones_docentes.vigentes.titulares.exists?
       raise ErrorDeDominio::ConflictoDeRegla.new(
         regla: "RN-13", detalle: "El curso ya tiene un titular vigente."
@@ -77,7 +77,7 @@ class VinculacionesDocentesController < ApplicationController
 
   # RF-44 · si el docente desvinculado era el titular del curso, la operación exige
   # designar otro titular en el mismo acto y se rechaza si no se lo designa, con 409 y
-  # la regla RN-13 consignada (Tabla 24, fila 409).
+  # la regla RN-13 consignada (Tabla 26, fila 409).
   def vinculacion_del_reemplazo(curso, desvinculada)
     reemplazo_id = params[:titular_reemplazo_id]
     if reemplazo_id.blank?

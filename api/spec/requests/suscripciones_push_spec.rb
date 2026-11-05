@@ -19,7 +19,7 @@ RSpec.describe "Suscripciones push", type: :request do
   # RF-37 (Tabla 10): «Ante indisponibilidad del servicio push, ausencia de acuse del
   # cliente o falta de soporte del navegador, el sistema debe entregar el aviso dentro de
   # la aplicación y registrar la causa…». Para poder enviar push, el destinatario
-  # registra el identificador de destino de su navegador (Tabla 29).
+  # registra el identificador de destino de su navegador (Tabla 31).
   describe "POST /suscripciones-push · registrar el identificador de destino" do
     it "crea la suscripción vigente de quien la presenta y responde el recurso, sin el token" do
       registrar

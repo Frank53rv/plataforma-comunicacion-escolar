@@ -2,7 +2,7 @@
 # Prueba: CP-RF-11
 #
 # Tabla 18 · POST /api/v1/anios-lectivos y GET /api/v1/anios-lectivos · directivo.
-# Tabla 29 · petición: anio → recurso anio_lectivo. GET: sin parámetros → colección.
+# Tabla 31 · petición: anio → recurso anio_lectivo. GET: sin parámetros → colección.
 require "rails_helper"
 
 RSpec.describe "Creación del año lectivo", type: :request do
@@ -20,7 +20,7 @@ RSpec.describe "Creación del año lectivo", type: :request do
 
   # CP-RF-11 · RF-11 (Tabla 10): «El directivo debe poder crear un año lectivo, que
   # actúa como contenedor de los cursos y delimita el archivado.» Un segundo año
-  # lectivo con el anterior vigente se rechaza con 409 y RN-31 (Tabla 24, fila 409).
+  # lectivo con el anterior vigente se rechaza con 409 y RN-31 (Tabla 26, fila 409).
   describe "CP-RF-11 · creación y unicidad del año vigente" do
     it "crea el año lectivo en estado vigente, conforme a RF-11" do
       crear_anio(anio: 2026)
@@ -50,7 +50,7 @@ RSpec.describe "Creación del año lectivo", type: :request do
       expect(AnioLectivo.count).to eq(0)
     end
 
-    # Tabla 27 · «UNIQUE (anio)»: no se reutiliza el mismo año calendario, ni siquiera
+    # Tabla 29 · «UNIQUE (anio)»: no se reutiliza el mismo año calendario, ni siquiera
     # cerrado. La violación del índice se traduce al 422 general, como toda
     # unicidad sin flujo de excepción propio.
     it "rechaza un año calendario ya utilizado, aunque el vigente esté cerrado" do
@@ -63,7 +63,7 @@ RSpec.describe "Creación del año lectivo", type: :request do
   end
 
   describe "GET /api/v1/anios-lectivos" do
-    it "responde la colección con la forma de la Tabla 28" do
+    it "responde la colección con la forma de la Tabla 30" do
       create(:anio_lectivo, anio: 2024, estado: "cerrado")
       create(:anio_lectivo, anio: 2025, estado: "vigente")
 

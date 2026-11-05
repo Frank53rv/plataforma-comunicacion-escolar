@@ -1,9 +1,9 @@
 # RF-44 Desvinculación y baja de docente · CU-04 · RN-11, RN-13, RN-14
 # Prueba: CP-RF-44
 #
-# Tabla 43 · «Desvinculación de docente titular sin designar reemplazo · Docente titular
+# Tabla 34 · Desvinculación de docente titular sin designar reemplazo · Docente titular
 # a desvincular, sin y con titular designado · Sin designación, 409; con designación,
-# desvinculación exitosa y autoría conservada.»
+# desvinculación exitosa y autoría conservada.
 require "rails_helper"
 
 RSpec.describe "Desvinculación y baja de docente", type: :request do

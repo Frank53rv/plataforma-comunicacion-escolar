@@ -1,10 +1,10 @@
-// Tabla 23 · React 19 construido con Vite 8. Produce archivos estáticos y elimina el
+// Tabla 25 · React 19 construido con Vite 8. Produce archivos estáticos y elimina el
 // proceso de servidor de renderizado, innecesario para paneles autenticados.
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-// Tabla 30 · valores de construcción del cliente. Son públicos por diseño y llegan por el
+// Tabla 32 · valores de construcción del cliente. Son públicos por diseño y llegan por el
 // entorno de la construcción (compose.yaml); el cliente estático no lee el entorno después.
 const VALORES_DE_CONSTRUCCION = [
   "VITE_FCM_API_KEY",

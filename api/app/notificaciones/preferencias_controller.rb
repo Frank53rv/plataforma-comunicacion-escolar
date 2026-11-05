@@ -3,7 +3,7 @@
 #
 # Tabla 18 · GET y PUT /api/v1/usuarios/me/preferencias · directivo, docente, tutor,
 # alumno · «Consultar» y «Configurar el horario de disponibilidad y las preferencias».
-# Tabla 29 · GET: sin parámetros → hora_inicio, hora_fin, recibir_mensajes. PUT: los
+# Tabla 31 · GET: sin parámetros → hora_inicio, hora_fin, recibir_mensajes. PUT: los
 # tres campos → recurso preferencia.
 # openapi/openapi.yaml · esquema Preferencia: «los anuncios institucionales no están
 # alcanzados por esta configuración» (RN-18); esta operación no los toca, sólo rige

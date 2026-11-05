@@ -89,7 +89,7 @@ RSpec.describe "Panel de constancias del docente", type: :request do
   end
 
   describe "paginación de la nómina de quienes no leyeron" do
-    it "pagina la nómina con pagina y por_pagina, informados junto a los datos (Tabla 28)" do
+    it "pagina la nómina con pagina y por_pagina, informados junto a los datos (Tabla 30)" do
       3.times do |n|
         alumno = create(:usuario, :alumno, nombre: "Alumno#{n}")
         create(:alumno_curso, alumno: alumno, curso: curso)

@@ -1,4 +1,4 @@
-# Conjunto de datos de prueba · RNF-09 · Tabla 35, paso 4
+# Conjunto de datos de prueba · RNF-09 · Tabla 37, paso 4
 namespace :datos_de_prueba do
   desc "Carga el conjunto de prueba de RNF-09: dos años lectivos, 184 cuentas y su historial"
   task cargar: :environment do

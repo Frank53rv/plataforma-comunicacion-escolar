@@ -1,9 +1,9 @@
 # RF-07 Regeneración de código de activación · CU-04, CU-05 · RN-07, RN-08
 # Prueba: CP-RF-07
 #
-# Tabla 27 · POST /api/v1/usuarios/{id}/codigos-activacion · «Directivo (docentes),
+# Tabla 18 · POST /api/v1/usuarios/{id}/codigos-activacion · «Directivo (docentes),
 # docente (alumnos y tutores)».
-# Tabla 40 · sin cuerpo → codigo_activacion con vence_en y el código en claro, devuelto
+# Tabla 31 · sin cuerpo → codigo_activacion con vence_en y el código en claro, devuelto
 # una sola vez.
 class CodigosActivacionController < ApplicationController
   autoriza :crear, roles: %w[directivo docente]

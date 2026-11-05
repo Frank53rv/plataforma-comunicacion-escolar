@@ -1,7 +1,7 @@
 // RF-22 Consulta del historial de anuncios · CU-09
 // Prueba: CP-RF-22
 //
-// Tabla 28 · colecciones paginadas con `pagina` y `por_pagina`. Sin más de una página no se
+// Tabla 30 · colecciones paginadas con `pagina` y `por_pagina`. Sin más de una página no se
 // dibuja.
 export default function Paginacion({ pagina, porPagina, total, alCambiar }) {
   const paginas = Math.max(1, Math.ceil(total / porPagina));

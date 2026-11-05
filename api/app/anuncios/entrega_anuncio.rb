@@ -2,7 +2,7 @@
 # CU-14 · RN-16, RN-32
 # Prueba: CP-RF-17 · CP-RF-34
 #
-# Tabla 14 · «Fila de entrega de una versión de anuncio a un destinatario.»
+# Tabla 14 · «Constancia por persona y por publicación, con los cuatro estados.»
 # Figura 9 · cuatro estados —enviada, entregada, vista y leída—; el fallo de envío no es
 # un quinto estado: se registra en `causa_fallo`. Las transiciones son monótonas e
 # idempotentes (RN-32): el estado actual no degrada aunque los eventos lleguen
@@ -38,7 +38,7 @@ class EntregaAnuncio < ApplicationRecord
   # Figura 12 · registrarEstado(e). RN-32 · los estados no retroceden y la reemisión de
   # un evento ya registrado no altera su marca original: registrar un estado completa,
   # con la misma marca, los anteriores que falten, y no toca ninguna que ya exista.
-  # Ninguna marca es anterior al envío (Tabla 27, CHECK de monotonía): la del evento
+  # Ninguna marca es anterior al envío (Tabla 29, CHECK de monotonía): la del evento
   # nunca precede a `enviada_en`, aunque el reloj de quien la emite vaya atrasado.
   # Devuelve :registrada, o :omitida si el evento no aportó nada nuevo.
   def registrar_estado(estado, momento: Time.current)

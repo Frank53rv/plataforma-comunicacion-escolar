@@ -117,7 +117,7 @@ RSpec.describe "Restricción de participación", type: :request do
     end
   end
 
-  describe "orden de los rechazos · Tabla 24" do
+  describe "orden de los rechazos · Tabla 26" do
     it "responde 404 a una conversación inexistente" do
       get "/api/v1/conversaciones/#{SecureRandom.uuid}/mensajes", headers: cabecera_de(docente), as: :json
       expect(response).to have_http_status(:not_found)

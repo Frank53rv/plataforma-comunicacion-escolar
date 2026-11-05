@@ -1,8 +1,8 @@
 # RF-09 Baja lógica de alumnos y tutores · CU-05 · RN-10, RN-11
 # Prueba: CP-RF-09
 #
-# Tabla 43 · «Baja lógica de alumno y de tutor · Identificador de una persona activa ·
-# Acceso revocado, historial y autoría conservados.»
+# Tabla 34 · Baja lógica de alumno y de tutor · Identificador de una persona activa ·
+# Acceso revocado, historial y autoría conservados.
 require "rails_helper"
 
 RSpec.describe "Baja lógica de alumnos y tutores", type: :request do

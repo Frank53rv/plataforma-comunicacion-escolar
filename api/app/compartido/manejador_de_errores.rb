@@ -1,9 +1,9 @@
-# Quality Spec, Tabla 37, fila «Manejo de excepciones» · Boundary 6
-# Un único manejador central que traduce toda excepción al formato de la Tabla 35.
+# Quality Spec, Tabla 28, fila «Manejo de excepciones» · Boundary 6
+# Un único manejador central que traduce toda excepción al formato de la Tabla 26.
 # Ningún controlador emite un cuerpo de error propio.
 #
-# Tabla 39 · la respuesta de error es un objeto conforme a RFC 9457 con los miembros de
-# la norma más «codigo» y «regla», según el catálogo de la Tabla 35.
+# Tabla 30 · la respuesta de error es un objeto conforme a RFC 9457 con los miembros de
+# la norma más «codigo» y «regla», según el catálogo de la Tabla 26.
 #
 # Boundary 6 · ningún cuerpo de error revela detalle interno: el 500 se registra en la
 # bitácora y responde con una descripción genérica.
@@ -35,7 +35,7 @@ module ManejadorDeErrores
     # modelo; si dos peticiones simultáneas la violan, el motor la rechaza y el dato es
     # el mismo dato inaceptable, no un fallo interno.
     rescue_from ActiveRecord::RecordNotUnique,     with: :responder_datos_inaceptables
-    # Un dato que excede la longitud que la Tabla 38 declara para su columna es un dato
+    # Un dato que excede la longitud que la Tabla 29 declara para su columna es un dato
     # inaceptable (422), no un «fallo no previsto» (500).
     rescue_from ActiveRecord::ValueTooLong,        with: :responder_datos_inaceptables
     rescue_from ActionController::ParameterMissing, with: :responder_datos_inaceptables

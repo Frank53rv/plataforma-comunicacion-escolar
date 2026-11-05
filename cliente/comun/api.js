@@ -3,7 +3,7 @@
 //
 // Fig. 13 · el cliente consume REST + JWT y «no implementa reglas de negocio ni decisiones
 // de autorización: las solicita y presenta su resultado (RNF-21)». Este es el único punto de
-// acceso a la interfaz de programación. Tabla 24 · presenta los nueve estados del catálogo
+// acceso a la interfaz de programación. Tabla 26 · presenta los nueve estados del catálogo
 // sin revelar detalle interno.
 const BASE = "/api/v1";
 
@@ -60,7 +60,7 @@ export function crearApi({
     if (respuesta.ok) return datos;
 
     // Un 401 es sesión vencida, salvo donde la interfaz lo usa para otra cosa: la contraseña
-    // actual equivocada al sustituir la credencial (Tabla 24) se informa sin cerrar la sesión.
+    // actual equivocada al sustituir la credencial (Tabla 26) se informa sin cerrar la sesión.
     if (respuesta.status === 401 && !conservarSesion) alNoAutenticado();
     throw new ErrorDeApi({
       estado: respuesta.status,
@@ -81,7 +81,7 @@ export function crearApi({
   };
 }
 
-// Tabla 24 · cada estado del catálogo, con un texto que no distingue lo que la interfaz de
+// Tabla 26 · cada estado del catálogo, con un texto que no distingue lo que la interfaz de
 // programación decidió no distinguir y que nunca reproduce el detalle de un fallo interno.
 export function mensajeDeError(error) {
   switch (error.estado) {

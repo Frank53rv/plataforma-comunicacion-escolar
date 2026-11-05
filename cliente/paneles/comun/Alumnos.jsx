@@ -107,7 +107,7 @@ export default function Alumnos() {
     }, "Alumno dado de alta.");
   };
 
-  // El tutor elegido se envía con los mismos campos que el nuevo: la Tabla 29 fija nombre,
+  // El tutor elegido se envía con los mismos campos que el nuevo: la Tabla 31 fija nombre,
   // apellido y correo, y es por el correo que la interfaz de programación reconoce la cuenta
   // existente y la vincula sin emitir código.
   const abrirTutorDe = (alumnoId) => {

@@ -1,11 +1,11 @@
-# Tabla 34 · Cliente web: React 19 construido con Vite 8 y servido por nginx.
+# Tabla 36 · Cliente web: React 19 construido con Vite 8 y servido por nginx.
 # Archivos estáticos, sin renderizado en el servidor.
 FROM node:22-slim AS construccion
 WORKDIR /cliente
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-# Tabla 30 · valores de construcción del cliente: es estático, no lee el entorno al ejecutarse.
+# Tabla 32 · valores de construcción del cliente: es estático, no lee el entorno al ejecutarse.
 ARG VITE_FCM_API_KEY
 ARG VITE_FCM_PROJECT_ID
 ARG VITE_FCM_SENDER_ID

@@ -8,7 +8,7 @@
 // LÍMITE DE ESTAS PRUEBAS: jsdom no tiene motor de maquetado, así que no puede medir un ancho ni
 // detectar un desplazamiento. Estas son GUARDAS ESTÁTICAS contra las causas conocidas de
 // desborde. La verificación de RNF-18 es la pasada de las 24 tareas de la Tabla 17 en los tres
-// anchos, que es el instrumento que la Tabla 37 le asigna (sesión de validación).
+// anchos, que es el instrumento que la Tabla 39 le asigna (sesión de validación).
 import fs from "node:fs";
 import path from "node:path";
 

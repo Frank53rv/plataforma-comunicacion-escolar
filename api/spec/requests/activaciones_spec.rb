@@ -1,8 +1,8 @@
 # RF-06 Activación de cuenta · CU-02 · RN-05, RN-06
 # Prueba: CP-RF-06
 #
-# Tabla 27 · POST /api/v1/activaciones · sin autenticar.
-# Tabla 40 · petición: codigo, contrasena. Respuesta: token, vence_en, usuario.
+# Tabla 18 · POST /api/v1/activaciones · sin autenticar.
+# Tabla 31 · petición: codigo, contrasena. Respuesta: token, vence_en, usuario.
 require "rails_helper"
 
 RSpec.describe "Activación de cuenta", type: :request do
@@ -44,8 +44,8 @@ RSpec.describe "Activación de cuenta", type: :request do
     end
   end
 
-  # Tabla 40 · «token, vence_en, usuario»
-  it "devuelve una sesión con la forma de la Tabla 40" do
+  # Tabla 31 · «token, vence_en, usuario»
+  it "devuelve una sesión con la forma de la Tabla 31" do
     activar(alta.codigo_en_claro)
 
     expect(cuerpo).to include("token", "vence_en", "usuario")
@@ -64,7 +64,7 @@ RSpec.describe "Activación de cuenta", type: :request do
     expect(response).to have_http_status(:created)
   end
 
-  # CU-02 E1 (Tabla 24, fila 410): código vencido, ya utilizado o inexistente. Los
+  # CU-02 E1 (Tabla 26, fila 410): código vencido, ya utilizado o inexistente. Los
   # tres supuestos responden igual: el rechazo no revela cuál fue.
   describe "CU-02 E1 · 410" do
     it "rechaza el código vencido" do
@@ -99,7 +99,7 @@ RSpec.describe "Activación de cuenta", type: :request do
     end
   end
 
-  # RN-11 · la baja revoca el acceso: el canje no puede restituirlo. La Tabla 35 pone
+  # RN-11 · la baja revoca el acceso: el canje no puede restituirlo. La Tabla 26 pone
   # «cuenta dada de baja» en la fila del 401.
   it "no restituye el acceso a una cuenta dada de baja" do
     alta.usuario.update!(estado: "dado_de_baja")
@@ -123,7 +123,7 @@ RSpec.describe "Activación de cuenta", type: :request do
     expect(alta.codigo_activacion.reload.usado_en).to be_nil
   end
 
-  it "rechaza con 422 la petición sin los campos de la Tabla 40" do
+  it "rechaza con 422 la petición sin los campos de la Tabla 31" do
     post "/api/v1/activaciones", params: { codigo: alta.codigo_en_claro }, as: :json
 
     expect(response).to have_http_status(:unprocessable_content)

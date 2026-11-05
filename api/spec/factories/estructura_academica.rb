@@ -8,7 +8,7 @@ FactoryBot.define do
 
   factory :curso do
     # RN-31 · existe un solo año lectivo vigente: los cursos lo comparten. El motor
-    # rechaza un segundo con el índice parcial de la Tabla 38.
+    # rechaza un segundo con el índice parcial de la Tabla 29.
     anio_lectivo { AnioLectivo.estado_vigente.first || association(:anio_lectivo) }
     sequence(:nombre) { |n| "Curso #{n}" }
     turno { "mañana" }

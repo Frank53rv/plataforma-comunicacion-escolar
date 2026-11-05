@@ -1,7 +1,7 @@
 // RF-37 Degradación ante fallo de entrega · CU-14 · RNF-11
 // Prueba: CP-RF-37
 //
-// Tabla 23 · Firebase Cloud Messaging es el único componente externo, y «su indisponibilidad
+// Tabla 25 · Firebase Cloud Messaging es el único componente externo, y «su indisponibilidad
 // no impide operar» (RNF-11). Acá se obtiene el identificador de destino del navegador que la
 // interfaz de programación usa para enviar (POST /suscripciones-push). Cuando no se puede
 // —falta de soporte, de permiso, de configuración o servicio caído— se informa la causa y no
@@ -14,7 +14,7 @@ export class ErrorDeAvisos extends Error {
   }
 }
 
-// Tabla 30 · valores de construcción del cliente. Vite reemplaza estas expresiones al
+// Tabla 32 · valores de construcción del cliente. Vite reemplaza estas expresiones al
 // construir (vite.config.js, `define`); en las pruebas son variables de entorno reales.
 function configuracion() {
   const claves = {

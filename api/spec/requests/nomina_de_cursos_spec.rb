@@ -2,8 +2,8 @@
 # Prueba: CP-RF-12
 require "rails_helper"
 
-# Tabla 29 · GET /cursos → «colección de curso con la cantidad de alumnos vinculados». La
-# Tabla 18 no tiene ninguna operación que lea personas, y las tareas de administrar docentes,
+# Tabla 31 · GET /cursos → «colección de curso; cada curso trae docentes, con es_titular, y
+# alumnos con sus tutores, con id, nombre, apellido, correo y estado». La Tabla 18 no tiene ninguna operación que lea personas, y las tareas de administrar docentes,
 # alumnos y tutores (TC-03 a TC-10) piden el identificador de una persona que el cliente no
 # tiene de otro modo: por eso cada curso lleva también su nómina —docentes, y alumnos con sus
 # tutores— sobre vinculaciones vigentes. No se agrega ninguna ruta ni se cambia ningún rol.
@@ -45,7 +45,7 @@ RSpec.describe "Nómina de los cursos en GET /cursos", type: :request do
     expect(alumnos.first["tutores"].map { |t| t["id"] }).to eq([ tutor.id ])
   end
 
-  it "conserva la cantidad de alumnos vinculados que la Tabla 29 fija" do
+  it "conserva la cantidad de alumnos vinculados que el contrato fija" do
     expect(consultar(directivo)["alumnos_vinculados"]).to eq(1)
   end
 

@@ -3,8 +3,8 @@
 # Prueba: CP-RF-04 · CP-RF-07 · CP-RF-14
 #
 # Tabla 14 · «Vinculación entre un tutor y un alumno.» Hasta dos tutores vigentes por
-# alumno (RN-29), verificado en la capa de negocio conforme a la nota de la Tabla 38.
-# Tabla 27 · nombre de tabla en singular.
+# alumno (RN-29), verificado en la capa de negocio conforme a la nota de la Tabla 29.
+# Tabla 29 · nombre de tabla en singular.
 class TutorAlumno < ApplicationRecord
   self.table_name = "tutor_alumno"
 
@@ -15,7 +15,7 @@ class TutorAlumno < ApplicationRecord
 
   # RN-29 · «Un alumno admite hasta dos tutores vinculados de manera simultánea. La
   # vinculación de un tercero se rechaza mientras los dos anteriores permanezcan
-  # vigentes.» La nota de la Tabla 38 la manda a la capa de negocio. CU-05 E1 · 409.
+  # vigentes.» La nota de la Tabla 29 la manda a la capa de negocio. CU-05 E1 · 409.
   MAXIMO_POR_ALUMNO = 2
 
   def self.verificar_limite!(alumno)
