@@ -41,6 +41,17 @@ class Curso < ApplicationRecord
     )
   end
 
+  # RF-12 · los cursos se crean y editan dentro del año lectivo vigente; RN-26 · los de un
+  # año cerrado quedan archivados en solo lectura.
+  def self.verificar_anio_vigente!(anio_lectivo)
+    return if anio_lectivo.estado_vigente?
+
+    raise ErrorDeDominio::ConflictoDeRegla.new(
+      regla: "RN-26",
+      detalle: "El año lectivo está cerrado: sus cursos quedan en solo lectura."
+    )
+  end
+
   # GET /cursos · `alumnos_vinculados`, la cantidad de alumnos vinculados, según openapi/openapi.yaml.
   def recurso
     slice(:id, :anio_lectivo_id, :nombre, :turno, :estado)

@@ -286,7 +286,7 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '409':
-          description: nombre de curso repetido en el mismo año lectivo (CU-03 E2)
+          description: nombre de curso repetido en el mismo año lectivo (CU-03 E2) o año lectivo cerrado (RN-26)
           content:
             application/problem+json:
               schema: { $ref: '#/components/schemas/Problema' }
@@ -362,6 +362,11 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '404': { $ref: '#/components/responses/NoEncontrado' }
+        '409':
+          description: nombre de curso repetido en el mismo año lectivo (CU-03 E2) o año lectivo cerrado (RN-26)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
         '422': { $ref: '#/components/responses/DatosInaceptables' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /docentes:
