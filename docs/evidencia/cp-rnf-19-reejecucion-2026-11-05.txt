@@ -60,3 +60,11 @@ $ npx newman run openapi/postman_collection.json
 $ npx newman run docs/registro-qa/postman/plataforma_pruebas.postman_collection.json
   exit=0 · peticiones 178, fallidas 0 · aserciones 217, fallidas 0
   estados: 200×34, 201×20, 204×1, 401×41, 403×63, 404×3, 409×4, 410×2, 422×10
+Nota: desde hotfix/CP-RNF-17-coleccion-con-aserciones, esa colección es openapi/postman_collection.json y la anterior deja de existir.
+
+Tras adoptarla, sobre una instancia nueva con los pasos 3 a 5 de la Tabla 37:
+$ npx newman run openapi/postman_collection.json -e openapi/postman_environment.json --reporters cli,json --reporter-json-export docs/evidencia/newman-2026-11-05.json
+  exit=0 · peticiones 178, fallidas 0 · aserciones 217, fallidas 0
+  estados: 200×34, 201×20, 204×1, 401×41, 403×63, 404×3, 409×4, 410×2, 422×10
+  operaciones Must have cubiertas: 36 de 36 · rutas fuera del inventario: 0 · Should have tocadas: 0
+  El JSON se guarda sin cuerpos de respuesta ni tokens.

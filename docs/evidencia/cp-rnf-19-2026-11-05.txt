@@ -129,3 +129,4 @@ Construcción sin caché: 225 s (3 min 45 s). Con la base vacía, el contenedor 
 el supervisor de Solid Queue, dentro de Puma, consulta tablas que recién crean las migraciones del paso 4, y el paso 4
 no puede ejecutarse con exec porque el contenedor ya salió. Para recorrer el resto se aplicaron las migraciones con
 un contenedor efímero, sin editar archivos versionados.
+Nota: desde hotfix/CP-RNF-17-coleccion-con-aserciones, esa colección es openapi/postman_collection.json y la anterior deja de existir.
