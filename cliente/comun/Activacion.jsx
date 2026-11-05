@@ -1,7 +1,8 @@
 // RF-06 Activación de cuenta · CU-02 · RN-06, RN-09
 // Prueba: CP-RF-06
 //
-// Tabla 24 · 410: «código de activación vencido, ya utilizado o inexistente». La cuenta
+// Tabla 26 · 410: «Código de activación vencido, ya utilizado, inexistente o mal formado, que
+// se equipara al inexistente». La cuenta
 // activada define su contraseña propia, de modo que entra con la credencial ya definitiva.
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";

@@ -67,6 +67,47 @@ RSpec.describe "Notificación de anuncios", type: :request do
     end
   end
 
+  # RN-11 · la baja de una cuenta revoca su acceso: tampoco recibe avisos push.
+  describe "CP-RF-09 · destinatario con la cuenta dada de baja" do
+    it "no le envía el aviso, pero sí a quien conserva su cuenta" do
+      create(:suscripcion_push, usuario: alumno, token: "token-alumno")
+      create(:suscripcion_push, usuario: tutor, token: "token-tutor")
+      alumno.update!(estado: "dado_de_baja")
+
+      perform_enqueued_jobs { publicar }
+
+      expect(cliente).not_to have_received(:enviar).with(hash_including(token: "token-alumno"))
+      expect(cliente).to have_received(:enviar).with(hash_including(token: "token-tutor"))
+    end
+  end
+
+  # RF-20 · RN-20 · el anuncio eliminado se retira de la bandeja de los cuatro roles: el
+  # trabajo que ya estaba encolado no lo envía por push.
+  describe "CP-RF-20 · anuncio eliminado antes de que el aviso salga" do
+    it "no envía el aviso del anuncio eliminado" do
+      create(:suscripcion_push, usuario: alumno)
+      publicar
+      delete "/api/v1/anuncios/#{Anuncio.last.id}", headers: cabecera_de(docente)
+      expect(Anuncio.last).to be_estado_eliminado
+
+      perform_enqueued_jobs(only: NotificacionAnuncioJob)
+
+      expect(cliente).not_to have_received(:enviar)
+      expect(entrega_de(alumno)).to have_attributes(causa_fallo: nil, entregada_en: nil)
+    end
+
+    it "no envía el reintento de un aviso cuyo anuncio se eliminó entre tanto" do
+      create(:suscripcion_push, usuario: alumno)
+      publicar
+      entrega = entrega_de(alumno)
+      Anuncio.last.update!(estado: "eliminado")
+
+      NotificacionAnuncioJob.perform_now(entrega.id)
+
+      expect(cliente).not_to have_received(:enviar)
+    end
+  end
+
   # RN-18 · «Los anuncios ignoran el horario de disponibilidad y las preferencias del
   # destinatario: son comunicación institucional.»
   describe "RN-18 · independencia del horario y de las preferencias" do

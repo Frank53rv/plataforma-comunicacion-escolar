@@ -3,7 +3,7 @@
 #
 # Tabla 18 · POST /api/v1/anios-lectivos · directivo · «Crear el año lectivo».
 # Tabla 18 · GET /api/v1/anios-lectivos · directivo · «Consultar los años lectivos».
-# Tabla 29 · POST: anio → recurso anio_lectivo. GET: sin parámetros → colección.
+# Tabla 31 · POST: anio → recurso anio_lectivo. GET: sin parámetros → colección.
 class AniosLectivosController < ApplicationController
   # RN-02 · «El directivo crea el año lectivo y los cursos…»
   autoriza :crear, roles: %w[directivo]
@@ -11,7 +11,7 @@ class AniosLectivosController < ApplicationController
 
   # RF-11 · el directivo crea el año lectivo, que queda en estado vigente. RN-31 · la
   # creación de un segundo año lectivo vigente se rechaza mientras el anterior no se
-  # cierre → 409 (Tabla 24, fila CU-03 E1).
+  # cierre → 409 (Tabla 26, fila CU-03 E1).
   def crear
     if AnioLectivo.estado_vigente.exists?
       raise ErrorDeDominio::ConflictoDeRegla.new(
@@ -25,12 +25,10 @@ class AniosLectivosController < ApplicationController
     render json: anio_lectivo.recurso, status: :created
   end
 
-  # Tabla 28 · colección paginada: datos, total, pagina y por_pagina.
+  # Tabla 30 · colección paginada: datos, total, pagina y por_pagina.
   def index
-    pagina = [ params[:pagina].to_i, 1 ].max
-    por_pagina = params[:por_pagina].to_i
-    por_pagina = 25 if por_pagina <= 0
-    por_pagina = [ por_pagina, 100 ].min
+    pagina = pagina_pedida
+    por_pagina = por_pagina_pedido
 
     relacion = AnioLectivo.order(anio: :asc)
     datos = relacion.offset((pagina - 1) * por_pagina).limit(por_pagina)

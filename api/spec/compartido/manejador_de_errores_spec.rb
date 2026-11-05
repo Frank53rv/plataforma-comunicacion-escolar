@@ -1,9 +1,9 @@
-# Tabla 35 · el catálogo es cerrado · Boundary 6
+# Tabla 26 · el catálogo es cerrado · Boundary 6
 # Prueba: CP-RNF-17 — ningún rechazo de la interfaz emite un estado fuera de los nueve.
 require "rails_helper"
 
 RSpec.describe ErrorDeDominio do
-  it "sólo admite los nueve estados de la Tabla 35" do
+  it "sólo admite los nueve estados de la Tabla 26" do
     expect(described_class::CATALOGO).to eq([ 401, 403, 404, 409, 410, 413, 415, 422, 500 ])
   end
 
@@ -13,7 +13,7 @@ RSpec.describe ErrorDeDominio do
     }.to raise_error(ArgumentError, /no pertenece al catálogo/)
   end
 
-  describe "cada excepción corresponde a una fila de la Tabla 35" do
+  describe "cada excepción corresponde a una fila de la Tabla 26" do
     {
       described_class::NoAutenticado          => 401,
       described_class::NoHabilitado           => 403,
@@ -29,7 +29,7 @@ RSpec.describe ErrorDeDominio do
     end
   end
 
-  it "el conflicto de regla consigna el código de la regla, conforme a la Tabla 35" do
+  it "el conflicto de regla consigna el código de la regla, conforme a la Tabla 26" do
     error = described_class::ConflictoDeRegla.new(regla: "RN-31", detalle: "Ya hay un año lectivo vigente.")
 
     expect(error.estado).to eq(409)

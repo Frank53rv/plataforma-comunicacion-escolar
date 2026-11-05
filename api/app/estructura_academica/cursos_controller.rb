@@ -5,7 +5,7 @@
 # editar cursos dentro del año lectivo vigente».
 # Tabla 18 · GET /api/v1/cursos · directivo, docente · el docente ve únicamente
 # sus propios cursos, igual que en el resto de sus operaciones (RN-03, RN-07).
-# Tabla 29 · POST: anio_lectivo_id, nombre, turno → recurso curso. PATCH: nombre, turno
+# Tabla 31 · POST: anio_lectivo_id, nombre, turno → recurso curso. PATCH: nombre, turno
 # → recurso curso. GET: anio_lectivo_id y estado opcionales → colección paginada.
 class CursosController < ApplicationController
   # RN-02 · «El directivo crea el año lectivo y los cursos…»
@@ -16,6 +16,7 @@ class CursosController < ApplicationController
   # RF-12 · crea, dentro del año lectivo vigente, los cursos con su nombre y su turno.
   def crear
     anio_lectivo = AnioLectivo.find(parametros[:anio_lectivo_id])
+    Curso.verificar_anio_vigente!(anio_lectivo)
     Curso.verificar_nombre_disponible!(anio_lectivo_id: anio_lectivo.id, nombre: parametros[:nombre])
 
     curso = Curso.create!(anio_lectivo: anio_lectivo, nombre: parametros[:nombre],
@@ -27,6 +28,7 @@ class CursosController < ApplicationController
   # RF-12 · edita los cursos existentes mientras el año lectivo permanezca vigente.
   def actualizar
     curso = Curso.find(params[:id])
+    Curso.verificar_anio_vigente!(curso.anio_lectivo)
     cambios = params.permit(:nombre, :turno).to_h.symbolize_keys
 
     if cambios[:nombre].present?
@@ -40,12 +42,10 @@ class CursosController < ApplicationController
     render json: curso.recurso, status: :ok
   end
 
-  # Tabla 28 · colección paginada: datos, total, pagina y por_pagina.
+  # Tabla 30 · colección paginada: datos, total, pagina y por_pagina.
   def index
-    pagina = [ params[:pagina].to_i, 1 ].max
-    por_pagina = params[:por_pagina].to_i
-    por_pagina = 25 if por_pagina <= 0
-    por_pagina = [ por_pagina, 100 ].min
+    pagina = pagina_pedida
+    por_pagina = por_pagina_pedido
 
     relacion = alcance_del_rol
     relacion = relacion.where(anio_lectivo_id: params[:anio_lectivo_id]) if params[:anio_lectivo_id].present?

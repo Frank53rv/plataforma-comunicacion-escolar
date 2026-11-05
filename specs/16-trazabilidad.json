@@ -4,6 +4,7 @@
   "filas": [
     {
       "requisito": "RF-01",
+      "titulo": "Autenticación de usuarios",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-15",
@@ -13,6 +14,7 @@
     },
     {
       "requisito": "RF-02",
+      "titulo": "Control de acceso basado en roles",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-04, RN-15",
@@ -22,6 +24,7 @@
     },
     {
       "requisito": "RF-03",
+      "titulo": "Alta de docentes y asignación a cursos",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-01, RN-02",
@@ -31,6 +34,7 @@
     },
     {
       "requisito": "RF-04",
+      "titulo": "Alta de alumnos y tutores",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-01, RN-03",
@@ -40,6 +44,7 @@
     },
     {
       "requisito": "RF-05",
+      "titulo": "Generación de código de activación",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-05",
@@ -49,6 +54,7 @@
     },
     {
       "requisito": "RF-06",
+      "titulo": "Activación de cuenta",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-06",
@@ -58,6 +64,7 @@
     },
     {
       "requisito": "RF-07",
+      "titulo": "Regeneración de código de activación",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-07",
@@ -67,6 +74,7 @@
     },
     {
       "requisito": "RF-08",
+      "titulo": "Recuperación de contraseña",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-07",
@@ -76,6 +84,7 @@
     },
     {
       "requisito": "RF-09",
+      "titulo": "Baja lógica de alumnos y tutores",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-10, RN-11",
@@ -85,6 +94,7 @@
     },
     {
       "requisito": "RF-10",
+      "titulo": "Restricción de baja de tutor vinculado",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-12",
@@ -94,6 +104,7 @@
     },
     {
       "requisito": "RF-43",
+      "titulo": "Cambio obligatorio de credencial provisional",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-08, RN-09",
@@ -103,6 +114,7 @@
     },
     {
       "requisito": "RF-44",
+      "titulo": "Desvinculación y baja de docente",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-13, RN-14",
@@ -112,6 +124,7 @@
     },
     {
       "requisito": "RF-11",
+      "titulo": "Creación del año lectivo",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-02, RN-31",
@@ -121,6 +134,7 @@
     },
     {
       "requisito": "RF-12",
+      "titulo": "Administración de cursos",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-02",
@@ -130,6 +144,7 @@
     },
     {
       "requisito": "RF-13",
+      "titulo": "Vinculación de alumnos a cursos",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-01, RN-30",
@@ -139,6 +154,7 @@
     },
     {
       "requisito": "RF-14",
+      "titulo": "Vinculación de tutores a alumnos",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-04, RN-29",
@@ -148,6 +164,7 @@
     },
     {
       "requisito": "RF-15",
+      "titulo": "Vinculación de docentes a cursos",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-02, RN-13",
@@ -157,6 +174,7 @@
     },
     {
       "requisito": "RF-16",
+      "titulo": "Cierre del año lectivo",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-26",
@@ -166,6 +184,7 @@
     },
     {
       "requisito": "RF-17",
+      "titulo": "Publicación de anuncios",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-16, RN-17",
@@ -175,6 +194,7 @@
     },
     {
       "requisito": "RF-18",
+      "titulo": "Programación de la hora de envío",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-17",
@@ -184,6 +204,7 @@
     },
     {
       "requisito": "RF-19",
+      "titulo": "Edición con versionado",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-19",
@@ -193,6 +214,7 @@
     },
     {
       "requisito": "RF-20",
+      "titulo": "Borrado lógico de anuncios",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-20",
@@ -202,6 +224,7 @@
     },
     {
       "requisito": "RF-21",
+      "titulo": "Resolución de destinatarios",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-19",
@@ -211,6 +234,7 @@
     },
     {
       "requisito": "RF-22",
+      "titulo": "Consulta del historial de anuncios",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-27, RN-28",
@@ -220,6 +244,7 @@
     },
     {
       "requisito": "RF-23",
+      "titulo": "Panel de constancias del docente",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-21",
@@ -229,6 +254,7 @@
     },
     {
       "requisito": "RF-45",
+      "titulo": "Consulta directiva del estado de la comunicación",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-22",
@@ -238,6 +264,7 @@
     },
     {
       "requisito": "RF-25",
+      "titulo": "Canal grupal del curso",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-23",
@@ -247,6 +274,7 @@
     },
     {
       "requisito": "RF-28",
+      "titulo": "Persistencia e historial de mensajes",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-27, RN-28",
@@ -256,6 +284,7 @@
     },
     {
       "requisito": "RF-29",
+      "titulo": "Restricción de participación",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-23",
@@ -265,6 +294,7 @@
     },
     {
       "requisito": "RF-24",
+      "titulo": "Canal grupal de alumnos",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-23",
@@ -274,6 +304,7 @@
     },
     {
       "requisito": "RF-26",
+      "titulo": "Conversación privada alumno-docente",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-23",
@@ -283,6 +314,7 @@
     },
     {
       "requisito": "RF-27",
+      "titulo": "Conversación privada tutor-docente",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-23",
@@ -292,6 +324,7 @@
     },
     {
       "requisito": "RF-30",
+      "titulo": "Adjuntos en formato PDF",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-33",
@@ -301,6 +334,7 @@
     },
     {
       "requisito": "RF-46",
+      "titulo": "Supervisión directiva de conversaciones",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-25",
@@ -310,6 +344,7 @@
     },
     {
       "requisito": "RF-47",
+      "titulo": "Indicador de mensajes no leídos",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "—",
@@ -319,6 +354,7 @@
     },
     {
       "requisito": "RF-31",
+      "titulo": "Notificación de anuncios",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-18",
@@ -328,6 +364,7 @@
     },
     {
       "requisito": "RF-32",
+      "titulo": "Notificación de mensajes",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-24",
@@ -337,6 +374,7 @@
     },
     {
       "requisito": "RF-33",
+      "titulo": "Configuración de preferencias",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-18, RN-24",
@@ -346,6 +384,7 @@
     },
     {
       "requisito": "RF-34",
+      "titulo": "Registro de estados de notificación",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-32",
@@ -355,6 +394,7 @@
     },
     {
       "requisito": "RF-35",
+      "titulo": "Emisión de eventos de vista en lote",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -364,6 +404,7 @@
     },
     {
       "requisito": "RF-36",
+      "titulo": "Idempotencia del registro de eventos",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-32",
@@ -373,6 +414,7 @@
     },
     {
       "requisito": "RF-37",
+      "titulo": "Degradación ante fallo de entrega",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -382,6 +424,7 @@
     },
     {
       "requisito": "RF-38",
+      "titulo": "Indicador de familia alcanzada",
       "tipo": "Funcional",
       "prioridad": "S",
       "reglas": "RN-21",
@@ -391,6 +434,7 @@
     },
     {
       "requisito": "RF-39",
+      "titulo": "Bandeja de anuncios como vista de entrada",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -400,6 +444,7 @@
     },
     {
       "requisito": "RF-40",
+      "titulo": "Paneles diferenciados por rol",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "RN-04, RN-15",
@@ -409,6 +454,7 @@
     },
     {
       "requisito": "RF-41",
+      "titulo": "Interfaz responsiva",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -418,6 +464,7 @@
     },
     {
       "requisito": "RF-42",
+      "titulo": "Cobertura de flujos en interfaz",
       "tipo": "Funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -427,6 +474,7 @@
     },
     {
       "requisito": "RNF-01",
+      "titulo": "Control de acceso verificable",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "RN-15",
@@ -436,6 +484,7 @@
     },
     {
       "requisito": "RNF-02",
+      "titulo": "Autenticidad de la sesión",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "RN-15",
@@ -445,6 +494,7 @@
     },
     {
       "requisito": "RNF-03",
+      "titulo": "Resguardo de credenciales",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -454,6 +504,7 @@
     },
     {
       "requisito": "RNF-04",
+      "titulo": "Trazabilidad de las acciones",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "RN-14, RN-20",
@@ -463,6 +514,7 @@
     },
     {
       "requisito": "RNF-05",
+      "titulo": "No repudio de la constancia",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "RN-32",
@@ -472,6 +524,7 @@
     },
     {
       "requisito": "RNF-06",
+      "titulo": "Transporte cifrado",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -481,6 +534,7 @@
     },
     {
       "requisito": "RNF-07",
+      "titulo": "Retención y minimización de datos",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "RN-27, RN-28",
@@ -490,6 +544,7 @@
     },
     {
       "requisito": "RNF-08",
+      "titulo": "Latencia de entrega de mensajes",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -499,6 +554,7 @@
     },
     {
       "requisito": "RNF-09",
+      "titulo": "Tiempo de respuesta de consultas",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -508,6 +564,7 @@
     },
     {
       "requisito": "RNF-10",
+      "titulo": "Capacidad de conexiones simultáneas",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -517,6 +574,7 @@
     },
     {
       "requisito": "RNF-11",
+      "titulo": "Tolerancia a la indisponibilidad del servicio push",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -526,6 +584,7 @@
     },
     {
       "requisito": "RNF-12",
+      "titulo": "Recuperación del envío diferido",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -535,6 +594,7 @@
     },
     {
       "requisito": "RNF-13",
+      "titulo": "Operabilidad por rol",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -544,24 +604,27 @@
     },
     {
       "requisito": "RNF-14",
+      "titulo": "Protección frente a errores del usuario",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "RN-11",
-      "diseno": "Tabla 25",
+      "diseno": "Tabla 27",
       "modulo": "F · Cliente web",
       "caso_prueba": "CP-RNF-14"
     },
     {
       "requisito": "RNF-15",
+      "titulo": "Facilidad de aprendizaje",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
-      "diseno": "Tabla 25",
+      "diseno": "Tabla 27",
       "modulo": "F · Cliente web",
       "caso_prueba": "CP-RNF-15"
     },
     {
       "requisito": "RNF-16",
+      "titulo": "Localización de información publicada",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -571,6 +634,7 @@
     },
     {
       "requisito": "RNF-17",
+      "titulo": "Documentación formal de la interfaz",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -580,6 +644,7 @@
     },
     {
       "requisito": "RNF-18",
+      "titulo": "Adaptación a distintos dispositivos",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -589,6 +654,7 @@
     },
     {
       "requisito": "RNF-19",
+      "titulo": "Reproducibilidad del despliegue",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "RN-08",
@@ -598,6 +664,7 @@
     },
     {
       "requisito": "RNF-20",
+      "titulo": "Cobertura de pruebas automatizadas",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -607,6 +674,7 @@
     },
     {
       "requisito": "RNF-21",
+      "titulo": "Separación de responsabilidades",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
@@ -616,10 +684,11 @@
     },
     {
       "requisito": "RNF-22",
+      "titulo": "Completitud funcional del MVP",
       "tipo": "No funcional",
       "prioridad": "M",
       "reglas": "—",
-      "diseno": "Tabla 22",
+      "diseno": "Tabla 24",
       "modulo": "G · Transversal",
       "caso_prueba": "CP-RNF-22"
     }

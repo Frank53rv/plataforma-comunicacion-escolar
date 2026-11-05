@@ -1,0 +1,21 @@
+{
+  "conversacion": "b44237a8-9c3e-4caf-8898-af15d60613a5",
+  "conectados": 11,
+  "mensajes": 50,
+  "entregas_esperadas": 550,
+  "entregas_perdidas": 0,
+  "desde_el_pedido_ms": {
+    "minimo": 54,
+    "p50": 97,
+    "p95": 161,
+    "maximo": 180
+  },
+  "desde_el_servidor_ms": {
+    "minimo": 24,
+    "p50": 66,
+    "p95": 125,
+    "maximo": 137
+  },
+  "umbral_ms": 2000,
+  "cumple_rnf_08": true
+}

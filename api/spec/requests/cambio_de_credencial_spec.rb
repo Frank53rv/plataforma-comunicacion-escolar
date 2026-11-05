@@ -2,8 +2,8 @@
 # RN-08, RN-09
 # Prueba: CP-RF-43
 #
-# Tabla 27 · PATCH /api/v1/usuarios/me/contrasena · directivo, docente, tutor, alumno.
-# Tabla 40 · petición: contrasena_actual, contrasena_nueva. Respuesta: usuario con
+# Tabla 18 · PATCH /api/v1/usuarios/me/contrasena · directivo, docente, tutor, alumno.
+# Tabla 31 · petición: contrasena_actual, contrasena_nueva. Respuesta: usuario con
 # credencial_provisional en falso.
 require "rails_helper"
 
@@ -79,7 +79,7 @@ RSpec.describe "Cambio de la credencial provisional", type: :request do
       expect(response).to have_http_status(:no_content)
     end
 
-    # Tabla 35 · «Credencial inválida» es el primer supuesto de la fila del 401.
+    # Tabla 26 · «Credencial inválida» es el primer supuesto de la fila del 401.
     it "rechaza con 401 la contraseña actual equivocada" do
       patch "/api/v1/usuarios/me/contrasena",
             params: { contrasena_actual: "no-es-la-suya", contrasena_nueva: "clave-propia-elegida" },
@@ -89,7 +89,19 @@ RSpec.describe "Cambio de la credencial provisional", type: :request do
       expect(directivo.reload.credencial_provisional).to be(true)
     end
 
-    it "rechaza con 422 la petición sin los campos de la Tabla 40" do
+    # RF-43 · RN-09 · «exigir el cambio de la contraseña provisional»: repetirla no la cambia.
+    it "rechaza con 422 y RN-09 una contraseña nueva igual a la provisional" do
+      patch "/api/v1/usuarios/me/contrasena",
+            params: { contrasena_actual: "provisional-de-reposicion",
+                      contrasena_nueva: "provisional-de-reposicion" },
+            headers: cabecera_de(directivo), as: :json
+
+      expect(response).to have_http_status(:unprocessable_content)
+      expect(cuerpo["regla"]).to eq("RN-09")
+      expect(directivo.reload.credencial_provisional).to be(true)
+    end
+
+    it "rechaza con 422 la petición sin los campos de la Tabla 31" do
       patch "/api/v1/usuarios/me/contrasena", params: {},
             headers: cabecera_de(directivo), as: :json
 
@@ -103,10 +115,10 @@ RSpec.describe "Cambio de la credencial provisional", type: :request do
       expect(response).to have_http_status(:unauthorized)
     end
 
-    # Tabla 26 · una prueba de autorización por cada uno de los cuatro roles.
+    # Tabla 28 · una prueba de autorización por cada uno de los cuatro roles.
     # RN-09 dice «toda credencial provisional», no sólo la del directivo.
     %w[directivo docente tutor alumno].each do |rol|
-      it "admite a #{rol}, que la Tabla 27 declara autorizado" do
+      it "admite a #{rol}, que la Tabla 18 declara autorizado" do
         usuario = create(:usuario, rol: rol, contrasena: "clave-anterior-123")
 
         patch "/api/v1/usuarios/me/contrasena",
@@ -120,7 +132,7 @@ RSpec.describe "Cambio de la credencial provisional", type: :request do
 
   # RN-08 · «El sistema no dispone de recuperación autónoma de la cuenta directiva. Se
   # resuelve reponiendo la credencial provisional por variable de entorno.»
-  # Tabla 35, paso 5.
+  # Tabla 37, paso 5.
   describe "reposición de la cuenta directiva por variable de entorno · RN-08" do
     before do
       allow(ENV).to receive(:fetch).and_call_original

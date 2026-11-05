@@ -1,7 +1,7 @@
 // RF-31 Notificación de anuncios · CU-06, CU-14 · RN-18
 // Prueba: CP-RF-31
 //
-// Tabla 23 · la instalación es la condición de la recepción del aviso push en iOS (R-03). En el
+// Tabla 25 · la instalación es la condición de la recepción del aviso push en iOS (R-03). En el
 // iPhone sólo se instala desde el menú Compartir, y esa opción no existe en el navegador
 // interno de otras aplicaciones ni en todas las versiones de los navegadores que no son
 // Safari: la indicación tiene que decir dónde está la opción y, fuera de Safari, que se abra la

@@ -1,0 +1,70 @@
+# CP-RNF-19 · reejecución del procedimiento de la Tabla 37, tras hotfix/CP-RNF-19 y hotfix/CP-RNF-06 · 2026-11-05T13:31:20+00:00
+
+## Paso 1 · clonar
+$ git clone --branch hotfix/CP-RNF-06-sin-texto-plano <repositorio local> copia-limpia
+exit=0
+commit: fd4f2dd · archivos versionados: 335 · modificados: 0
+árbol raíz: .env.example .gitignore api bin cliente compose.yaml hooks openapi specs tools 
+
+## Paso 2 · archivo de variables
+variables definidas: 16 · vacías: 0 · versionados modificados: 0
+
+## Paso 3 · construir y levantar
+$ docker compose -p plataforma-limpia build --no-cache
+exit=0 · construcción sin caché: 207 s (3 min 27 s)
+$ docker compose -p plataforma-limpia up -d
+ Container plataforma-limpia-cliente-1 Started 
+SERVICE   STATUS
+api       Up 12 seconds (healthy)
+cliente   Up 12 seconds (healthy)
+db        Up 18 seconds (healthy)
+servicios saludables: 3 de 3, a los 21 s, sin intervención
+
+## Paso 4 · migraciones, conjunto de prueba y base de pruebas
+$ bin/rails db:prepare
+exit=0
+$ bin/rails datos_de_prueba:cargar
+Conjunto de prueba cargado: 184 cuentas, 400 anuncios, 36000 entregas, 16000 mensajes, 2000 bitacora.
+Todas las cuentas, bajo @datos-de-prueba.test, usan la contraseña «prueba-2026».
+exit=0 · 16 s
+$ RAILS_ENV=test bin/rails db:prepare
+Created database 'plataforma_desarrollo_prueba'
+exit=0
+tablas propias: 19
+usuario: 184
+anio_lectivo: 2 (cerrado, vigente)
+anuncio: 400
+entrega_anuncio: 36000
+mensaje: 16000
+bitacora_envio: 2000
+
+## Paso 5 · reposición de la cuenta directiva
+$ bin/rails directivo:reponer_credencial
+Cuenta directiva repuesta: (correo de DIRECTIVO_CORREO)
+Exige el cambio de credencial en el primer acceso (RF-43).
+exit=0
+Verificación de CP-RF-43:
+  POST /sesiones con la credencial provisional → 201 · credencial_provisional=True
+  GET /paneles/me antes del cambio → 403 · codigo=credencial_provisional_sin_cambiar
+  PATCH /usuarios/me/contrasena → 200
+  GET /paneles/me después del cambio → 200 · rol=directivo
+
+## Paso 6 · ver docs/evidencia/cp-rnf-06-reejecucion-2026-11-05.txt
+
+## Paso 7 · no ejecutado: requiere un teléfono y a su dueño
+
+## Paso 8 · colección de validación
+$ npx newman run openapi/postman_collection.json
+  exit=0 · peticiones 36, fallidas 0 · aserciones 0, fallidas 0
+  estados: 401×21, 404×13, 422×2
+$ npx newman run docs/registro-qa/postman/plataforma_pruebas.postman_collection.json
+  exit=0 · peticiones 178, fallidas 0 · aserciones 217, fallidas 0
+  estados: 200×34, 201×20, 204×1, 401×41, 403×63, 404×3, 409×4, 410×2, 422×10
+Nota: desde hotfix/CP-RNF-17-coleccion-con-aserciones, esa colección es openapi/postman_collection.json y la anterior deja de existir.
+
+Tras adoptarla, sobre una instancia nueva con los pasos 3 a 5 de la Tabla 37:
+$ npx newman run openapi/postman_collection.json -e openapi/postman_environment.json --reporters cli,json --reporter-json-export docs/evidencia/newman-2026-11-05.json
+  exit=0 · peticiones 178, fallidas 0 · aserciones 217, fallidas 0
+  estados: 200×34, 201×20, 204×1, 401×41, 403×63, 404×3, 409×4, 410×2, 422×10
+  operaciones Must have cubiertas: 36 de 36 · rutas fuera del inventario: 0 · Should have tocadas: 0
+  El JSON se guarda sin cuerpos de respuesta ni tokens.

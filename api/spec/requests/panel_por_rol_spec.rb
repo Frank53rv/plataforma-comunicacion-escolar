@@ -4,8 +4,8 @@ require "rails_helper"
 
 # RF-40 (Tabla 10) · «El cliente debe presentar paneles con las funciones correspondientes
 # al rol de la persona autenticada, sin exponer opciones ajenas a él.»
-# Tabla 29 · GET /paneles/me → «rol, nombre, opciones habilitadas y cantidad de anuncios sin
-# leer». Tabla 18 · los cuatro roles. RNF-21 · la decisión de qué opciones corresponden es de
+# Tabla 31 · GET /paneles/me → «rol, nombre, opciones_habilitadas, anuncios_sin_leer y cursos
+# con id y nombre según el vínculo vigente». Tabla 18 · los cuatro roles. RNF-21 · la decisión de qué opciones corresponden es de
 # la interfaz de programación: el cliente sólo dibuja lo que este panel le declara.
 RSpec.describe "Panel por rol", type: :request do
   def cuerpo = JSON.parse(response.body)

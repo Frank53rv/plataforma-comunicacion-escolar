@@ -1,0 +1,66 @@
+# CP-RNF-19 · procedimiento de la Tabla 37 sobre una copia limpia, código final · 2026-11-05T14:21:43+00:00
+
+## Paso 1 · clonar
+$ git clone --branch develop <repositorio local> copia-limpia
+exit=0
+commit: c958a97 · archivos versionados: 422 · modificados: 0
+árbol raíz: .env.example .gitignore api bin cliente compose.yaml docs hooks openapi specs tools 
+
+## Paso 2 · archivo de variables
+variables definidas: 16 · vacías: 0 · versionados modificados: 0
+
+## Paso 3 · construir y levantar
+$ docker compose -p plataforma-limpia build --no-cache
+exit=0 · construcción sin caché: 168 s (2 min 48 s)
+$ docker compose -p plataforma-limpia up -d
+ Container plataforma-limpia-cliente-1 Started 
+SERVICE   STATUS                    PORTS
+api       Up 12 seconds (healthy)   127.0.0.1:3000->3000/tcp
+cliente   Up 12 seconds (healthy)   127.0.0.1:8090->80/tcp
+db        Up 18 seconds (healthy)   5432/tcp
+servicios saludables: 3 de 3, a los 20 s, sin intervención
+
+## Paso 4 · migraciones, conjunto de prueba y base de pruebas
+$ bin/rails db:prepare
+exit=0
+$ bin/rails datos_de_prueba:cargar
+Conjunto de prueba cargado: 184 cuentas, 400 anuncios, 36000 entregas, 16000 mensajes, 2000 bitacora.
+Todas las cuentas, bajo @datos-de-prueba.test, usan la contraseña «prueba-2026».
+exit=0 · 21 s
+$ RAILS_ENV=test bin/rails db:prepare
+Created database 'plataforma_desarrollo_prueba'
+exit=0
+tablas propias: 19
+usuario: 184
+anio_lectivo: 2 (cerrado, vigente)
+anuncio: 400
+entrega_anuncio: 36000
+mensaje: 16000
+bitacora_envio: 2000
+
+## Paso 5 · reposición de la cuenta directiva
+$ bin/rails directivo:reponer_credencial
+Cuenta directiva repuesta: (correo de DIRECTIVO_CORREO)
+Exige el cambio de credencial en el primer acceso (RF-43).
+exit=0
+Verificación de CP-RF-43:
+  POST /sesiones con la credencial provisional → 201 · credencial_provisional=True
+  GET /paneles/me antes del cambio → 403 · codigo=credencial_provisional_sin_cambiar
+  PATCH con una contraseña nueva igual a la provisional → 422 · regla=RN-09
+  PATCH con una contraseña distinta → 200
+  GET /paneles/me después del cambio → 200 · rol=directivo
+
+## Paso 6 · ver docs/evidencia/cp-rnf-06-final-2026-11-05.txt
+
+## Paso 7 · no ejecutado: requiere un teléfono y a su dueño
+
+## Paso 8 · colección de validación
+$ npx newman run openapi/postman_collection.json -e openapi/postman_environment.json --reporters cli,json --reporter-json-export docs/evidencia/newman-2026-11-05.json
+  exit=0 · peticiones 178, fallidas 0 · aserciones 217, fallidas 0
+  estados: 200×34, 201×20, 204×1, 401×41, 403×63, 404×3, 409×4, 410×2, 422×10
+
+## Mensaje en vivo en un navegador real
+Tutor con el canal abierto a 360 px; el docente publica por la interfaz: el tutor lo ve sin recargar, a los 204 ms.
+
+## Tareas críticas
+72 de 72 ejecuciones aprobadas (24 tareas en 360, 768 y 1280 px), sin desborde ni errores de página. Ver docs/evidencia-navegador/.

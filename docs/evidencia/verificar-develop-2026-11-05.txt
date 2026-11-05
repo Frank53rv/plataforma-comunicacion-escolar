@@ -1,0 +1,57 @@
+# bin/verificar sobre c958a97, código final · 2026-11-05T14:47:15+00:00
+
+  VERIFICACIÓN DE FIDELIDAD AL DOCUMENTO — edición final
+  =================================================
+
+  CONTRATO  ·  RNF-17 · CP-RNF-17 · Boundary 4
+  --------------------------------------------
+    OK    OpenAPI ↔ Tabla 18: diferencia nula (41 operaciones descritas)
+    OK    ninguna ruta fuera del inventario (36 rutas expuestas)
+    OK    cobertura del inventario: 36 de 36 operaciones Must have
+    OK    enrutador ↔ OpenAPI: diferencia nula
+    => VERDE
+
+  ERRORES  ·  Tabla 26 · catálogo cerrado · Boundary 6
+  ----------------------------------------------------
+    OK    todos los estados emitidos pertenecen al catálogo de 9 (401, 403, 404, 409, 410, 413, 415, 422, 500)
+    OK    manejador central de excepciones presente (api/app/compartido/manejador_de_errores.rb)
+    => VERDE
+
+  ESQUEMA  ·  Tabla 29 · 19 entidades · Boundary 3
+  ------------------------------------------------
+    OK    19 de 19 entidades migradas, sin columnas fuera del diccionario
+    => VERDE
+
+  ALCANCE  ·  Boundary 1 · 36 Must have, 0 Should have
+  ----------------------------------------------------
+    OK    ninguno de los 11 Should have fue construido
+    OK    requisitos Must have con código citado en el árbol: 36 de 36
+    => VERDE
+
+  TRAZABILIDAD  ·  RNF-22 · CP-RNF-22 · Tabla 15
+  ----------------------------------------------
+    OK    36 de 36 Must have con código, prueba y rama
+    => VERDE
+
+  TIEMPO  ·  punto 4.2 · semántica temporal · RF-33 · RN-24
+  ---------------------------------------------------------
+    OK    la zona America/Asuncion está declarada en la configuración
+    OK    ninguna lectura de hora sin zona
+    OK    la franja de disponibilidad contempla el cruce de medianoche
+    => VERDE
+
+  COBERTURA  ·  RNF-20 · CP-RNF-20 · ≥ 70 %
+  -----------------------------------------
+    OK    la interfaz: cobertura de líneas 98.72 % (umbral 70 %)
+    OK    el cliente: cobertura de líneas 99.52 % (umbral 70 %)
+    => VERDE
+
+  ESTILO  ·  Quality Spec · Tabla 28 · RuboCop y ESLint
+  -----------------------------------------------------
+    OK    RuboCop sin hallazgos (147 archivos inspeccionados)
+    OK    ESLint sin hallazgos (90 archivos)
+    OK    Prettier sin hallazgos
+    => VERDE
+
+  RESULTADO: VERDE — la rama puede integrarse.
+# bin/verificar terminó con código 0

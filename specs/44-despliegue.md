@@ -2,12 +2,12 @@
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 35 · Procedimiento de despliegue del entorno de demostración
+# Tabla 37 · Procedimiento de despliegue del entorno de demostración
 
 | Paso | Acción | Verificación |
 |---|---|---|
 | 1 | Clonar el repositorio en la distribución del subsistema Linux | El árbol de carpetas coincide con la Figura 18 |
-| 2 | Copiar el archivo de ejemplo de variables de entorno y cargar los valores propios de la instalación | Ninguna variable de la Tabla 30 queda sin valor; RAILS_MASTER_KEY lleva la clave real de la instalación |
+| 2 | Copiar el archivo de ejemplo de variables de entorno y cargar los valores propios de la instalación | Ninguna variable de la Tabla 32 queda sin valor; RAILS_MASTER_KEY lleva la clave real de la instalación |
 | 3 | Levantar los tres servicios con la herramienta de composición | Los tres contenedores alcanzan estado saludable sin edición manual de ningún archivo |
 | 4 | Ejecutar migraciones, cargar el archivo de datos de prueba y preparar la base de pruebas con RAILS_ENV=test bin/rails db:prepare | El esquema corresponde al diccionario de la Tabla 14 y el volumen al declarado en RNF-09 |
 | 5 | Reponer la credencial provisional de la cuenta directiva por variable de entorno, con bin/rails directivo:reponer_credencial | El primer acceso exige el cambio de credencial, conforme a CP-RF-43 |

@@ -1,0 +1,132 @@
+# CP-RNF-19 · procedimiento de la Tabla 37 sobre una copia limpia · 2026-11-05T13:13:02+00:00
+
+## Se detiene la composición principal (sin borrar volúmenes) para liberar los puertos 3000 y 8090
+ Container plataforma-comunicacion-escolar-db-1 Removing 
+ Container plataforma-comunicacion-escolar-db-1 Removed 
+ Network plataforma-comunicacion-escolar_default Removing 
+ Network plataforma-comunicacion-escolar_default Removed 
+
+## Paso 1 · clonar el repositorio
+$ git clone git@github.com:Frank53rv/plataforma-comunicacion-escolar.git copia-limpia
+exit=0
+commit: f342496 · RF-31: integra el formato Prettier de Armazon.jsx en main · CU-06 · RN-18
+árbol raíz versionado:
+  .env.example
+  .gitignore
+  api
+  bin
+  cliente
+  compose.yaml
+  hooks
+  openapi
+  specs
+  tools
+archivos versionados: 335 · archivos modificados tras el clon: 0
+
+## Paso 2 · archivo de variables
+$ cp .env.example .env  (y carga de los valores propios de la instalación; los valores no se transcriben)
+variables definidas: 16 · vacías: 0
+archivos versionados modificados: 0
+
+## Paso 3 · construir y levantar, sin caché
+$ docker compose -p plataforma-limpia build --no-cache
+exit=0 · duración de la construcción sin caché: 225 s (3 min 45 s)
+$ docker compose -p plataforma-limpia up -d
+ Container plataforma-limpia-api-1 Starting 
+ Container plataforma-limpia-api-1 Started 
+ Container plataforma-limpia-cliente-1 Starting 
+ Container plataforma-limpia-cliente-1 Started 
+SERVICE   STATUS
+cliente   Up 5 minutes (healthy)
+db        Up 5 minutes (healthy)
+servicios saludables: 2 de 3, a los 344 s
+
+## Paso 4 · migraciones, conjunto de prueba y base de pruebas
+$ bin/rails db:prepare
+service "api" is not running
+exit=1
+$ bin/rails datos_de_prueba:cargar
+service "api" is not running
+exit=1 · 0 s
+$ RAILS_ENV=test bin/rails db:prepare
+service "api" is not running
+exit=1
+
+## RESULTADO DEL PASO 3 EN EL PRIMER INTENTO: FALLÓ
+api: api Exited (0) 6 minutes ago
+Causa, del registro del contenedor:
+  67:api-1  | /usr/local/bundle/ruby/4.0.0/gems/activerecord-8.1.3.1/lib/active_record/connection_adapters/postgresql/database_statements.rb:167:in 'PG::Connection#exec': PG::UndefinedTable: ERROR:  relation "solid_queue_recurring_t
+  163:api-1  | /usr/local/bundle/ruby/4.0.0/gems/activerecord-8.1.3.1/lib/active_record/connection_adapters/postgresql/database_statements.rb:167:in 'PG::Connection#exec': ERROR:  relation "solid_queue_recurring_tasks" does not exis
+  api-1  | Detected Solid Queue has gone away, stopping Puma...
+  api-1  | Exiting
+
+## Desvío para seguir el recorrido: las migraciones se aplican con un contenedor efímero, sin editar archivos
+$ docker compose -p plataforma-limpia run --rm api bin/rails db:prepare
+ Container plataforma-limpia-api-run-9559f779d451 Created 
+
+
+exit=0
+$ docker compose -p plataforma-limpia up -d
+ Container plataforma-limpia-api-1 Starting 
+ Container plataforma-limpia-api-1 Started 
+SERVICE   STATUS
+api       Up 12 seconds (healthy)
+cliente   Up 6 minutes (healthy)
+db        Up 6 minutes (healthy)
+servicios saludables: 3 de 3, a los 12 s
+
+## Paso 4 · conjunto de prueba y base de pruebas
+$ bin/rails datos_de_prueba:cargar
+Conjunto de prueba cargado: 184 cuentas, 400 anuncios, 36000 entregas, 16000 mensajes, 2000 bitacora.
+Todas las cuentas, bajo @datos-de-prueba.test, usan la contraseña «prueba-2026».
+exit=0 · 22 s
+$ RAILS_ENV=test bin/rails db:prepare
+Created database 'plataforma_desarrollo_prueba'
+exit=0
+
+Verificación del esquema y del volumen:
+tablas propias: 19
+usuario: 184
+anio_lectivo: 2 (cerrado, vigente)
+anuncio: 400
+entrega_anuncio: 36000
+mensaje: 16000
+bitacora_envio: 2000
+volumen declarado en RNF-09: 184 cuentas, 400 anuncios, 36.000 filas de entrega y 16.000 mensajes
+
+## Paso 5 · reposición de la cuenta directiva
+$ bin/rails directivo:reponer_credencial
+Cuenta directiva repuesta: (correo de DIRECTIVO_CORREO)
+Exige el cambio de credencial en el primer acceso (RF-43).
+exit=0
+Verificación de CP-RF-43 sobre la copia limpia:
+  POST /sesiones con la credencial provisional → 201 · credencial_provisional=True
+  GET /paneles/me antes del cambio → 403 · codigo=credencial_provisional_sin_cambiar
+  PATCH /usuarios/me/contrasena → 200 · credencial_provisional=False
+  GET /paneles/me después del cambio → 200 · rol=directivo
+
+## Paso 6 · túnel y certificado
+Ver docs/evidencia/cp-rnf-06-2026-11-05.txt: HTTPS responde con certificado válido, pero la
+petición en texto plano con token válido responde 200 y sirve datos.
+
+## Paso 7 · registrar el cliente en el dispositivo de prueba
+No ejecutado: requiere un teléfono y a su dueño.
+
+## Paso 8 · colección de validación
+$ npx newman run openapi/postman_collection.json -e openapi/postman_environment.json --reporters cli,json --reporter-json-export docs/evidencia/newman-2026-11-05.json
+Peticiones 36, fallidas 0, aserciones 0. Estados: 401×21, 404×13, 422×2. Ninguna respuesta 2xx.
+Con las credenciales de la copia cargadas por --env-var: 200×8, 201×1, 204×1, 403×6, 404×14, 409×1, 422×5; aserciones 0.
+La colección no encadena identificadores ni afirma nada: «0 fallidas» no acredita ningún resultado.
+
+$ npx newman run docs/registro-qa/postman/plataforma_pruebas.postman_collection.json -e docs/registro-qa/postman/plataforma_local.postman_environment.json
+Peticiones 178, fallidas 0, aserciones 217, fallidas 0. Estados: 200×34, 201×20, 204×1, 401×41, 403×63, 404×3, 409×4, 410×2, 422×10.
+Salida completa en docs/evidencia/newman-aserciones-2026-11-05.txt.
+
+Comparación de la colección de openapi/ contra la Tabla 18: 36 de 36 operaciones Must have, sin sobrantes; ninguna de las 5 Should have figura en ella.
+
+## Resultado de la primera pasada: FALLIDO en el paso 3
+Construcción sin caché: 225 s (3 min 45 s). Con la base vacía, el contenedor de la interfaz sale al arrancar porque
+el supervisor de Solid Queue, dentro de Puma, consulta tablas que recién crean las migraciones del paso 4, y el paso 4
+no puede ejecutarse con exec porque el contenedor ya salió. Para recorrer el resto se aplicaron las migraciones con
+un contenedor efímero, sin editar archivos versionados.
+Nota: desde hotfix/CP-RNF-17-coleccion-con-aserciones, esa colección es openapi/postman_collection.json y la anterior deja de existir.

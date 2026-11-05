@@ -23,7 +23,7 @@ class BajaLogica
   end
 
   # RN-12 · «No se puede dar de baja a un tutor que mantenga al menos un alumno activo
-  # en cualquier curso.» CU-05 E3 (Tabla 24, fila 409) con la regla consignada.
+  # en cualquier curso.» CU-05 E3 (Tabla 26, fila 409) con la regla consignada.
   #
   # «Alumno activo en un curso» se lee como el alumno no dado de baja que conserva una
   # vinculación vigente con un curso, con independencia de que ya haya activado su

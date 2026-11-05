@@ -1,0 +1,130 @@
+{
+ "ancho": 360,
+ "resultados": [
+  {
+   "cod": "TC-01",
+   "nombre": "Primer acceso con la credencial provisional y sustitución",
+   "ok": true
+  },
+  {
+   "cod": "TC-02",
+   "nombre": "Año lectivo (RN-31 lo impide si ya hay uno vigente) y curso",
+   "ok": true
+  },
+  {
+   "cod": "TC-03",
+   "nombre": "Alta de un docente y asignación como titular",
+   "ok": true
+  },
+  {
+   "cod": "TC-04",
+   "nombre": "Regenerar el código de activación de un docente",
+   "ok": true
+  },
+  {
+   "cod": "TC-05",
+   "nombre": "Desvincular a un docente designando otro titular",
+   "ok": true
+  },
+  {
+   "cod": "TC-06",
+   "nombre": "Estado agregado de entrega y lectura por curso",
+   "ok": true
+  },
+  {
+   "cod": "TC-07",
+   "nombre": "Horario de disponibilidad y preferencias (directivo)",
+   "ok": true
+  },
+  {
+   "cod": "TC-08",
+   "nombre": "Activar la cuenta con el código de activación (docente)",
+   "ok": true
+  },
+  {
+   "cod": "TC-09",
+   "nombre": "Alta de un alumno, su curso y sus tutores",
+   "ok": true
+  },
+  {
+   "cod": "TC-10",
+   "nombre": "Baja de un alumno y de un tutor de su curso",
+   "ok": true
+  },
+  {
+   "cod": "TC-11",
+   "nombre": "Publicar un anuncio dirigido a un curso",
+   "ok": true
+  },
+  {
+   "cod": "TC-13",
+   "nombre": "Constancias de lectura de un anuncio propio",
+   "ok": true
+  },
+  {
+   "cod": "TC-12",
+   "nombre": "Eliminar un anuncio propio ya publicado",
+   "ok": true
+  },
+  {
+   "cod": "TC-14",
+   "nombre": "Enviar un mensaje en el canal grupal del curso (docente)",
+   "ok": true
+  },
+  {
+   "cod": "TC-15",
+   "nombre": "Activar la cuenta con el código (tutor)",
+   "ok": true
+  },
+  {
+   "cod": "TC-16",
+   "nombre": "Iniciar sesión y reconocer la bandeja como vista de entrada (tutor)",
+   "ok": true
+  },
+  {
+   "cod": "TC-17",
+   "nombre": "Localizar un anuncio anterior con los filtros del historial",
+   "ok": true
+  },
+  {
+   "cod": "TC-18",
+   "nombre": "Abrir el detalle de un anuncio y registrar su lectura (tutor)",
+   "ok": true
+  },
+  {
+   "cod": "TC-19",
+   "nombre": "Enviar un mensaje en el canal grupal del curso (tutor)",
+   "ok": true
+  },
+  {
+   "cod": "TC-20",
+   "nombre": "Horario de disponibilidad y preferencias (tutor)",
+   "ok": true
+  },
+  {
+   "cod": "TC-21",
+   "nombre": "Activar la cuenta con el código (alumno)",
+   "ok": true
+  },
+  {
+   "cod": "TC-22",
+   "nombre": "Consultar los anuncios dirigidos a su curso (alumno)",
+   "ok": true
+  },
+  {
+   "cod": "TC-23",
+   "nombre": "Abrir el detalle y registrar su lectura (alumno)",
+   "ok": true
+  },
+  {
+   "cod": "TC-24",
+   "nombre": "Preferencias de recepción (alumno)",
+   "ok": true
+  }
+ ],
+ "desborde": {
+  "v": 0,
+  "donde": ""
+ },
+ "errores": []
+}

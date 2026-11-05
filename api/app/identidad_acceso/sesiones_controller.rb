@@ -1,10 +1,10 @@
 # RF-01 Autenticación de usuarios · CU-01 · RN-09, RN-11, RN-15
 # Prueba: CP-RF-01 · CP-RNF-02 · CP-RNF-03
 #
-# Tabla 27 · POST /api/v1/sesiones (sin autenticar) · DELETE /api/v1/sesiones
+# Tabla 18 · POST /api/v1/sesiones (sin autenticar) · DELETE /api/v1/sesiones
 # (directivo, docente, tutor, alumno).
 class SesionesController < ApplicationController
-  # Tabla 27 · POST /sesiones: «Sin autenticar». DELETE /sesiones: «Directivo, docente,
+  # Tabla 18 · POST /sesiones: «Sin autenticar». DELETE /sesiones: «Directivo, docente,
   # tutor, alumno».
   autoriza :crear,    roles: Autorizacion::SIN_AUTENTICAR
   autoriza :destruir, roles: %w[directivo docente tutor alumno]
@@ -26,7 +26,7 @@ class SesionesController < ApplicationController
   # RNF-02 · el token es verificable sin estado. Cerrar la sesión consiste en que el
   # cliente descarte el token: mantener una lista de tokens revocados introduciría el
   # estado que el requisito excluye. La operación verifica la sesión y responde sin
-  # cuerpo, conforme a la Tabla 40.
+  # cuerpo, conforme a la Tabla 31.
   def destruir
     head :no_content
   end

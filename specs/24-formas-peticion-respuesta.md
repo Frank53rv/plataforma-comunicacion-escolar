@@ -2,7 +2,7 @@
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 29 · Formas de petición y respuesta por operación
+# Tabla 31 · Formas de petición y respuesta por operación
 
 | Operación | Parámetros o cuerpo de la petición | Cuerpo de la respuesta de éxito |
 |---|---|---|

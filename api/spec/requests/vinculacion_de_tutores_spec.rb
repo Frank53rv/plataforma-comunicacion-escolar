@@ -1,8 +1,8 @@
 # RF-14 Vinculación de tutores a alumnos · CU-05 E1 y flujo A · RN-04, RN-29
 # Prueba: CP-RF-14
 #
-# Tabla 43 · «Vinculación de un tercer tutor · Alumno con dos tutores vigentes ·
-# Rechazo 409 con RN-29.»
+# Tabla 34 · Vinculación de un tercer tutor · Alumno con dos tutores vigentes ·
+# Rechazo 409 con RN-29.
 require "rails_helper"
 
 RSpec.describe "Vinculación de tutores a alumnos", type: :request do

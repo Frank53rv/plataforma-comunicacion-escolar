@@ -1,5 +1,5 @@
-# GENERADO desde specs/20-endpoints.json (Tabla 18), las convenciones de la Tabla 28
-# y las formas de la Tabla 29. RNF-17 · CP-RNF-17.
+# GENERADO desde specs/20-endpoints.json (Tabla 18), las convenciones de la Tabla 30
+# y las formas de la Tabla 31. RNF-17 · CP-RNF-17.
 #
 # La verificación consiste en contrastar las rutas del enrutador contra las de este
 # archivo y contra el inventario de la Tabla 18, con diferencia nula en los tres
@@ -7,34 +7,34 @@
 openapi: 3.1.0
 info:
   title: API REST de un colegio para una plataforma de comunicación escolar
-  version: 1.0.0
+  version: 1.0.1
   description: |
-    Interfaz de programación del producto mínimo viable. Cuarenta y dos operaciones
-    sobre HTTP más el canal de tiempo real, derivadas de los quince casos de uso de la
-    Tabla 13.
+    Interfaz de programación del producto mínimo viable. Cuarenta y una operaciones
+    sobre HTTP —36 Must have y 5 Should have descritas y no construidas— más el canal de
+    tiempo real, derivadas de los quince casos de uso de la Tabla 13.
 
     El canal de tiempo real no figura entre las rutas de este archivo por no ser una
     operación HTTP: se establece en `WSS /cable`, presentando el mismo token de
     portador en el parámetro de conexión, con `canal` y `conversacion_id` en la
     suscripción. Realiza RF-25, RF-29 y RF-32 para docente, tutor y alumno (CU-12).
 
-    Convenciones de la Tabla 39 aplicadas a la totalidad de las operaciones:
+    Convenciones de la Tabla 30 aplicadas a la totalidad de las operaciones:
     identificador universal único en rutas y cuerpos; JSON en petición y respuesta con
     nombres de campo iguales a los del diccionario de la Tabla 14; fechas conforme a
     ISO 8601 con desplazamiento explícito, almacenadas y respondidas en tiempo
     universal coordinado; paginación con `pagina` y `por_pagina`, veinticinco por
     omisión y cien como máximo; cuerpo de petición de hasta 1 MB, salvo la carga de
-    adjuntos, limitada a 5 MB por archivo.
+    adjuntos, limitada a 5 MB por archivo. Lo que excede ese tamaño responde 413.
 
     El catálogo de errores es cerrado: ninguna operación emite un estado fuera de los
-    nueve de la Tabla 35.
+    nueve de la Tabla 26.
 servers:
   - url: https://{host}/api/v1
     description: Entorno de demostración expuesto por túnel con certificado válido
     variables:
       host:
         default: localhost
-        description: Valor de APP_HOST (Tabla 30)
+        description: Valor de APP_HOST (Tabla 32)
 security:
   - portador: []
 paths:
@@ -181,7 +181,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anio*]
+              required: [anio]
               properties:
                 anio:
                   type: integer
@@ -268,7 +268,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anio_lectivo_id*, nombre, turno]
+              required: [anio_lectivo_id, nombre, turno]
               properties:
                 anio_lectivo_id:
                   type: string
@@ -286,7 +286,7 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '409':
-          description: nombre de curso repetido en el mismo año lectivo (CU-03 E2)
+          description: nombre de curso repetido en el mismo año lectivo (CU-03 E2) o año lectivo cerrado (RN-26)
           content:
             application/problem+json:
               schema: { $ref: '#/components/schemas/Problema' }
@@ -362,6 +362,11 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '404': { $ref: '#/components/responses/NoEncontrado' }
+        '409':
+          description: nombre de curso repetido en el mismo año lectivo (CU-03 E2) o año lectivo cerrado (RN-26)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
         '422': { $ref: '#/components/responses/DatosInaceptables' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /docentes:
@@ -413,7 +418,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [usuario_id*, es_titular*]
+              required: [usuario_id, es_titular]
               properties:
                 usuario_id:
                   type: string
@@ -429,6 +434,11 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '404': { $ref: '#/components/responses/NoEncontrado' }
+        '409':
+          description: conflicto con una regla del dominio, con su código (RN-13)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
         '422': { $ref: '#/components/responses/DatosInaceptables' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /cursos/{id}/docentes/{usuarioId}:
@@ -494,6 +504,11 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '404': { $ref: '#/components/responses/NoEncontrado' }
+        '409':
+          description: el docente conserva alguna vinculación vigente (RN-13)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /usuarios/{id}/codigos-activacion:
     parameters:
@@ -516,6 +531,7 @@ paths:
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
         '404': { $ref: '#/components/responses/NoEncontrado' }
+        '422': { $ref: '#/components/responses/DatosInaceptables' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /alumnos:
     post:
@@ -530,7 +546,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [nombre, apellido, correo, curso_id*]
+              required: [nombre, apellido, correo, curso_id]
               properties:
                 nombre:
                   type: string
@@ -660,7 +676,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [titulo, cuerpo, cursos*]
+              required: [titulo, cuerpo, cursos]
               properties:
                 titulo:
                   type: string
@@ -711,7 +727,7 @@ paths:
         - name: orden
           in: query
           required: false
-          description: Tabla 28 · por fecha de publicación, descendente por omisión.
+          description: Tabla 30 · por fecha de publicación, descendente por omisión.
           schema: { type: string, enum: ['publicado_en:desc', 'publicado_en:asc'], default: 'publicado_en:desc' }
         - name: pagina
           in: query
@@ -863,7 +879,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anuncio_version_ids*]
+              required: [anuncio_version_ids]
               properties:
                 anuncio_version_ids:
                   type: array
@@ -891,7 +907,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anuncio_version_ids*]
+              required: [anuncio_version_ids]
               properties:
                 anuncio_version_ids:
                   type: array
@@ -919,7 +935,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [anuncio_version_id*]
+              required: [anuncio_version_id]
               properties:
                 anuncio_version_id:
                   type: string
@@ -932,6 +948,7 @@ paths:
               schema: { $ref: "#/components/schemas/EntregaAnuncio" }
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/NoHabilitado' }
+        '404': { $ref: '#/components/responses/NoEncontrado' }
         '422': { $ref: '#/components/responses/DatosInaceptables' }
         '500': { $ref: '#/components/responses/ErrorInterno' }
   /cursos/{id}/conversaciones:
@@ -1032,7 +1049,7 @@ paths:
         - name: orden
           in: query
           required: false
-          description: Tabla 28 · por fecha de envío, descendente por omisión.
+          description: Tabla 30 · por fecha de envío, descendente por omisión.
           schema: { type: string, enum: ['enviado_en:desc', 'enviado_en:asc'], default: 'enviado_en:desc' }
       responses:
         '200':
@@ -1131,7 +1148,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [ultimo_mensaje_id*]
+              required: [ultimo_mensaje_id]
               properties:
                 ultimo_mensaje_id:
                   type: string
@@ -1211,7 +1228,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [hora_inicio*, hora_fin*, recibir_mensajes*]
+              required: [hora_inicio, hora_fin, recibir_mensajes]
               properties:
                 hora_inicio:
                   type: string
@@ -1289,14 +1306,14 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: >-
-        Tabla 39 · encabezado de autorización con el esquema de portador y el token de
+        Tabla 30 · encabezado de autorización con el esquema de portador y el token de
         RF-01. La conexión del canal de tiempo real presenta el mismo token.
 
   responses:
     NoAutenticado:
       description: >-
         Credencial inválida, cuenta dada de baja, token ausente, expirado o alterado
-        (Tabla 35 · CU-01 E1 y E2 · RNF-02). El mensaje no distingue cuál de los dos
+        (Tabla 26 · CU-01 E1 y E2 · RNF-02). El mensaje no distingue cuál de los dos
         datos falló.
       content:
         application/problem+json:
@@ -1306,41 +1323,41 @@ components:
         Autenticado pero no habilitado: credencial provisional sin cambiar, rol sin la
         atribución, docente no vinculado al curso, anuncio del que no es autor,
         participación en conversación ajena, o supervisión que no habilita emitir
-        (Tabla 35).
+        (Tabla 26).
       content:
         application/problem+json:
           schema: { $ref: '#/components/schemas/Problema' }
     NoEncontrado:
-      description: Recurso ajeno a las vinculaciones de quien consulta (Tabla 35 · CU-09 E1).
+      description: Recurso ajeno a las vinculaciones de quien consulta (Tabla 26 · CU-09 E1).
       content:
         application/problem+json:
           schema: { $ref: '#/components/schemas/Problema' }
     CodigoNoVigente:
-      description: Código de activación vencido, ya utilizado o inexistente (Tabla 35 · CU-02 E1).
+      description: Código de activación vencido, ya utilizado o inexistente (Tabla 26 · CU-02 E1).
       content:
         application/problem+json:
           schema: { $ref: '#/components/schemas/Problema' }
     AdjuntoDemasiadoGrande:
-      description: Archivo adjunto que supera los 5 MB (Tabla 35 · RN-33).
+      description: Archivo adjunto que supera los 5 MB (Tabla 26 · RN-33).
       content:
         application/problem+json:
           schema: { $ref: '#/components/schemas/Problema' }
     FormatoNoAdmitido:
-      description: Archivo adjunto en un formato distinto de PDF (Tabla 35 · RN-33).
+      description: Archivo adjunto en un formato distinto de PDF (Tabla 26 · RN-33).
       content:
         application/problem+json:
           schema: { $ref: '#/components/schemas/Problema' }
     DatosInaceptables:
       description: >-
         Petición bien formada con datos inaceptables, incluida la publicación con más
-        de tres adjuntos (Tabla 35 · RN-33 y validaciones de forma).
+        de tres adjuntos (Tabla 26 · RN-33 y validaciones de forma).
       content:
         application/problem+json:
           schema: { $ref: '#/components/schemas/Problema' }
     ErrorInterno:
       description: >-
         Fallo no previsto, registrado en la bitácora sin exponer detalle interno
-        (Tabla 35 · Boundary 6).
+        (Tabla 26 · Boundary 6).
       content:
         application/problem+json:
           schema: { $ref: '#/components/schemas/Problema' }
@@ -1349,8 +1366,8 @@ components:
     Problema:
       type: object
       description: >-
-        Tabla 39 · objeto conforme a RFC 9457 con los miembros de la norma más «codigo»
-        y «regla», según el catálogo de la Tabla 35. Ningún cuerpo de error revela
+        Tabla 30 · objeto conforme a RFC 9457 con los miembros de la norma más «codigo»
+        y «regla», según el catálogo de la Tabla 26. Ningún cuerpo de error revela
         detalle interno.
       required: [type, title, status, detail, codigo]
       properties:
@@ -1397,9 +1414,9 @@ components:
     CodigoActivacion:
       type: object
       description: >-
-        Tabla 40 · «codigo_activacion con vence_en». El código en claro no figura acá: la
+        Tabla 31 · «codigo_activacion con vence_en». El código en claro no figura acá: la
         entidad almacena su derivación y no el valor, del mismo modo que la contraseña
-        (nota de la Tabla 40 · RN-06 · RNF-03).
+        (nota de la Tabla 31 · RN-06 · RNF-03).
       required: [vence_en]
       properties:
         vence_en: { type: string, format: date-time }
@@ -1410,7 +1427,7 @@ components:
         - type: object
           description: >-
             El código se devuelve en claro una sola vez, en la respuesta de la operación
-            que lo genera o regenera, y no vuelve a ser recuperable (nota de la Tabla 29).
+            que lo genera o regenera, y no vuelve a ser recuperable (nota de la Tabla 31).
             Forma LLLLLLLL-SSSSSSSS.
           properties:
             codigo: { type: string }
@@ -1461,7 +1478,7 @@ components:
         estado: { type: string, enum: [vigente, archivado] }
         alumnos_vinculados:
           type: integer
-          description: Cantidad de alumnos vinculados (Tabla 40, GET /cursos).
+          description: Cantidad de alumnos vinculados (GET /cursos).
 
     CursoConNomina:
       description: >-
@@ -1581,7 +1598,7 @@ components:
         autor: { $ref: '#/components/schemas/Usuario' }
         leido:
           type: boolean
-          description: Estado de lectura de quien consulta (Tabla 40, GET /anuncios).
+          description: Estado de lectura de quien consulta (Tabla 31, GET /anuncios).
 
     Adjunto:
       type: object
@@ -1608,8 +1625,8 @@ components:
       type: object
       description: >-
         RN-21 · el docente ve cuántos leyeron sobre el total y la nómina de quiénes no.
-        La nómina devuelve el nombre del alumno y el estado de lectura de su familia,
-        pero no el de cada tutor por separado (nota de la Tabla 40).
+        La nómina lista a todo destinatario sin lectura, alumno o tutor: cada elemento
+        lleva la clave de su rol.
       properties:
         total_destinatarios: { type: integer }
         con_lectura_registrada: { type: integer }
@@ -1624,11 +1641,12 @@ components:
                   id: { type: string, format: uuid }
                   nombre: { type: string }
                   apellido: { type: string }
-              familia_alcanzada:
-                type: boolean
-                description: >-
-                  RF-38 · derivado: al menos uno de los tutores del alumno registró
-                  lectura de la publicación vigente. Should have.
+              tutor:
+                type: object
+                properties:
+                  id: { type: string, format: uuid }
+                  nombre: { type: string }
+                  apellido: { type: string }
 
     EntregaAnuncio:
       type: object

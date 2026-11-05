@@ -18,6 +18,10 @@ class EnvioDeAvisoJob < ApplicationJob
   def perform(entrega_id)
     entrega = EntregaAnuncio.find_by(id: entrega_id)
     return if entrega.nil? || entrega.entregada_en.present?
+    # RN-11 · la baja revoca el acceso: la cuenta dada de baja no recibe avisos.
+    return unless entrega.destinatario.puede_autenticarse?
+    # RF-20 · RN-20 · el anuncio eliminado ya no se notifica, ni siquiera en un reintento.
+    return if entrega.anuncio_version.anuncio.estado_eliminado?
 
     titulo, cuerpo = contenido(entrega)
     EnvioDeAviso.para_entrega(entrega, titulo: titulo, cuerpo: cuerpo)

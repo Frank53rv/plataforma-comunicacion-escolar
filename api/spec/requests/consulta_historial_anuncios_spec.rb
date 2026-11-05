@@ -26,7 +26,7 @@ RSpec.describe "Consulta del historial de anuncios", type: :request do
 
   # CP-RF-22 · RF-22 (Tabla 10): «Todo usuario debe poder recuperar los anuncios que
   # le corresponden, filtrando por fecha, curso y remitente.» El ajeno a sus
-  # vinculaciones responde 404 (Tabla 24, fila 404, CU-09 E1).
+  # vinculaciones responde 404 (Tabla 26, fila 404, CU-09 E1).
   describe "CP-RF-22 · historial filtrado y ajeno" do
     it "filtra por curso, remitente y rango de fechas combinados" do
       otro_docente = create(:usuario, :docente)
@@ -138,9 +138,9 @@ RSpec.describe "Consulta del historial de anuncios", type: :request do
     end
   end
 
-  # specs/23-convenciones-api.md (Tabla 28) · «el historial de anuncios… ordena por
-  # fecha descendente por omisión».
-  describe "orden · Tabla 28" do
+  # specs/23-convenciones-api.md (Tabla 30) · «El historial de anuncios y el de mensajes
+  # ordenan por fecha descendente por omisión».
+  describe "orden · Tabla 30" do
     it "ordena por fecha de publicación descendente por omisión" do
       travel_to(2.minutes.ago) { publicar(cursos: [ curso.id ], titulo: "Primero") }
       publicar(cursos: [ curso.id ], titulo: "Segundo")

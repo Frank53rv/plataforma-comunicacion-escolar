@@ -1,9 +1,9 @@
 # RF-07 Regeneración de código de activación · CU-04, CU-05 · RN-07, RN-08
 # Prueba: CP-RF-07
 #
-# Tabla 27 · POST /api/v1/usuarios/{id}/codigos-activacion · «Directivo (docentes),
+# Tabla 18 · POST /api/v1/usuarios/{id}/codigos-activacion · «Directivo (docentes),
 # docente (alumnos y tutores)».
-# Tabla 40 · sin cuerpo → codigo_activacion con vence_en y el código en claro.
+# Tabla 31 · sin cuerpo → codigo_activacion con vence_en y el código en claro.
 require "rails_helper"
 
 RSpec.describe "Regeneración del código de activación", type: :request do
@@ -76,7 +76,7 @@ RSpec.describe "Regeneración del código de activación", type: :request do
     end
   end
 
-  it "responde la forma de la Tabla 40, con el código en claro" do
+  it "responde la forma de la Tabla 31, con el código en claro" do
     regenerar(alumno, por: docente_del_curso)
 
     expect(cuerpo.keys).to contain_exactly("vence_en", "codigo")

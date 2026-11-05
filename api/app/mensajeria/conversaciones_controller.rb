@@ -4,7 +4,7 @@
 # Tabla 18 · GET /api/v1/cursos/{id}/conversaciones · docente, tutor, alumno · «Obtener
 # los canales del curso que corresponden al rol». GET /api/v1/conversaciones · docente,
 # tutor, alumno · «Consultar las conversaciones del usuario».
-# Tabla 29 · canales del curso: sin parámetros → conversaciones visibles para el rol, con
+# Tabla 31 · canales del curso: sin parámetros → conversaciones visibles para el rol, con
 # tipo y estado. Conversaciones del usuario: pagina, por_pagina → colección de
 # conversacion con su último mensaje.
 # openapi/openapi.yaml · esquemas Conversacion y ConversacionConNoLeidos. La cantidad de
@@ -26,12 +26,10 @@ class ConversacionesController < ApplicationController
            status: :ok
   end
 
-  # Tabla 28 · colección paginada, ordenada por nombre del curso.
+  # Tabla 30 · colección paginada, ordenada por nombre del curso.
   def index
-    pagina = [ params[:pagina].to_i, 1 ].max
-    por_pagina = params[:por_pagina].to_i
-    por_pagina = 25 if por_pagina <= 0
-    por_pagina = [ por_pagina, 100 ].min
+    pagina = pagina_pedida
+    por_pagina = por_pagina_pedido
 
     relacion = Conversacion.del_usuario(usuario_actual).joins(:curso)
                            .order("curso.nombre ASC, conversacion.id ASC")

@@ -2,7 +2,7 @@
 # RN-23, RN-27, RN-28
 # Prueba: CP-RF-25 · CP-RF-28
 #
-# Tabla 14 · «Unidad de comunicación dentro de una conversación.» Tabla 27 · índice sobre
+# Tabla 14 · «Unidad de comunicación dentro de una conversación.» Tabla 29 · índice sobre
 # (conversacion_id, enviado_en descendente).
 class Mensaje < ApplicationRecord
   self.table_name = "mensaje"

@@ -2,7 +2,7 @@
 // · RN-06
 // Prueba: CP-RF-03 · CP-RF-04 · CP-RF-07
 //
-// Tabla 29 · el código de activación se devuelve en claro una sola vez, en la respuesta de la
+// Tabla 31 · el código de activación se devuelve en claro una sola vez, en la respuesta de la
 // operación que lo genera o lo regenera, y no vuelve a ser recuperable (RN-06, RNF-03): la
 // interfaz de programación guarda su derivación. Por eso se presenta hasta que la persona lo
 // da por leído y no se guarda en ningún lado.

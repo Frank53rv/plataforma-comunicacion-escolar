@@ -6,7 +6,7 @@
 # recepción emitido por el cliente». POST /api/v1/entregas/vistas · tutor, alumno ·
 # «Registrar en lote los eventos de vista». POST /api/v1/entregas/lecturas · tutor,
 # alumno · «Registrar el evento de lectura».
-# Tabla 29 · acuses y vistas: anuncio_version_ids como lista → cantidad registrada y
+# Tabla 31 · acuses y vistas: anuncio_version_ids como lista → cantidad registrada y
 # omitida por idempotencia. lecturas: anuncio_version_id → entrega_anuncio con leida_en.
 # openapi/openapi.yaml · esquemas RegistroEnLote y EntregaAnuncio.
 # Figura 9 · el disparador de la transición a entregada es el acuse emitido por el

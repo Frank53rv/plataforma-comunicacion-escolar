@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# Nota de la Tabla 34 · «las versiones … se actualizan únicamente dentro de la serie de
+# Nota de la Tabla 25 · «las versiones … se actualizan únicamente dentro de la serie de
 # parches durante la ejecución». Cada dependencia se fija a la serie de su versión.
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
@@ -15,15 +15,15 @@ gem "puma", ">= 5.0"
 # Se fija la serie que Ruby 4.0 provee como gema por defecto.
 gem "json", "~> 2.21.2"
 
-# Tabla 34 · JSON Web Token (RFC 7519) y derivación no reversible con bcrypt
+# Tabla 25 · JSON Web Token (RFC 7519) y derivación no reversible con bcrypt
 gem "bcrypt", "~> 3.1.22"
 gem "jwt", "~> 3.2.0"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
-# Tabla 34 · cola de trabajos y canal de tiempo real sobre la misma base de datos.
-# solid_cache no se incorpora: la nota de la Tabla 34 declara que el producto mínimo
+# Tabla 25 · cola de trabajos y canal de tiempo real sobre la misma base de datos.
+# solid_cache no se incorpora: la nota de la Tabla 25 declara que el producto mínimo
 # viable no compromete ninguna caché de aplicación (Boundary 7).
 gem "solid_queue", "~> 1.7.0"
 gem "solid_cable", "~> 4.0.2"
@@ -31,14 +31,14 @@ gem "solid_cable", "~> 4.0.2"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-# thruster no se incorpora: la Tabla 34 asigna la entrega de archivos estáticos y la
-# terminación de la conexión cifrada a nginx (Boundary 7).
+# thruster no se incorpora: la Tabla 25 asigna la entrega de archivos estáticos a nginx y la
+# terminación de la conexión cifrada al túnel (Boundary 7).
 
-# CORS_ORIGENES de la Tabla 30 · orígenes autorizados a consumir la interfaz
+# CORS_ORIGENES de la Tabla 32 · orígenes autorizados a consumir la interfaz
 gem "rack-cors", "~> 3.0.0"
 
 group :development, :test do
-  # Tabla 34 · pruebas de unidad e integración de la interfaz
+  # Tabla 25 · pruebas de unidad e integración de la interfaz
   gem "rspec-rails", "~> 8.0.4"
   gem "factory_bot_rails", "~> 6.5.1"
 
@@ -53,6 +53,6 @@ group :development, :test do
 end
 
 group :test do
-  # Tabla 34 · medición de cobertura de líneas, umbral del 70 % que RNF-20 compromete
+  # Tabla 25 · medición de cobertura de líneas, umbral del 70 % que RNF-20 compromete
   gem "simplecov", "~> 1.2.0", require: false
 end

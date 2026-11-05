@@ -1,8 +1,8 @@
 # RF-15 Vinculación de docentes a cursos · CU-04 · RN-02, RN-13
 # Pruebas: CP-RF-15 · CP-RF-03 (vinculación como titular)
 #
-# Tabla 27 · POST /api/v1/cursos/{id}/docentes · directivo.
-# Tabla 40 · petición: usuario_id, es_titular. Respuesta: recurso docente_curso.
+# Tabla 18 · POST /api/v1/cursos/{id}/docentes · directivo.
+# Tabla 31 · petición: usuario_id, es_titular. Respuesta: recurso docente_curso.
 require "rails_helper"
 
 RSpec.describe "Vinculación de docentes a cursos", type: :request do
@@ -63,7 +63,7 @@ RSpec.describe "Vinculación de docentes a cursos", type: :request do
     expect(DocenteCurso.vigentes.where(usuario_id: docente.id).count).to eq(2)
   end
 
-  it "responde el recurso docente_curso de la Tabla 40" do
+  it "responde el recurso docente_curso de la Tabla 31" do
     docente = create(:usuario, :docente)
 
     freeze_time do
@@ -85,7 +85,7 @@ RSpec.describe "Vinculación de docentes a cursos", type: :request do
   end
 
   describe "rechazos" do
-    # Tabla 14 · «Un único titular vigente por curso» · Tabla 38 · RN-13
+    # Tabla 29 · «UNIQUE parcial (curso_id) donde es_titular y vigente_hasta es nulo» · RN-13
     it "rechaza un segundo titular vigente con 409 y RN-13" do
       create(:docente_curso, curso: curso, es_titular: true)
 
@@ -96,7 +96,7 @@ RSpec.describe "Vinculación de docentes a cursos", type: :request do
       expect(curso.vinculaciones_docentes.vigentes.titulares.count).to eq(1)
     end
 
-    # Tabla 14 · «Par usuario-curso único entre los vigentes»
+    # Tabla 29 · «UNIQUE parcial (usuario_id, curso_id) donde vigente_hasta es nulo»
     it "rechaza la vinculación repetida con 422" do
       docente = create(:usuario, :docente)
       vincular(docente.id, es_titular: false)
@@ -120,7 +120,7 @@ RSpec.describe "Vinculación de docentes a cursos", type: :request do
       expect(response).to have_http_status(:unprocessable_content)
     end
 
-    it "rechaza la petición sin los campos de la Tabla 40" do
+    it "rechaza la petición sin los campos de la Tabla 31" do
       post "/api/v1/cursos/#{curso.id}/docentes",
            params: { usuario_id: create(:usuario, :docente).id },
            headers: cabecera_de(directivo), as: :json

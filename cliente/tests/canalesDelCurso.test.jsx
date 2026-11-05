@@ -2,7 +2,7 @@
 // Prueba: CP-RF-25 · CP-RF-29
 //
 // Tabla 18 · GET /cursos/{id}/conversaciones · docente, tutor, alumno · «las conversaciones del
-// curso visibles para el rol, con tipo y estado» (Tabla 29). El alumno lo tiene autorizado pero
+// curso visibles para el rol, con tipo y estado» (Tabla 31). El alumno lo tiene autorizado pero
 // recibe la colección vacía: el canal de RF-25 es de docentes y tutores (RF-24 es Should have).
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";

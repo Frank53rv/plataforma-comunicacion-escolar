@@ -1,8 +1,8 @@
 # RF-33 Configuración de preferencias · CU-13 · RN-18, RN-24
 # Prueba: CP-RF-33
 #
-# Tabla 14 · «Horario de disponibilidad y preferencias de recepción de un usuario.»
-# Tabla 27 · UNIQUE (usuario_id).
+# Tabla 14 · «Configuración de recepción de notificaciones de conversación de un usuario.»
+# Tabla 29 · UNIQUE (usuario_id).
 # specs/25-semantica-temporal.md · las horas de pared se interpretan en
 # America/Asuncion; la franja admite que hora_fin sea anterior a hora_inicio, caso en
 # que cruza la medianoche, y la igualdad de ambos extremos designa disponibilidad

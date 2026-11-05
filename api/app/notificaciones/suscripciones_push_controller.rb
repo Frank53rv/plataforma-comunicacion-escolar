@@ -4,7 +4,7 @@
 # Tabla 18 · POST /api/v1/suscripciones-push · directivo, docente, tutor, alumno ·
 # «Registrar el identificador de destino del navegador». DELETE
 # /api/v1/suscripciones-push/{id} · «Invalidar un identificador de destino».
-# Tabla 29 · POST: token, navegador → recurso suscripcion_push. DELETE: sin cuerpo →
+# Tabla 31 · POST: token, navegador → recurso suscripcion_push. DELETE: sin cuerpo →
 # recurso suscripcion_push con estado inválida.
 class SuscripcionesPushController < ApplicationController
   autoriza :crear, roles: %w[directivo docente tutor alumno]

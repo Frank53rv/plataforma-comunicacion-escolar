@@ -2,7 +2,7 @@
 # Prueba: CP-RF-01 · CP-RNF-03
 #
 # Tabla 14 · «Persona con acceso al sistema, bajo un único rol.»
-# Tabla 27 · nombre de tabla en singular.
+# Tabla 29 · nombre de tabla en singular.
 class Usuario < ApplicationRecord
   self.table_name = "usuario"
 
@@ -17,7 +17,7 @@ class Usuario < ApplicationRecord
     pendiente: "pendiente", activo: "activo", dado_de_baja: "dado_de_baja"
   }, prefix: :estado, validate: true
 
-  # Tabla 38 · nombre varchar(80) · apellido varchar(80)
+  # Tabla 29 · nombre varchar(80) · apellido varchar(80)
   validates :nombre, :apellido, :correo, presence: true
   validates :nombre, :apellido, length: { maximum: 80 }
   validates :correo, uniqueness: { case_sensitive: false }
@@ -36,7 +36,7 @@ class Usuario < ApplicationRecord
     BCrypt::Password.new(contrasena_hash) == valor
   end
 
-  # Tabla 40 · «recurso» es «la totalidad de los atributos de esa entidad en el
+  # Tabla 31 · «recurso» es «la totalidad de los atributos de esa entidad en el
   # diccionario, excluidos los que el resguardo impide exponer —la contraseña derivada».
   def recurso
     slice(:id, :nombre, :apellido, :correo, :rol, :estado, :credencial_provisional, :creado_en)
@@ -57,7 +57,7 @@ class Usuario < ApplicationRecord
   end
 
   # CU-01 (Tabla 13) precondición: la cuenta existe y está activada.
-  # CU-01 E2 (Tabla 24, fila 401) · la cuenta dada de baja tiene el acceso revocado.
+  # CU-01 E2 (Tabla 26, fila 401) · la cuenta dada de baja tiene el acceso revocado.
   def puede_autenticarse?
     estado_activo? && contrasena_hash.present?
   end

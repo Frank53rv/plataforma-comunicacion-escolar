@@ -44,7 +44,7 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  # Tabla 23 · la cola va sobre la misma base de datos: el adaptador lo fija
+  # Tabla 25 · la cola va sobre la misma base de datos: el adaptador lo fija
   # config/application.rb y no se declara una conexión separada.
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
@@ -66,7 +66,7 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  # Tabla 30 · CORS_ORIGENES: los mismos orígenes que consumen la interfaz abren el canal
+  # Tabla 32 · CORS_ORIGENES: los mismos orígenes que consumen la interfaz abren el canal
   # de tiempo real (WSS /cable).
   config.action_cable.allowed_request_origins =
     ENV.fetch("CORS_ORIGENES", "").split(",").map(&:strip).reject(&:empty?)

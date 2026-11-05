@@ -181,7 +181,7 @@ end
 
 RSpec.describe "Purga de la bitácora de envío", type: :model do
   # RNF-07 (Tabla 11): «La bitácora técnica de fallos de envío —causa, código de error del
-  # proveedor y token invalidado—, doce meses.»
+  # proveedor y token invalidado— se conserva doce meses y se purga al vencer ese plazo.»
   it "borra los registros anteriores al plazo y conserva los demás" do
     vieja = create(:bitacora_envio, ocurrido_en: 13.months.ago)
     reciente = create(:bitacora_envio, ocurrido_en: 11.months.ago)
@@ -192,7 +192,7 @@ RSpec.describe "Purga de la bitácora de envío", type: :model do
     expect(BitacoraEnvio.exists?(reciente.id)).to be(true)
   end
 
-  it "toma el plazo de RETENCION_BITACORA_MESES (Tabla 30)" do
+  it "toma el plazo de RETENCION_BITACORA_MESES (Tabla 32)" do
     create(:bitacora_envio, ocurrido_en: 4.months.ago)
     stub_const("ENV", ENV.to_hash.merge("RETENCION_BITACORA_MESES" => "3"))
 

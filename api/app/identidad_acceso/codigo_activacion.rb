@@ -5,12 +5,12 @@
 # Tabla 14 · «Código de un solo uso para la activación de una cuenta o la recuperación
 # de acceso.» Único por usuario entre los vigentes. Vencimiento de siete días. Se
 # invalida al usarse.
-# Tabla 27 · nombre de tabla en singular.
+# Tabla 29 · nombre de tabla en singular.
 #
 # El código tiene la forma LLLLLLLL-SSSSSSSS. El localizador son los ocho
 # primeros caracteres hexadecimales del id de la fila; el secreto son ocho caracteres
 # del alfabeto de Crockford, derivados con bcrypt en codigo_hash «del mismo modo que la
-# contraseña» (nota de la Tabla 40). El valor en claro no se almacena nunca.
+# contraseña» (nota de la Tabla 31). El valor en claro no se almacena nunca.
 class CodigoActivacion < ApplicationRecord
   self.table_name = "codigo_activacion"
 
@@ -32,7 +32,7 @@ class CodigoActivacion < ApplicationRecord
     # RF-05 · «Al registrar a una persona, el sistema debe generar un código de
     # activación de un solo uso, con vencimiento de siete días, asociado a ella.»
     # Devuelve la fila y el código en claro. El código en claro sólo existe en esta
-    # respuesta y no vuelve a ser recuperable (nota de la Tabla 29).
+    # respuesta y no vuelve a ser recuperable (nota de la Tabla 31).
     def generar(usuario:, generado_por:)
       secreto = Array.new(LARGO_SECRETO) { ALFABETO[SecureRandom.random_number(ALFABETO.size)] }.join
       registro = create!(
@@ -86,7 +86,7 @@ class CodigoActivacion < ApplicationRecord
     usado_en.nil? && vence_en > Time.current
   end
 
-  # Tabla 40 · «codigo_activacion con vence_en» y, en la operación que lo genera o
+  # Tabla 31 · «codigo_activacion con vence_en» y, en la operación que lo genera o
   # regenera, «el código en claro, devuelto una sola vez». Nada más: la fila no
   # se expone como recurso.
   def representacion(codigo_en_claro: nil)

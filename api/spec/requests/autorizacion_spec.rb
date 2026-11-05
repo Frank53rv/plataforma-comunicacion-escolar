@@ -41,7 +41,7 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
     end
 
     %w[docente tutor alumno].each do |rol|
-      it "rechaza a #{rol} con 403, que es el estado que la Tabla 35 asigna" do
+      it "rechaza a #{rol} con 403, que es el estado que la Tabla 26 asigna" do
         request.headers.merge!(cabecera_de(create(:usuario, rol: rol)))
 
         get :dato_academico
@@ -51,7 +51,7 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
       end
     end
 
-    it "rechaza sin token con 401 y no con 403, conforme al orden de la Tabla 35" do
+    it "rechaza sin token con 401 y no con 403, conforme al orden de la Tabla 26" do
       get :dato_academico
 
       expect(response).to have_http_status(:unauthorized)
@@ -76,7 +76,7 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
     end
   end
 
-  # CP-RF-02 · la misma verificación sobre una operación real de la Tabla 27 que expone
+  # CP-RF-02 · la misma verificación sobre una operación real de la Tabla 18 que expone
   # datos académicos: POST /cursos/{id}/docentes, habilitada sólo para el directivo.
   describe "CP-RF-02 · sobre una operación de datos académicos" do
     let(:curso) { create(:curso) }
@@ -154,7 +154,7 @@ RSpec.describe "Control de acceso basado en roles", type: :request do
         siguiente = declarados == :sin_autenticar ? declarados : Array(declarados).sort
         objetivo  = esperados  == :sin_autenticar ? esperados  : Array(esperados).sort
 
-        "#{e['metodo']} #{e['ruta']}: declara #{siguiente.inspect}, la Tabla 27 dice #{objetivo.inspect}" \
+        "#{e['metodo']} #{e['ruta']}: declara #{siguiente.inspect}, la Tabla 18 dice #{objetivo.inspect}" \
           unless siguiente == objetivo
       end
 

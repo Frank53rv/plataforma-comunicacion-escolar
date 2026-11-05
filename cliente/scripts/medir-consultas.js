@@ -3,8 +3,8 @@
 //
 // RNF-09 (Tabla 11) · «Los endpoints de consulta de anuncios e historial responden en menos de
 // 1,5 segundos en el percentil 95 de 100 peticiones consecutivas, sobre un conjunto de prueba
-// equivalente a dos años lectivos del curso piloto.» Tabla 37 · instrumento: «medición sobre
-// peticiones repetidas con la paginación por omisión de la Tabla 28».
+// equivalente a dos años lectivos del curso piloto.» Tabla 39 · instrumento: «medición sobre
+// peticiones repetidas con la paginación por omisión de la Tabla 30».
 //
 // Pide cada consulta 100 veces seguidas, con la cuenta de un rol que la tiene autorizada, y
 // informa el mínimo, la mediana, el percentil 95 y el máximo en milisegundos. Sobre el conjunto

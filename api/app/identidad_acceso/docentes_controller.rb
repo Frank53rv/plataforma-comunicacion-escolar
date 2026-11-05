@@ -2,9 +2,9 @@
 # CU-04 · RN-01, RN-02, RN-05, RN-11, RN-13, RN-14
 # Prueba: CP-RF-03 · CP-RF-44
 #
-# Tabla 27 · POST /api/v1/docentes · directivo · «Dar de alta a un docente y generar su
+# Tabla 18 · POST /api/v1/docentes · directivo · «Dar de alta a un docente y generar su
 # código» · RF-03, RF-05.
-# Tabla 27 · DELETE /api/v1/docentes/{id} · directivo · «Dar de baja lógica a un
+# Tabla 18 · DELETE /api/v1/docentes/{id} · directivo · «Dar de baja lógica a un
 # docente» · RF-44.
 class DocentesController < ApplicationController
   # RN-02 · «El directivo … da de alta a los docentes y les asigna cursos.»
@@ -19,7 +19,7 @@ class DocentesController < ApplicationController
   def crear
     alta = RegistroDePersona.registrar(**parametros, rol: "docente", registrado_por: usuario_actual)
 
-    # Tabla 29 · recurso usuario y codigo_activacion con vence_en, con el código
+    # Tabla 31 · recurso usuario y codigo_activacion con vence_en, con el código
     # en claro devuelto una sola vez.
     render json: {
       usuario: alta.usuario.recurso,
@@ -27,7 +27,7 @@ class DocentesController < ApplicationController
     }, status: :created
   end
 
-  # Tabla 40 · sin cuerpo → recurso usuario con estado dado de baja.
+  # Tabla 31 · sin cuerpo → recurso usuario con estado dado de baja.
   def destruir
     docente = Usuario.docente.find(params[:id])
 

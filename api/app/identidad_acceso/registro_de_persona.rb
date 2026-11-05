@@ -14,7 +14,7 @@ class RegistroDePersona
   def self.registrar(nombre:, apellido:, correo:, rol:, registrado_por:)
     ActiveRecord::Base.transaction do
       # La contraseña la define la propia persona al canjear su código (RN-06 · CU-02
-      # paso 4). Hasta entonces la Tabla 38 exige contrasena_hash no nulo: se deriva un
+      # paso 4). Hasta entonces la Tabla 29 exige contrasena_hash no nulo: se deriva un
       # valor aleatorio que no se conserva ni se comunica a nadie. La cuenta pendiente no
       # puede autenticarse con él porque no está activa (CU-01, precondición).
       usuario = Usuario.create!(

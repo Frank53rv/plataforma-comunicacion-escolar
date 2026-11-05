@@ -1,7 +1,7 @@
 # RF-04 Alta de alumnos y tutores · RF-05 · CU-05 · RN-01, RN-03, RN-05
 # Pruebas: CP-RF-04 · CP-RF-05 (de extremo a extremo sobre la operación)
 #
-# Tabla 27 · POST /api/v1/alumnos y POST /api/v1/alumnos/{id}/tutores · docente.
+# Tabla 18 · POST /api/v1/alumnos y POST /api/v1/alumnos/{id}/tutores · docente.
 require "rails_helper"
 
 RSpec.describe "Alta de alumnos y tutores", type: :request do
@@ -108,7 +108,7 @@ RSpec.describe "Alta de alumnos y tutores", type: :request do
   end
 
   describe "validaciones de forma · 422" do
-    it "rechaza el alumno sin los campos de la Tabla 40" do
+    it "rechaza el alumno sin los campos de la Tabla 31" do
       post "/api/v1/alumnos", params: { nombre: "Solo", curso_id: curso.id },
            headers: cabecera_de(docente), as: :json
 
