@@ -1,0 +1,788 @@
+# Fase 3 · suite de la interfaz sobre main (f342496) · 2026-11-05T13:07:31+00:00
+# Comando: docker compose exec -e RAILS_ENV=test api bundle exec rspec
+
+/api/spec/spec_helper.rb:8:in 'block in <top (required)>': [DEPRECATION] `SimpleCov.track_files` is deprecated. Replace with `SimpleCov.cover "{app,lib}/**/*.rb"` — `cover` includes unloaded files on disk (the historical `track_files` behavior) and also restricts the report to the matching set. If you want to keep additional files outside "{app,lib}/**/*.rb" in the report, pass every directory you care about, e.g. `cover "{app,lib}/**/*.rb", "app/**/*.rb"`.
+
+Randomized with seed 39381
+
+Supervisión directiva del estado de la comunicación
+  CP-RF-45 · estado agregado por curso
+    un anuncio dirigido a varios cursos aporta a cada curso el recuento de su propia comunidad
+    agrega, por curso, la cantidad de anuncios y el estado de entrega y lectura
+  autorización
+    rechaza a alumno con 403
+    rechaza sin token con 401
+    rechaza a tutor con 403
+    admite al directivo
+    rechaza a docente con 403
+  consultas por lote
+    no lanza una consulta por anuncio, y el resultado es el mismo
+  año lectivo de la consulta
+    por omisión usa el año lectivo vigente
+    admite consultar un año lectivo distinto, ya cerrado
+
+Administración de cursos
+  validaciones de forma · 422
+    responde 404 si el año lectivo no existe
+    rechaza la petición sin alguno de los tres campos
+  GET /api/v1/cursos
+    responde la colección con la cantidad de alumnos vinculados, forma de la Tabla 28
+    restringe al docente a sus propios cursos vigentes
+    filtra por anio_lectivo_id y por estado
+  autorización
+    rechaza a alumno con 403 al listar
+    rechaza a tutor con 403 al crear, sin efectos
+    rechaza sin token con 401 en las tres operaciones
+    admite al directivo a crear y a editar
+    rechaza a alumno con 403 al editar
+    rechaza a docente con 403 al editar
+    rechaza a alumno con 403 al crear, sin efectos
+    rechaza a tutor con 403 al listar
+    rechaza a docente con 403 al crear, sin efectos
+    admite al directivo y al docente a listar
+    rechaza a tutor con 403 al editar
+  CP-RF-12 · creación y edición
+    no rechaza el mismo nombre en un año lectivo distinto
+    rechaza con 409 y RN-26 el nombre de curso repetido en el mismo año (CU-03 E2)
+    rechaza con 409 y RN-26 editar el nombre a uno ya usado en el mismo año
+    crea el curso dentro del año lectivo, conforme a RF-12
+    edita nombre y turno mientras el año lectivo permanece vigente, conforme a RF-12
+
+Bandeja e historial sin anuncios eliminados
+  un anuncio eliminado deja de aparecer en el historial de los cuatro roles
+  conserva el registro y las entregas: el detalle sigue respondiendo, como eliminado
+  el total de la paginación no lo cuenta
+
+ClienteFcm
+  envío aceptado
+    reutiliza el token de acceso mientras no venza
+    firma la aserción con la credencial de servicio, canjea el token y envía a la API v1 del proyecto
+  clasificación de los fallos (RNF-12)
+    el rechazo del canje del token de acceso es transitorio, y no invalida a nadie
+    el destino no registrado es credencial inválida: no se reintenta
+    el 503 del proveedor es transitorio: se reintenta
+    sin credencial configurada es transitorio: el servicio no está disponible
+    el emisor que no corresponde al destino es credencial inválida
+    el 500 del proveedor es transitorio: se reintenta
+    un identificador de destino inválido es credencial inválida
+    un error de red es transitorio
+    el 429 del proveedor es transitorio: se reintenta
+
+Registro de estados de notificación
+  los estados no retroceden (RN-32)
+    un acuse tardío no altera una entrega que ya está leída
+  el estado actual (Figura 12)
+    es el más avanzado de los registrados
+  registrar un estado completa los anteriores que falten (RN-32)
+    una lectura sin vista ni acuse deja las tres marcas iguales
+    un estado menor que llega después no altera las marcas ya registradas
+    la marca del evento nunca precede al envío, aunque el reloj de quien la emite atrase
+  autorización
+    rechaza con 403 al docente y al directivo
+    rechaza sin token con 401
+    rechaza con 422 si falta la lista de publicaciones
+  CP-RF-34 · el acuse del cliente registra la entrega
+    el estado enviada queda registrado al publicar, con su marca
+    el tutor y el alumno registran entregada_en de su propia fila, y no la de otro
+    cuenta como omitida la publicación que no le corresponde
+    registra la marca en el momento del acuse, en tiempo universal
+    acusa varias publicaciones en una sola petición
+
+Control de acceso basado en roles
+  el mecanismo · CP-RF-02
+    rechaza sin token con 401 y no con 403, conforme al orden de la Tabla 35
+    rechaza a alumno con 403, que es el estado que la Tabla 35 asigna
+    una lista de roles vacía no habilita a nadie
+    rechaza a tutor con 403, que es el estado que la Tabla 35 asigna
+    deniega por omisión: una acción sin declaración responde 403
+    rechaza a docente con 403, que es el estado que la Tabla 35 asigna
+    admite únicamente al rol habilitado
+  CP-RF-02 · sobre una operación de datos académicos
+    sólo el rol habilitado obtiene respuesta
+    alumno recibe 403
+    docente recibe 403
+    tutor recibe 403
+  los roles declarados en el código reproducen la Tabla 18
+    coincide operación por operación
+  matriz de autorización · CP-RNF-01
+    rechaza sin token el 100 % de las operaciones que exigen autenticación
+    rechaza con 403 el 100 % de las combinaciones de rol no autorizado
+    cubre alguna operación
+
+Degradación ante fallo de entrega
+  credencial inválida (RNF-12): se cierra sin reintentar
+    invalida la suscripción, degrada con la causa y registra el código del proveedor
+  fallo transitorio (RNF-12): se reintenta desde la cola
+    agotados los reintentos, degrada con la indisponibilidad del servicio y lo registra
+    el trabajo reintenta a los 1, 5 y 15 minutos
+    el servicio no disponible lanza el error transitorio, para que la cola reintente
+  envío aceptado
+    deja la fila en canal push, sin causa, y programa la verificación del acuse
+    basta que una de las suscripciones acepte
+  falta de soporte del navegador
+    una suscripción inválida no cuenta como destino
+    sin ninguna suscripción vigente, la fila queda en la aplicación con su causa y en la bitácora
+  ausencia de acuse del cliente
+    con el acuse recibido, no cambia nada
+    sin acuse a los 15 minutos, la fila vuelve a la aplicación con su causa
+    la espera del acuse es de 15 minutos
+  RNF-11 · la indisponibilidad del servicio no impide operar
+    un error inesperado del cliente no propaga: cuenta como servicio no disponible
+
+Pertenencia única a curso
+  no crea ninguna cuenta ni código en el rechazo
+  rechaza también la segunda vinculación al mismo curso, que tampoco es un curso distinto
+  CP-RF-13 · rechaza con 409 y RN-30 al alumno ya vinculado en otro curso del mismo año
+  el correo de una persona con otro rol responde 422 y no 409
+  vincula sin conflicto a dos alumnos distintos en cursos distintos
+
+ApplicationController
+  traduce el rechazo por rol o vinculación al 403 de la Tabla 35
+  consigna el código de la regla en el 409, como la Tabla 35 exige
+  omite el miembro «regla» cuando el rechazo no proviene de una regla del dominio
+  responde 500 sin revelar detalle interno, conforme al Boundary 6
+  traduce la petición mal formada al 422 de datos inaceptables
+  traduce el registro ausente al 404 de recurso ajeno a las vinculaciones
+
+Notificación de anuncios
+  el acuse ya recibido
+    no se vuelve a notificar una entrega ya acusada
+  RN-18 · independencia del horario y de las preferencias
+    notifica a quien tiene recibir_mensajes en falso
+    notifica fuera de la franja de disponibilidad, sin diferir
+  CP-RF-31 · push a cada destinatario al publicarse
+    no notifica al docente autor, que no es destinatario
+    emite una notificación por destinatario, con el título y el cuerpo del anuncio
+    deja cada fila en canal push y espera su acuse
+  sin suscripción vigente · RF-37
+    la fila queda en la aplicación con la causa registrada
+  RNF-11 · la indisponibilidad del servicio no impide publicar
+    publica y responde 201 aunque el proveedor falle
+
+Matriz de notificaciones por evento y rol (Tabla 4)
+  Mensaje · regla «fuera de la franja se difiere»
+    el tutor fuera de su franja no recibe ahora, y su envío queda programado
+  Publicación de un anuncio en un curso
+    ignora el horario y las preferencias, en las dos filas que lo reciben
+    directivo · «No»
+    tutor · «Sí, si tiene un alumno vinculado al curso»
+    alumno · «Sí, si está vinculado al curso»
+    docente · «No»: ni el emisor ni otro docente del curso
+  Publicación · el rol no basta, hace falta el vínculo con el curso
+    no notifica al alumno ni al tutor de otro curso
+  Mensaje en un canal grupal del curso
+    docente desvinculado del curso · deja de ser «vinculado al curso»: no se notifica
+    cuando escribe el tutor
+      docente · «Sí, si está vinculado al curso»
+      alumno · «condicionado a RF-24»
+      directivo · «No»
+    cuando escribe el docente
+      alumno · «condicionado a RF-24»: sin canal de alumnos no se notifica
+      tutor · «Sí, si participa del canal»
+      el emisor no se notifica a sí mismo
+      directivo · «No»
+  Edición de un anuncio (condicionada a RF-19, Should have)
+    tutor · no se notifica por una edición que no existe
+    directivo · no se notifica por una edición que no existe
+    no existe la operación de edición: PATCH /anuncios/{id} no está en el enrutador
+    alumno · no se notifica por una edición que no existe
+    docente · no se notifica por una edición que no existe
+
+Vinculación de tutores a alumnos
+  el tutor que ya existe
+    rechaza con 422 al tutor dado de baja
+    rechaza con 422 vincular dos veces al mismo tutor con el mismo alumno
+    se vincula a un segundo hijo de otro curso con la misma cuenta y sin código nuevo
+    rechaza con 422 el correo de una persona con otro rol
+  CP-RF-14 · RN-29
+    admite a otro tutor cuando uno de los dos deja de estar vigente
+    rechaza también a un tutor ya existente como tercero
+    rechaza al tercer tutor con 409 y RN-29, sin crear cuenta, código ni vinculación
+
+Restricción de baja de tutor vinculado
+  el docente sin potestad recibe 403 y no el 409 de la regla
+  admite la baja cuando su vinculación con el alumno ya no está vigente
+  admite la baja cuando todos sus alumnos fueron dados de baja
+  CP-RF-10 · rechaza con 409 y RN-12 la baja del tutor con un alumno activo
+  basta con un alumno activo, aunque otro hijo haya sido dado de baja
+  el alumno todavía pendiente de activación también es un alumno activo del curso
+
+ErrorDeDominio
+  sólo admite los nueve estados de la Tabla 35
+  el conflicto de regla consigna el código de la regla, conforme a la Tabla 35
+  rechaza la construcción de un error con un estado fuera del catálogo
+  cada excepción corresponde a una fila de la Tabla 35
+    NoAutenticado emite 401
+    CodigoNoVigente emite 410
+    AdjuntoDemasiadoGrande emite 413
+    FormatoNoAdmitido emite 415
+    NoHabilitado emite 403
+    DatosInaceptables emite 422
+    NoEncontrado emite 404
+
+Sesiones
+  resguardo no reversible de credenciales · CP-RNF-03
+    deriva la contraseña con bcrypt y la verifica sin almacenarla
+    no devuelve ninguna contraseña recuperable en la consulta a la tabla de usuarios
+  autenticidad y vencimiento del token · CP-RNF-02
+    no admite una vigencia configurada por encima del máximo de RNF-02
+    rechaza el token alterado con 401
+    rechaza el token expirado con 401
+    acepta el token válido
+    rechaza la ausencia de token con 401
+    emite un vencimiento no superior a veinticuatro horas
+  autorización de DELETE /api/v1/sesiones · insumo de CP-RNF-01
+    admite a docente, que la Tabla 27 declara autorizado
+    admite a tutor, que la Tabla 27 declara autorizado
+    admite a alumno, que la Tabla 27 declara autorizado
+    rechaza sin token con 401, conforme a la Tabla 35
+    admite a directivo, que la Tabla 27 declara autorizado
+  POST /api/v1/sesiones · CP-RF-01
+    emite el token a quien tiene credencial provisional y lo declara en la respuesta
+    rechaza a la cuenta dada de baja y conserva su historial
+    rechaza a la cuenta que todavía no fue activada
+    rechaza la contraseña errónea con 401 sin distinguir cuál de los dos datos falló
+    emite un token firmado con identidad, rol y vencimiento
+    rechaza la petición sin los campos que la Tabla 40 declara
+
+Consulta del historial de anuncios
+  CP-RF-22 · historial filtrado y ajeno
+    responde 404 sobre un anuncio ajeno a las vinculaciones de quien consulta (CU-09 E1)
+    filtra por curso, remitente y rango de fechas combinados
+  orden · Tabla 28
+    admite orden=publicado_en:asc para invertirlo
+    ordena por fecha de publicación descendente por omisión
+  forma de la respuesta
+    el directivo, que no es destinatario, recibe leido en falso
+    el índice trae titulo, publicado_en, autor (recurso completo) y leido de quien consulta
+    el detalle trae la versión vigente, los cursos (recurso completo) y los adjuntos
+  alcance por rol · RN-22
+    el docente ve los anuncios de los cursos que dicta, aunque los publique otro docente
+    el directivo ve los anuncios de todos los cursos del año lectivo vigente
+    el alumno no ve el anuncio publicado antes de vincularse al curso (RF-21)
+    el alumno y el tutor ven sólo los anuncios donde tienen una fila de entrega
+  autorización
+    rechaza sin token con 401
+    admite a alumno a listar y a ver el detalle
+    admite a tutor a listar y a ver el detalle
+    admite a docente a listar y a ver el detalle
+    admite a directivo a listar y a ver el detalle
+
+La bandeja identifica la publicación de cada anuncio
+  también la reciben quienes no son destinatarios: el docente y el directivo
+  cada fila trae el identificador de la publicación vigente
+  los identificadores de la página bastan para emitir las vistas en una sola petición
+
+Canal grupal del curso
+  autorización
+    rechaza al directivo con 403 en las dos operaciones
+    rechaza sin token con 401
+  CP-RF-25 · canal existente desde la creación del curso
+    el canal está disponible e integrado por sus docentes y los tutores de sus alumnos
+    todo curso tiene exactamente un canal grupal de tutores, cualquiera sea la vía de alta
+    el alta del curso abre su canal grupal de tutores, activo
+    el alumno del curso no integra el canal de tutores: colección vacía
+    el tutor accede al canal del curso de su hijo
+  GET /conversaciones · las conversaciones del usuario
+    lista las del docente, por nombre del curso, con su último mensaje
+    no lista los cursos de una vinculación terminada
+    el alumno no tiene conversaciones en esta entrega
+    pagina con pagina y por_pagina (Tabla 28)
+    lista las del tutor: los cursos de sus hijos
+  incorporación de los participantes
+    no duplica participantes en accesos sucesivos
+    registra como fecha de ingreso el inicio del día de la vinculación, en la zona del punto 4.2
+  cursos ajenos o inexistentes
+    responde 403 a un tutor no vinculado al curso
+    responde 404 si el curso no existe
+    responde 403 a un docente no vinculado al curso
+    responde 403 a un alumno no vinculado al curso
+
+Activación de cuenta
+  habilita la autenticación con la contraseña recién definida (CU-01)
+  no restituye el acceso a una cuenta dada de baja
+  no restablece la contraseña de una cuenta ya activa: 410, igual que un código no vigente
+  devuelve una sesión con la forma de la Tabla 40
+  deja la credencial como propia y no provisional
+  rechaza con 422 la petición sin los campos de la Tabla 40
+  acepta el código transcrito a mano
+  CP-RF-06
+    responde 410 al segundo canje del mismo código
+    activa la cuenta con contraseña propia e invalida el código
+  CU-02 E1 · 410
+    rechaza el código vencido
+    rechaza el código inexistente
+    responde con el mismo cuerpo en los tres supuestos
+    rechaza la forma inválida como código inexistente
+
+Borrado lógico de anuncios
+  CP-RF-20 · borrado
+    es idempotente: eliminar un anuncio ya eliminado no reescribe autor ni fecha
+    responde 404 si el anuncio no existe
+    rechaza con 403 la eliminación de un anuncio del que no es autor (CU-08 E1)
+    elimina el anuncio propio, con autor y fecha, y conserva las filas de entrega
+  autorización
+    rechaza a tutor con 403
+    admite al docente autor
+    rechaza sin token con 401
+    rechaza a alumno con 403
+    rechaza a directivo con 403
+
+Emisión de eventos de vista en lote
+  CP-RF-35 · varias publicaciones en una sola petición
+    deja el estado actual en vista
+    no toca las filas de otros destinatarios de la misma publicación
+    registra vista_en en cada una y responde cuántas registró
+    completa con la misma marca el acuse que faltaba
+  idempotencia y monotonía (RN-32)
+    un lote con repetidos cuenta cada publicación una sola vez
+    el lote mixto suma lo registrado y lo omitido
+    la reemisión del lote no altera las marcas y cuenta todo como omitido
+    una lectura ya registrada implica la vista: el evento tardío se omite
+  autorización
+    rechaza con 403 al docente y al directivo
+    rechaza sin token con 401
+    rechaza con 422 si falta la lista de publicaciones
+
+Resolución de destinatarios
+  resolución de reemplazo · eliminar y publicar de nuevo
+    resuelve de nuevo, con el alumno incorporado entre ambas publicaciones
+  CP-RF-21 · resolución inicial, no en la redacción
+    no incluye al alumno vinculado después de la publicación
+
+Purga de la bitácora de envío
+  el trabajo recurrente la ejecuta
+  borra los registros anteriores al plazo y conserva los demás
+  toma el plazo de RETENCION_BITACORA_MESES (Tabla 30)
+
+Restricción de participación
+  participantes vigentes
+    admite al docente y al tutor vinculados
+  la vinculación terminada revoca la participación
+    el tutor desvinculado del alumno pierde el acceso
+    el tutor pierde el acceso cuando su hijo deja el curso
+    el docente desvinculado del curso pierde el acceso
+  CP-RF-29 · usuario ajeno a la conversación
+    rechaza con 403 al tutor de un alumno de otro curso al consultar el historial y al emitir
+    rechaza con 403 al docente de otro curso al consultar el historial y al emitir
+    rechaza con 403 los canales de un curso al que no está vinculado
+    rechaza con 403 al alumno del curso: el canal de RF-25 no lo integra
+    no lista la conversación entre las del usuario ajeno
+  orden de los rechazos · Tabla 24
+    responde 403 por rol al directivo, antes de mirar la conversación
+    responde 401 sin token
+    responde 404 a una conversación inexistente
+
+Publicación de anuncios
+  autorización
+    rechaza a alumno con 403, sin efectos
+    rechaza a tutor con 403, sin efectos
+    admite al docente
+    rechaza a directivo con 403, sin efectos
+    rechaza sin token con 401
+  RN-19 · resolución de destinatarios en la publicación efectiva
+    no duplica la entrega a un tutor con dos hijos vinculados al mismo curso
+    incluye a los alumnos vigentes del curso y a sus tutores vigentes
+  alcance · Boundary 1 · RF-18 y RF-30 no se construyen
+    publica de inmediato aunque se envíe programado_para, sin quedar programado
+  validaciones de forma · 422
+    rechaza la petición sin alguno de los tres campos
+  CP-RF-17 · publicación
+    rechaza con 403 si uno de varios cursos es ajeno, sin publicar ni en el propio
+    publica el anuncio sobre un curso propio, conforme a RF-17
+    rechaza con 403 la publicación sobre un curso ajeno, sin efectos parciales (CU-06 E1)
+    trata un curso inexistente igual que uno ajeno: 403 y no 404
+
+Preferencia
+  sin fila configurada · RN-18, RN-24
+    está disponible las 24 horas y admite mensajes
+  recibir_mensajes en falso
+    no admite envío aunque esté dentro de la franja
+  franja que cruza la medianoche (RN-24)
+    admite envío después del inicio y antes de la medianoche
+    admite envío después de la medianoche y antes del final
+    no admite envío fuera de la franja
+  extremos iguales · disponibilidad permanente
+    admite envío a cualquier hora
+  franja que no cruza la medianoche
+    admite envío dentro de la franja, incluido el extremo inicial
+    excluye el extremo final y lo posterior
+  próximo inicio, para diferir
+    es el mismo día si el inicio todavía no pasó
+    es al día siguiente si el inicio ya pasó
+
+Desvinculación y baja de docente
+  desvincula a un docente no titular sin exigir reemplazo
+  responde 404 si el docente no está vinculado al curso
+  conserva en el historial desde cuándo el reemplazo es titular
+  baja lógica del docente
+    rechaza con 409 y RN-13 la baja del docente que conserva vinculaciones vigentes
+    da de baja al docente ya desvinculado: acceso revocado, autoría conservada
+    responde 404 si el identificador no es de un docente
+  autorización · RN-13
+    rechaza a tutor con 403 en ambas operaciones
+    rechaza a alumno con 403 en ambas operaciones
+    rechaza a docente con 403 en ambas operaciones
+  rechazos de la designación
+    rechaza con 422 que el titular se designe a sí mismo
+    rechaza con 422 un reemplazo dado de baja
+    rechaza con 422 un reemplazo no vinculado al curso
+  CP-RF-44
+    con designación, desvincula, deja un único titular y conserva la autoría
+    sin designación de reemplazo, rechaza con 409 y RN-13 y el curso conserva su titular
+
+Idempotencia del registro de eventos
+  monotonía (RN-32)
+    la lectura completa entregada y vista con la misma marca
+    un tutor lee la suya sin alterar la de su hijo
+  CP-RF-36 · reemisión del mismo evento
+    la primera lectura registra leida_en y responde la entrega
+    la reemisión no altera la marca original y responde igual que la primera vez
+    la marca original queda intacta en la base tras la reemisión
+  acceso
+    rechaza sin token con 401
+    responde 404 si la publicación no tiene fila de entrega para quien pide
+    responde 404 si la publicación no existe
+    rechaza con 403 al docente y al directivo
+    rechaza con 422 si falta la publicación
+
+Configuración de preferencias
+  sin preferencia configurada
+    GET responde disponible las 24 horas y recibir_mensajes verdadero
+  CP-RF-33 · horario y preferencias nuevas
+    admite reconfigurar sobre la misma fila (UNIQUE usuario_id)
+    quedan registradas y se devuelven en la consulta siguiente
+  autorización
+    admite a directivo consultar y configurar sus propias preferencias
+    admite a tutor consultar y configurar sus propias preferencias
+    admite a docente consultar y configurar sus propias preferencias
+    rechaza sin token con 401
+    admite a alumno consultar y configurar sus propias preferencias
+  validación
+    rechaza con 422 si falta un campo obligatorio
+    rechaza con 422 una hora mal formada
+
+Regeneración del código de activación
+  responde la forma de la Tabla 40, con el código en claro
+  el código nuevo activa la cuenta y el anterior ya no (CU-02)
+  responde 404 si la persona no existe
+  regenera también cuando el código anterior ya había vencido
+  la cadena de RN-07
+    el directivo regenera el de un docente
+    el docente no regenera el de un tutor de otro curso
+    el docente desvinculado del curso pierde la atribución
+    nadie regenera el de la cuenta directiva
+    el directivo no regenera el de un alumno: esa atribución es del docente
+    el docente regenera el de un tutor de un alumno de su curso
+    el docente no regenera el de otro docente
+  estado de la cuenta
+    rechaza con 422 la cuenta ya activa
+    el docente ajeno recibe 403 aunque la cuenta esté activa: no averigua su estado
+    rechaza con 422 la cuenta dada de baja
+  CP-RF-07
+    el docente del curso regenera: el anterior queda invalidado y el nuevo vigente
+    el docente ajeno al curso obtiene 403 y el código anterior sigue vigente
+
+Alta de docentes
+  CP-RF-03 · alta y código
+    el código devuelto activa la cuenta del docente (RF-05 → RF-06)
+    registra al directivo como autor del alta
+    crea al docente, en estado pendiente, y responde el recurso usuario
+    genera su código de activación y lo devuelve en claro una sola vez
+  autorización
+    admite al directivo
+    rechaza a docente con 403 y no crea a nadie
+    rechaza sin token con 401
+    rechaza a tutor con 403 y no crea a nadie
+    rechaza a alumno con 403 y no crea a nadie
+  validaciones de forma · 422
+    rechaza un correo ya registrado, sin distinguir mayúsculas
+    rechaza la petición sin alguno de los tres campos de la Tabla 40
+
+Vinculación de docentes a cursos
+  CP-RF-03 · alta del docente y vinculación como titular, de extremo a extremo
+  vincula a un mismo docente con varios cursos
+  responde el recurso docente_curso de la Tabla 40
+  vincula al docente todavía pendiente de activación
+  CP-RF-15 · vincula a dos docentes y deja un solo titular vigente
+  rechazos
+    responde 404 si el curso no existe
+    rechaza la petición sin los campos de la Tabla 40
+    rechaza un segundo titular vigente con 409 y RN-13
+    rechaza vincular como docente a quien tiene otro rol
+    rechaza la vinculación repetida con 422
+    rechaza vincular a un docente dado de baja
+  autorización · RN-02
+    rechaza a tutor con 403 y no vincula
+    rechaza a alumno con 403 y no vincula
+    rechaza a docente con 403 y no vincula
+
+Panel de constancias del docente
+  alcance · Boundary 1 · RF-38 no se construye
+    no incluye el indicador de familia alcanzada en la respuesta
+  paginación de la nómina de quienes no leyeron
+    pagina la nómina con pagina y por_pagina, informados junto a los datos (Tabla 28)
+  CP-RF-23 · constancias
+    recuenta las lecturas sobre el total y lista a quienes no leyeron
+    rechaza con 403 la consulta de un anuncio del que no es autor (CU-11 E1)
+    responde 404 si el anuncio no existe
+    no incluye a los tutores en la nómina: sin_lectura es por alumno (openapi Constancias)
+  autorización
+    rechaza a tutor con 403
+    admite al docente autor
+    rechaza sin token con 401
+    rechaza a directivo con 403
+    rechaza a alumno con 403
+
+Creación del año lectivo
+  autorización
+    admite al directivo a listar
+    rechaza a alumno con 403 al crear, sin efectos
+    rechaza a docente con 403 al crear, sin efectos
+    rechaza sin token con 401 al crear
+    rechaza sin token con 401 al listar
+    admite al directivo a crear
+    rechaza a tutor con 403 al listar
+    rechaza a docente con 403 al listar
+    rechaza a alumno con 403 al listar
+    rechaza a tutor con 403 al crear, sin efectos
+  GET /api/v1/anios-lectivos
+    responde la colección con la forma de la Tabla 28
+  validaciones de forma · 422
+    rechaza la petición sin el campo anio
+    rechaza un año calendario ya utilizado, aunque el vigente esté cerrado
+  CP-RF-11 · creación y unicidad del año vigente
+    crea el año lectivo en estado vigente, conforme a RF-11
+    rechaza con 409 y RN-31 la creación de un segundo año lectivo vigente
+
+Panel por rol
+  sin conversaciones a las que acceder
+    el docente sin cursos no ve la conversación
+    el alumno no la ve: el canal del curso es de docentes y tutores
+    el tutor sin alumnos vinculados no ve la conversación
+  acceso
+    no expone datos internos: la respuesta sólo trae los cinco campos del panel
+    sin token responde 401
+    con la credencial provisional sin sustituir responde 403 (RN-09)
+  CP-RF-40 · opciones habilitadas por rol
+    el docente publica, consulta constancias, conversa y administra a sus alumnos
+    la bandeja de anuncios es la primera opción de los cuatro (RF-39)
+    el tutor consulta anuncios, conversa y configura sus preferencias
+    el alumno sólo consulta anuncios y configura sus preferencias
+    el directivo administra la estructura y supervisa, y no publica ni conversa
+  anuncios sin leer
+    cuenta las publicaciones dirigidas a la persona que todavía no leyó
+    es cero para quien no es destinatario de ninguno: el docente y el directivo
+    descuenta las que ya leyó, sin alterar las de los demás
+    no cuenta los anuncios eliminados
+  cursos de la persona · filtro del historial (RF-22)
+    el directivo recibe los del año lectivo vigente, por nombre
+    no incluye los cursos a los que la persona ya no está vinculada
+    el docente recibe los que dicta
+    el tutor recibe los de sus alumnos
+    el alumno recibe el suyo
+
+ApplicationCable::Connection
+  rechaza la conexión con un token alterado
+  rechaza la conexión sin token
+  rechaza la conexión con la credencial provisional sin sustituir (RF-43)
+  rechaza la conexión de una cuenta dada de baja (CU-01 E2)
+  identifica al usuario por el token de la interfaz
+
+Nómina de los cursos en GET /cursos
+  cada curso trae sus docentes, con quién es titular, ordenados con el titular primero
+  un curso sin personas responde listas vacías
+  no lanza una consulta por alumno ni por tutor
+  el docente la recibe de sus cursos y sólo de ellos
+  no expone datos internos de las personas: sólo identificación, nombre, correo y estado
+  trae el estado de cada persona, para saber quién está pendiente de activación
+  cada alumno trae sus tutores
+  no incluye las vinculaciones que terminaron
+  una persona dada de baja sigue figurando, marcada, mientras su vinculación esté vigente
+  conserva la cantidad de alumnos vinculados que la Tabla 29 fija
+  la nómina de docentes de la institución
+    no incluye a quien no es docente
+    el directivo la recibe completa, incluso quien no tiene vinculación a ningún curso
+    el docente dado de baja figura marcado, y la interfaz decide si lo ofrece
+    no expone datos internos: sólo identificación, nombre, correo y estado
+    el docente no la recibe: la Tabla 18 no lo habilita a vincular docentes
+
+Alta de alumnos y tutores
+  CP-RF-04 · alta de un alumno con dos tutores, vinculados y con un código por persona
+  CP-RF-05 · el alta del tutor genera su código de un solo uso a siete días
+  las personas nacen pendientes y el alta queda atribuida al docente (RN-01)
+  validaciones de forma · 422
+    rechaza el alumno sin los campos de la Tabla 40
+    no deja al alumno registrado si la vinculación falla
+    rechaza la petición sin curso_id
+  precondición de CU-05 · el docente está vinculado al curso
+    rechaza con 403 el alta en un curso que no es suyo, sin efectos
+    rechaza con 403 el tutor de un alumno ajeno a sus cursos
+    rechaza con 403 un identificador que no es de un alumno
+  autorización
+    rechaza a directivo con 403
+    rechaza a tutor con 403
+    rechaza a alumno con 403
+
+Suscripciones push
+  POST /suscripciones-push · registrar el identificador de destino
+    crea la suscripción vigente de quien la presenta y responde el recurso, sin el token
+    rechaza con 422 si falta el token o el navegador
+    responde la misma suscripción si el mismo usuario reenvía el mismo token
+    reactiva una suscripción inválida cuando el navegador vuelve a registrarse
+    reasigna el token a quien lo presenta si otra persona lo tenía (mismo navegador)
+    rechaza con 422 un navegador que excede los 80 caracteres
+  DELETE /suscripciones-push/{id} · invalidar el identificador
+    es idempotente: invalidar dos veces no altera la marca original
+    deja la suscripción inválida, con su marca, y responde el recurso
+    responde 404 si la suscripción es de otra persona o no existe
+  autorización
+    rechaza sin token con 401
+    admite a alumno
+    admite a directivo
+    admite a tutor
+    admite a docente
+
+Baja lógica de alumnos y tutores
+  responde 404 si el identificador no es de un tutor
+  dar de baja a quien ya fue dado de baja no altera nada y responde el recurso
+  responde 404 si el identificador no es de un alumno
+  potestad de baja · RN-10
+    el titular del curso de los alumnos del tutor da de baja al tutor
+    el docente titular del curso da de baja al alumno
+    el docente no titular del mismo curso obtiene 403
+    rechaza a alumno con 403
+    el titular de otro curso obtiene 403
+    rechaza a tutor con 403
+  CP-RF-09 · alumno
+    revoca el acceso y conserva el historial
+  CP-RF-09 · tutor
+    revoca el acceso y conserva sus vinculaciones y su código
+
+Notificación de mensajes
+  a quién se notifica · rol del destinatario (Tabla 4)
+    no se notifica a quien dejó de estar vinculado al curso
+    el docente escribe: se notifica al tutor, no a él ni al alumno
+    no se notifica a quien ya está conectado a la conversación
+    nunca se notifica al directivo ni al alumno
+    el tutor escribe: se notifica al docente y al otro tutor del canal, no a él ni al alumno
+  preferencias · RN-24: nada se silencia
+    con recibir_mensajes en falso no se emite push, y el mensaje sigue en la conversación
+  el contenido del push
+    lleva el curso, el autor y el mensaje
+    recorta un mensaje largo
+  quiénes están conectados (Figura 8)
+    son los usuarios con una suscripción abierta a esa conversación en el proceso web
+  RF-37 · fallos del servicio, sin fila de entrega
+    sin suscripción vigente no se hace nada: el mensaje está en la conversación
+    el destino rechazado invalida la suscripción y queda en la bitácora, sin reintentar
+    el fallo transitorio se reintenta y, agotado, queda en la bitácora
+  CP-RF-32 · dentro y fuera de la franja
+    fuera de la franja, la difiere hasta el próximo inicio y no la descarta
+    al llegar el inicio de la franja, el envío diferido sale
+    una franja que cruza la medianoche difiere hasta su inicio del mismo día
+    no agrupa: tres mensajes diferidos son tres envíos
+    dentro de la franja, emite el push
+
+ConversacionChannel
+  CP-RF-25 · suscripción al canal grupal
+    confirma la suscripción del tutor y lo registra como participante
+    confirma la suscripción del docente y la transmite por la conversación
+  CP-RF-28 · emisión por el canal
+    no persiste un mensaje sin cuerpo
+    persiste, difunde y encola el mensaje emitido
+  CP-RF-29 · suscripción de un usuario ajeno
+    rechaza al directivo
+    rechaza una conversación inexistente
+    rechaza al alumno del curso, que el canal de RF-25 no integra
+    rechaza al tutor de un alumno de otro curso
+    rechaza al docente de otro curso
+    rechaza al docente cuya vinculación terminó
+
+DatosDePrueba
+  reejecución
+    recarga sin duplicar, y borrarla no toca los datos que no son del conjunto
+  coherencia con las reglas del dominio
+    los mensajes los escriben quienes integran el canal del curso
+    el año cerrado tiene sus canales en solo lectura y sus vinculaciones terminadas
+    en el año vigente los docentes y alumnos están vinculados hoy
+    cada registro de bitácora corresponde a una entrega con la misma causa
+    las marcas respetan la monotonía: completan a las anteriores y nunca preceden al envío
+    cada anuncio tiene una versión, sus dos cursos y 90 destinatarios que son alumnos o tutores
+    toda entrega en canal aplicación declara su causa, y ninguna en push la declara
+  año vigente ajeno
+    se niega con un mensaje claro y no carga nada
+  sólo datos ficticios
+    ninguna cuenta usa un dominio que no sea el reservado para pruebas
+    todas las cuentas comparten una credencial conocida y ninguna exige sustituirla
+  volumen declarado en RNF-09
+    reparte los roles: un directivo, tres docentes, 70 alumnos y 110 tutores
+    reparte los mensajes en cuatro conversaciones, cuatro mil en cada una
+    carga las 184 cuentas, 400 anuncios, 36.000 entregas, 16.000 mensajes y 2.000 registros de bitácora
+    abarca dos años lectivos: uno cerrado y uno vigente
+
+Persistencia e historial de mensajes
+  emisión de un mensaje
+    no admite adjuntos: RF-30 es Should have
+    encola la notificación del mensaje (RF-32, módulo E)
+    lo difunde a los conectados a la conversación
+    lo persiste con su autor y su hora de envío, y responde 201 con el recurso
+    rechaza con 422 un mensaje sin cuerpo
+  forma y orden · openapi.yaml, Tabla 28
+    responde cada mensaje con conversacion_id, autor completo, cuerpo y enviado_en
+    admite orden=enviado_en:asc para invertirlo
+    ordena por fecha de envío descendente por omisión
+  CP-RF-28 · mensajes de varias jornadas
+    recupera por fecha con desde y hasta
+    recupera por participante con remitente_id
+    recupera la totalidad de los mensajes, paginada
+  acceso
+    responde 404 si la conversación no existe
+    responde 403 a quien no participa de la conversación
+    rechaza al directivo con 403 y sin token con 401
+  RN-27 y RN-28 · la base es la única fuente de verdad
+    el historial se sirve de la base y conserva los mensajes de un docente dado de baja
+
+Cambio de la credencial provisional
+  bloqueo hasta que el cambio se complete
+    sí habilita la sustitución de la propia credencial
+    emite el token en el primer acceso, conforme a RF-43
+    responde 403 en toda otra operación de la interfaz
+  reposición de la cuenta directiva por variable de entorno · RN-08
+    crea la cuenta directiva con la credencial marcada como provisional
+    repone la credencial de la cuenta existente sin duplicarla ni tocar su historial
+  PATCH /api/v1/usuarios/me/contrasena
+    admite a directivo, que la Tabla 27 declara autorizado
+    sustituye la credencial y devuelve credencial_provisional en falso
+    rechaza sin token con 401
+    admite a tutor, que la Tabla 27 declara autorizado
+    habilita el resto de la interfaz una vez completado el cambio
+    rechaza con 422 la petición sin los campos de la Tabla 40
+    admite a alumno, que la Tabla 27 declara autorizado
+    rechaza con 401 la contraseña actual equivocada
+    admite a docente, que la Tabla 27 declara autorizado
+
+Generación del código de activación
+  no deja a la persona registrada si el código no puede generarse
+  forma y localización
+    tolera la transcripción a mano: minúsculas, espacios, sin guion y letras confundibles
+    tiene la forma localizador-secreto y el localizador es el comienzo del id
+    localiza la fila a partir del código presentado
+    no localiza un secreto equivocado ni una forma inválida
+  resguardo del código
+    almacena la derivación bcrypt y nunca el valor en claro
+    la representación ordinaria no incluye el código
+  CP-RF-05 · alta de un tutor
+    genera un código asociado a esa persona
+    fija el vencimiento a siete días
+    registra quién realizó el alta
+    es de un solo uso: nace sin usar y admite un único código vigente por persona
+
+Finished in 3 minutes 13.3 seconds (files took 3.15 seconds to load)
+536 examples, 0 failures
+
+Randomized with seed 39381
+
+Coverage report generated for RSpec to coverage/index.html
+Line coverage: 1349 / 1364 (98.90%)
+

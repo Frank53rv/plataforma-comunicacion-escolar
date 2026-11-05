@@ -1,0 +1,17 @@
+
+> cliente@0.1.0 test:cobertura
+> jest --coverage --coverageReporters=json-summary --coverageReporters=text-summary
+
+
+=============================== Coverage summary ===============================
+Statements   : 99.12% ( 1134/1144 )
+Branches     : 96.61% ( 656/679 )
+Functions    : 98.71% ( 384/389 )
+Lines        : 99.51% ( 1036/1041 )
+================================================================================
+
+Test Suites: 36 passed, 36 total
+Tests:       428 passed, 428 total
+Snapshots:   0 total
+Time:        8.313 s
+Ran all test suites.

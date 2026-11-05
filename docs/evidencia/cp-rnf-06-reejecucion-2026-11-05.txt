@@ -1,0 +1,37 @@
+# CP-RNF-06 · reejecución tras hotfix/CP-RNF-06 · paso 6 de la Tabla 37 · 2026-11-05T13:36:03+00:00
+# Dominio asignado al túnel efímero: hwy-celebrity-kernel-statutes.trycloudflare.com
+
+$ curl -sSI https://hwy-celebrity-kernel-statutes.trycloudflare.com/api/v1/paneles/me
+HTTP/2 401 
+content-type: application/problem+json; charset=utf-8
+server: cloudflare
+curl exit=0 (0: el certificado validó)
+
+Certificado presentado:
+  SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519 / id-ecPublicKey
+  subject: CN=trycloudflare.com
+  expire date: Jan  3 21:58:20 2027 GMT
+  subjectAltName: host "hwy-celebrity-kernel-statutes.trycloudflare.com" matched cert's "*.trycloudflare.com"
+  issuer: C=US; O=Google Trust Services; CN=WE1
+  SSL certificate verify ok.
+
+$ curl -sSI http://hwy-celebrity-kernel-statutes.trycloudflare.com/api/v1/paneles/me
+HTTP/1.1 301 Moved Permanently
+Location: https://hwy-celebrity-kernel-statutes.trycloudflare.com/api/v1/paneles/me
+Server: cloudflare
+
+Texto plano CON token válido de una cuenta ficticia (el token no se transcribe):
+GET http://…/api/v1/paneles/me → estado=301 bytes=169 destino=https://hwy-celebrity-kernel-statutes.trycloudflare.com/api/v1/paneles/me
+¿el cuerpo trae datos de la cuenta? 0 coincidencias
+
+Texto plano sobre el cliente y el canal:
+GET http://…/ → estado=301 destino=https://hwy-celebrity-kernel-statutes.trycloudflare.com/
+GET http://…/cable → estado=301 destino=https://hwy-celebrity-kernel-statutes.trycloudflare.com/cable
+
+Por HTTPS, la misma petición con el mismo token:
+GET https://…/api/v1/paneles/me → estado=200 bytes=313
+claves: ['anuncios_sin_leer', 'cursos', 'nombre', 'opciones_habilitadas', 'rol']
+
+Local, sin pasar por el túnel (chequeo de salud y mediciones):
+GET http://localhost:8090/ → estado=200
+GET http://localhost:8090/api/v1/paneles/me → estado=401
