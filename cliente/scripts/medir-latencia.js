@@ -10,7 +10,8 @@
 // misma conversación anotan cuándo llega cada uno. Para cada llegada se registran dos
 // intervalos: desde que el emisor pidió el envío (marca del cliente) y desde que el servidor
 // persistió el mensaje, `enviado_en` (marca del servidor). El emisor y los receptores
-// corren en el mismo equipo, de modo que comparten reloj.
+// corren en el mismo equipo, de modo que comparten reloj. El intervalo del cliente se toma con
+// un reloj monótono, que no retrocede si el sistema ajusta la hora.
 //
 // Con cuarenta receptores abiertos a la vez es también el script de apertura concurrente de
 // conexiones que la Tabla 39 asigna a RNF-10.
@@ -89,7 +90,11 @@ function conectar(token, conversacionId) {
         resolver({ llegadas, cerrar: () => socket.close() });
       } else if (trama.type === "reject_subscription")
         rechazar(new Error("suscripción rechazada"));
-      else if (trama.message?.id) llegadas.set(trama.message.id, Date.now());
+      else if (trama.message?.id)
+        llegadas.set(trama.message.id, {
+          monotono: performance.now(),
+          reloj: Date.now(),
+        });
     };
     socket.onerror = () => rechazar(new Error("no se pudo conectar"));
   });
@@ -125,7 +130,7 @@ const conexiones = await Promise.all(
 
 const envios = [];
 for (let n = 1; n <= MENSAJES; n += 1) {
-  const pedido = Date.now();
+  const pedido = performance.now();
   const mensaje = await pedir(
     "POST",
     `/conversaciones/${conversacionId}/mensajes`,
@@ -149,8 +154,8 @@ for (const envio of envios) {
     const llegada = conexion.llegadas.get(envio.id);
     if (llegada === undefined) perdidos += 1;
     else {
-      desdeElPedido.push(llegada - envio.pedido);
-      desdeElServidor.push(llegada - envio.persistido);
+      desdeElPedido.push(Math.round(llegada.monotono - envio.pedido));
+      desdeElServidor.push(llegada.reloj - envio.persistido);
     }
   }
 }
