@@ -2,14 +2,16 @@
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 31 · Modelo de ramificación y criterio de versionado
+# Tabla 33 · Modelo de ramificación y criterio de versionado
 
 | Rama o elemento | Contenido | Condición para integrar |
 |---|---|---|
 | main | Versión estable y entregable. Cada integración corresponde a un incremento demostrado en un punto de control | Suite completa aprobada y revisión del autor registrada en el merge |
 | develop | Código integrado y funcional sobre el que se ejecutan las pruebas | Suite de la rama de origen aprobada y analizadores de estilo sin hallazgos |
 | feature/RF-nn-descripcion | Una rama por requisito funcional, nombrada con su código de la Tabla 10 | Prueba del flujo principal, de cada flujo de excepción del caso de uso y de autorización por los cuatro roles |
-| hotfix/CP-nn | Corrección derivada de un caso de prueba rechazado en la verificación | Caso de prueba que originó la corrección, en estado aprobado |
+| feature/WPn-descripcion | Trabajo de un paquete de la Tabla 22 que no corresponde a un único requisito: entorno, pantallas del cliente web y mediciones | Suite completa aprobada y analizadores de estilo sin hallazgos |
+| fix/WPn-descripcion | Corrección de un defecto hallado fuera de la ejecución de un caso de prueba, por ejemplo en un navegador real | Prueba que reproduce el defecto, en estado aprobado |
+| hotfix/descripcion | Corrección urgente sobre develop: la de un caso de prueba rechazado, nombrada hotfix/CP-nn, o la de una divergencia entre el documento y el código | Caso de prueba o compuerta que originó la corrección, en estado aprobado |
 | Versión mayor | Incompatibilidad en el contrato de la Tabla 18 | Decisión del autor, registrada en el histórico de revisiones |
 | Versión menor | Incorporación de un requisito funcional completo | Requisito con su caso de prueba aprobado |
 | Versión parche | Corrección sin cambio de contrato | Caso de prueba aprobado |

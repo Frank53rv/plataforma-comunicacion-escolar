@@ -2,7 +2,7 @@
      La fuente de verdad es el documento de grado. Si este archivo y el
      documento discrepan, prevalece el documento (Context Spec, punto 4.2). -->
 
-# Tabla 30 · Variables de entorno del despliegue
+# Tabla 32 · Variables de entorno del despliegue
 
 | Variable | Qué provee | Origen del compromiso |
 |---|---|---|

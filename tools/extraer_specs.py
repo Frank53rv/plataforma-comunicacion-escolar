@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 """Extrae el contenido normativo del documento de grado a artefactos legibles por máquina.
 
-Fuente única: la edición final (`Proyecto de grado entrega final.docx`), con su
-numeración propia. No hay ningún otro documento normativo: el paquete generado no
-enuncia narrativa de casos de uso ni un catálogo individual de casos de prueba, porque
-la edición vigente sólo trae el resumen por caso de uso (Tabla 13) y el resumen por
-grupo de pruebas (Tabla 32).
+Fuente única: la edición v6 (`Proyecto de grado entrega final.docx`), con su numeración
+propia. No hay ningún otro documento normativo. El paquete resume la matriz de pruebas por
+grupo (Tabla 34) y los casos de uso por su vista sinóptica (Tabla 13). Las tablas de los
+anexos, rotuladas con letra y número (Tabla B1, Tabla F6), no se extraen.
 """
 import os, re, json
 from docx import Document
@@ -39,31 +38,43 @@ def leer_docx(ruta):
                     celdas.append(re.sub(r'\s+', ' ', c.text).strip())
                 filas.append(celdas)
             seq.append(('t', filas))
-    # índice: 'Tabla NN' -> (título, filas, nota)
+    # índice: 'Tabla NN' -> (título, filas, nota). El rótulo «Tabla NN: título» va al pie de
+    # su tabla y la nota, si la hay, es el párrafo «Nota.» que sigue al rótulo. El índice de
+    # tablas repite los rótulos, pero no sigue a ninguna tabla: por eso no se confunde.
     tab = {}
     for i, (k, v) in enumerate(seq):
         if k != 'p': continue
-        m = re.fullmatch(r'Tabla (\d+)', v)
+        m = re.fullmatch(r'Tabla (\d+): (.+)', v)
         if not m: continue
-        tit, j = '', i + 1
-        while j < len(seq) and seq[j][0] == 'p':
-            if seq[j][1]:
-                tit = seq[j][1]; j += 1; break
-            j += 1
-        while j < len(seq) and seq[j][0] == 'p' and not seq[j][1]:
-            j += 1
-        if j < len(seq) and seq[j][0] == 't':
-            nota = ''
-            for q in range(j + 1, min(j + 4, len(seq))):
-                if seq[q][0] == 'p' and seq[q][1].startswith('Nota.'):
-                    nota = seq[q][1]; break
-            tab[int(m.group(1))] = (tit, seq[j][1], nota)
+        j = i - 1
+        while j >= 0 and seq[j][0] == 'p' and not seq[j][1]:
+            j -= 1
+        if j < 0 or seq[j][0] != 't': continue
+        q = i + 1
+        while q < len(seq) and seq[q][0] == 'p' and not seq[q][1]:
+            q += 1
+        nota = seq[q][1] if q < len(seq) and seq[q][0] == 'p' and seq[q][1].startswith('Nota.') else ''
+        tab[int(m.group(1))] = (m.group(2).strip(), seq[j][1], nota)
     return tab, [v for k, v in seq if k == 'p' and v]
 
 
 TAB, PARAS = leer_docx(DOC_VIGENTE)
 BASE = os.path.basename(DOC_VIGENTE)
-print('edición vigente:', BASE, '->', len(TAB), 'tablas,', len(PARAS), 'párrafos')
+print('edición v6:', BASE, '->', len(TAB), 'tablas,', len(PARAS), 'párrafos')
+
+
+def por_encabezado(num, *requeridas):
+    """Devuelve las filas de una tabla como diccionarios indexados por el encabezado.
+
+    Las columnas se leen por su nombre y no por su posición: una columna que el documento
+    agregue no corre las demás, y una que falte detiene la extracción. Las filas que no
+    tienen tantas celdas como el encabezado —las de módulo, combinadas— quedan afuera.
+    """
+    encabezado = TAB[num][1][0]
+    faltan = [c for c in requeridas if c not in encabezado]
+    if faltan:
+        raise SystemExit(f'Tabla {num}: faltan las columnas {faltan}; tiene {encabezado}.')
+    return [dict(zip(encabezado, f)) for f in TAB[num][1][1:] if len(f) == len(encabezado)]
 
 
 def md_table(rows):
@@ -101,9 +112,8 @@ def dump_tabla(num, fname, extra=''):
 
 
 written = []
-# Numeración de la edición vigente. Correspondencia con la v5.2 (también en
-# specs/README.md): 17->10, 18->11, 19->12, 20->13, 21->14, 22->15, 26->17, 27->18,
-# 34->23, 35->24, 36->25, 37->26, 38->27, 39->28, 40->29, 41->30, 42->31, 45->34, 46->35.
+# Numeración de la edición v6: del 1 al 22 coincide con la edición de 39 tablas; desde la
+# 23 suben dos números, porque la Etapa 2 ganó dos tablas (también en specs/README.md).
 PLAN = [
     (10, 'specs/10-requisitos-funcionales.md'),
     (11, 'specs/11-requisitos-no-funcionales.md'),
@@ -113,22 +123,21 @@ PLAN = [
     (15, 'specs/16-trazabilidad.md'),
     (17, 'specs/31-tareas-criticas.md'),
     (18, 'specs/20-endpoints.md'),
-    (23, 'specs/40-stack.md'),
-    (24, 'specs/21-errores.md'),
-    (25, 'specs/01-boundary-spec.md'),
-    (26, 'specs/02-quality-spec.md'),
-    (27, 'specs/22-esquema-fisico.md'),
-    (28, 'specs/23-convenciones-api.md'),
-    (29, 'specs/24-formas-peticion-respuesta.md'),
-    (30, 'specs/41-variables-entorno.md'),
-    (31, 'specs/42-ramificacion-versionado.md'),
-    (34, 'specs/43-infraestructura.md'),
-    (35, 'specs/44-despliegue.md'),
-    # Registro del punto 5.5, propio de la edición vigente: no existía en la v5.2.
-    (36, 'specs/45-plan-incrementos.md'),
-    (37, 'specs/46-protocolo-medicion.md'),
-    (38, 'specs/51-decisiones-del-documento.md'),
-    (39, 'specs/52-herramientas-verificacion.md'),
+    (25, 'specs/40-stack.md'),
+    (26, 'specs/21-errores.md'),
+    (27, 'specs/01-boundary-spec.md'),
+    (28, 'specs/02-quality-spec.md'),
+    (29, 'specs/22-esquema-fisico.md'),
+    (30, 'specs/23-convenciones-api.md'),
+    (31, 'specs/24-formas-peticion-respuesta.md'),
+    (32, 'specs/41-variables-entorno.md'),
+    (33, 'specs/42-ramificacion-versionado.md'),
+    (36, 'specs/43-infraestructura.md'),
+    (37, 'specs/44-despliegue.md'),
+    (38, 'specs/45-plan-incrementos.md'),
+    (39, 'specs/46-protocolo-medicion.md'),
+    (40, 'specs/51-decisiones-del-documento.md'),
+    (41, 'specs/52-herramientas-verificacion.md'),
 ]
 for num, fn in PLAN:
     written.append(dump_tabla(num, fn))
@@ -179,15 +188,15 @@ exactamente el tipo de decisión que una asistencia inventaría si no las encont
 """ + '\n\n'.join(temporal) + "\n")
 written.append('specs/25-semantica-temporal.md')
 
-# ---- los casos de prueba, resumidos por grupo (Tabla 32) ----
-# La edición vigente no enuncia un CP-RF-nn por requisito: resume la matriz en cinco
-# filas por grupo, con el criterio de aprobación de la Tabla 32. El enunciado de cada
-# prueba se arma con el requisito (Tabla 10) y la postcondición del caso de uso que lo
-# realiza (Tabla 13), como fija CLAUDE.md §3.4.
-tit_v, rows_v, nota_v = TAB[32]
+# ---- los casos de prueba, resumidos por grupo (Tabla 34) ----
+# El documento no enuncia un CP-RF-nn por requisito: resume la matriz por grupo, con el
+# criterio de aprobación de la Tabla 34 y el umbral sobre el alcance comprometido. El
+# enunciado de cada prueba se arma con el requisito (Tabla 10) y la postcondición del caso
+# de uso que lo realiza (Tabla 13).
+tit_v, rows_v, nota_v = TAB[34]
 w('specs/30-casos-prueba.md',
   HEAD + f"\n# Matriz de casos de prueba\n\n"
-  f"## Resumen por grupo · Tabla 32\n\n" + md_table(rows_v) + '\n'
+  f"## Resumen por grupo · Tabla 34\n\n" + md_table(rows_v) + '\n'
   + (f'\n> {nota_v}\n' if nota_v else ''))
 written.append('specs/30-casos-prueba.md')
 
@@ -202,23 +211,19 @@ def wj(path, obj):
 
 
 # --- endpoints · Tabla 18 ---
-# La edición vigente suprimió la columna «Operación» de la antigua Tabla 27: la tabla es
-# ahora «Método y ruta | Roles autorizados | Caso de uso | Requisitos que realiza».
-tit, rows, nota = TAB[18]
 eps = []
-for r in rows[1:]:
-    if len(r) < 4 or not r[0] or r[0].startswith('Método'): continue
-    m = re.match(r'^(GET|POST|PUT|PATCH|DELETE|WSS)\s+(\S+)$', r[0])
+for f in por_encabezado(18, 'Método y ruta', 'Roles autorizados', 'Caso de uso', 'Requisitos que realiza'):
+    m = re.match(r'^(GET|POST|PUT|PATCH|DELETE|WSS)\s+(\S+)$', f['Método y ruta'])
     if not m:
-        print('  ! fila no parseada:', r[0]); continue
-    roles = [x.strip() for x in re.split(r',| y ', r[1]) if x.strip()]
+        print('  ! fila no parseada:', f['Método y ruta']); continue
+    roles = [x.strip() for x in re.split(r',| y ', f['Roles autorizados']) if x.strip()]
     # La tabla marca «(Should)» por requisito y no por operación. Una operación es
     # Should have sólo si TODOS sus requisitos lo son; de lo contrario realiza al menos un
-    # Must have y se construye. Las 43 operaciones menos las 5 puramente Should dan las 37
-    # que el escenario de medición de CP-RNF-01 cuenta.
-    marcados = re.findall(r'(RF-\d\d)(\s*\(Should\))?', r[3])
+    # Must have y se construye. Las 41 operaciones sobre HTTP menos las 5 puramente Should
+    # dan las 36 del enrutador; el canal de tiempo real es la cuadragésima segunda.
+    marcados = re.findall(r'(RF-\d\d)(\s*\(Should\))?', f['Requisitos que realiza'])
     eps.append({'metodo': m.group(1), 'ruta': m.group(2),
-                'roles': roles, 'caso_uso': r[2],
+                'roles': roles, 'caso_uso': f['Caso de uso'],
                 'requisitos': [c for c, _ in marcados],
                 'requisitos_should': [c for c, s in marcados if s],
                 'should': bool(marcados) and all(s for _, s in marcados)})
@@ -226,57 +231,55 @@ print('endpoints:', len(eps), '| Should:', sum(1 for e in eps if e['should']))
 wj('specs/20-endpoints.json',
    {'fuente': f'Tabla 18 · {BASE}', 'total': len(eps), 'endpoints': eps})
 
-# --- errores · Tabla 24, catálogo cerrado ---
-tit, rows, _ = TAB[24]
-errs = [{'estado': int(r[0]), 'cuando': r[1], 'flujos': r[2]}
-        for r in rows[1:] if r[0].isdigit()]
+# --- errores · Tabla 26, catálogo cerrado ---
+errs = [{'estado': int(f['Estado']), 'cuando': f['Cuándo se emite'], 'flujos': f['Flujos que lo originan']}
+        for f in por_encabezado(26, 'Estado', 'Cuándo se emite', 'Flujos que lo originan')
+        if f['Estado'].isdigit()]
 print('errores:', len(errs), '->', sorted(e['estado'] for e in errs))
 wj('specs/21-errores.json',
-   {'fuente': f'Tabla 24 · catálogo cerrado · {BASE}', 'estados': errs})
+   {'fuente': f'Tabla 26 · catálogo cerrado · {BASE}', 'estados': errs})
 
 # --- requisitos funcionales · Tabla 10 ---
-tit, rows, _ = TAB[10]
-rf = []
-for r in rows[1:]:
-    if not re.match(r'^RF-\d\d$', r[0].strip()): continue   # descarta las filas de módulo
-    rf.append({'codigo': r[0].strip(), 'titulo': r[1], 'descripcion': r[2],
-               'complejidad': r[3], 'moscow': r[4]})
+rf = [{'codigo': f['Código'].strip(), 'titulo': f['Requisito funcional'], 'descripcion': f['Descripción'],
+       'complejidad': f['Compl.'], 'moscow': f['Prior.']}
+      for f in por_encabezado(10, 'Código', 'Requisito funcional', 'Descripción', 'Compl.', 'Prior.')
+      if re.match(r'^RF-\d\d$', f['Código'].strip())]   # descarta las filas de módulo
 print('RF:', len(rf), '| Must:', sum(1 for x in rf if x['moscow'] == 'M'),
       '| Should:', sum(1 for x in rf if x['moscow'] == 'S'))
 wj('specs/10-requisitos-funcionales.json',
    {'fuente': f'Tabla 10 · {BASE}', 'total': len(rf), 'requisitos': rf})
 
 # --- reglas de negocio · Tabla 12 ---
-tit, rows, _ = TAB[12]
-rn = [{'codigo': r[0].strip(), 'titulo': r[1], 'descripcion': r[2], 'prioridad': r[3]}
-      for r in rows[1:] if re.match(r'^RN-\d\d$', r[0].strip())]
+rn = [{'codigo': f['Código'].strip(), 'titulo': f['Regla de negocio'], 'descripcion': f['Descripción'],
+       'prioridad': f['Prioridad']}
+      for f in por_encabezado(12, 'Código', 'Regla de negocio', 'Descripción', 'Prioridad')
+      if re.match(r'^RN-\d\d$', f['Código'].strip())]
 print('RN:', len(rn))
 wj('specs/12-reglas-negocio.json',
    {'fuente': f'Tabla 12 · {BASE}', 'total': len(rn), 'reglas': rn})
 
 # --- trazabilidad · Tabla 15 ---
-# La edición vigente suprimió la columna «Requisito» de la antigua Tabla 22: queda
-# «Cód. req. | Tipo | Prior. | RN asociada | Artefacto de diseño | Módulo | Caso de prueba».
-tit, rows, _ = TAB[15]
-tz = [{'requisito': r[0].strip(), 'tipo': r[1], 'prioridad': r[2], 'reglas': r[3],
-       'diseno': r[4], 'modulo': r[5], 'caso_prueba': r[6]}
-      for r in rows[1:] if re.match(r'^(RF|RNF)-\d\d$', r[0].strip())]
+tz = [{'requisito': f['Cód. req.'].strip(), 'titulo': f['Título'], 'tipo': f['Tipo'], 'prioridad': f['Prior.'],
+       'reglas': f['RN asociada'], 'diseno': f['Artefacto de diseño'],
+       'modulo': f['Módulo / componente'], 'caso_prueba': f['Caso de prueba']}
+      for f in por_encabezado(15, 'Cód. req.', 'Título', 'Tipo', 'Prior.', 'RN asociada',
+                              'Artefacto de diseño', 'Módulo / componente', 'Caso de prueba')
+      if re.match(r'^(RF|RNF)-\d\d$', f['Cód. req.'].strip())]
 print('trazabilidad:', len(tz))
 wj('specs/16-trazabilidad.json',
    {'fuente': f'Tabla 15 · {BASE}', 'total': len(tz), 'filas': tz})
 
-# --- esquema físico · Tabla 27 ---
-tit, rows, _ = TAB[27]
+# --- esquema físico · Tabla 29 ---
 ent = []
-for r in rows[1:]:
-    if not r[0] or r[0] == 'Entidad': continue
+for f in por_encabezado(29, 'Entidad', 'Columnas y tipos', 'Claves, índices y restricciones', 'Regla que realiza'):
+    if not f['Entidad']: continue
     cols = []
-    for tok in r[1].split('·'):
+    for tok in f['Columnas y tipos'].split('·'):
         tok = tok.strip()
         if not tok: continue
         cols.append(tok.split(' ')[0])
-    ent.append({'entidad': r[0], 'columnas': cols, 'columnas_texto': r[1],
-                'restricciones': r[2], 'reglas': r[3]})
+    ent.append({'entidad': f['Entidad'], 'columnas': cols, 'columnas_texto': f['Columnas y tipos'],
+                'restricciones': f['Claves, índices y restricciones'], 'reglas': f['Regla que realiza']})
 print('entidades:', len(ent))
 wj('specs/22-esquema-fisico.json',
-   {'fuente': f'Tabla 27 · {BASE}', 'total': len(ent), 'entidades': ent})
+   {'fuente': f'Tabla 29 · {BASE}', 'total': len(ent), 'entidades': ent})
