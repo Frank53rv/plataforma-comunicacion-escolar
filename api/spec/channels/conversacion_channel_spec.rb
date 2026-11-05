@@ -35,6 +35,20 @@ RSpec.describe ConversacionChannel, type: :channel do
       expect(subscription).to be_confirmed
       expect(canal.participantes.pluck(:usuario_id)).to include(tutor.id)
     end
+
+    # Lo publicado llega codificado: el cliente lo necesita como objeto, con su identificador.
+    it "reenvía lo difundido como objeto y no como texto" do
+      recibir = nil
+      allow_any_instance_of(ConversacionChannel).to receive(:stream_for) do |_canal, _conversacion, coder: nil, &manejador|
+        recibir = ->(publicado) { manejador.call(coder.decode(publicado)) }
+      end
+      stub_connection usuario_actual: docente
+      subscribe(conversacion_id: canal.id)
+
+      recibir.call({ id: "m1", cuerpo: "Hola" }.to_json)
+
+      expect(transmissions.last).to include("id" => "m1", "cuerpo" => "Hola")
+    end
   end
 
   # CP-RF-29 · RF-29 (Tabla 10): «El sistema debe impedir la participación de

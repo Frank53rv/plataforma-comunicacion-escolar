@@ -13,7 +13,9 @@ class ConversacionChannel < ApplicationCable::Channel
 
     conversacion.sincronizar_participantes!
     @conversacion = conversacion
-    stream_for conversacion, &method(:difundir)
+    # Con un manejador propio, ActionCable no decodifica lo publicado: sin el coder, el cliente
+    # recibiría el mensaje como texto y no como objeto.
+    stream_for conversacion, coder: ActiveSupport::JSON, &method(:difundir)
   end
 
   # Figura 8 · «emitir mensaje» por el canal. Un cuerpo vacío no se persiste.
