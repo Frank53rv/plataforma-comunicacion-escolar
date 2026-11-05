@@ -4,226 +4,226 @@ Plataforma de Comunicación Escolar · Pruebas de la API v1
 
 ❏ 00 · CU-01 Autenticarse (RF-01, RF-02)
 ↳ Preparar la corrida (sufijo único)
-  POST http://localhost:3000/api/v1/sesiones [201 Created, 1.06kB, 348ms]
+  POST http://localhost:3000/api/v1/sesiones [201 Created, 1.06kB, 441ms]
   ✓  Responde 201
   ✓  Token, vencimiento y usuario con rol directivo
   ✓  El token vence en menos de 24 h (RNF-02)
 
 ↳ Credencial equivocada → 401
-  POST http://localhost:3000/api/v1/sesiones [401 Unauthorized, 819B, 209ms]
+  POST http://localhost:3000/api/v1/sesiones [401 Unauthorized, 819B, 647ms]
   ✓  Rechazo 401 con el código «credencial_invalida»
 
 ↳ Correo inexistente → 401 (no revela si la cuenta existe)
-  POST http://localhost:3000/api/v1/sesiones [401 Unauthorized, 779B, 13ms]
+  POST http://localhost:3000/api/v1/sesiones [401 Unauthorized, 780B, 31ms]
   ✓  Rechazo 401 con el código «credencial_invalida»
 
 ↳ Operación protegida sin token → 401
-  GET http://localhost:3000/api/v1/anios-lectivos [401 Unauthorized, 701B, 20ms]
+  GET http://localhost:3000/api/v1/anios-lectivos [401 Unauthorized, 701B, 26ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ Token alterado → 401
-  GET http://localhost:3000/api/v1/anios-lectivos [401 Unauthorized, 702B, 9ms]
+  GET http://localhost:3000/api/v1/anios-lectivos [401 Unauthorized, 702B, 37ms]
   ✓  Rechazo 401 con el código «token_invalido»
 
 ❏ 01 · CU-03 Año lectivo y cursos (RF-11, RF-12)
 ↳ Crear el año lectivo (201, o 409 RN-31 si ya hay uno vigente)
-  POST http://localhost:3000/api/v1/anios-lectivos [409 Conflict, 849B, 24ms]
+  POST http://localhost:3000/api/v1/anios-lectivos [409 Conflict, 849B, 41ms]
   ✓  Responde 201 o 409
   ✓  Si se crea, queda vigente; si no, el conflicto cita RN-31
 
 ↳ Consultar los años lectivos
-  GET http://localhost:3000/api/v1/anios-lectivos?pagina=1&por_pagina=25 [200 OK, 954B, 23ms]
+  GET http://localhost:3000/api/v1/anios-lectivos?pagina=1&por_pagina=25 [200 OK, 955B, 51ms]
   ✓  Colección paginada (Tabla 28)
 
 ↳ Crear un curso del año vigente
-  POST http://localhost:3000/api/v1/cursos [201 Created, 938B, 94ms]
+  POST http://localhost:3000/api/v1/cursos [201 Created, 938B, 85ms]
   ✓  Responde 201
   ✓  Curso vigente sin alumnos
 
 ↳ Curso sin nombre → 422
-  POST http://localhost:3000/api/v1/cursos [422 Unprocessable Content, 838B, 16ms]
+  POST http://localhost:3000/api/v1/cursos [422 Unprocessable Content, 839B, 44ms]
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ Consultar los cursos (directivo ve todos)
-  GET http://localhost:3000/api/v1/cursos?anio_lectivo_id=e48aa00a-0669-4688-9655-703f3080ac64&estado=vigente&pagina=1&por_pagina=100 [200 OK, 16.38kB, 88ms]
+  GET http://localhost:3000/api/v1/cursos?anio_lectivo_id=e4dc88b6-f675-42cc-b3ed-b4f9a31ab25b&estado=vigente&pagina=1&por_pagina=100 [200 OK, 16.39kB, 176ms]
   ✓  Colección paginada (Tabla 28)
 
 ↳ Editar el curso
-  PATCH http://localhost:3000/api/v1/cursos/7c407dc8-1ae9-4815-9013-c438bda194d9 [200 OK, 941B, 42ms]
+  PATCH http://localhost:3000/api/v1/cursos/dfa82bbb-5bd2-494b-8cfb-718c601acd58 [200 OK, 943B, 66ms]
   ✓  Responde 200
   ✓  Refleja la edición
 
 ↳ Editar un curso inexistente → 404
-  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [404 Not Found, 825B, 11ms]
+  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [404 Not Found, 826B, 28ms]
   ✓  Rechazo 404 con el código «no_encontrado»
 
 ❏ 02 · CU-04 Docentes y asignaciones (RF-03, RF-07, RF-15, RF-44)
 ↳ Alta del docente 1 (genera el código)
-  POST http://localhost:3000/api/v1/docentes [201 Created, 1.08kB, 464ms]
+  POST http://localhost:3000/api/v1/docentes [201 Created, 1.08kB, 907ms]
   ✓  Responde 201
   ✓  Cuenta pendiente y código en claro una sola vez
 
 ↳ Alta con correo repetido → 422
-  POST http://localhost:3000/api/v1/docentes [422 Unprocessable Content, 926B, 217ms]
+  POST http://localhost:3000/api/v1/docentes [422 Unprocessable Content, 927B, 375ms]
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ Alta del docente 2
-  POST http://localhost:3000/api/v1/docentes [201 Created, 1.08kB, 434ms]
+  POST http://localhost:3000/api/v1/docentes [201 Created, 1.08kB, 424ms]
   ✓  Responde 201
 
 ↳ Vincular al docente 1 como titular
-  POST http://localhost:3000/api/v1/cursos/7c407dc8-1ae9-4815-9013-c438bda194d9/docentes [201 Created, 963B, 35ms]
+  POST http://localhost:3000/api/v1/cursos/dfa82bbb-5bd2-494b-8cfb-718c601acd58/docentes [201 Created, 964B, 45ms]
   ✓  Responde 201
   ✓  Vinculación vigente y titular
 
 ↳ Segundo titular → 409 RN-13
-  POST http://localhost:3000/api/v1/cursos/7c407dc8-1ae9-4815-9013-c438bda194d9/docentes [409 Conflict, 906B, 20ms]
+  POST http://localhost:3000/api/v1/cursos/dfa82bbb-5bd2-494b-8cfb-718c601acd58/docentes [409 Conflict, 906B, 39ms]
   ✓  Rechazo 409 con el código «conflicto_de_regla» y la regla RN-13
 
 ↳ Vincular al docente 2 sin titularidad
-  POST http://localhost:3000/api/v1/cursos/7c407dc8-1ae9-4815-9013-c438bda194d9/docentes [201 Created, 964B, 33ms]
+  POST http://localhost:3000/api/v1/cursos/dfa82bbb-5bd2-494b-8cfb-718c601acd58/docentes [201 Created, 965B, 42ms]
   ✓  Responde 201
   ✓  No titular
 
 ↳ Vinculación duplicada → 422
-  POST http://localhost:3000/api/v1/cursos/7c407dc8-1ae9-4815-9013-c438bda194d9/docentes [422 Unprocessable Content, 893B, 65ms]
+  POST http://localhost:3000/api/v1/cursos/dfa82bbb-5bd2-494b-8cfb-718c601acd58/docentes [422 Unprocessable Content, 893B, 26ms]
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ Regenerar el código del docente 1 (RF-07)
-  POST http://localhost:3000/api/v1/usuarios/cf287143-6521-4568-8a39-14846c769b9a/codigos-activacion [201 Created, 767B, 227ms]
+  POST http://localhost:3000/api/v1/usuarios/fbad0e7c-c95f-4a8a-9f32-31c8d85b8c46/codigos-activacion [201 Created, 768B, 569ms]
   ✓  Responde 201
   ✓  Código nuevo distinto del anterior
 
 ❏ 03 · CU-02 Activar cuenta con código (RF-06)
 ↳ Código inexistente → 410
-  POST http://localhost:3000/api/v1/activaciones [410 Gone, 796B, 19ms]
+  POST http://localhost:3000/api/v1/activaciones [410 Gone, 797B, 41ms]
   ✓  Rechazo 410 con el código «codigo_no_vigente»
 
 ↳ Canjear el código del docente 2
-  POST http://localhost:3000/api/v1/activaciones [201 Created, 1.13kB, 422ms]
+  POST http://localhost:3000/api/v1/activaciones [201 Created, 1.13kB, 970ms]
   ✓  Responde 201
   ✓  Devuelve sesión del docente
 
 ↳ El código ya canjeado no se reutiliza → 410
-  POST http://localhost:3000/api/v1/activaciones [410 Gone, 796B, 11ms]
+  POST http://localhost:3000/api/v1/activaciones [410 Gone, 796B, 15ms]
   ✓  Rechazo 410 con el código «codigo_no_vigente»
 
 ↳ Iniciar sesión con la contraseña propia
-  POST http://localhost:3000/api/v1/sesiones [201 Created, 1.05kB, 204ms]
+  POST http://localhost:3000/api/v1/sesiones [201 Created, 1.05kB, 262ms]
   ✓  Responde 201
 
 ↳ Desvincular al docente 1 designando titular al 2 (RF-44)
-  DELETE http://localhost:3000/api/v1/cursos/7c407dc8-1ae9-4815-9013-c438bda194d9/docentes/cf287143-6521-4568-8a39-14846c769b9a [200 OK, 917B, 80ms]
+  DELETE http://localhost:3000/api/v1/cursos/dfa82bbb-5bd2-494b-8cfb-718c601acd58/docentes/fbad0e7c-c95f-4a8a-9f32-31c8d85b8c46 [200 OK, 917B, 92ms]
   ✓  Responde 200
   ✓  Vinculación cerrada
 
 ↳ Baja lógica del docente 1 (ya sin vinculaciones)
-  DELETE http://localhost:3000/api/v1/docentes/cf287143-6521-4568-8a39-14846c769b9a [200 OK, 922B, 36ms]
+  DELETE http://localhost:3000/api/v1/docentes/fbad0e7c-c95f-4a8a-9f32-31c8d85b8c46 [200 OK, 922B, 58ms]
   ✓  Responde 200
   ✓  Estado dado de baja
 
 ↳ Baja del docente 2 con vinculación vigente → 409 RN-13
-  DELETE http://localhost:3000/api/v1/docentes/d0a78934-589e-4b25-91d8-69f8b1af5e14 [409 Conflict, 893B, 17ms]
+  DELETE http://localhost:3000/api/v1/docentes/0b681f94-7af6-45cc-9cec-67f0367e31d5 [409 Conflict, 894B, 42ms]
   ✓  Rechazo 409 con el código «conflicto_de_regla» y la regla RN-13
 
 ❏ 04 · CU-05 Alumnos y tutores (RF-04, RF-05, RF-13, RF-14)
 ↳ Alta del alumno vinculado al curso
-  POST http://localhost:3000/api/v1/alumnos [201 Created, 1.29kB, 446ms]
+  POST http://localhost:3000/api/v1/alumnos [201 Created, 1.29kB, 679ms]
   ✓  Responde 201
   ✓  Alumno pendiente vinculado al curso
 
 ↳ Alta de alumno sin curso → 422
-  POST http://localhost:3000/api/v1/alumnos [422 Unprocessable Content, 794B, 10ms]
+  POST http://localhost:3000/api/v1/alumnos [422 Unprocessable Content, 794B, 26ms]
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ Vincular un tutor al alumno
-  POST http://localhost:3000/api/v1/alumnos/527fb537-7cb3-46ce-9fd1-d4eb9d365fbe/tutores [201 Created, 1.29kB, 477ms]
+  POST http://localhost:3000/api/v1/alumnos/5aa95aff-801c-4b1a-91b6-926820c1ce8a/tutores [201 Created, 1.29kB, 931ms]
   ✓  Responde 201
   ✓  Tutor pendiente vinculado
 
 ↳ Tutor ya vinculado → 422
-  POST http://localhost:3000/api/v1/alumnos/527fb537-7cb3-46ce-9fd1-d4eb9d365fbe/tutores [422 Unprocessable Content, 971B, 30ms]
+  POST http://localhost:3000/api/v1/alumnos/5aa95aff-801c-4b1a-91b6-926820c1ce8a/tutores [422 Unprocessable Content, 972B, 80ms]
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ Código de activación del alumno (docente)
-  POST http://localhost:3000/api/v1/usuarios/527fb537-7cb3-46ce-9fd1-d4eb9d365fbe/codigos-activacion [201 Created, 767B, 219ms]
+  POST http://localhost:3000/api/v1/usuarios/5aa95aff-801c-4b1a-91b6-926820c1ce8a/codigos-activacion [201 Created, 768B, 483ms]
   ✓  Responde 201
 
 ↳ Código de activación del tutor (docente)
-  POST http://localhost:3000/api/v1/usuarios/b6d515b0-68df-4149-a8b4-e28576106382/codigos-activacion [201 Created, 767B, 211ms]
+  POST http://localhost:3000/api/v1/usuarios/b052e732-bb76-4856-a815-c92bd6245287/codigos-activacion [201 Created, 768B, 427ms]
   ✓  Responde 201
 
 ↳ Activar la cuenta del alumno
-  POST http://localhost:3000/api/v1/activaciones [201 Created, 1.13kB, 422ms]
+  POST http://localhost:3000/api/v1/activaciones [201 Created, 1.13kB, 1383ms]
   ✓  Responde 201
   ✓  Rol alumno
 
 ↳ Activar la cuenta del tutor
-  POST http://localhost:3000/api/v1/activaciones [201 Created, 1.13kB, 429ms]
+  POST http://localhost:3000/api/v1/activaciones [201 Created, 1.13kB, 1164ms]
   ✓  Responde 201
   ✓  Rol tutor
 
 ↳ El docente consulta sus cursos (con nómina)
-  GET http://localhost:3000/api/v1/cursos?pagina=1&por_pagina=100 [200 OK, 1.32kB, 69ms]
+  GET http://localhost:3000/api/v1/cursos?pagina=1&por_pagina=100 [200 OK, 1.33kB, 106ms]
   ✓  Colección paginada (Tabla 28)
 
 ❏ 05 · CU-06/09/10/11 Anuncios, entregas y constancias (RF-17, RF-21, RF-22, RF-23, RF-34, RF-35, RF-36)
 ↳ Publicar un anuncio al curso
-  POST http://localhost:3000/api/v1/anuncios [201 Created, 1.23kB, 292ms]
+  POST http://localhost:3000/api/v1/anuncios [201 Created, 1.23kB, 302ms]
   ✓  Responde 201
   ✓  Anuncio publicado, atribuido al autor (RNF-04)
 
 ↳ Anuncio sin título → 422
-  POST http://localhost:3000/api/v1/anuncios [422 Unprocessable Content, 840B, 14ms]
+  POST http://localhost:3000/api/v1/anuncios [422 Unprocessable Content, 840B, 27ms]
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ Anuncio sin cursos → 422
-  POST http://localhost:3000/api/v1/anuncios [422 Unprocessable Content, 840B, 14ms]
+  POST http://localhost:3000/api/v1/anuncios [422 Unprocessable Content, 841B, 26ms]
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ El tutor consulta el historial
-  GET http://localhost:3000/api/v1/anuncios?pagina=1&por_pagina=25&orden=publicado_en:desc [200 OK, 1.09kB, 41ms]
+  GET http://localhost:3000/api/v1/anuncios?pagina=1&por_pagina=25&orden=publicado_en:desc [200 OK, 1.09kB, 68ms]
   ✓  Colección paginada (Tabla 28)
 
 ↳ Historial filtrado por curso y remitente
-  GET http://localhost:3000/api/v1/anuncios?curso_id=7c407dc8-1ae9-4815-9013-c438bda194d9&remitente_id=d0a78934-589e-4b25-91d8-69f8b1af5e14&pagina=1&por_pagina=25 [200 OK, 1.09kB, 36ms]
+  GET http://localhost:3000/api/v1/anuncios?curso_id=dfa82bbb-5bd2-494b-8cfb-718c601acd58&remitente_id=0b681f94-7af6-45cc-9cec-67f0367e31d5&pagina=1&por_pagina=25 [200 OK, 1.09kB, 63ms]
   ✓  Colección paginada (Tabla 28)
 
 ↳ Historial filtrado por fecha futura → vacío
-  GET http://localhost:3000/api/v1/anuncios?desde=2099-01-01T00:00:00Z&pagina=1&por_pagina=25 [200 OK, 662B, 25ms]
+  GET http://localhost:3000/api/v1/anuncios?desde=2099-01-01T00:00:00Z&pagina=1&por_pagina=25 [200 OK, 662B, 33ms]
   ✓  Colección paginada (Tabla 28)
 
 ↳ Detalle del anuncio (tutor)
-  GET http://localhost:3000/api/v1/anuncios/a9b5b6f4-86c4-42a7-b5b1-9424d3cca6ad [200 OK, 1.25kB, 33ms]
+  GET http://localhost:3000/api/v1/anuncios/0cecfe6d-6ba4-48bb-bb99-bc272ddf6f5b [200 OK, 1.25kB, 51ms]
   ✓  Responde 200
   ✓  Versión vigente
 
 ↳ Anuncio ajeno o inexistente → 404
-  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [404 Not Found, 828B, 22ms]
+  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [404 Not Found, 828B, 24ms]
   ✓  Rechazo 404 con el código «no_encontrado»
 
 ↳ Acuse de recepción del cliente (RF-34)
-  POST http://localhost:3000/api/v1/entregas/acuses [200 OK, 787B, 33ms]
+  POST http://localhost:3000/api/v1/entregas/acuses [200 OK, 789B, 58ms]
   ✓  Responde 200
   ✓  Contadores de registro
 
 ↳ Registrar la vista en lote (RF-35)
-  POST http://localhost:3000/api/v1/entregas/vistas [200 OK, 787B, 29ms]
+  POST http://localhost:3000/api/v1/entregas/vistas [200 OK, 789B, 46ms]
   ✓  Responde 200
   ✓  Contadores de registro
 
 ↳ Repetir la vista es idempotente (RF-36)
-  POST http://localhost:3000/api/v1/entregas/vistas [200 OK, 788B, 36ms]
+  POST http://localhost:3000/api/v1/entregas/vistas [200 OK, 787B, 34ms]
   ✓  Responde 200
   ✓  La repetición se omite
 
 ↳ Registrar la lectura
-  POST http://localhost:3000/api/v1/entregas/lecturas [200 OK, 1.1kB, 57ms]
+  POST http://localhost:3000/api/v1/entregas/lecturas [200 OK, 1.11kB, 46ms]
   ✓  Responde 200
   ✓  Estados de entrega con marca de lectura
 
 ↳ Repetir la lectura no altera la marca (RNF-05)
-  POST http://localhost:3000/api/v1/entregas/lecturas [200 OK, 1.1kB, 31ms]
+  POST http://localhost:3000/api/v1/entregas/lecturas [200 OK, 1.1kB, 41ms]
   ✓  Responde 200
   ✓  Misma entrega, misma marca de lectura
 
@@ -232,435 +232,435 @@ Plataforma de Comunicación Escolar · Pruebas de la API v1
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ Constancias de lectura del autor (RN-21)
-  GET http://localhost:3000/api/v1/anuncios/a9b5b6f4-86c4-42a7-b5b1-9424d3cca6ad/constancias?pagina=1&por_pagina=25 [200 OK, 807B, 37ms]
+  GET http://localhost:3000/api/v1/anuncios/0cecfe6d-6ba4-48bb-bb99-bc272ddf6f5b/constancias?pagina=1&por_pagina=25 [200 OK, 807B, 40ms]
   ✓  Recuento y nómina de quienes no leyeron
 
 ❏ 06 · CU-12 Conversaciones (RF-25, RF-28, RF-29, RF-32)
 ↳ Canales del curso para el docente
-  GET http://localhost:3000/api/v1/cursos/7c407dc8-1ae9-4815-9013-c438bda194d9/conversaciones [200 OK, 804B, 48ms]
+  GET http://localhost:3000/api/v1/cursos/dfa82bbb-5bd2-494b-8cfb-718c601acd58/conversaciones [200 OK, 805B, 115ms]
   ✓  Colección paginada (Tabla 28)
 
 ↳ Conversaciones del tutor
-  GET http://localhost:3000/api/v1/conversaciones?pagina=1&por_pagina=25 [200 OK, 826B, 52ms]
+  GET http://localhost:3000/api/v1/conversaciones?pagina=1&por_pagina=25 [200 OK, 826B, 68ms]
   ✓  Colección paginada (Tabla 28)
 
 ↳ El tutor emite un mensaje
-  POST http://localhost:3000/api/v1/conversaciones/b0d8059f-5463-4320-83a3-e8b839975913/mensajes [201 Created, 1.28kB, 108ms]
+  POST http://localhost:3000/api/v1/conversaciones/9ed0ccef-1f30-4b0f-b7c9-1af07a8c0b4b/mensajes [201 Created, 1.28kB, 79ms]
   ✓  Responde 201
   ✓  Mensaje atribuido al tutor
 
 ↳ Mensaje vacío → 422
-  POST http://localhost:3000/api/v1/conversaciones/b0d8059f-5463-4320-83a3-e8b839975913/mensajes [422 Unprocessable Content, 893B, 30ms]
+  POST http://localhost:3000/api/v1/conversaciones/9ed0ccef-1f30-4b0f-b7c9-1af07a8c0b4b/mensajes [422 Unprocessable Content, 893B, 31ms]
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ El alumno no participa del canal de tutores → 403
-  POST http://localhost:3000/api/v1/conversaciones/b0d8059f-5463-4320-83a3-e8b839975913/mensajes [403 Forbidden, 848B, 16ms]
+  POST http://localhost:3000/api/v1/conversaciones/9ed0ccef-1f30-4b0f-b7c9-1af07a8c0b4b/mensajes [403 Forbidden, 848B, 17ms]
   ✓  Rechazo 403 con el código «no_participa_de_la_conversacion»
 
 ↳ El docente responde en el canal
-  POST http://localhost:3000/api/v1/conversaciones/b0d8059f-5463-4320-83a3-e8b839975913/mensajes [201 Created, 1.28kB, 86ms]
+  POST http://localhost:3000/api/v1/conversaciones/9ed0ccef-1f30-4b0f-b7c9-1af07a8c0b4b/mensajes [201 Created, 1.29kB, 156ms]
   ✓  Responde 201
   ✓  Mensaje atribuido al docente
 
 ↳ Historial del canal, orden ascendente
-  GET http://localhost:3000/api/v1/conversaciones/b0d8059f-5463-4320-83a3-e8b839975913/mensajes?orden=enviado_en:asc&pagina=1&por_pagina=25 [200 OK, 1.47kB, 56ms]
+  GET http://localhost:3000/api/v1/conversaciones/9ed0ccef-1f30-4b0f-b7c9-1af07a8c0b4b/mensajes?orden=enviado_en:asc&pagina=1&por_pagina=25 [200 OK, 1.47kB, 44ms]
   ✓  Colección paginada (Tabla 28)
 
 ↳ Conversación inexistente → 404
-  GET http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [404 Not Found, 842B, 13ms]
+  GET http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [404 Not Found, 842B, 14ms]
   ✓  Rechazo 404 con el código «no_encontrado»
 
 ❏ 07 · CU-13/14 Preferencias y suscripciones push (RF-33, RF-37)
 ↳ Preferencias por omisión
-  GET http://localhost:3000/api/v1/usuarios/me/preferencias [200 OK, 742B, 46ms]
+  GET http://localhost:3000/api/v1/usuarios/me/preferencias [200 OK, 742B, 23ms]
   ✓  Responde 200
   ✓  Forma de la preferencia
 
 ↳ Configurar el horario con cruce de medianoche
-  PUT http://localhost:3000/api/v1/usuarios/me/preferencias [200 OK, 905B, 27ms]
+  PUT http://localhost:3000/api/v1/usuarios/me/preferencias [200 OK, 907B, 35ms]
   ✓  Responde 200
   ✓  Persiste lo enviado
 
 ↳ Hora con formato inválido → 422
-  PUT http://localhost:3000/api/v1/usuarios/me/preferencias [422 Unprocessable Content, 865B, 17ms]
+  PUT http://localhost:3000/api/v1/usuarios/me/preferencias [422 Unprocessable Content, 865B, 15ms]
   ✓  Rechazo 422 con el código «datos_inaceptables»
 
 ↳ Consultar lo configurado
-  GET http://localhost:3000/api/v1/usuarios/me/preferencias [200 OK, 775B, 13ms]
+  GET http://localhost:3000/api/v1/usuarios/me/preferencias [200 OK, 775B, 14ms]
   ✓  Responde 200
   ✓  Conserva el horario
 
 ↳ Registrar el destino push del navegador
-  POST http://localhost:3000/api/v1/suscripciones-push [201 Created, 868B, 49ms]
+  POST http://localhost:3000/api/v1/suscripciones-push [201 Created, 868B, 43ms]
   ✓  Responde 201
   ✓  Suscripción vigente
 
 ↳ Invalidar el destino
-  DELETE http://localhost:3000/api/v1/suscripciones-push/06cb0530-e305-402b-92f0-18d8e48a8e47 [200 OK, 912B, 25ms]
+  DELETE http://localhost:3000/api/v1/suscripciones-push/55ec4e93-40a1-4381-a563-38ef986531de [200 OK, 912B, 21ms]
   ✓  Responde 200
   ✓  Suscripción inválida con marca
 
 ❏ 08 · CU-09/15 Paneles y supervisión (RF-40, RF-45)
 ↳ Panel del directivo
-  GET http://localhost:3000/api/v1/paneles/me [200 OK, 1.01kB, 26ms]
+  GET http://localhost:3000/api/v1/paneles/me [200 OK, 1.01kB, 18ms]
   ✓  Responde 200
   ✓  Opciones del rol directivo (RF-40)
 
 ↳ Panel del docente
-  GET http://localhost:3000/api/v1/paneles/me [200 OK, 910B, 21ms]
+  GET http://localhost:3000/api/v1/paneles/me [200 OK, 910B, 20ms]
   ✓  Responde 200
   ✓  Opciones del rol docente
 
 ↳ Panel del tutor
-  GET http://localhost:3000/api/v1/paneles/me [200 OK, 827B, 20ms]
+  GET http://localhost:3000/api/v1/paneles/me [200 OK, 827B, 18ms]
   ✓  Responde 200
   ✓  Opciones del rol tutor
 
 ↳ Panel del alumno (sin conversaciones)
-  GET http://localhost:3000/api/v1/paneles/me [200 OK, 811B, 20ms]
+  GET http://localhost:3000/api/v1/paneles/me [200 OK, 810B, 15ms]
   ✓  Responde 200
   ✓  Opciones del rol alumno
 
 ↳ Estado agregado de entrega y lectura por curso
-  GET http://localhost:3000/api/v1/supervision/cursos?anio_lectivo_id=e48aa00a-0669-4688-9655-703f3080ac64 [200 OK, 1.48kB, 102ms]
+  GET http://localhost:3000/api/v1/supervision/cursos?anio_lectivo_id=e4dc88b6-f675-42cc-b3ed-b4f9a31ab25b [200 OK, 1.48kB, 55ms]
   ✓  Una fila por curso con los cuatro contadores
 
 ❏ 09 · RNF-01 Matriz de autorización (Tabla 18 × cuatro roles) / Sin token → 401 (34 operaciones autenticadas)
 ↳ DELETE /sesiones sin token → 401
-  DELETE http://localhost:3000/api/v1/sesiones [401 Unauthorized, 695B, 10ms]
+  DELETE http://localhost:3000/api/v1/sesiones [401 Unauthorized, 695B, 7ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ PATCH /usuarios/me/contrasena sin token → 401
-  PATCH http://localhost:3000/api/v1/usuarios/me/contrasena [401 Unauthorized, 709B, 15ms]
+  PATCH http://localhost:3000/api/v1/usuarios/me/contrasena [401 Unauthorized, 709B, 9ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /anios-lectivos sin token → 401
-  POST http://localhost:3000/api/v1/anios-lectivos [401 Unauthorized, 701B, 16ms]
+  POST http://localhost:3000/api/v1/anios-lectivos [401 Unauthorized, 701B, 7ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /anios-lectivos sin token → 401
-  GET http://localhost:3000/api/v1/anios-lectivos [401 Unauthorized, 701B, 12ms]
+  GET http://localhost:3000/api/v1/anios-lectivos [401 Unauthorized, 701B, 7ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /cursos sin token → 401
-  POST http://localhost:3000/api/v1/cursos [401 Unauthorized, 693B, 14ms]
+  POST http://localhost:3000/api/v1/cursos [401 Unauthorized, 693B, 18ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /cursos sin token → 401
-  GET http://localhost:3000/api/v1/cursos [401 Unauthorized, 693B, 20ms]
+  GET http://localhost:3000/api/v1/cursos [401 Unauthorized, 693B, 7ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ PATCH /cursos/{id} sin token → 401
-  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 730B, 15ms]
+  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 730B, 9ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /docentes sin token → 401
-  POST http://localhost:3000/api/v1/docentes [401 Unauthorized, 695B, 11ms]
+  POST http://localhost:3000/api/v1/docentes [401 Unauthorized, 695B, 9ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /cursos/{id}/docentes sin token → 401
-  POST http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes [401 Unauthorized, 739B, 8ms]
+  POST http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes [401 Unauthorized, 739B, 14ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ DELETE /cursos/{id}/docentes/{id} sin token → 401
-  DELETE http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 776B, 10ms]
+  DELETE http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 776B, 9ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ DELETE /docentes/{id} sin token → 401
-  DELETE http://localhost:3000/api/v1/docentes/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 732B, 10ms]
+  DELETE http://localhost:3000/api/v1/docentes/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 732B, 9ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /usuarios/{id}/codigos-activacion sin token → 401
-  POST http://localhost:3000/api/v1/usuarios/00000000-0000-4000-8000-000000000000/codigos-activacion [401 Unauthorized, 751B, 10ms]
+  POST http://localhost:3000/api/v1/usuarios/00000000-0000-4000-8000-000000000000/codigos-activacion [401 Unauthorized, 751B, 8ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /alumnos sin token → 401
-  POST http://localhost:3000/api/v1/alumnos [401 Unauthorized, 694B, 9ms]
+  POST http://localhost:3000/api/v1/alumnos [401 Unauthorized, 694B, 13ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /alumnos/{id}/tutores sin token → 401
-  POST http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000/tutores [401 Unauthorized, 739B, 10ms]
+  POST http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000/tutores [401 Unauthorized, 739B, 9ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ DELETE /alumnos/{id} sin token → 401
-  DELETE http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 731B, 10ms]
+  DELETE http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 731B, 6ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ DELETE /tutores/{id} sin token → 401
-  DELETE http://localhost:3000/api/v1/tutores/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 731B, 12ms]
+  DELETE http://localhost:3000/api/v1/tutores/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 731B, 15ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /anuncios sin token → 401
-  POST http://localhost:3000/api/v1/anuncios [401 Unauthorized, 695B, 11ms]
+  POST http://localhost:3000/api/v1/anuncios [401 Unauthorized, 695B, 13ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ DELETE /anuncios/{id} sin token → 401
-  DELETE http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 732B, 9ms]
+  DELETE http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 732B, 11ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /anuncios sin token → 401
-  GET http://localhost:3000/api/v1/anuncios [401 Unauthorized, 695B, 6ms]
+  GET http://localhost:3000/api/v1/anuncios [401 Unauthorized, 695B, 11ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /anuncios/{id} sin token → 401
-  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 732B, 10ms]
+  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 732B, 13ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /anuncios/{id}/constancias sin token → 401
-  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000/constancias [401 Unauthorized, 744B, 12ms]
+  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000/constancias [401 Unauthorized, 744B, 11ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /paneles/me sin token → 401
-  GET http://localhost:3000/api/v1/paneles/me [401 Unauthorized, 697B, 8ms]
+  GET http://localhost:3000/api/v1/paneles/me [401 Unauthorized, 697B, 14ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /supervision/cursos sin token → 401
-  GET http://localhost:3000/api/v1/supervision/cursos [401 Unauthorized, 705B, 7ms]
+  GET http://localhost:3000/api/v1/supervision/cursos [401 Unauthorized, 705B, 17ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /entregas/acuses sin token → 401
-  POST http://localhost:3000/api/v1/entregas/acuses [401 Unauthorized, 702B, 7ms]
+  POST http://localhost:3000/api/v1/entregas/acuses [401 Unauthorized, 702B, 16ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /entregas/vistas sin token → 401
-  POST http://localhost:3000/api/v1/entregas/vistas [401 Unauthorized, 702B, 8ms]
+  POST http://localhost:3000/api/v1/entregas/vistas [401 Unauthorized, 702B, 16ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /entregas/lecturas sin token → 401
-  POST http://localhost:3000/api/v1/entregas/lecturas [401 Unauthorized, 704B, 6ms]
+  POST http://localhost:3000/api/v1/entregas/lecturas [401 Unauthorized, 704B, 17ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /cursos/{id}/conversaciones sin token → 401
-  GET http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/conversaciones [401 Unauthorized, 745B, 8ms]
+  GET http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/conversaciones [401 Unauthorized, 745B, 16ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /conversaciones sin token → 401
-  GET http://localhost:3000/api/v1/conversaciones [401 Unauthorized, 701B, 6ms]
+  GET http://localhost:3000/api/v1/conversaciones [401 Unauthorized, 701B, 16ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /conversaciones/{id}/mensajes sin token → 401
-  GET http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [401 Unauthorized, 747B, 7ms]
+  GET http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [401 Unauthorized, 747B, 15ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /conversaciones/{id}/mensajes sin token → 401
-  POST http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [401 Unauthorized, 747B, 8ms]
+  POST http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [401 Unauthorized, 747B, 12ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ GET /usuarios/me/preferencias sin token → 401
-  GET http://localhost:3000/api/v1/usuarios/me/preferencias [401 Unauthorized, 711B, 10ms]
+  GET http://localhost:3000/api/v1/usuarios/me/preferencias [401 Unauthorized, 711B, 16ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ PUT /usuarios/me/preferencias sin token → 401
-  PUT http://localhost:3000/api/v1/usuarios/me/preferencias [401 Unauthorized, 711B, 11ms]
+  PUT http://localhost:3000/api/v1/usuarios/me/preferencias [401 Unauthorized, 711B, 13ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ POST /suscripciones-push sin token → 401
-  POST http://localhost:3000/api/v1/suscripciones-push [401 Unauthorized, 705B, 6ms]
+  POST http://localhost:3000/api/v1/suscripciones-push [401 Unauthorized, 705B, 11ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ↳ DELETE /suscripciones-push/{id} sin token → 401
-  DELETE http://localhost:3000/api/v1/suscripciones-push/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 742B, 8ms]
+  DELETE http://localhost:3000/api/v1/suscripciones-push/00000000-0000-4000-8000-000000000000 [401 Unauthorized, 742B, 17ms]
   ✓  Rechazo 401 con el código «token_ausente»
 
 ❏ 09 · RNF-01 Matriz de autorización (Tabla 18 × cuatro roles) / Rol no habilitado → 403 (60 combinaciones)
 ↳ POST /anios-lectivos con rol docente → 403
-  POST http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 10ms]
+  POST http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 23ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /anios-lectivos con rol tutor → 403
-  POST http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 10ms]
+  POST http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 14ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /anios-lectivos con rol alumno → 403
-  POST http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 11ms]
+  POST http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 18ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /anios-lectivos con rol docente → 403
-  GET http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 12ms]
+  GET http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 16ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /anios-lectivos con rol tutor → 403
-  GET http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 13ms]
+  GET http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /anios-lectivos con rol alumno → 403
-  GET http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 13ms]
+  GET http://localhost:3000/api/v1/anios-lectivos [403 Forbidden, 808B, 14ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /cursos con rol docente → 403
-  POST http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 10ms]
+  POST http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 13ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /cursos con rol tutor → 403
-  POST http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 9ms]
+  POST http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 17ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /cursos con rol alumno → 403
-  POST http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 11ms]
+  POST http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 12ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /cursos con rol tutor → 403
-  GET http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 12ms]
+  GET http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 19ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /cursos con rol alumno → 403
-  GET http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 10ms]
+  GET http://localhost:3000/api/v1/cursos [403 Forbidden, 800B, 24ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ PATCH /cursos/{id} con rol docente → 403
-  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 837B, 11ms]
+  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 837B, 24ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ PATCH /cursos/{id} con rol tutor → 403
-  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 837B, 10ms]
+  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 837B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ PATCH /cursos/{id} con rol alumno → 403
-  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 837B, 13ms]
+  PATCH http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 837B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /docentes con rol docente → 403
-  POST http://localhost:3000/api/v1/docentes [403 Forbidden, 803B, 23ms]
+  POST http://localhost:3000/api/v1/docentes [403 Forbidden, 802B, 25ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /docentes con rol tutor → 403
-  POST http://localhost:3000/api/v1/docentes [403 Forbidden, 802B, 11ms]
+  POST http://localhost:3000/api/v1/docentes [403 Forbidden, 802B, 29ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /docentes con rol alumno → 403
-  POST http://localhost:3000/api/v1/docentes [403 Forbidden, 802B, 10ms]
+  POST http://localhost:3000/api/v1/docentes [403 Forbidden, 802B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /cursos/{id}/docentes con rol docente → 403
-  POST http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes [403 Forbidden, 846B, 11ms]
+  POST http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes [403 Forbidden, 847B, 34ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /cursos/{id}/docentes con rol tutor → 403
-  POST http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes [403 Forbidden, 846B, 10ms]
+  POST http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes [403 Forbidden, 847B, 24ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /cursos/{id}/docentes con rol alumno → 403
-  POST http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes [403 Forbidden, 846B, 9ms]
+  POST http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes [403 Forbidden, 846B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /cursos/{id}/docentes/{id} con rol docente → 403
-  DELETE http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 883B, 12ms]
+  DELETE http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 883B, 21ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /cursos/{id}/docentes/{id} con rol tutor → 403
-  DELETE http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 883B, 12ms]
+  DELETE http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 883B, 23ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /cursos/{id}/docentes/{id} con rol alumno → 403
-  DELETE http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 883B, 12ms]
+  DELETE http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 883B, 21ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /docentes/{id} con rol docente → 403
-  DELETE http://localhost:3000/api/v1/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 13ms]
+  DELETE http://localhost:3000/api/v1/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 25ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /docentes/{id} con rol tutor → 403
-  DELETE http://localhost:3000/api/v1/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 9ms]
+  DELETE http://localhost:3000/api/v1/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 24ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /docentes/{id} con rol alumno → 403
-  DELETE http://localhost:3000/api/v1/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 10ms]
+  DELETE http://localhost:3000/api/v1/docentes/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 25ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /usuarios/{id}/codigos-activacion con rol tutor → 403
-  POST http://localhost:3000/api/v1/usuarios/00000000-0000-4000-8000-000000000000/codigos-activacion [403 Forbidden, 858B, 11ms]
+  POST http://localhost:3000/api/v1/usuarios/00000000-0000-4000-8000-000000000000/codigos-activacion [403 Forbidden, 858B, 21ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /usuarios/{id}/codigos-activacion con rol alumno → 403
-  POST http://localhost:3000/api/v1/usuarios/00000000-0000-4000-8000-000000000000/codigos-activacion [403 Forbidden, 858B, 10ms]
+  POST http://localhost:3000/api/v1/usuarios/00000000-0000-4000-8000-000000000000/codigos-activacion [403 Forbidden, 858B, 20ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /alumnos con rol directivo → 403
-  POST http://localhost:3000/api/v1/alumnos [403 Forbidden, 801B, 10ms]
+  POST http://localhost:3000/api/v1/alumnos [403 Forbidden, 801B, 25ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /alumnos con rol tutor → 403
-  POST http://localhost:3000/api/v1/alumnos [403 Forbidden, 801B, 11ms]
+  POST http://localhost:3000/api/v1/alumnos [403 Forbidden, 801B, 20ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /alumnos con rol alumno → 403
-  POST http://localhost:3000/api/v1/alumnos [403 Forbidden, 801B, 11ms]
+  POST http://localhost:3000/api/v1/alumnos [403 Forbidden, 801B, 25ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /alumnos/{id}/tutores con rol directivo → 403
-  POST http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000/tutores [403 Forbidden, 846B, 11ms]
+  POST http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000/tutores [403 Forbidden, 846B, 23ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /alumnos/{id}/tutores con rol tutor → 403
-  POST http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000/tutores [403 Forbidden, 846B, 10ms]
+  POST http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000/tutores [403 Forbidden, 846B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /alumnos/{id}/tutores con rol alumno → 403
-  POST http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000/tutores [403 Forbidden, 846B, 11ms]
+  POST http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000/tutores [403 Forbidden, 846B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /alumnos/{id} con rol tutor → 403
-  DELETE http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 838B, 10ms]
+  DELETE http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 25ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /alumnos/{id} con rol alumno → 403
-  DELETE http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 838B, 9ms]
+  DELETE http://localhost:3000/api/v1/alumnos/00000000-0000-4000-8000-000000000000 [403 Forbidden, 838B, 20ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /tutores/{id} con rol tutor → 403
-  DELETE http://localhost:3000/api/v1/tutores/00000000-0000-4000-8000-000000000000 [403 Forbidden, 838B, 11ms]
+  DELETE http://localhost:3000/api/v1/tutores/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 31ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /tutores/{id} con rol alumno → 403
-  DELETE http://localhost:3000/api/v1/tutores/00000000-0000-4000-8000-000000000000 [403 Forbidden, 838B, 11ms]
+  DELETE http://localhost:3000/api/v1/tutores/00000000-0000-4000-8000-000000000000 [403 Forbidden, 838B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /anuncios con rol directivo → 403
-  POST http://localhost:3000/api/v1/anuncios [403 Forbidden, 802B, 11ms]
+  POST http://localhost:3000/api/v1/anuncios [403 Forbidden, 803B, 29ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /anuncios con rol tutor → 403
-  POST http://localhost:3000/api/v1/anuncios [403 Forbidden, 802B, 11ms]
+  POST http://localhost:3000/api/v1/anuncios [403 Forbidden, 802B, 14ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /anuncios con rol alumno → 403
-  POST http://localhost:3000/api/v1/anuncios [403 Forbidden, 802B, 11ms]
+  POST http://localhost:3000/api/v1/anuncios [403 Forbidden, 802B, 15ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /anuncios/{id} con rol directivo → 403
-  DELETE http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 10ms]
+  DELETE http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /anuncios/{id} con rol tutor → 403
-  DELETE http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 10ms]
+  DELETE http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 26ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ DELETE /anuncios/{id} con rol alumno → 403
-  DELETE http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 9ms]
+  DELETE http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000 [403 Forbidden, 839B, 20ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /anuncios/{id}/constancias con rol directivo → 403
-  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000/constancias [403 Forbidden, 851B, 11ms]
+  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000/constancias [403 Forbidden, 851B, 19ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /anuncios/{id}/constancias con rol tutor → 403
-  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000/constancias [403 Forbidden, 851B, 11ms]
+  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000/constancias [403 Forbidden, 851B, 15ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /anuncios/{id}/constancias con rol alumno → 403
-  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000/constancias [403 Forbidden, 851B, 9ms]
+  GET http://localhost:3000/api/v1/anuncios/00000000-0000-4000-8000-000000000000/constancias [403 Forbidden, 851B, 14ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /supervision/cursos con rol docente → 403
-  GET http://localhost:3000/api/v1/supervision/cursos [403 Forbidden, 812B, 10ms]
+  GET http://localhost:3000/api/v1/supervision/cursos [403 Forbidden, 812B, 12ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /supervision/cursos con rol tutor → 403
-  GET http://localhost:3000/api/v1/supervision/cursos [403 Forbidden, 812B, 12ms]
+  GET http://localhost:3000/api/v1/supervision/cursos [403 Forbidden, 812B, 11ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /supervision/cursos con rol alumno → 403
-  GET http://localhost:3000/api/v1/supervision/cursos [403 Forbidden, 812B, 12ms]
+  GET http://localhost:3000/api/v1/supervision/cursos [403 Forbidden, 812B, 15ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /entregas/acuses con rol directivo → 403
@@ -668,19 +668,19 @@ Plataforma de Comunicación Escolar · Pruebas de la API v1
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /entregas/acuses con rol docente → 403
-  POST http://localhost:3000/api/v1/entregas/acuses [403 Forbidden, 809B, 12ms]
+  POST http://localhost:3000/api/v1/entregas/acuses [403 Forbidden, 809B, 15ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /entregas/vistas con rol directivo → 403
-  POST http://localhost:3000/api/v1/entregas/vistas [403 Forbidden, 809B, 14ms]
-  ✓  Rechazo 403 con el código «rol_no_autorizado»
-
-↳ POST /entregas/vistas con rol docente → 403
   POST http://localhost:3000/api/v1/entregas/vistas [403 Forbidden, 809B, 13ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
+↳ POST /entregas/vistas con rol docente → 403
+  POST http://localhost:3000/api/v1/entregas/vistas [403 Forbidden, 809B, 11ms]
+  ✓  Rechazo 403 con el código «rol_no_autorizado»
+
 ↳ POST /entregas/lecturas con rol directivo → 403
-  POST http://localhost:3000/api/v1/entregas/lecturas [403 Forbidden, 811B, 10ms]
+  POST http://localhost:3000/api/v1/entregas/lecturas [403 Forbidden, 811B, 13ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /entregas/lecturas con rol docente → 403
@@ -688,99 +688,99 @@ Plataforma de Comunicación Escolar · Pruebas de la API v1
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /cursos/{id}/conversaciones con rol directivo → 403
-  GET http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/conversaciones [403 Forbidden, 852B, 10ms]
+  GET http://localhost:3000/api/v1/cursos/00000000-0000-4000-8000-000000000000/conversaciones [403 Forbidden, 852B, 13ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /conversaciones con rol directivo → 403
-  GET http://localhost:3000/api/v1/conversaciones [403 Forbidden, 808B, 12ms]
+  GET http://localhost:3000/api/v1/conversaciones [403 Forbidden, 808B, 11ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ GET /conversaciones/{id}/mensajes con rol directivo → 403
-  GET http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [403 Forbidden, 854B, 12ms]
+  GET http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [403 Forbidden, 854B, 18ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ POST /conversaciones/{id}/mensajes con rol directivo → 403
-  POST http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [403 Forbidden, 854B, 13ms]
+  POST http://localhost:3000/api/v1/conversaciones/00000000-0000-4000-8000-000000000000/mensajes [403 Forbidden, 854B, 22ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ❏ 10 · Cierre: eliminar, bajas, credencial y cierre de sesión
 ↳ Un directivo no elimina un anuncio ajeno → 403
-  DELETE http://localhost:3000/api/v1/anuncios/a9b5b6f4-86c4-42a7-b5b1-9424d3cca6ad [403 Forbidden, 839B, 13ms]
+  DELETE http://localhost:3000/api/v1/anuncios/0cecfe6d-6ba4-48bb-bb99-bc272ddf6f5b [403 Forbidden, 840B, 19ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ Eliminar lógicamente el anuncio (autor, RF-20)
-  DELETE http://localhost:3000/api/v1/anuncios/a9b5b6f4-86c4-42a7-b5b1-9424d3cca6ad [200 OK, 969B, 42ms]
+  DELETE http://localhost:3000/api/v1/anuncios/0cecfe6d-6ba4-48bb-bb99-bc272ddf6f5b [200 OK, 967B, 27ms]
   ✓  Responde 200
   ✓  Eliminado con autor y marca (RNF-04)
 
 ↳ El anuncio eliminado deja el historial
-  GET http://localhost:3000/api/v1/anuncios?curso_id=7c407dc8-1ae9-4815-9013-c438bda194d9&pagina=1&por_pagina=25 [200 OK, 662B, 31ms]
+  GET http://localhost:3000/api/v1/anuncios?curso_id=dfa82bbb-5bd2-494b-8cfb-718c601acd58&pagina=1&por_pagina=25 [200 OK, 662B, 28ms]
   ✓  Colección paginada (Tabla 28)
 
 ↳ Su detalle sigue consultable, marcado como eliminado
-  GET http://localhost:3000/api/v1/anuncios/a9b5b6f4-86c4-42a7-b5b1-9424d3cca6ad [200 OK, 1.25kB, 46ms]
+  GET http://localhost:3000/api/v1/anuncios/0cecfe6d-6ba4-48bb-bb99-bc272ddf6f5b [200 OK, 1.25kB, 39ms]
   ✓  Responde 200
   ✓  Estado eliminado
 
 ↳ Baja del tutor mientras el alumno sigue activo → 409 RN-12
-  DELETE http://localhost:3000/api/v1/tutores/b6d515b0-68df-4149-a8b4-e28576106382 [409 Conflict, 866B, 41ms]
+  DELETE http://localhost:3000/api/v1/tutores/b052e732-bb76-4856-a815-c92bd6245287 [409 Conflict, 866B, 31ms]
   ✓  Rechazo 409 con el código «conflicto_de_regla» y la regla RN-12
 
 ↳ Un alumno no da de baja a nadie → 403
-  DELETE http://localhost:3000/api/v1/tutores/b6d515b0-68df-4149-a8b4-e28576106382 [403 Forbidden, 838B, 17ms]
+  DELETE http://localhost:3000/api/v1/tutores/b052e732-bb76-4856-a815-c92bd6245287 [403 Forbidden, 838B, 12ms]
   ✓  Rechazo 403 con el código «rol_no_autorizado»
 
 ↳ Baja lógica del alumno (directivo)
-  DELETE http://localhost:3000/api/v1/alumnos/527fb537-7cb3-46ce-9fd1-d4eb9d365fbe [200 OK, 919B, 68ms]
+  DELETE http://localhost:3000/api/v1/alumnos/5aa95aff-801c-4b1a-91b6-926820c1ce8a [200 OK, 919B, 45ms]
   ✓  Responde 200
   ✓  Estado dado de baja
 
 ↳ Baja lógica del tutor (docente titular, ya sin alumnos activos)
-  DELETE http://localhost:3000/api/v1/tutores/b6d515b0-68df-4149-a8b4-e28576106382 [200 OK, 918B, 65ms]
+  DELETE http://localhost:3000/api/v1/tutores/b052e732-bb76-4856-a815-c92bd6245287 [200 OK, 917B, 36ms]
   ✓  Responde 200
   ✓  Estado dado de baja
 
 ↳ La cuenta dada de baja ya no inicia sesión → 401
-  POST http://localhost:3000/api/v1/sesiones [401 Unauthorized, 817B, 20ms]
+  POST http://localhost:3000/api/v1/sesiones [401 Unauthorized, 817B, 14ms]
   ✓  Rechazo 401 con el código «credencial_invalida»
 
 ↳ Cambiar la contraseña con la actual equivocada → 401
-  PATCH http://localhost:3000/api/v1/usuarios/me/contrasena [401 Unauthorized, 855B, 370ms]
+  PATCH http://localhost:3000/api/v1/usuarios/me/contrasena [401 Unauthorized, 855B, 289ms]
   ✓  Rechazo 401 con el código «contrasena_actual_invalida»
 
 ↳ Cambiar la contraseña (RF-43)
-  PATCH http://localhost:3000/api/v1/usuarios/me/contrasena [200 OK, 870B, 420ms]
+  PATCH http://localhost:3000/api/v1/usuarios/me/contrasena [200 OK, 868B, 472ms]
   ✓  Responde 200
   ✓  Sin credencial provisional
 
 ↳ La contraseña nueva inicia sesión
-  POST http://localhost:3000/api/v1/sesiones [201 Created, 1.05kB, 203ms]
+  POST http://localhost:3000/api/v1/sesiones [201 Created, 1.05kB, 430ms]
   ✓  Responde 201
 
 ↳ La contraseña anterior ya no sirve → 401
-  POST http://localhost:3000/api/v1/sesiones [401 Unauthorized, 819B, 198ms]
+  POST http://localhost:3000/api/v1/sesiones [401 Unauthorized, 819B, 493ms]
   ✓  Rechazo 401 con el código «credencial_invalida»
 
 ↳ Cerrar la sesión activa
-  DELETE http://localhost:3000/api/v1/sesiones [204 No Content, 482B, 12ms]
+  DELETE http://localhost:3000/api/v1/sesiones [204 No Content, 482B, 23ms]
   ✓  Responde 204
 
-┌─────────────────────────┬───────────────────┬───────────────────┐
-│                         │          executed │            failed │
-├─────────────────────────┼───────────────────┼───────────────────┤
-│              iterations │                 1 │                 0 │
-├─────────────────────────┼───────────────────┼───────────────────┤
-│                requests │               178 │                 0 │
-├─────────────────────────┼───────────────────┼───────────────────┤
-│            test-scripts │               178 │                 0 │
-├─────────────────────────┼───────────────────┼───────────────────┤
-│      prerequest-scripts │                 2 │                 0 │
-├─────────────────────────┼───────────────────┼───────────────────┤
-│              assertions │               217 │                 0 │
-├─────────────────────────┴───────────────────┴───────────────────┤
-│ total run duration: 13.2s                                       │
-├─────────────────────────────────────────────────────────────────┤
-│ total data received: 56.9kB (approx)                            │
-├─────────────────────────────────────────────────────────────────┤
-│ average response time: 53ms [min: 6ms, max: 477ms, s.d.: 102ms] │
-└─────────────────────────────────────────────────────────────────┘
+┌─────────────────────────┬────────────────────┬───────────────────┐
+│                         │           executed │            failed │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│              iterations │                  1 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│                requests │                178 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│            test-scripts │                178 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│      prerequest-scripts │                  2 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│              assertions │                217 │                 0 │
+├─────────────────────────┴────────────────────┴───────────────────┤
+│ total run duration: 20.5s                                        │
+├──────────────────────────────────────────────────────────────────┤
+│ total data received: 56.9kB (approx)                             │
+├──────────────────────────────────────────────────────────────────┤
+│ average response time: 90ms [min: 6ms, max: 1383ms, s.d.: 207ms] │
+└──────────────────────────────────────────────────────────────────┘

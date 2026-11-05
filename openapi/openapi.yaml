@@ -7,7 +7,7 @@
 openapi: 3.1.0
 info:
   title: API REST de un colegio para una plataforma de comunicación escolar
-  version: 1.0.0
+  version: 1.0.1
   description: |
     Interfaz de programación del producto mínimo viable. Cuarenta y una operaciones
     sobre HTTP —36 Must have y 5 Should have descritas y no construidas— más el canal de
